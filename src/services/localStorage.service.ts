@@ -8,7 +8,7 @@ const testUser = {
   imgUrl: avatarImg,
   userName: '@john1989',
   email: {
-    name: 'chris.johnson@altence.com',
+    name: 'chris.johnson@altencs.com',
     verified: true,
   },
   phone: {
