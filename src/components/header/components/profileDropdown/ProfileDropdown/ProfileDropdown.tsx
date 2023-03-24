@@ -8,21 +8,15 @@ import * as S from './ProfileDropdown.styles';
 import { Popover } from '@app/components/common/Popover/Popover';
 
 export const ProfileDropdown: React.FC = () => {
-  const { isTablet } = useResponsive();
 
   const user = useAppSelector((state) => state.user.user);
 
   return user ? (
     <Popover content={<ProfileOverlay />} trigger="click">
       <S.ProfileDropdownHeader as={Row} gutter={[10, 10]} align="middle">
-        <Col>
-          <Avatar src={user.imgUrl} alt="User" shape="circle" size={40} />
-        </Col>
-        {isTablet && (
           <Col>
             <H6>{`${user.firstName} ${user.lastName[0]}`}</H6>
           </Col>
-        )}
       </S.ProfileDropdownHeader>
     </Popover>
   ) : null;
