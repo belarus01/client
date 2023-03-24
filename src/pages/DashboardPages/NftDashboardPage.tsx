@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'antd';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import { References } from '@app/components/common/References/References';
 import { useResponsive } from '@app/hooks/useResponsive';
 import { TrendingCreators } from '@app/components/nft-dashboard/trending-creators/TrendingCreators';
 import { RecentlyAddedNft } from '@app/components/nft-dashboard/recently-added/RecentlyAddedNft';
@@ -35,7 +34,7 @@ const MedicalDashboardPage: React.FC = () => {
             <RecentActivity />
           </Col>
         </Row>
-        <References />
+       
       </S.LeftSideCol>
 
       <S.RightSideCol xl={8} xxl={7}>

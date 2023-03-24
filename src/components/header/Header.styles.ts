@@ -77,4 +77,3 @@ export const ProfileColumn = styled(Col)<ProfileColumn>`
       `}
   }
 `;
-
