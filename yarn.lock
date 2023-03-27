@@ -1669,6 +1669,101 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fullcalendar/core@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/core@npm:6.1.5"
+  dependencies:
+    preact: ~10.12.1
+  checksum: 6892c11c40899fc986edc3d36b8e764c8e78f1c53df2c6e23d418d0191fc0bd1562bd0d9cfc74fd986d02ac1e18c8a4a9d34a40b8329964cc9fb9f8ab8367635
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/daygrid@npm:~6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/daygrid@npm:6.1.5"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: f62aa7364d0c51bb8121da988ba5784dc0ce775e15d87bfa7b4f52f0f0d12fd338aa634de93b43332167c105b6848dba47d184f23d12572235ebd16101f2b109
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/interaction@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/interaction@npm:6.1.5"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: dd3d7fb8ba33b13b79ee0788f81fd6831f90d3663e04467fd4b72f1c82af6d6e7d1a91ea8ea8c2c203c39d7f6a388d1bbfd501f79f7198629da03c9c9385588d
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/premium-common@npm:~6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/premium-common@npm:6.1.5"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: a32a8de91b997614e58a3eb882b6d33ba9701d93f8eb822827a37b058aa30944f8fc687a7e973fe850deff1a8229c903c8759c31c93e8b20c2e227860da98e5f
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/react@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/react@npm:6.1.5"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+    react: ^16.7.0 || ^17 || ^18
+    react-dom: ^16.7.0 || ^17 || ^18
+  checksum: ce4482a0e526808ea9e491fc8c5ff185e42c7cb719f795a6ec183807240a38086ae57f36d614b826ce7cd6cd24ea8582cb4e0e0755fd9bd6e6ec8392e7ca03d2
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/resource-timeline@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/resource-timeline@npm:6.1.5"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.5
+    "@fullcalendar/scrollgrid": ~6.1.5
+    "@fullcalendar/timeline": ~6.1.5
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+    "@fullcalendar/resource": ~6.1.5
+  checksum: f54eee9fff13f573124dac6603069c1821f682a8cfc47d5e4b077aa0a531fb9df0b6e1c62e408f755c958eda2d2aa2df3d5d01483257116d500471d14724daa3
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/scrollgrid@npm:~6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/scrollgrid@npm:6.1.5"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.5
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: 967a7dbf9248f0c19da582437d0a6edfcfd6a614400fbab7b3da7d53c1af42930ab4e51aa507da1f70b0b6d8e00fe2ba1112b39f7be7da507a9d6d00f044047b
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timegrid@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/timegrid@npm:6.1.5"
+  dependencies:
+    "@fullcalendar/daygrid": ~6.1.5
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: 236aabb57a3a8e8f41c43bf3a76b074731fee8a4e815b3c32a3532a7503678d488bbc1b2c74c270580ef37fb2d9ed9edf0b4646943812a5c238cd1cd7104e5f8
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timeline@npm:~6.1.5":
+  version: 6.1.5
+  resolution: "@fullcalendar/timeline@npm:6.1.5"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.5
+    "@fullcalendar/scrollgrid": ~6.1.5
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.5
+  checksum: 1181500a0ed7380cea58dc3da068fbee281c6aeb25ad3beb7e027c699bb11153812bb10907a1693efec2ab137a2b83124036cfe5b83b15df4990a26cb712ef8f
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1, @gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -11047,103 +11142,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lightence-admin@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "lightence-admin@workspace:."
-  dependencies:
-    "@ant-design/icons": ^4.6.2
-    "@craco/craco": ^6.1.2
-    "@lit-labs/react": ^1.0.2
-    "@reduxjs/toolkit": ^1.7.1
-    "@types/country-list": ^2.1.0
-    "@types/google-map-react": ^2.1.3
-    "@types/leaflet": ^1.7.9
-    "@types/react": ^17.0.43
-    "@types/react-dom": ^17.0.14
-    "@types/react-helmet": ^6.1.5
-    "@types/react-responsive": ^8.0.2
-    "@types/react-router-dom": ^5.1.7
-    "@types/react-router-hash-link": ^2.4.4
-    "@types/react-simple-maps": ^1.0.7
-    "@types/react-slick": ^0.23.8
-    "@types/styled-components": ^5.1.10
-    "@types/uuid": ^8.3.4
-    "@typescript-eslint/eslint-plugin": ^5.10.0
-    "@typescript-eslint/parser": ^5.8.0
-    antd: ^4.22.4
-    antd-mask-input: ^2.0.7
-    axios: ^0.24.0
-    axios-mock-adapter: ^1.20.0
-    country-list: ^2.2.0
-    craco-alias: ^3.0.1
-    credit-card-type: ^9.1.0
-    dayjs: ^1.11.0
-    echarts: ^5.1.2
-    echarts-for-react: ^3.0.1
-    elt-react-credit-cards: ^0.0.1
-    eslint: ^7.28.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-prettier: ^3.4.0
-    eslint-plugin-react: ^7.24.0
-    eslint-plugin-react-hooks: ^4.3.0
-    google-map-react: ^2.1.10
-    husky: ^6.0.0
-    i18next: ^20.4.0
-    leaflet: ^1.7.1
-    less: ^4.1.2
-    less-plugin-clean-css: ^1.5.1
-    lint-staged: ^11.0.0
-    patch-package: ^6.4.7
-    pigeon-maps: ^0.19.7
-    postinstall-postinstall: ^2.1.0
-    prettier: ^2.3.1
-    react: ^17.0.2
-    react-country-flag: ^3.0.2
-    react-dom: ^17.0.2
-    react-helmet-async: ^1.3.0
-    react-i18next: ^11.11.4
-    react-infinite-scroll-component: ^6.1.0
-    react-insta-stories: ^2.3.0
-    react-leaflet: next
-    react-phone-number-input: ^3.2.17
-    react-redux: ^7.2.6
-    react-responsive: ^8.2.0
-    react-router-dom: ^6.0.2
-    react-router-hash-link: ^2.4.3
-    react-scripts: 4.0.3
-    react-simple-maps: ^2.3.0
-    react-slick: ^0.28.1
-    react-trello: ^2.2.11
-    react-verification-input: ^2.0.3
-    round-slider: "altence/round-slider#refactor/slider"
-    slick-carousel: ^1.8.1
-    styled-components: ^5.3.0
-    stylelint: ^13.13.1
-    stylelint-config-recommended: ^5.0.0
-    stylelint-config-styled-components: ^0.1.1
-    stylelint-processor-styled-components: ^1.10.0
-    typeface-lato: ^1.1.13
-    typeface-montserrat: ^1.1.13
-    typescript: ^4.1.2
-    uuid: ^8.3.2
-    web-vitals: ^1.0.1
-    webpack-bundle-analyzer: ^4.4.2
-    webpackbar: ^5.0.0-3
-    workbox-background-sync: ^5.1.3
-    workbox-broadcast-update: ^5.1.3
-    workbox-cacheable-response: ^5.1.3
-    workbox-core: ^5.1.3
-    workbox-expiration: ^5.1.3
-    workbox-google-analytics: ^5.1.3
-    workbox-navigation-preload: ^5.1.3
-    workbox-precaching: ^5.1.3
-    workbox-range-requests: ^5.1.3
-    workbox-routing: ^5.1.3
-    workbox-strategies: ^5.1.3
-    workbox-streams: ^5.1.3
-  languageName: unknown
-  linkType: soft
-
 "lines-and-columns@npm:^1.1.6":
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
@@ -14019,6 +14017,13 @@ __metadata:
   version: 2.1.0
   resolution: "postinstall-postinstall@npm:2.1.0"
   checksum: e1d34252cf8d2c5641c7d2db7426ec96e3d7a975f01c174c68f09ef5b8327bc8d5a9aa2001a45e693db2cdbf69577094d3fe6597b564ad2d2202b65fba76134b
+  languageName: node
+  linkType: hard
+
+"preact@npm:~10.12.1":
+  version: 10.12.1
+  resolution: "preact@npm:10.12.1"
+  checksum: 0de99f477563ab7f94a0f964952ad216375973c0dcd9eb49881f8eb5effc5ed6948da062548c87d5bb0d82f1a1e516b649020e760eab3a0503dfdd8e64d34a26
   languageName: node
   linkType: hard
 
@@ -19352,3 +19357,105 @@ __metadata:
   checksum: 28a1bebacab3bc60150b6b0a2ba1db2ad033f068e81f05e4892ec0ea13ae63f5d140a1d692062ac0657840c8da076f35b94433b5f1c329d7803b247de80f064a
   languageName: node
   linkType: hard
+
+"АПК КНО@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "АПК КНО@workspace:."
+  dependencies:
+    "@ant-design/icons": ^4.6.2
+    "@craco/craco": ^6.1.2
+    "@fullcalendar/core": ^6.1.5
+    "@fullcalendar/interaction": ^6.1.5
+    "@fullcalendar/react": ^6.1.5
+    "@fullcalendar/resource-timeline": ^6.1.5
+    "@fullcalendar/timegrid": ^6.1.5
+    "@lit-labs/react": ^1.0.2
+    "@reduxjs/toolkit": ^1.7.1
+    "@types/country-list": ^2.1.0
+    "@types/google-map-react": ^2.1.3
+    "@types/leaflet": ^1.7.9
+    "@types/react": ^17.0.43
+    "@types/react-dom": ^17.0.14
+    "@types/react-helmet": ^6.1.5
+    "@types/react-responsive": ^8.0.2
+    "@types/react-router-dom": ^5.1.7
+    "@types/react-router-hash-link": ^2.4.4
+    "@types/react-simple-maps": ^1.0.7
+    "@types/react-slick": ^0.23.8
+    "@types/styled-components": ^5.1.10
+    "@types/uuid": ^8.3.4
+    "@typescript-eslint/eslint-plugin": ^5.10.0
+    "@typescript-eslint/parser": ^5.8.0
+    antd: ^4.22.4
+    antd-mask-input: ^2.0.7
+    axios: ^0.24.0
+    axios-mock-adapter: ^1.20.0
+    country-list: ^2.2.0
+    craco-alias: ^3.0.1
+    credit-card-type: ^9.1.0
+    dayjs: ^1.11.0
+    echarts: ^5.1.2
+    echarts-for-react: ^3.0.1
+    elt-react-credit-cards: ^0.0.1
+    eslint: ^7.28.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-react: ^7.24.0
+    eslint-plugin-react-hooks: ^4.3.0
+    google-map-react: ^2.1.10
+    husky: ^6.0.0
+    i18next: ^20.4.0
+    leaflet: ^1.7.1
+    less: ^4.1.2
+    less-plugin-clean-css: ^1.5.1
+    lint-staged: ^11.0.0
+    patch-package: ^6.4.7
+    pigeon-maps: ^0.19.7
+    postinstall-postinstall: ^2.1.0
+    prettier: ^2.3.1
+    react: ^17.0.2
+    react-country-flag: ^3.0.2
+    react-dom: ^17.0.2
+    react-helmet-async: ^1.3.0
+    react-i18next: ^11.11.4
+    react-infinite-scroll-component: ^6.1.0
+    react-insta-stories: ^2.3.0
+    react-leaflet: next
+    react-phone-number-input: ^3.2.17
+    react-redux: ^7.2.6
+    react-responsive: ^8.2.0
+    react-router-dom: ^6.0.2
+    react-router-hash-link: ^2.4.3
+    react-scripts: 4.0.3
+    react-simple-maps: ^2.3.0
+    react-slick: ^0.28.1
+    react-trello: ^2.2.11
+    react-verification-input: ^2.0.3
+    round-slider: "altence/round-slider#refactor/slider"
+    slick-carousel: ^1.8.1
+    styled-components: ^5.3.0
+    stylelint: ^13.13.1
+    stylelint-config-recommended: ^5.0.0
+    stylelint-config-styled-components: ^0.1.1
+    stylelint-processor-styled-components: ^1.10.0
+    typeface-lato: ^1.1.13
+    typeface-montserrat: ^1.1.13
+    typescript: ^4.1.2
+    uuid: ^8.3.2
+    web-vitals: ^1.0.1
+    webpack-bundle-analyzer: ^4.4.2
+    webpackbar: ^5.0.0-3
+    workbox-background-sync: ^5.1.3
+    workbox-broadcast-update: ^5.1.3
+    workbox-cacheable-response: ^5.1.3
+    workbox-core: ^5.1.3
+    workbox-expiration: ^5.1.3
+    workbox-google-analytics: ^5.1.3
+    workbox-navigation-preload: ^5.1.3
+    workbox-precaching: ^5.1.3
+    workbox-range-requests: ^5.1.3
+    workbox-routing: ^5.1.3
+    workbox-strategies: ^5.1.3
+    workbox-streams: ^5.1.3
+  languageName: unknown
+  linkType: soft

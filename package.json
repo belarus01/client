@@ -1,18 +1,23 @@
 {
-  "name": "lightence-admin",
+  "name": "АПК КНО",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "Free and easy-to-use admin template based on React 17+",
+  "description": "",
   "repository": {
     "type": "git",
-    "url": "git+github.com:altence/lightence-admin.git"
+    "url": ""
   },
   "bugs": {
-    "url": "https://github.com/altence/lightence-admin/issues"
+    "url": ""
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@craco/craco": "^6.1.2",
+    "@fullcalendar/core": "^6.1.5",
+    "@fullcalendar/interaction": "^6.1.5",
+    "@fullcalendar/react": "^6.1.5",
+    "@fullcalendar/resource-timeline": "^6.1.5",
+    "@fullcalendar/timegrid": "^6.1.5",
     "@lit-labs/react": "^1.0.2",
     "@reduxjs/toolkit": "^1.7.1",
     "antd": "^4.22.4",
@@ -132,11 +137,5 @@
     "react-error-overlay": "6.0.9"
   },
   "packageManager": "yarn@3.1.1",
-  "keywords": [
-    "lightence",
-    "admin",
-    "admin-dashboard",
-    "ant-design",
-    "react"
-  ]
+  "keywords": []
 }

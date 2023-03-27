@@ -9,6 +9,8 @@ import {
   TableOutlined,
   UserOutlined,
   BlockOutlined,
+  CalendarOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
 
@@ -21,6 +23,44 @@ export interface SidebarNavigationItem {
 }
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
+  {
+    title:'Планирование',
+    key:'planning',
+    url:'/planning',
+    icon: <CalendarOutlined />
+  },
+  {
+    title: 'Справочники',
+    key: 'handbooks',
+    icon: <BookOutlined />,
+    children: [
+      {
+        title: 'Пользователи',
+        key: 'users',
+        url: '/handbooks/users',
+      },
+      {
+        title: 'СОАТО',
+        key: 'soato',
+        url: '/handbooks/soato',
+      },
+      {
+        title: 'Мероприятия',
+        key: 'events',
+        url: '/handbooks/events',
+      },
+      {
+        title: 'Субъекты',
+        key: 'subjects',
+        url: '/handbooks/subjects',
+      },
+      {
+        title: 'Геолокация',
+        key: 'geo',
+        url: '/handbooks/geo',
+      },
+    ],
+  },
   {
     title: 'common.nft-dashboard',
     key: 'nft-dashboard',

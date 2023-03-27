@@ -60,6 +60,7 @@ const LeafletMaps = React.lazy(() => import('@app/pages/maps/LeafletMapsPage/Lea
 const ReactSimpleMaps = React.lazy(() => import('@app/pages/maps/ReactSimpleMapsPage/ReactSimpleMapsPage'));
 const PigeonsMaps = React.lazy(() => import('@app/pages/maps/PigeonsMapsPage/PigeonsMapsPage'));
 const Logout = React.lazy(() => import('./Logout'));
+const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
 
 export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/medical-dashboard';
@@ -120,6 +121,9 @@ const Payments = withLoading(PaymentsPage);
 const AuthLayoutFallback = withLoading(AuthLayout);
 const LogoutFallback = withLoading(Logout);
 
+
+const Planning = withLoading(PlanningPage);
+
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
     <RequireAuth>
@@ -137,6 +141,7 @@ export const AppRouter: React.FC = () => {
             <Route path="feed" element={<NewsFeed />} />
             <Route path="kanban" element={<Kanban />} />
           </Route>
+          
           <Route path="forms">
             <Route path="advanced-forms" element={<AdvancedForm />} />
           </Route>
@@ -185,6 +190,7 @@ export const AppRouter: React.FC = () => {
             <Route path="notification" element={<NotificationsUI />} />
             <Route path="skeleton" element={<Skeletons />} />
           </Route>
+          <Route path="planning" element={<Planning/>} />
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
