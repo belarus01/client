@@ -61,6 +61,7 @@ const ReactSimpleMaps = React.lazy(() => import('@app/pages/maps/ReactSimpleMaps
 const PigeonsMaps = React.lazy(() => import('@app/pages/maps/PigeonsMapsPage/PigeonsMapsPage'));
 const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
+const EventsCardPage = React.lazy(()=>import('@app/pages/EventCartPage'));
 
 export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/medical-dashboard';
@@ -123,6 +124,7 @@ const LogoutFallback = withLoading(Logout);
 
 
 const Planning = withLoading(PlanningPage);
+const EventCard = withLoading(EventsCardPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -191,6 +193,7 @@ export const AppRouter: React.FC = () => {
             <Route path="skeleton" element={<Skeletons />} />
           </Route>
           <Route path="planning" element={<Planning/>} />
+          <Route path="event-card" element={<EventCard/>}/>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
