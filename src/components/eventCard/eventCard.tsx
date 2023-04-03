@@ -22,6 +22,7 @@ export const EventCard: React.FC = () =>{
         // }, 1000);
       };
     
+      
     return (
         <BaseButtonsForm
       {...formItemLayout}
