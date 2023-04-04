@@ -8,6 +8,7 @@ import visa from '@app/assets/images/card-issuers/visa.png';
 import mastercard from '@app/assets/images/card-issuers/mastercard.png';
 import maestro from '@app/assets/images/card-issuers/maestro.png';
 import { CurrencyTypeEnum } from '@app/interfaces/interfaces';
+import { SDept, SDeptNode } from '@app/domain/interfaces';
 
 export const camelize = (string: string): string => {
   return string
@@ -221,3 +222,28 @@ export const getPaymentCardTypeIcon = (type: string): string | null => {
       return null;
   }
 };
+
+export const makeTree = (nodes:SDeptNode[]) :SDeptNode[] =>{
+  let tree:SDeptNode[] = [];
+  for(let i = 0; i < nodes.length; i++) {
+      if(nodes[i].idParent){
+          let parent = nodes.filter(node=>node.idDept === nodes[i].idParent).pop();
+          parent?.children.push(nodes[i]);
+      }
+      else{
+          tree.push(nodes[i]);
+      }
+  }
+  return tree;
+}
+
+export const deptToTreeNode = (dept: SDept): SDeptNode =>{
+  return {
+      idDept: dept.idDept,
+      departament: dept.departament,
+      org: dept.org,
+      idParent: dept.idParent,
+      uid: dept.uid,
+      children: []
+  };
+}

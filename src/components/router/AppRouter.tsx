@@ -4,11 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // no lazy loading for auth pages to avoid flickering
 const AuthLayout = React.lazy(() => import('@app/components/layouts/AuthLayout/AuthLayout'));
 import LoginPage from '@app/pages/LoginPage';
-import SignUpPage from '@app/pages/SignUpPage';
-import ForgotPasswordPage from '@app/pages/ForgotPasswordPage';
-import SecurityCodePage from '@app/pages/SecurityCodePage';
-import NewPasswordPage from '@app/pages/NewPasswordPage';
-import LockPage from '@app/pages/LockPage';
+import SignUpPage from '@app/pages/test/SignUpPage';
+import ForgotPasswordPage from '@app/pages/test/ForgotPasswordPage';
+import SecurityCodePage from '@app/pages/test/SecurityCodePage';
+import NewPasswordPage from '@app/pages/test/NewPasswordPage';
+import LockPage from '@app/pages/test/LockPage';
 
 import MainLayout from '@app/components/layouts/main/MainLayout/MainLayout';
 import ProfileLayout from '@app/components/profile/ProfileLayout';
@@ -17,17 +17,17 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
 
-const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
-const KanbanPage = React.lazy(() => import('@app/pages/KanbanPage'));
-const DataTablesPage = React.lazy(() => import('@app/pages/DataTablesPage'));
-const ChartsPage = React.lazy(() => import('@app/pages/ChartsPage'));
+const NewsFeedPage = React.lazy(() => import('@app/pages/test/NewsFeedPage'));
+const KanbanPage = React.lazy(() => import('@app/pages/test/KanbanPage'));
+const DataTablesPage = React.lazy(() => import('@app/pages/test/DataTablesPage'));
+const ChartsPage = React.lazy(() => import('@app/pages/test/ChartsPage'));
 const ServerErrorPage = React.lazy(() => import('@app/pages/ServerErrorPage'));
 const Error404Page = React.lazy(() => import('@app/pages/Error404Page'));
-const AdvancedFormsPage = React.lazy(() => import('@app/pages/AdvancedFormsPage'));
-const PersonalInfoPage = React.lazy(() => import('@app/pages/PersonalInfoPage'));
-const SecuritySettingsPage = React.lazy(() => import('@app/pages/SecuritySettingsPage'));
-const NotificationsPage = React.lazy(() => import('@app/pages/NotificationsPage'));
-const PaymentsPage = React.lazy(() => import('@app/pages/PaymentsPage'));
+const AdvancedFormsPage = React.lazy(() => import('@app/pages/test/AdvancedFormsPage'));
+const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
+const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
+const NotificationsPage = React.lazy(() => import('@app/pages/test/NotificationsPage'));
+const PaymentsPage = React.lazy(() => import('@app/pages/test/PaymentsPage'));
 const ButtonsPage = React.lazy(() => import('@app/pages/uiComponentsPages/ButtonsPage'));
 const SpinnersPage = React.lazy(() => import('@app/pages/uiComponentsPages/SpinnersPage'));
 const AvatarsPage = React.lazy(() => import('@app/pages/uiComponentsPages/dataDisplay/AvatarsPage'));
@@ -61,6 +61,7 @@ const ReactSimpleMaps = React.lazy(() => import('@app/pages/maps/ReactSimpleMaps
 const PigeonsMaps = React.lazy(() => import('@app/pages/maps/PigeonsMapsPage/PigeonsMapsPage'));
 const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
+const UserManagmentPage = React.lazy(()=>import('@app/pages/UsersManagmentPage'));
 
 export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/medical-dashboard';
@@ -123,6 +124,7 @@ const LogoutFallback = withLoading(Logout);
 
 
 const Planning = withLoading(PlanningPage);
+const UsersManagment = withLoading(UserManagmentPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -191,6 +193,7 @@ export const AppRouter: React.FC = () => {
             <Route path="skeleton" element={<Skeletons />} />
           </Route>
           <Route path="planning" element={<Planning/>} />
+          <Route path="handbooks/users" element={<UsersManagment/>}/>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
