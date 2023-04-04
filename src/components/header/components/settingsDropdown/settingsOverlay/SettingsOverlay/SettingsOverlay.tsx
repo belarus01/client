@@ -14,14 +14,14 @@ export const SettingsOverlay: React.FC = ({ ...props }) => {
   return (
     <S.SettingsOverlayMenu {...props}>
       <DropdownCollapse bordered={false} expandIconPosition="end" ghost defaultActiveKey="themePicker">
-        <DropdownCollapse.Panel header={t('header.changeTheme')} key="themePicker">
+        <DropdownCollapse.Panel header={'Сменить тему'} key="themePicker">
           <ThemePicker />
         </DropdownCollapse.Panel>
       </DropdownCollapse>
       {isPWASupported && (
         <S.PwaInstallWrapper>
           <Button block type="primary" onClick={() => event && (event as BeforeInstallPromptEvent).prompt()}>
-            {t('common.pwa')}
+            {'Ярлык'}
           </Button>
         </S.PwaInstallWrapper>
       )}

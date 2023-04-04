@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import { InputNumber } from '@app/components/common/inputs/InputNumber/InputNumber';
-import { useResetFormOnCloseModal } from './useResetFormOnCloseModal';
+import { useResetFormOnCloseModal } from '../../../hooks/useResetFormOnCloseModal';
 
 interface AddUserFormModalProps {
   open: boolean;
@@ -13,7 +13,6 @@ interface AddUserFormModalProps {
 
 export const AddUserFormModal: React.FC<AddUserFormModalProps> = ({ open, onCancel }) => {
   const [form] = BaseForm.useForm();
-  const { t } = useTranslation();
 
   useResetFormOnCloseModal({
     form,
@@ -25,7 +24,7 @@ export const AddUserFormModal: React.FC<AddUserFormModalProps> = ({ open, onCanc
   };
 
   return (
-    <Modal title={t('forms.controlFormLabels.newUser')} open={open} onOk={onOk} onCancel={onCancel}>
+    <Modal title={'Добавить пользователя'} open={open} onOk={onOk} onCancel={onCancel}>
       <BaseForm form={form} layout="vertical" name="userForm">
         <BaseForm.Item
           name="name"
