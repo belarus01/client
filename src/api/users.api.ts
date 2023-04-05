@@ -36,4 +36,7 @@ export const updateUser = (user: CreateUserDTO) =>
     httpApi.put('users/update', {...user}).then(({data})=>data);
 
 export const getAllJobs = () =>
-    httpApi.get<SDeptJob[]>('job/get/all');
+    httpApi.get<SDeptJob[]>('job/get/all').then(({data})=>data);
+
+export const searchUsers = (query:string) =>
+    httpApi.get<User[]>('users/get/search/' + query).then(({data})=>data);

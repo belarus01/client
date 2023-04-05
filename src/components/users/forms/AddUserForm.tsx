@@ -26,29 +26,29 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ open, onCancel, onTabl
     //const admin = useCurrentUser();
 
     useEffect(() => {
-        // getAllJobs().then((responce) => {
-        //     let arr: string[] = [];
-        //     setPositions(responce.data);
-        //     positions.forEach(element => {
-        //         arr.push(element.job);
-        //     });
-        //     setPositionsStr(arr);
-        // })
+        getAllJobs().then((responce) => {
+            let arr: string[] = [];
+            setPositions(responce);
+            positions.forEach(element => {
+                arr.push(element.job);
+            });
+            setPositionsStr(arr);
+        })
     }, []);
 
     useEffect(() => {
-        // getAllDepartments().then((responce) => {
-        //     console.log(responce.data);
-        //     const arr:SDeptNode[] = [];
-        //     console.log(responce.data.length);
-        //     for(let i = 0; i<responce.data.length; i++){
-        //         console.log(responce.data[i]);
-        //         arr.push(deptToTreeNode(responce.data[i]));
-        //     }
-        //     console.log('arr');
-        //     console.log(arr);
-        //     setDepartments(makeTree(arr));
-        // })
+        getAllDepartments().then((responce) => {
+            console.log(responce);
+            const arr:SDeptNode[] = [];
+            //console.log(responce.data.length);
+            for(let i = 0; i<responce.length; i++){
+                console.log(responce[i]);
+                arr.push(deptToTreeNode(responce[i]));
+            }
+            console.log('arr');
+            console.log(arr);
+            setDepartments(makeTree(arr));
+        })
     }, []);
 
     const onFinish = (values: any) => {

@@ -109,12 +109,12 @@ export const SubjectsTable: React.FC = () => {
     const columns = [
         {
             key: "2",
-            title: "Фамилия",
+            title: "УНП",
             dataIndex: "unp",
         },
         {
             key: "3",
-            title: "Имя",
+            title: "Юридический адрес",
             dataIndex: "addr_yur"
         },
 
