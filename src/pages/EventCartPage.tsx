@@ -7,8 +7,8 @@ const EventsCardPage: React.FC = () => {
     
     return (
       <>
-        <PageTitle>{'Карточка мероприятия'}</PageTitle>
-          <Card id="validation form" title={'Карточка мероприятия'} padding="1.25rem">
+        <PageTitle>{'Карточка по надзорно-профилактическому мероприятию'}</PageTitle>
+          <Card id="validation form" title={'Карточка по надзорно-профилактическому мероприятию'} padding="1.25rem">
             <EventCard />
           </Card>
       </>

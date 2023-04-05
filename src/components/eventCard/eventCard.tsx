@@ -1,178 +1,151 @@
-import { notificationController } from "@app/controllers/notificationController";
-import { useState } from "react";
-import { Button } from "../common/buttons/Button/Button";
-import { BaseButtonsForm } from "../common/forms/BaseButtonsForm/BaseButtonsForm"
-import { Input } from "../common/inputs/Input/Input";
-import { InputNumber } from "../common/inputs/InputNumber/InputNumber";
-import { Select, Option } from "../common/selects/Select/Select";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
+import { Button } from '@app/components/common/buttons/Button/Button';
+import { Step1 } from './Steps/1';
+import { Step2 } from './Steps/2';
+import { Step3 } from './Steps/3';
+import { Step4 } from './Steps/4';
+import { notificationController } from '@app/controllers/notificationController';
+import { Dates } from '@app/constants/Dates';
+import { mergeBy } from '@app/utils/utils';
+import * as S from './StepForm.styles';
+import { Steps } from './StepForm.styles';
+interface FormValues {
+  [key: string]: string | undefined;
+}
 
-const formItemLayout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24 },
-};
+interface FieldData {
+  name: string | number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+}
 
 export const EventCard: React.FC = () => {
-  const [isFieldsChanged, setFieldsChanged] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const onFinish = async (values = {}) => {
-    console.log(values);
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   setFieldsChanged(false);
-    //   notificationController.success({ message: t('common.success') });
-    //   console.log(values);
-    // }, 1000);
+  const [current, setCurrent] = useState(0);
+  const [form] = BaseForm.useForm();
+  const [fields, setFields] = useState<FieldData[]>([
+    { name: 'group', value: '' },
+    { name: 'unp', value: '' },
+    { name: 'confirmPassword', value: '123456' },
+    { name: 'salutation', value: 'mr' },
+    { name: 'gender', value: 'male' },
+    { name: 'firstName', value: 'John' },
+    { name: 'lastName', value: 'Black' },
+    { name: 'birthday', value: Dates.getDate(1576789200000) },
+    { name: 'phone', value: '298573124' },
+    { name: 'email', value: '' },
+    { name: 'address1', value: 'Slobodskay street' },
+    { name: 'address2', value: 'Nevski street' },
+    { name: 'zipCode', value: '435123' },
+    { name: 'city', value: 'Minsk' },
+    { name: 'country', value: 'Belarus' },
+    { name: 'prefix', value: '+7' },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
+
+  const formLabels: FormValues = {
+    login: t('forms.stepFormLabels.login'),
+    password: t('common.password'),
+    confirmPassword: t('common.confirmPassword'),
+    salutation: t('forms.stepFormLabels.salutation'),
+    gender: t('forms.stepFormLabels.gender'),
+    firstName: t('common.firstName'),
+    lastName: t('common.lastName'),
+    birthday: t('forms.stepFormLabels.birthday'),
+    phone: t('common.phone'),
+    email: t('common.email'),
+    address1: `${t('common.address')} 1`,
+    address2: `${t('common.address')} 2`,
+    zipCode: t('common.zipcode'),
+    city: t('common.city'),
+    country: t('common.country'),
   };
 
+  const formValues = fields
+    .filter((item) => item.name !== 'prefix')
+    .map((item) => ({
+      name: formLabels[item.name],
+      value: String(item.name === 'birthday' && item.value ? item.value.format('YYYY-MM-DD') : item.value),
+    }));
+
+  const next = () => {
+    form.validateFields().then(() => {
+      setCurrent(current + 1);
+    });
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+
+  const onFinish = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      notificationController.success({ message: t('common.success') });
+      setIsLoading(false);
+      setCurrent(0);
+    }, 1500);
+  };
+
+  const steps = [
+    {
+      title: 'Данные по субъекту (объекту)',
+    },
+    {
+      title: 'Данные по надзорному органу',
+    },
+    {
+      title: 'Данные по надзорно-профилактическому мероприятию',
+    },
+    {
+      title: 'Результаты',
+    },
+  ];
+
+  const formFieldsUi = [
+    <Step1 key="1" />,
+    <Step2 key="2" />,
+    <Step3 key="3" />,
+    <Step4 key="4" formValues={formValues} />,
+  ];
+
   return (
-    <BaseButtonsForm
-      {...formItemLayout}
-      isFieldsChanged={isFieldsChanged}
-      onFieldsChange={() => setFieldsChanged(true)}
-      name="eventCardForm"
-      initialValues={{
-        'input-number': 3,
-        'checkbox-group': ['A', 'B'],
-        rate: 3.5,
+    <BaseForm
+      name="stepForm"
+      form={form}
+      fields={fields}
+      onFieldsChange={(_, allFields) => {
+        const currentFields = allFields.map((item) => ({
+          name: Array.isArray(item.name) ? item.name[0] : '',
+          value: item.value,
+        }));
+        const uniqueData = mergeBy(fields, currentFields, 'name');
+        setFields(uniqueData);
       }}
-      footer={
-        <BaseButtonsForm.Item>
-          <Button type="primary" htmlType="submit" loading={isLoading}>
-            {'Сохранить'}
-          </Button>
-        </BaseButtonsForm.Item>
-      }
       onFinish={onFinish}
     >
+      <Steps labelPlacement="vertical" size="small" current={current} items={steps} />
 
-      <BaseButtonsForm.Item
-        name="group"
-        label={'Наименование субъекта'}
-        rules={[{ required: true, message: 'Введите наименование субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="unp"
-        label={'УНП субъекта'}
-        rules={[{ required: true, message: 'Введите УНП субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="date"
-        label={'Дата государственной регистрации (присвоения УНП)'}
-        rules={[{ required: true, message: 'Введите дату государственной регистрации' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="prin"
-        label={'Ведомственная принадлежность субъекта'}
-        rules={[{ required: true, message: 'Введите принадлежность субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="ur_adress"
-        label={'Юридический адрес субъекта'}
-        rules={[{ required: true, message: 'Введите юридический адрес субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="fak_adress"
-        label={'Фактический адрес субъекта'}
-        rules={[{ required: true, message: 'Введите фактический адрес субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="fio"
-        label={'Ф.И.О руководителя субъекта'}
-        rules={[{ required: true, message: 'Введите Ф.И.О руководителя субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="dolgnost"
-        label={'Должность руководителя субъекта'}
-        rules={[{ required: true, message: 'Введите должность руководителя субъекта' }]}
-      >
-        <Input />
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="sfera"
-        label={'Сфера (вид) деятельности'}
-        hasFeedback
-        rules={[{ required: true, message: 'Введите сферу (вид) деятельности' }]}
-      >
-        <Select placeholder={('Сфера (вид) деятельности')}>
-          <Option value="Серый-машина">{('Серый-машина')}</Option>
-          <Option value="Серый-милашка">{('Серый-милашка')}</Option>
-          <Option value="Серый-красавчик">{('Серый-красавчик')}</Option>
-        </Select>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item label={'Количество отдельных зданий'}
-      >
-        <label>
-          <BaseButtonsForm.Item name="col_zdani" noStyle
-            hasFeedback
-            rules={[{ required: true, message: 'Введите количество отдельных зданий' }]}>
-            <InputNumber min={1} max={10} />
-          </BaseButtonsForm.Item>
-        </label>
-        <span> {'зданий'}</span>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="name_zdani"
-        label={'Наименование отдельных зданий'}
-        hasFeedback
-        rules={[{ required: true, message: 'Введите наименование отдельных зданий' }]}
-      >
-        <Select placeholder={('Наименование отдельных зданий')}>
-          <Option value="Серый-машина">{('Серый-машина')}</Option>
-          <Option value="Серый-милашка">{('Серый-милашка')}</Option>
-          <Option value="Серый-красавчик">{('Серый-красавчик')}</Option>
-        </Select>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item label={'Количество отдельных сооружений'}
-      >
-        <label>
-          <BaseButtonsForm.Item name="col_sooryg" noStyle
-            hasFeedback
-            rules={[{ required: true, message: 'Введите количество отдельных сооружений' }]}>
-            <InputNumber min={1} max={10} />
-          </BaseButtonsForm.Item>
-        </label>
-        <span> {'сооружений'}</span>
-      </BaseButtonsForm.Item>
-
-      <BaseButtonsForm.Item
-        name="name_sooryg"
-        label={'Наименование отдельных сооружений'}
-        hasFeedback
-        rules={[{ required: true, message: 'Введите наименование отдельных сооружений' }]}
-      >
-        <Select placeholder={('Наименование отдельных сооружений')}>
-          <Option value="Серый-машина">{('Серый-машина')}</Option>
-          <Option value="Серый-милашка">{('Серый-милашка')}</Option>
-          <Option value="Серый-красавчик">{('Серый-красавчик')}</Option>
-        </Select>
-      </BaseButtonsForm.Item>
-
-    </BaseButtonsForm>
-  )
-}
+      <div>{formFieldsUi[current]}</div>
+      <S.Row>
+        {current > 0 && (
+          <S.PrevButton type="default" onClick={() => prev()}>
+            {'Предыдущий'}
+          </S.PrevButton>
+        )}
+        {current < steps.length - 1 && (
+          <Button type="primary" onClick={() => next()}>
+            {'Следующий'}
+          </Button>
+        )}
+        {current === steps.length - 1 && (
+          <Button type="primary" onClick={onFinish} loading={isLoading}>
+            {'Готово'}
+          </Button>
+        )}
+      </S.Row>
+    </BaseForm>
+  );
+};
