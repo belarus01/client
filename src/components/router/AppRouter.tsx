@@ -16,6 +16,7 @@ import RequireAuth from '@app/components/router/RequireAuth';
 import { withLoading } from '@app/hocs/withLoading.hoc';
 import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
+import { SubjectEventsPage } from '../../pages/SubjectEventsPage';
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/test/NewsFeedPage'));
 const KanbanPage = React.lazy(() => import('@app/pages/test/KanbanPage'));
@@ -60,8 +61,11 @@ const LeafletMaps = React.lazy(() => import('@app/pages/maps/LeafletMapsPage/Lea
 const ReactSimpleMaps = React.lazy(() => import('@app/pages/maps/ReactSimpleMapsPage/ReactSimpleMapsPage'));
 const PigeonsMaps = React.lazy(() => import('@app/pages/maps/PigeonsMapsPage/PigeonsMapsPage'));
 const Logout = React.lazy(() => import('./Logout'));
+
 const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
-const UserManagmentPage = React.lazy(()=>import('@app/pages/UsersManagmentPage'));
+const UserManagmentPage = React.lazy(()=>import('@app/pages/handbooks/UsersManagmentPage'));
+const SubjectsPage =  React.lazy(()=>import('@app/pages/handbooks/SubjectsPage'));
+
 
 export const NFT_DASHBOARD_PATH = '/';
 export const MEDICAL_DASHBOARD_PATH = '/medical-dashboard';
@@ -125,6 +129,7 @@ const LogoutFallback = withLoading(Logout);
 
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
+const Subjects = withLoading(SubjectsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -193,7 +198,10 @@ export const AppRouter: React.FC = () => {
             <Route path="skeleton" element={<Skeletons />} />
           </Route>
           <Route path="planning" element={<Planning/>} />
-          <Route path="handbooks/users" element={<UsersManagment/>}/>
+          <Route path="handbooks">
+            <Route path="users" element={<UsersManagment/>}/>
+            <Route path="subjects" element={<Subjects/>}/>
+          </Route>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />

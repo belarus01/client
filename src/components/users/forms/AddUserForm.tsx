@@ -6,95 +6,71 @@ import { Input } from "@app/components/common/inputs/Input/Input";
 import { Select, Option } from "@app/components/common/selects/Select/Select";
 import { TreeSelect } from "antd";
 import { Button } from "@app/components/common/buttons/Button/Button";
-import { getAllJobs } from "@app/api/users.api";
-import { deptToTreeNode } from "@app/utils/utils";
+import { Pagination, getAllJobs } from "@app/api/users.api";
+import { deptToTreeNode, makeTree } from "@app/utils/utils";
 import { getAllDepartments } from "@app/api/departments.api";
+import { InputPassword } from "@app/components/common/inputs/InputPassword/InputPassword";
 
-type Props = {
-    selectedUser?: User;
-    type: boolean;
-    setSelectedUser: any;
+interface AddUserFormProps {
     open: boolean;
-    setOpen: any;
+    onCancel: () => void;
+    onTableChange: (pagination: Pagination) => void;
 }
 
 
-export const AddEditUserForm = ({ selectedUser, setSelectedUser, open, setOpen, type }: Props) => {
-    const [modalName, setModalName] = useState('Содание пользователя');
+export const AddUserForm: React.FC<AddUserFormProps> = ({ open, onCancel, onTableChange }) => {
     const [positions, setPositions] = useState<SDeptJob[]>([]);
     const [positionsStr, setPositionsStr] = useState<string[]>([]);
     const [departments, setDepartments] = useState<SDeptNode[]>([]);
-    
+
     //const admin = useCurrentUser();
 
     useEffect(() => {
-        if (type === false)
-            setModalName('Содание пользователя');
-        else if (type === true)
-            setModalName('Редактирование пользователя');
-    }, [type]);
+        // getAllJobs().then((responce) => {
+        //     let arr: string[] = [];
+        //     setPositions(responce.data);
+        //     positions.forEach(element => {
+        //         arr.push(element.job);
+        //     });
+        //     setPositionsStr(arr);
+        // })
+    }, []);
 
     useEffect(() => {
-        getAllJobs().then((responce) => {
-            let arr: string[] = [];
-            setPositions(responce.data);
-            positions.forEach(element => {
-                arr.push(element.job);
-            });
-            setPositionsStr(arr);
-        })
-    }, [selectedUser]);
-
-    useEffect(() => {
-        getAllDepartments().then((responce) => {
-            // console.log(responce.data);
-            // const arr:SDeptNode[] = [];
-            // console.log(responce.data.length);
-            // for(let i = 0; i<responce.data.length; i++){
-            //     console.log(responce.data[i]);
-            //     arr.push(deptToTreeNode(responce.data[i]));
-            // }
-            // console.log('arr');
-            // console.log(arr);
-            // setDepartments(makeTree(arr));
-        })
-    }, [selectedUser]);
-
-
-    const cancelEdit = () => {
-        setOpen(false);
-    }
+        // getAllDepartments().then((responce) => {
+        //     console.log(responce.data);
+        //     const arr:SDeptNode[] = [];
+        //     console.log(responce.data.length);
+        //     for(let i = 0; i<responce.data.length; i++){
+        //         console.log(responce.data[i]);
+        //         arr.push(deptToTreeNode(responce.data[i]));
+        //     }
+        //     console.log('arr');
+        //     console.log(arr);
+        //     setDepartments(makeTree(arr));
+        // })
+    }, []);
 
     const onFinish = (values: any) => {
         console.log(values);
-    }
-
-    const initialvalues = {
-        login: selectedUser?.user,
-        fName: selectedUser?.fName,
-        sName: selectedUser?.sName,
-        lName: selectedUser?.lName,
-        tel: selectedUser?.tel,
-        job: selectedUser?.idDeptJob2.job,
-        userRole: selectedUser?.userRole,
-        departament: selectedUser?.idDept2.departament
-
+        onCancel();
     }
 
     return (
         <Modal
             closable
             footer={null}
-            onCancel={cancelEdit}
+            onCancel={onCancel}
             destroyOnClose
-            title={modalName}
+            title={'Создание пользователя'}
             centered
             open={open}
         >
             <BaseButtonsForm
                 layout="vertical"
-                initialValues={initialvalues}
-                onFinish={onFinish} isFieldsChanged={false}            >
+                onFinish={onFinish}
+                 isFieldsChanged={false}
+            >
                 <BaseButtonsForm.Item label="Фамилия" name="lName">
                     <Input />
                 </BaseButtonsForm.Item>
@@ -109,6 +85,9 @@ export const AddEditUserForm = ({ selectedUser, setSelectedUser, open, setOpen, 
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Логин" name="login">
                     <Input />
+                </BaseButtonsForm.Item>
+                <BaseButtonsForm.Item label="Пароль" name="pas">
+                    <InputPassword />
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Должность" name='job'>
                     <Select>{
@@ -128,7 +107,6 @@ export const AddEditUserForm = ({ selectedUser, setSelectedUser, open, setOpen, 
                         treeNodeLabelProp='departament'
                         treeNodeFilterProp='idDept'
                     >
-
                     </TreeSelect>
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Роль" name='userRole'>

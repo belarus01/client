@@ -13,7 +13,7 @@ interface AddUserFormModalProps {
 
 export const AddUserFormModal: React.FC<AddUserFormModalProps> = ({ open, onCancel }) => {
   const [form] = BaseForm.useForm();
-
+  const {t} = useTranslation();
   useResetFormOnCloseModal({
     form,
     open,

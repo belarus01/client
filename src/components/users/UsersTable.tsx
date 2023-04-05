@@ -4,12 +4,15 @@ import { UserModel } from '../../domain/UserModel';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
-import { TablePaginationConfig } from 'antd';
+import { Col, Row, Space, TablePaginationConfig } from 'antd';
 import { getAllUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
-import { AddEditUserForm } from '@app/components/users/forms/AddUserForm';
+import {  AddUserForm } from '@app/components/users/forms/AddUserForm';
+import { Button } from '../common/buttons/Button/Button';
+import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
+import { notificationController } from '@app/controllers/notificationController';
 
 const initialPagination: Pagination = {
     current: 1,
@@ -43,24 +46,35 @@ export const UsersTable: React.FC = () => {
 
     const fetch = useCallback(
       (pagination: Pagination) => {
-        setTableData((tableData) => ({ ...tableData, loading: true }));
-        getAllUsers().then((res) => {
-          if (isMounted.current) {
-            setTableData({ data: res, pagination: initialPagination, loading: false });
-          }
-        });
+        // setTableData((tableData) => ({ ...tableData, loading: true }));
+        // getAllUsers().then((res) => {
+        //   if (isMounted.current) {
+        //     setTableData({ data: res, pagination: initialPagination, loading: false });
+        //   }
+        // });
       },
       [isMounted],
     );
 
       useEffect(() => {
-        fetch(initialPagination);
+       // fetch(initialPagination);
       }, [fetch]);
     
       const handleTableChange = (pagination: TablePaginationConfig) => {
-        fetch(pagination);
+       // fetch(pagination);
+      };
+
+      const updateTable = ()=>{
+       // fetch(tableData.pagination);
+      }
+
+      const showAddUserModal = () => {
+        setOpen(true);
       };
     
+      const hideAddUserModal = () => {
+        setOpen(false);
+      };
       // const handleDeleteRow = (rowId: number) => {
       //   setTableData({
       //     ...tableData,
@@ -82,6 +96,10 @@ export const UsersTable: React.FC = () => {
 
       const handleEditClick = (user:User) =>{
           setOpen
+      }
+
+      const handleSearch = (value:string) =>{
+        console.log(value);
       }
       
       const columns = [
@@ -138,8 +156,16 @@ export const UsersTable: React.FC = () => {
             width: '15%',
             render: (user: User) => { 
                 return (
-                    <>
-                        <EditOutlined
+                    <Space>
+                        <Button
+              type="ghost"
+              onClick={() => {
+               // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
+              }}
+            >
+              {'Сменить пароль'}
+            </Button>
+            <EditOutlined
                             onClick={() => {
                                 setSelectedUser(user);
                                 setType(true);
@@ -153,15 +179,34 @@ export const UsersTable: React.FC = () => {
                             }}
                             style={{ color: "red", marginLeft: 12 }}
                         />
+
+
                         <Switch checked={user.active === 1} onClick={() => { handleSwitchClick(user) }} style={{ marginLeft: 12 }}></Switch>
-                    </>
+            </Space>
+                       
+                    
                 )
             }
         },
     ];
 
+
+
     return (
       <> 
+      <Row gutter={[30,30]}>
+        <Col sm={24} md={8} lg={8} >
+        <SearchInput
+              placeholder={''}
+              enterButton="Поиск"
+              size="middle"
+              onSearch={handleSearch}
+            />
+        </Col>
+        <Col sm={24} md={6} lg={6}>
+        <Button onClick={showAddUserModal}>Добавить пользователя</Button>
+        </Col>
+      </Row>
         <Table
           columns={columns}
           dataSource={tableData.data}
@@ -171,7 +216,7 @@ export const UsersTable: React.FC = () => {
           scroll={{x:800}}
           bordered
         />
-         <AddEditUserForm selectedUser={selectedUser} setSelectedUser={setSelectedUser} open={open} setOpen={setOpen} type={type} />
+         <AddUserForm open={open} onCancel={hideAddUserModal} onTableChange={updateTable}  />
       </>
        
     )

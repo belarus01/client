@@ -5,7 +5,7 @@ export interface Pagination {
     current?: number;
     pageSize?: number;
     total?: number;
-  }
+}
 
 const initialPagination: Pagination = {
     current: 1,
@@ -19,6 +19,9 @@ export interface BasicTableData {
 
 export const getAllUsers = () =>
     httpApi.get<User[]>('users/get/all/relations').then(({data}) => data);
+
+export const getUsersByPage = () =>
+    httpApi.get<User[]>('').then(({data})=>data);
 
 export const createUser = (user: CreateUserDTO) =>
     httpApi.post('users/create', {...user}).then(({data})=>data);
