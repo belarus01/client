@@ -1,5 +1,5 @@
 import { Input } from '@app/components/common/inputs/Input/Input';
-import * as S from '../StepForm.styles';
+import * as S from '../eventCard.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { InputNumber } from '@app/components/common/inputs/InputNumber/InputNumber';

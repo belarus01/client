@@ -1,17 +1,10 @@
 //import { useTranslation } from 'react-i18next';
-import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
-import * as S from '../StepForm.styles';
+import * as S from '../eventCard.styles';
 import React from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
-import { DatePicker } from '@app/components/common/pickers/DatePicker';
-import styled from 'styled-components';
-import { RangePicker } from '@app/components/apps/newsFeed/NewsFilter/NewsFilter.styles';
 
-const Picker = styled(DatePicker)`
-  width: 100%;
-`;
 
 export const Step3: React.FC = () => {
   //const { t } = useTranslation();
@@ -87,13 +80,13 @@ export const Step3: React.FC = () => {
         <Input />
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_vidaci"
         label={'Дата выдачи предписания на проведение проверки (решения на проведение мониторинга)'}
         rules={[{ required: true, message: 'Введите дату выдачи предписания на проведение проверки' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="dolg_ruc_proverki"
@@ -137,29 +130,29 @@ export const Step3: React.FC = () => {
         <Input />
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="prov_period"
         label={'Проверяемый период'}
         rules={[{ required: true, message: 'Введите проверяемый период' }]}
       >
-        <RangePicker />
-      </BaseForm.Item>
+        <S.RangePicker />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_nachala_meropr"
         label={'Дата начала надзорно-профилактического мероприятия (по предписанию/решению))'}
         rules={[{ required: true, message: 'Введите дату начала надзорно-профилактического мероприятия' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_okonchaniya_meropr"
         label={'Дата окончания надзорно-профилактического мероприятия (по предписанию/решению))'}
         rules={[{ required: true, message: 'Введите дату окончания надзорно-профилактического мероприятия' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="per_voprosov"
@@ -182,37 +175,37 @@ export const Step3: React.FC = () => {
         </Select>
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="fac_date_nacala"
         label={'Фактическая дата начала надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="fac_date_oconchaniya"
         label={'Фактическая дата окончания надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_stop"
         label={'Дата приостановления проведения надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите дату приостановления проведения надзорно-профилактического мероприятия ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_vozobnovleniya"
         label={'Дата возобновления проведения надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите дату возобновления проведения надзорно-профилактического мероприятия ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="sved_o_prodlenii"
@@ -226,13 +219,13 @@ export const Step3: React.FC = () => {
         </Select>
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_prodlenii"
         label={'Дата, до которой продлен срок проведения проверки '}
         rules={[{ required: true, message: 'Введите дату, до которой продлен срок проведения проверки ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="dolg_pred_subj"
@@ -268,21 +261,21 @@ export const Step3: React.FC = () => {
         </Select>
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_itog_doc"
         label={'Дата итогового документа '}
         rules={[{ required: true, message: 'Введите дату итогового документа ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_vrucheniya_itog_doc"
         label={'Дата вручения (направления) итогового документа '}
         rules={[{ required: true, message: 'Введите дату вручения итогового документа ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="sved_o_vozrag"
@@ -296,13 +289,13 @@ export const Step3: React.FC = () => {
         </Select>
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_po_vozrag"
         label={'Дата принятия решения по возражениям по акту проверки '}
         rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="reshenie_po_vozrag"
@@ -321,43 +314,62 @@ export const Step3: React.FC = () => {
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
-        name="sved_o_prin_merah"
         label={'Сведения о принятых мерах административного принуждения '}
-        hasFeedback
-        rules={[{ required: true, message: 'Введите сведения о принятых мерах административного принуждения ' }]}
       >
-        <Select placeholder={('Вид ')}
-          style={{ width: 420 }}>
-          <Option value="Вид 1">{('Вид 1')}</Option>
-          <Option value="Вид 2">{('Вид 2')}</Option>
-        </Select>
+        <BaseButtonsForm.Item
+          name="sved_o_prin_merah_vid"
+          hasFeedback
+          rules={[{ required: true, message: 'Введите вид сведений о принятых мерах административного принуждения ' }]}
+        >
+          <Select placeholder={('Вид ')}
+            style={{ width: 420 }}>
+            <Option value="Вид 1">{('Вид 1')}</Option>
+            <Option value="Вид 2">{('Вид 2')}</Option>
+          </Select>
+        </BaseButtonsForm.Item>
 
-        <Select placeholder={('Количество ')}
-          style={{ width: 420 }}>
-          <Option value="12">{('12')}</Option>
-          <Option value="23">{('23')}</Option>
-          <Option value="34">{('34')}</Option>
-        </Select>
+        <BaseButtonsForm.Item
+          name="sved_o_prin_merah_col"
+          hasFeedback
+          rules={[{ required: true, message: 'Введите количество сведений о принятых мерах административного принуждения ' }]}
+        >
+          <Select placeholder={('Количество ')}
+            style={{ width: 420 }}>
+            <Option value="12">{('12')}</Option>
+            <Option value="23">{('23')}</Option>
+            <Option value="34">{('34')}</Option>
+          </Select>
+        </BaseButtonsForm.Item>
+
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
-        name="sved_o_prin_merah_presecheniya"
-        label={'Сведения о принятых мерах административного пресечения  '}
-        hasFeedback
-        rules={[{ required: true, message: 'Введите сведения о принятых мерах административного пресечения ' }]}
+        label={'Сведения о принятых мерах административного пресечения  '} 
       >
-        <Select placeholder={('Вид ')}
-          style={{ width: 420 }}>
-          <Option value="Вид 1">{('Вид 1')}</Option>
-          <Option value="Вид 2">{('Вид 2')}</Option>
-        </Select>
+        <BaseButtonsForm.Item
+        name="sved_o_prin_merah_presecheniya_vid"
+        hasFeedback
+        rules={[{ required: true, message: 'Введите вид сведений о принятых мерах административного пресечения ' }]}
+        >
+          <Select placeholder={('Вид ')}
+            style={{ width: 420 }}>
+            <Option value="Вид 1">{('Вид 1')}</Option>
+            <Option value="Вид 2">{('Вид 2')}</Option>
+          </Select>
+        </BaseButtonsForm.Item>
 
-        <Select placeholder={('Количество ')}
-          style={{ width: 420 }}>
-          <Option value="12">{('12')}</Option>
-          <Option value="23">{('23')}</Option>
-          <Option value="34">{('34')}</Option>
-        </Select>
+        <BaseButtonsForm.Item
+        name="sved_o_prin_merah_presecheniya_col"
+        hasFeedback
+        rules={[{ required: true, message: 'Введите количество сведений о принятых мерах административного пресечения ' }]}
+        >
+          <Select placeholder={('Количество ')}
+            style={{ width: 420 }}>
+            <Option value="12">{('12')}</Option>
+            <Option value="23">{('23')}</Option>
+            <Option value="34">{('34')}</Option>
+          </Select>
+        </BaseButtonsForm.Item>
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -372,21 +384,78 @@ export const Step3: React.FC = () => {
         </Select>
       </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_ob_ustr_narush"
         label={'Дата предписания (рекомендаций) об устранении нарушений '}
         rules={[{ required: true, message: 'Введите дату предписания об устранении нарушений ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
 
-      <BaseForm.Item
+      <BaseButtonsForm.Item
         name="date_vruch_predpisaniya"
         label={'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений '}
         rules={[{ required: true, message: 'Введите дату вручения предписания об устранении нарушений ' }]}
       >
-        <Picker format="YYYY-MM-DD" />
-      </BaseForm.Item>
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="date_ustranenie"
+        label={'Дата (даты) устранения нарушений '}
+        rules={[{ required: true, message: 'Введите дату (даты) устранения нарушений ' }]}
+      >
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="date_ustranenie_info"
+        label={'Дата (даты) информирования об устранении нарушений '}
+        rules={[{ required: true, message: 'Введите дату (даты) информирования об устранении нарушений ' }]}
+      >
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="date_proved_meropr"
+        label={'Дата проведения мероприятия по контролю за устранением нарушений '}
+        rules={[{ required: true, message: 'Введите дату проведения мероприятия по контролю за устранением нарушений ' }]}
+      >
+        <S.Picker format="YYYY-MM-DD" />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="result_narush"
+        label={'Результат проведения мероприятия по контролю за устранением нарушений '}
+        hasFeedback
+        rules={[{ required: true, message: 'Введите результат проведения мероприятия по контролю за устранением нарушений ' }]}
+      >
+        <Select placeholder={('Результат проведения мероприятия по контролю за устранением нарушений ')}>
+          <Option value="Нарушения устранены">{('Нарушения устранены')}</Option>
+          <Option value="Нарушения устранены частично">{('Нарушения устранены частично')}</Option>
+          <Option value="Нарушения не устранены">{('Нарушения не устранены')}</Option>
+        </Select>
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="perechen_narush_ne_ustr"
+        label={'Перечень не устраненных (частично устраненных) нарушений'}
+        rules={[{ required: true, message: 'Введите перечень не устраненных нарушений' }]}
+      >
+        <Input />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="sved_o_vneplan_proverki"
+        label={'Сведения о принятии решения о назначении внеплановой проверки '}
+        hasFeedback
+        rules={[{ required: true, message: 'Введите сведения о принятии решения о назначении внеплановой проверки' }]}
+      >
+        <Select placeholder={('Сведения о наличии возражений по акту проверки')}>
+          <Option value="Да">{('Да')}</Option>
+          <Option value="Нет">{('Нет')}</Option>
+        </Select>
+      </BaseButtonsForm.Item>
     </S.FormContent>
   );
 };

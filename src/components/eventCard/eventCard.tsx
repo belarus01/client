@@ -9,8 +9,9 @@ import { Step4 } from './Steps/4';
 import { notificationController } from '@app/controllers/notificationController';
 import { Dates } from '@app/constants/Dates';
 import { mergeBy } from '@app/utils/utils';
-import * as S from './StepForm.styles';
-import { Steps } from './StepForm.styles';
+import * as S from './eventCard.styles';
+
+
 interface FormValues {
   [key: string]: string | undefined;
 }
@@ -80,14 +81,16 @@ export const EventCard: React.FC = () => {
     setCurrent(current - 1);
   };
 
-  const onFinish = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      notificationController.success({ message: t('common.success') });
-      setIsLoading(false);
-      setCurrent(0);
-    }, 1500);
-  };
+  const onFinish = () =>
+    form.validateFields().then(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        notificationController.success({ message: t('common.success') });
+        console.log(form.getFieldsValue());
+        setIsLoading(false);
+        setCurrent(0);
+      }, 1500);
+    });
 
   const steps = [
     {
@@ -108,7 +111,8 @@ export const EventCard: React.FC = () => {
     <Step1 key="1" />,
     <Step2 key="2" />,
     <Step3 key="3" />,
-    <Step4 key="4" formValues={formValues} />,
+    // <Step4 key="4" formValues={formValues} />,
+    <Step4 key="4" />,
   ];
 
   return (
@@ -126,7 +130,7 @@ export const EventCard: React.FC = () => {
       }}
       onFinish={onFinish}
     >
-      <Steps labelPlacement="vertical" size="small" current={current} items={steps} />
+      <S.Steps labelPlacement="vertical" size="small" current={current} items={steps} />
 
       <div>{formFieldsUi[current]}</div>
       <S.Row>

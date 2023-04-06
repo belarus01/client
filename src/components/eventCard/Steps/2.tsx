@@ -1,8 +1,7 @@
 //import { useTranslation } from 'react-i18next';
-import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
-import * as S from '../StepForm.styles';
+import * as S from '../eventCard.styles';
 import React from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 

@@ -1,9 +1,31 @@
-import styled from 'styled-components';
-import { Select as CommonSelect } from '@app/components/common/selects/Select/Select';
-import { Button } from '@app/components/common/buttons/Button/Button';
-import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
-import { FONT_SIZE, FONT_WEIGHT } from '@app/styles/themes/constants';
+import { FONT_SIZE, FONT_WEIGHT } from "@app/styles/themes/constants";
+import { Button } from "antd";
+import styled from "styled-components";
+import { BaseForm } from "../common/forms/BaseForm/BaseForm";
+import { DayjsDatePicker } from "../common/pickers/DayjsDatePicker";
 import { Steps as AntdSteps } from 'antd';
+import { Select as CommonSelect } from '@app/components/common/selects/Select/Select';
+import { DatePicker } from "../common/pickers/DatePicker";
+
+
+export const RangePicker = styled(DayjsDatePicker.RangePicker)`
+  width: 100%;
+  margin-bottom: 0.875rem;
+
+  & input {
+    color: var(--text-main-color);
+    font-size: ${FONT_SIZE.xs};
+    font-weight: ${FONT_WEIGHT.medium};
+  }
+`;
+
+export const Picker = styled(DatePicker)`
+    width: 100%;
+    & input {
+        color: var(--text-main-color);
+        font-size: ${FONT_SIZE.xs};
+        font-weight: ${FONT_WEIGHT.medium};
+`;
 
 export const PhoneItem = styled(BaseForm.Item)`
   .ant-input-group-addon {
