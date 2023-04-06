@@ -4,4 +4,3 @@ import { httpApi } from "./http.api";
 export const getAllSubjects = () =>
     httpApi.get<SSubj[]>('subject/get/all').then(({data})=> data);
 
-    

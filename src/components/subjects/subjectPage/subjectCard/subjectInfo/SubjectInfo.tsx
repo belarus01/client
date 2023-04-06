@@ -1,7 +1,7 @@
 import { SSubj } from "@app/domain/interfaces";
 import * as S from "./SubjectInfo.styles";
 interface SubjectInfoProps {
-    profileData: SSubj;
+    profileData: SSubj|undefined;
   }
   
   export const SubjectProfileInfo: React.FC<SubjectInfoProps> = ({ profileData }) => {

@@ -133,6 +133,7 @@ export const UsersTable: React.FC = () => {
       key: "2",
       title: "Фамилия",
       dataIndex: "lName",
+      sorter:true
     },
     {
       key: "3",

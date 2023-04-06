@@ -14,6 +14,7 @@ import { useResponsive } from '@app/hooks/useResponsive';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { SubjectProfileInfo } from './subjectCard/subjectInfo/SubjectInfo';
 import { SSubj } from '@app/domain/interfaces';
+import { SubjectNav } from './subjectCard/subjectNav/SubjectNav';
 
 const SubjectProfileLayout: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -26,15 +27,17 @@ const SubjectProfileLayout: React.FC = () => {
   const { isTablet } = useResponsive();
   const isTitleShown = isTabletOrHigher || (mobileOnly && location.pathname === '/subject');
   const isMenuShown = isTabletOrHigher || (mobileOnly && location.pathname !== '/subject');
-  const [subj, setSubj] = useState<SSubj>({});  
+  const [subj, setSubj] = useState<SSubj>();  
+
   useEffect(() => {
     isTablet && location.pathname === '/profile' && navigate('personal-info');
   }, [isTablet, location.pathname, navigate]);
 
 
   useEffect(()=>{
-    
-  })
+    setSubj(location.state);
+  },[])
+
   return (
     <>
       <PageTitle>{'Субъект'}</PageTitle>
@@ -54,7 +57,7 @@ const SubjectProfileLayout: React.FC = () => {
                 </Col>
 
                 <Col xs={24} md={12} xl={24}>
-                  <ProfileNav />
+                  <SubjectNav />
                 </Col>
               </Row>
             </ProfileCard>

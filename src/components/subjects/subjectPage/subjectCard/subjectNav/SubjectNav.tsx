@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { profileNavData } from '@app/constants/profileNavData';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from './SubjectNav.styles';
+import { subjectNavData } from '@app/constants/subjectNavData';
 
 export const SubjectNav: React.FC = () => {
   const { t } = useTranslation();
@@ -12,12 +12,10 @@ export const SubjectNav: React.FC = () => {
 
   return (
     <S.Wrapper>
-      {profileNavData.map((item) => (
+      {subjectNavData.map((item) => (
         <S.Btn
           key={item.id}
-          icon={item.icon}
           type="text"
-          color={item.color}
           onClick={() => navigate(item.href)}
           isActive={`${item.href}` === location.pathname}
         >
