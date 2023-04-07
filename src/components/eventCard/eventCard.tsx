@@ -7,7 +7,6 @@ import { Step2 } from './Steps/2';
 import { Step3 } from './Steps/3';
 import { Step4 } from './Steps/4';
 import { notificationController } from '@app/controllers/notificationController';
-import { Dates } from '@app/constants/Dates';
 import { mergeBy } from '@app/utils/utils';
 import * as S from './eventCard.styles';
 
@@ -28,27 +27,27 @@ export const EventCard: React.FC = () => {
   const [fields, setFields] = useState<FieldData[]>([
     { name: 'group', value: '' },
     { name: 'unp', value: '' },
-    { name: 'confirmPassword', value: '123456' },
-    { name: 'salutation', value: 'mr' },
-    { name: 'gender', value: 'male' },
-    { name: 'firstName', value: 'John' },
-    { name: 'lastName', value: 'Black' },
-    { name: 'birthday', value: Dates.getDate(1576789200000) },
-    { name: 'phone', value: '298573124' },
-    { name: 'email', value: '' },
-    { name: 'address1', value: 'Slobodskay street' },
-    { name: 'address2', value: 'Nevski street' },
-    { name: 'zipCode', value: '435123' },
-    { name: 'city', value: 'Minsk' },
-    { name: 'country', value: 'Belarus' },
-    { name: 'prefix', value: '+7' },
+    // { name: 'confirmPassword', value: '123456' },
+    // { name: 'salutation', value: 'mr' },
+    // { name: 'gender', value: 'male' },
+    // { name: 'firstName', value: 'John' },
+    // { name: 'lastName', value: 'Black' },
+    // { name: 'birthday', value: Dates.getDate(1576789200000) },
+    // { name: 'phone', value: '298573124' },
+    // { name: 'email', value: '' },
+    // { name: 'address1', value: 'Slobodskay street' },
+    // { name: 'address2', value: 'Nevski street' },
+    // { name: 'zipCode', value: '435123' },
+    // { name: 'city', value: 'Minsk' },
+    // { name: 'country', value: 'Belarus' },
+    // { name: 'prefix', value: '+7' },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
   const formLabels: FormValues = {
-    login: t('forms.stepFormLabels.login'),
-    password: t('common.password'),
+    group: 'group',
+    unp: 'unp',
     confirmPassword: t('common.confirmPassword'),
     salutation: t('forms.stepFormLabels.salutation'),
     gender: t('forms.stepFormLabels.gender'),
@@ -68,7 +67,8 @@ export const EventCard: React.FC = () => {
     .filter((item) => item.name !== 'prefix')
     .map((item) => ({
       name: formLabels[item.name],
-      value: String(item.name === 'birthday' && item.value ? item.value.format('YYYY-MM-DD') : item.value),
+      value: String(item.value),
+     
     }));
 
   const next = () => {
@@ -86,7 +86,8 @@ export const EventCard: React.FC = () => {
       setIsLoading(true);
       setTimeout(() => {
         notificationController.success({ message: t('common.success') });
-        console.log(form.getFieldsValue());
+        //console.log(form.getFieldsValue());
+        console.log(formValues);
         setIsLoading(false);
         setCurrent(0);
       }, 1500);
