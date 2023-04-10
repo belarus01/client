@@ -15,14 +15,26 @@ interface EditUserFormProps {
     open: boolean;
     onCancel: () => void;
     onTableChange: (pagination: Pagination) => void;
-    selected: User;
+    selectedUser?: User;
 }
 
 
-export const AddUserForm: React.FC<EditUserFormProps> = ({ open, onCancel, onTableChange }) => {
+export const EditUserForm: React.FC<EditUserFormProps> = ({ open, onCancel, onTableChange, selectedUser }) => {
     const [positions, setPositions] = useState<SDeptJob[]>([]);
     const [positionsStr, setPositionsStr] = useState<string[]>([]);
     const [departments, setDepartments] = useState<SDeptNode[]>([]);
+
+    const initialvalues = {
+        login: selectedUser?.user,
+        fName: selectedUser?.fName,
+        sName: selectedUser?.sName,
+        lName: selectedUser?.lName,
+        tel: selectedUser?.tel,
+        job: selectedUser?.idDeptJob2.job,
+        userRole: selectedUser?.userRole,
+        departament: selectedUser?.idDept2.departament
+
+    }
 
     //const admin = useCurrentUser();
 
@@ -71,6 +83,7 @@ export const AddUserForm: React.FC<EditUserFormProps> = ({ open, onCancel, onTab
                 layout="vertical"
                 onFinish={onFinish}
                  isFieldsChanged={false}
+                 initialValues={initialvalues}
             >
                 <BaseButtonsForm.Item label="Фамилия" name="lName">
                     <Input />

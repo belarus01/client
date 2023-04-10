@@ -16,7 +16,8 @@ import RequireAuth from '@app/components/router/RequireAuth';
 import { withLoading } from '@app/hocs/withLoading.hoc';
 import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
-import { SubjectEventsPage } from '../../pages/SubjectEventsPage';
+import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
+
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/test/NewsFeedPage'));
 const KanbanPage = React.lazy(() => import('@app/pages/test/KanbanPage'));
@@ -65,6 +66,8 @@ const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(()=>import('@app/pages/handbooks/UsersManagmentPage'));
 const SubjectsPage =  React.lazy(()=>import('@app/pages/handbooks/SubjectsPage'));
+const SubjectSettingsPage = React.lazy(()=>import('@app/pages/subjects/SubjectSettingsPage'))
+const SubjectEventsPage = React.lazy(()=>import('@app/pages/subjects/SubjectEventsPage'));
 
 
 export const NFT_DASHBOARD_PATH = '/';
@@ -130,6 +133,8 @@ const LogoutFallback = withLoading(Logout);
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
 const Subjects = withLoading(SubjectsPage);
+const SubjectSettings = withLoading(SubjectSettingsPage);
+const SubjectEvents = withLoading(SubjectEventsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -201,6 +206,12 @@ export const AppRouter: React.FC = () => {
           <Route path="handbooks">
             <Route path="users" element={<UsersManagment/>}/>
             <Route path="subjects" element={<Subjects/>}/>
+          </Route>
+          <Route path='subject' element={<SubjectProfileLayout/>}>
+            <Route path='events' element={<SubjectEventsPage/>}/>
+            {/* <Route path='objects' element={}/> */}
+            <Route path='settings' element={<SubjectSettings/>}/>
+            
           </Route>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>

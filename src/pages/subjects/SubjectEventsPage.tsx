@@ -1,6 +1,6 @@
 import { PageTitle } from "@app/components/common/PageTitle/PageTitle"
 
-export const SubjectEventsPage:React.FC = () =>{
+const SubjectEventsPage:React.FC = () =>{
     
     return(
         <>
@@ -9,3 +9,5 @@ export const SubjectEventsPage:React.FC = () =>{
         </>
     )
 }
+
+export default SubjectEventsPage;

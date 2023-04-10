@@ -16,6 +16,8 @@ import { notificationController } from '@app/controllers/notificationController'
 import { SSubj } from '../../domain/interfaces';
 import { useNavigate } from 'react-router-dom';
 import { AddSubjectForm } from './forms/AddSubjectForm';
+import { getAllDepartments } from '@app/api/departments.api';
+import { getAllSubjects } from '@app/api/subjects.api';
 
 const initialPagination: Pagination = {
     current: 1,
@@ -23,13 +25,13 @@ const initialPagination: Pagination = {
 };
 
 export const SubjectsTable: React.FC = () => {
-    const [tableData, setTableData] = useState<{ data: User[]; pagination: Pagination; loading: boolean }>({
+    const [tableData, setTableData] = useState<{ data: SSubj[]; pagination: Pagination; loading: boolean }>({
         data: [],
         pagination: initialPagination,
         loading: false
     });
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedUser, setSelectedUser] = useState<User>();
+    const [selectedUser, setSelectedUser] = useState<SSubj>();
     const [type, setType] = useState<boolean>(false);
 
     const { t } = useTranslation();
@@ -50,26 +52,27 @@ export const SubjectsTable: React.FC = () => {
 
     const fetch = useCallback(
         (pagination: Pagination) => {
-            // setTableData((tableData) => ({ ...tableData, loading: true }));
-            // getAllUsers().then((res) => {
-            //   if (isMounted.current) {
-            //     setTableData({ data: res, pagination: initialPagination, loading: false });
-            //   }
-            // });
+            setTableData((tableData) => ({ ...tableData, loading: true }));
+            getAllSubjects().then((res) => {
+              if (isMounted.current) {
+                setTableData({ data: res, pagination: initialPagination, loading: false });
+              }
+              console.log(res);
+            });
         },
         [isMounted],
     );
 
     useEffect(() => {
-        // fetch(initialPagination);
+        fetch(initialPagination);
     }, [fetch]);
 
     const handleTableChange = (pagination: TablePaginationConfig) => {
-        // fetch(pagination);
+        fetch(pagination);
     };
 
     const updateTable = () => {
-        // fetch(tableData.pagination);
+        fetch(tableData.pagination);
     }
 
     const showAddSubjectModal = () => {
@@ -79,6 +82,7 @@ export const SubjectsTable: React.FC = () => {
     const hideAddSubjectModal = () => {
         setOpen(false);
     };
+
     // const handleDeleteRow = (rowId: number) => {
     //   setTableData({
     //     ...tableData,
@@ -109,13 +113,13 @@ export const SubjectsTable: React.FC = () => {
     const columns = [
         {
             key: "2",
-            title: "Фамилия",
+            title: "УНП",
             dataIndex: "unp",
         },
         {
             key: "3",
-            title: "Имя",
-            dataIndex: "addr_yur"
+            title: "Юридический адрес",
+            dataIndex: "addrYur"
         },
 
         {
@@ -128,7 +132,8 @@ export const SubjectsTable: React.FC = () => {
                         <Button
                             type="ghost"
                             onClick={() => {
-                                navigate('subjectId=' + `${subj.idSubj}`)
+                                console
+                                navigate('/subject', {state:subj})
                                 // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
                             }}
                         >
@@ -166,6 +171,7 @@ export const SubjectsTable: React.FC = () => {
                 scroll={{ x: 800 }}
                 bordered
             />
+            
             <AddSubjectForm open={open} onCancel={hideAddSubjectModal} onTableChange={updateTable} />
         </>
 

@@ -8,7 +8,7 @@ interface SubjectNavItem {
     {
       id: 1,
       name: 'Информация',
-      href: 'subject-info',
+      href: 'settings',
     },
     {
       id: 2,

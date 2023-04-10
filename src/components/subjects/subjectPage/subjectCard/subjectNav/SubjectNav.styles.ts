@@ -3,7 +3,6 @@ import { Button } from 'components/common/buttons/Button/Button';
 
 interface BtnProps {
   isActive: boolean;
-  color: 'primary' | 'error' | 'warning' | 'success';
 }
 
 export const Wrapper = styled.div`
@@ -34,9 +33,6 @@ export const Btn = styled(Button).withConfig({
     padding: 0.625rem;
     border-radius: 10px;
     margin-right: 0.5rem;
-
-    color: ${(props) => `var(--${props.color}-color)`};
-
     background-color: rgba(var(--primary-rgb-color), 0.05);
   }
 `;
