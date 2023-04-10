@@ -1,6 +1,5 @@
 import { Table } from '@app/components/common/Table/Table';
 import React, { useCallback, useEffect, useState } from 'react';
-import { UserModel } from '../../domain/UserModel';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';

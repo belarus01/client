@@ -1,6 +1,5 @@
 import { httpApi } from '@app/api/http.api';
-import './mocks/auth.api.mock';
-import { UserModel } from '@app/domain/UserModel';
+import { User } from '@app/domain/interfaces';
 
 export interface AuthData {
   email: string;
@@ -33,7 +32,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
-  user: UserModel;
+  user: User;
 }
 
 export const login = (loginPayload: LoginRequest): Promise<LoginResponse> =>

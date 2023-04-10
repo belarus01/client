@@ -142,11 +142,11 @@ export const PersonalInfo: React.FC = () => {
           </Col>
 
           <Col xs={24} md={12}>
-            <PhoneItem verified={user?.phone.verified} />
+            <PhoneItem verified={user?.tel!=null} />
           </Col>
 
           <Col xs={24} md={12}>
-            <EmailItem verified={user?.email.verified} />
+            <EmailItem verified={user?.email!=null} />
           </Col>
 
           <Col span={24}>

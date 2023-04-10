@@ -12,6 +12,7 @@ import {useEffect} from 'react';
 import axios from 'axios';
 import { httpApi } from '@app/api/http.api';
 import { Modal } from '../common/Modal/Modal';
+import { notificationController } from '@app/controllers/notificationController';
 //import { httpApi } from '@app/api/http.api';
 
 export const Planning: React.FC = () => {
@@ -32,6 +33,8 @@ export const Planning: React.FC = () => {
         {
             setData(e.data);
             console.log(e.data);
+        }).catch((e)=>{
+            notificationController.error({message:'Ошибка'});
         })
     },[])
     return (

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import * as S from './Error.styles';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +8,6 @@ interface ErrorProps {
 }
 
 export const Error: React.FC<ErrorProps> = ({ img, msg }) => {
-  const { t } = useTranslation();
 
   return (
     <S.Wrapper>
@@ -19,7 +17,7 @@ export const Error: React.FC<ErrorProps> = ({ img, msg }) => {
         <S.Text>{msg}</S.Text>
         {/*TODO make common component */}
         <Link to="/" className="ant-btn ant-btn-link">
-          {t('error404.comeBack')}
+          {'Назад'}
         </Link>
       </S.ContentWrapper>
     </S.Wrapper>
