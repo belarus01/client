@@ -59,6 +59,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'geo',
         url: '/handbooks/geo',
       },
+      {
+        title: 'Ате',
+        key: 'ate',
+        url: 'handbooks/ate',
+      }
     ],
   },
 ];

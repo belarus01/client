@@ -260,3 +260,9 @@ export interface MemorySizeResponse{
     free:string;
     percentage: string;
 }
+
+export interface ateObl{
+    nameObl?: string,
+    active?: number,
+    dateRecord?: string|number,
+}

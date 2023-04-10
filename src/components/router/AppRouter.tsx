@@ -29,6 +29,7 @@ const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersMan
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
 const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'))
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
+const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'))
 
 export const MAIN_PATH = '/';
 
@@ -50,6 +51,8 @@ const UsersManagment = withLoading(UserManagmentPage);
 const Subjects = withLoading(SubjectsPage);
 const SubjectSettings = withLoading(SubjectSettingsPage);
 const SubjectEvents = withLoading(SubjectEventsPage);
+
+const AteObl = withLoading(AteOblPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -78,6 +81,7 @@ export const AppRouter: React.FC = () => {
           <Route path="handbooks">
             <Route path="users" element={<UsersManagment />} />
             <Route path="subjects" element={<Subjects />} />
+            <Route path='ate' element={<AteObl />} />
           </Route>
           <Route path='subject' element={<SubjectProfileLayout />}>
             <Route path='events' element={<SubjectEventsPage />} />
