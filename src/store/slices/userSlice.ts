@@ -1,16 +1,17 @@
 import { createAction, createSlice, PrepareAction } from '@reduxjs/toolkit';
 import { UserModel } from '@app/domain/UserModel';
 import { persistUser, readUser } from '@app/services/localStorage.service';
+import { User } from '@app/domain/interfaces';
 
 export interface UserState {
-  user: UserModel | null;
+  user: User | null;
 }
 
 const initialState: UserState = {
   user: readUser(),
 };
 
-export const setUser = createAction<PrepareAction<UserModel>>('user/setUser', (newUser) => {
+export const setUser = createAction<PrepareAction<User>>('user/setUser', (newUser) => {
   persistUser(newUser);
 
   return {
