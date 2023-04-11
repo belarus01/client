@@ -1,13 +1,179 @@
 //import { useTranslation } from 'react-i18next';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import * as S from '../eventCard.styles';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
+import { useTranslation } from 'react-i18next';
+import { Col, Row, Space, TablePaginationConfig } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { Table } from '@app/components/common/Table/Table';
+import { DataType, getBasicDataType, vid1, vid2 } from '@app/api/eventCard.api';
+import { useMounted } from '@app/hooks/useMounted';
+import { Status } from '@app/components/profile/profileCard/profileFormNav/nav/payments/paymentHistory/Status/Status';
+
 
 
 export const Step3: React.FC = () => {
   //const { t } = useTranslation();
+  const [tableData, setTableData] = useState<{ data: DataType[], loading: boolean }>({
+    data: [],
+    loading: false
+  });
+  const { isMounted } = useMounted();
+  const fetch = useCallback(
+    () => {
+      setTableData((tableData) => ({ ...tableData, loading: true }));
+      getBasicDataType().then((res) => {
+        if (isMounted.current) {
+          setTableData({ data: res.data, loading: false });
+        }
+      });
+    },
+    [isMounted],
+  );
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Перечень выявленных нарушений',
+      dataIndex: 'perech_narush',
+      key: 'perech_narush',
+      width: '30%',
+    },
+    {
+      title: 'Сведения о принятых мерах административного принуждения',
+      children: [
+        {
+          title: 'Вид',
+          dataIndex: 'vid_prin',
+          key: 'vid_prin',
+          render: (vid_prin: vid1[]) => (
+            <Row gutter={[10, 10]}>
+              {vid_prin.map((data) => {
+                console.log(data);
+                return (
+                  <Col key={data.meri_admin_prin_vid}>
+                    <Status text={data.meri_admin_prin_vid} color={'red'} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )
+        },
+        {
+          title: 'Количество',
+          dataIndex: 'vid_prin',
+          key: 'vid_prin',
+          render: (vid_prin: vid1[]) => (
+            <Row gutter={[10, 10]}>
+              {vid_prin.map((data) => {
+                console.log(data);
+                return (
+                  <Col key={data.meri_admin_prin_vid}>
+                    <Status text={data.meri_admin_prin_vid} color={'green'} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )
+        },
+      ],
+    },
+    {
+      title: 'Сведения о принятых мерах административного пресечения',
+      children: [
+        {
+          title: 'Вид',
+          dataIndex: 'vid_pres',
+          key: 'vid_pres',
+
+          render: (vid_pres: vid2[]) => (
+            <Row gutter={[10, 10]}>
+              {vid_pres.map((data) => {
+                console.log(data);
+                return (
+                  <Col key={data.meri_admin_pres_vid}>
+                    <Status text={data.meri_admin_pres_vid} color={'blue'} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )
+        },
+        {
+          title: 'Количество',
+          dataIndex: 'vid_pres',
+          key: 'vid_pres',
+          render: (vid_pres: vid2[]) => (
+            <Row gutter={[10, 10]}>
+              {vid_pres.map((data) => {
+                console.log(data);
+                return (
+                  <Col key={data.meri_admin_pres_col}>
+                    <Status text={String(data.meri_admin_pres_col)} color={'pink'} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )
+        },
+      ],
+    },
+    {
+      title: 'Сведения о подготовке предписания (рекомендаций) об устранении нарушений',
+      dataIndex: 'podg_predpis',
+      key: 'podg_predpis',
+      width: 40,
+    },
+    {
+      title: 'Дата предписания (рекомендаций) об устранении нарушений',
+      dataIndex: 'date_predpis',
+      key: 'date_predpis',
+      width: 50,
+    },
+    {
+      title: 'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений',
+      dataIndex: 'date_vruch_predpis',
+      key: 'date_vruch_predpis',
+      width: 50,
+    },
+    {
+      title: 'Дата (даты) устранения нарушений',
+      dataIndex: 'date_ustr_narush',
+      key: 'date_ustr_narush',
+      width: 50,
+    },
+    {
+      title: 'Дата (даты) информирования об устранении нарушений',
+      dataIndex: 'date_info_naush',
+      key: 'date_info_naush',
+      width: 50,
+    },
+    {
+      title: 'Дата проведения мероприятия по контролю за устранением нарушений',
+      dataIndex: 'date_meropri_po_control',
+      key: 'date_meropri_po_control',
+      width: 50,
+    },
+    {
+      title: 'Результат проведения мероприятия по контролю за устранением нарушений',
+      dataIndex: 'result_prov_meropri',
+      key: 'dresult_prov_meropri',
+      width: 50,
+    },
+    {
+      title: 'Перечень не устраненных (частично устраненных) нарушений',
+      dataIndex: 'perech_neustr_narush',
+      key: 'perech_neustr_narush',
+      width: 50,
+    },
+  ];
+
+
   return (
     <S.FormContent>
       <BaseButtonsForm.Item
@@ -305,6 +471,13 @@ export const Step3: React.FC = () => {
         <Input />
       </BaseButtonsForm.Item>
 
+      <Table
+        columns={columns}
+        dataSource={tableData.data}
+        bordered
+        scroll={{ x: 800 }}
+      />
+
       <BaseButtonsForm.Item
         name="perechen_narush"
         label={'Перечень выявленных нарушений'}
@@ -344,12 +517,12 @@ export const Step3: React.FC = () => {
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
-        label={'Сведения о принятых мерах административного пресечения  '} 
+        label={'Сведения о принятых мерах административного пресечения  '}
       >
         <BaseButtonsForm.Item
-        name="sved_o_prin_merah_presecheniya_vid"
-        hasFeedback
-        rules={[{ required: true, message: 'Введите вид сведений о принятых мерах административного пресечения ' }]}
+          name="sved_o_prin_merah_presecheniya_vid"
+          hasFeedback
+          rules={[{ required: true, message: 'Введите вид сведений о принятых мерах административного пресечения ' }]}
         >
           <Select placeholder={('Вид ')}
             style={{ width: 420 }}>
@@ -359,9 +532,9 @@ export const Step3: React.FC = () => {
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item
-        name="sved_o_prin_merah_presecheniya_col"
-        hasFeedback
-        rules={[{ required: true, message: 'Введите количество сведений о принятых мерах административного пресечения ' }]}
+          name="sved_o_prin_merah_presecheniya_col"
+          hasFeedback
+          rules={[{ required: true, message: 'Введите количество сведений о принятых мерах административного пресечения ' }]}
         >
           <Select placeholder={('Количество ')}
             style={{ width: 420 }}>

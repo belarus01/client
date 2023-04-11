@@ -72,9 +72,10 @@ export const EventCard: React.FC = () => {
     }));
 
   const next = () => {
-    form.validateFields().then(() => {
-      setCurrent(current + 1);
-    });
+    // form.validateFields().then(() => {
+    //   setCurrent(current + 1);
+    // });
+    setCurrent(current + 1);
   };
 
   const prev = () => {
@@ -87,7 +88,7 @@ export const EventCard: React.FC = () => {
       setTimeout(() => {
         notificationController.success({ message: t('common.success') });
         //console.log(form.getFieldsValue());
-        console.log(formValues);
+        console.log(fields);
         setIsLoading(false);
         setCurrent(0);
       }, 1500);
