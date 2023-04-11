@@ -11,3 +11,12 @@ export const getCitiesByRayonId = (id:string) =>
 
 export const getStreetsByCityId = (id:string) =>
     httpApi.get<any[]>('ate/get/streets/id_city/'+id).then(({data})=>data);
+    
+export const getAllCategs = () => 
+    httpApi.get<any[]>('ate/get/all/categs').then(({data}) => data);
+
+export const getAllRayons = () => 
+    httpApi.get<any[]>('ate/get/all/rayons').then(({data}) => data);
+
+    export const getAllReestr = () => 
+httpApi.get<any[]>('ate/get/all/reestrs').then(({data}) => data);

@@ -265,4 +265,5 @@ export interface ateObl{
     nameObl?: string,
     active?: number,
     dateRecord?: string|number,
+    idObl?: number,
 }
