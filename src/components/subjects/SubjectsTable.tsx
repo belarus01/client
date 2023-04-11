@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { AddSubjectForm } from './forms/AddSubjectForm';
 import { getAllDepartments } from '@app/api/departments.api';
 import { getAllSubjects } from '@app/api/subjects.api';
+import { useAppSelector } from '@app/hooks/reduxHooks';
 
 const initialPagination: Pagination = {
     current: 1,
@@ -36,6 +37,7 @@ export const SubjectsTable: React.FC = () => {
     const { t } = useTranslation();
     const { isMounted } = useMounted();
     const navigate = useNavigate();
+    const user = useAppSelector((state)=>state.user.user);
 
     // const fetch = useCallback(
     //     (pagination: Pagination) => {
@@ -92,14 +94,6 @@ export const SubjectsTable: React.FC = () => {
     //     },
     //   });
     // };
-
-    const handleDeleteRow = (user: SSubj) => {
-
-    }
-
-    const handleSwitchClick = (user: User) => {
-
-    }
 
     const handleEditClick = (user: User) => {
         setOpen

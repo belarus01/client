@@ -13,6 +13,9 @@ import axios from 'axios';
 import { httpApi } from '@app/api/http.api';
 import { Modal } from '../common/Modal/Modal';
 import { notificationController } from '@app/controllers/notificationController';
+import { Col, Row } from 'antd';
+import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
+import { Button } from '../common/buttons/Button/Button';
 //import { httpApi } from '@app/api/http.api';
 
 export const Planning: React.FC = () => {
@@ -38,7 +41,9 @@ export const Planning: React.FC = () => {
         })
     },[])
     return (
-            <FullCalendar
+        <>
+        <Button type='default'>Создать мероприятие</Button>
+        <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView='dayGridMonth'
                 locale={ruLocale}
@@ -66,5 +71,7 @@ export const Planning: React.FC = () => {
                 // }}
                 events={data} 
             />
+        </>
+            
     )
 }

@@ -25,9 +25,6 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ open, onCancel, 
     const [rayon, setRayon] = useState<React.ReactNode[]>([]);
     const [city, setCity] = useState<React.ReactNode[]>([]);
     const [street, setStreet] = useState<React.ReactNode[]>([]);
-   
-
-    
 
     const handleOblSelect = (selected:any) =>{
         getRayonsByOblId(selected).then((res)=>{
@@ -76,7 +73,6 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ open, onCancel, 
 
     useEffect(()=>{
         getObl().then((res)=>{
-            
             const childrenObl: React.ReactNode[] = [];
             console.log(res);
             for (let i = 0; i < res.length; i++) {
