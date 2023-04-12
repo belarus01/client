@@ -262,8 +262,13 @@ export interface MemorySizeResponse{
 }
 
 export interface ateObl{
-    nameObl?: string,
+    nameObl: string,
     active?: number,
     dateRecord?: string|number,
-    idObl?: number,
+    idObl: number,
+}
+
+export interface IAteAddingFormProps{
+    open: boolean;
+    onCancel: () => void;
 }

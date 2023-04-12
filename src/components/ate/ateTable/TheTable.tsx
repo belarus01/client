@@ -12,12 +12,13 @@ interface ITheTableProps {
   data: any[];
   column: IColumn[];
   pagination?: Pagination;
+  loading?: boolean;
 }
 
-export const TheTable: React.FC<ITheTableProps> = ({ data, column, pagination }) => {
+export const TheTable: React.FC<ITheTableProps> = ({ data, column, pagination, loading }) => {
   return (
     <>
-      <Table dataSource={data} columns={column} pagination={pagination} />
+      <Table dataSource={data} columns={column} pagination={pagination} loading={loading} />
     </>
   );
 };
