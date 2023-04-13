@@ -267,8 +267,3 @@ export interface ateObl{
     dateRecord?: string|number,
     idObl: number,
 }
-
-export interface IAteAddingFormProps{
-    open: boolean;
-    onCancel: () => void;
-}

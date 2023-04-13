@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import AteObl from './ateTable/AteOblTable';
 import AteCategories from './ateTable/AteCategoriesTable';
 import AteRayonTable from './ateTable/AteRayonTable';
 import AteReestrTable from './ateTable/AteReestrTable';
+import AteStreetTable from './ateTable/AteStreetTable';
 
 const onChange = (key: string) => {
   console.log(key);
@@ -30,6 +31,11 @@ const items: TabsProps['items'] = [
     key: '4',
     label: `Реестр`,
     children: <AteReestrTable />,
+  },
+  {
+    key: '5',
+    label: `Улицы`,
+    children: <AteStreetTable />,
   },
 ];
 

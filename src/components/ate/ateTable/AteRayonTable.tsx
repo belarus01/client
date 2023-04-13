@@ -3,8 +3,8 @@ import { Button, Col, Row, Space, Table } from 'antd';
 import { getAllRayons } from '@app/api/ate.api';
 import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import AteRayonAddingForm from '../ateForm/Rayons/AteRayonsAddingForm';
-import AteRayonEditingForm from '../ateForm/Rayons/AteRayonEddingForm';
+import { Modal } from '@app/components/common/Modal/Modal';
+import AteRayonAddingForm from '../ateForm/AteRayonAddingForm';
 
 export interface IAteRayon {
   nameRayon: string;
@@ -101,10 +101,32 @@ const AteRayonTable: React.FC = () => {
         </Col>
       </Row>
       <Table columns={columns} dataSource={filtredTable} />
-      {openAddingForm ? <AteRayonAddingForm open={openAddingForm} onCancel={() => toggleModalAdding(false)} /> : null}
-      {openEddingForm ? (
-        <AteRayonEditingForm open={openEddingForm} onCancel={() => toggleModalEdding(false)} data={selected} />
-      ) : null}
+      {openAddingForm && (
+        <Modal
+          closable
+          footer={null}
+          onCancel={() => toggleModalAdding(false)}
+          destroyOnClose
+          title={'Создание района'}
+          centered
+          open={openAddingForm}
+        >
+          <AteRayonAddingForm />
+        </Modal>
+      )}
+      {openEddingForm && (
+        <Modal
+          closable
+          footer={null}
+          onCancel={() => toggleModalEdding(false)}
+          destroyOnClose
+          title={'Редактирование района'}
+          centered
+          open={openEddingForm}
+        >
+          <AteRayonAddingForm data={selected} />
+        </Modal>
+      )}
     </>
   );
 };

@@ -1,38 +1,54 @@
-import { getAllCategs } from '@app/api/ate.api';
-import { Button, Col, Row, Space, Table } from 'antd';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { getAllStreets } from '@app/api/ate.api';
+import { Button, Col, Modal, Row, Space, Table } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchInput } from '../../common/inputs/SearchInput/SearchInput';
-import AteCategoriesAddingForm from '../ateForm/AteCategoriesAddingForm';
-import { Modal } from '@app/components/common/Modal/Modal';
+import AteStreetAddingForm from '../ateForm/AteStreetAddingForm';
 
-export interface IAteCategory {
+export interface IAteStreet {
+  soatoCode?: number;
+  idReestr?: number | null;
+  obl: string;
+  rayon: string;
+  sovet: string;
   nameCateg: string;
-  nameShort: string;
-  idCateg: number | null;
+  nameReestr: string;
+  idTipeStreet?: number | null;
+  nameTipeStreet?: string;
+  idStreet: number | null;
+  nameRus: string;
+  active?: number;
+  dateRegistr?: Date | null;
+  dateAnnul?: Date | null;
 }
-const AteCategories: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: IAteCategory[]; loading: boolean }>({
+
+export const AteStreetTable: React.FC = () => {
+  const [tableData, setTableData] = useState<{ data: IAteStreet[]; loading: boolean }>({
     data: [],
     loading: false,
   });
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
-  const [selected, setSelected] = useState<IAteCategory>({
+  const [selected, setSelected] = useState<IAteStreet>({
     nameCateg: '',
-    nameShort: '',
-    idCateg: null,
+    nameReestr: '',
+    nameRus: '',
+    idStreet: null,
+    obl: '',
+    sovet: '',
+    rayon: '',
   });
   const [search, setSearch] = useState('');
 
   const fetch = () => {
-    setTableData({ ...tableData, loading: true });
-    getAllCategs().then((res) => {
+    setTableData((tableData) => ({ ...tableData, loading: true }));
+    getAllStreets().then((res: IAteStreet[]) => {
       setTableData({ data: res, loading: false });
     });
   };
 
   useEffect(() => {
+    console.log('fetching street');
     fetch();
   }, []);
 
@@ -49,32 +65,42 @@ const AteCategories: React.FC = () => {
     console.log(value);
   };
 
-  const filtredTable = useMemo<IAteCategory[]>(() => {
-    return tableData.data.filter((item) => item.nameCateg.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
-  }, [search, tableData]);
-
   // No BE
 
-  const deleteCategory = (category: IAteCategory) => {
-    const newData = tableData.data.filter((item) => item.idCateg !== category.idCateg);
+  const deleteCategory = (category: IAteStreet) => {
+    const newData = tableData.data.filter((item) => item.nameRus !== category.nameRus);
     setTableData({ ...tableData, data: newData });
   };
 
+  const filtredTable = useMemo<IAteStreet[]>(() => {
+    return tableData.data.filter((item) => item.nameRus.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+  }, [search, tableData]);
+
   const columns = [
     {
-      key: 1,
-      title: 'Наименование категории',
-      dataIndex: 'nameCateg',
+      key: 'soatoCode',
+      title: 'Соато код',
+      dataIndex: 'soatoCode',
     },
     {
-      key: 2,
-      title: 'Краткое наименование',
-      dataIndex: 'nameShort',
+      key: 'nameReestr',
+      title: 'Область',
+      dataIndex: 'nameReestr',
     },
     {
-      key: 3,
+      key: 'dateRecord',
+      title: 'Дата обновления',
+      dataIndex: 'dateRecord',
+    },
+    {
+      key: 'dateAnnul',
+      title: 'Дата анулирования',
+      dataIndex: 'dateAnnul',
+    },
+    {
+      key: 'actions',
       title: 'Действие',
-      render: (selectedCategory: IAteCategory) => {
+      render: (selectedCategory: IAteStreet) => {
         return (
           <Space>
             <EditOutlined
@@ -114,11 +140,11 @@ const AteCategories: React.FC = () => {
           footer={null}
           onCancel={() => toggleModalAdding(false)}
           destroyOnClose
-          title={'Создание категории'}
+          title={'Создание улицы'}
           centered
           open={openAddingForm}
         >
-          <AteCategoriesAddingForm />
+          <AteStreetAddingForm />
         </Modal>
       )}
       {openEddingForm && (
@@ -127,15 +153,15 @@ const AteCategories: React.FC = () => {
           footer={null}
           onCancel={() => toggleModalEdding(false)}
           destroyOnClose
-          title={'Редактирование категории'}
+          title={'Редактирование улицы'}
           centered
           open={openEddingForm}
         >
-          <AteCategoriesAddingForm data={selected} />
+          <AteStreetAddingForm data={selected} />
         </Modal>
       )}
     </>
   );
 };
 
-export default AteCategories;
+export default AteStreetTable;

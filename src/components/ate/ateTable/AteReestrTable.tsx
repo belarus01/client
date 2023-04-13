@@ -3,10 +3,8 @@ import { getAllReestr } from '@app/api/ate.api';
 import { Button, Col, Row, Space, Table } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { SearchInput } from '../../common/inputs/SearchInput/SearchInput';
-import AteCategoriesAddingForm from '../ateForm/Categories/AteCategoriesAddingForm';
-import AteCategoriesEditingForm from '../ateForm/Categories/AteCategoriesEditingForm';
-import AteReestrAddingForm from '../ateForm/Reestr/AteReestrAddingForm';
-import AteReestrEditingForm from '../ateForm/Reestr/AteReestrEddingForm';
+import AteReestrAddingForm from '../ateForm/AteReestrAddingForm';
+import { Modal } from '@app/components/common/Modal/Modal';
 
 export interface IAteReestr {
   active?: number;
@@ -132,10 +130,32 @@ export const AteReestrTable: React.FC = () => {
         </Col>
       </Row>
       <Table columns={columns} dataSource={filtredTable} loading={tableData.loading} scroll={{ x: 800 }} bordered />
-      {openAddingForm ? <AteReestrAddingForm open={openAddingForm} onCancel={() => toggleModalAdding(false)} /> : null}
-      {openEddingForm ? (
-        <AteReestrEditingForm open={openEddingForm} onCancel={() => toggleModalEdding(false)} data={selected} />
-      ) : null}
+      {openAddingForm && (
+        <Modal
+          closable
+          footer={null}
+          onCancel={() => toggleModalAdding(false)}
+          destroyOnClose
+          title={'Создание Реестра'}
+          centered
+          open={openAddingForm}
+        >
+          <AteReestrAddingForm />
+        </Modal>
+      )}
+      {openEddingForm && (
+        <Modal
+          closable
+          footer={null}
+          onCancel={() => toggleModalEdding(false)}
+          destroyOnClose
+          title={'Создание Реестра'}
+          centered
+          open={openEddingForm}
+        >
+          <AteReestrAddingForm data={selected} />
+        </Modal>
+      )}
     </>
   );
 };

@@ -20,3 +20,6 @@ export const getAllRayons = () =>
 
     export const getAllReestr = () => 
 httpApi.get<any[]>('ate/get/all/reestrs').then(({data}) => data);
+
+    export const getAllStreets = () => 
+httpApi.get<any[]>('ate/get/all/streets').then(({data}) => data);
