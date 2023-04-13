@@ -34,6 +34,7 @@ const AteRayonAddingForm: React.FC<IAteRayonForm> = ({ data }) => {
         onClick={() => {
           submit();
         }}
+        type="primary"
       >
         Сохранить
       </Button>

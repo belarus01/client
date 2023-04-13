@@ -43,6 +43,7 @@ const AteReestrAddingForm: React.FC<IAteAddingForm> = ({ data }) => {
         onClick={() => {
           submit();
         }}
+        type="primary"
       >
         Сохранить
       </Button>

@@ -56,6 +56,7 @@ const AteStreetAddingForm: React.FC<IAddingForm> = ({ data }) => {
         onClick={() => {
           submit();
         }}
+        type="primary"
       >
         Сохранить
       </Button>

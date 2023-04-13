@@ -41,6 +41,7 @@ const AteCategoriesAddingForm: React.FC<IAteAddingFormProps> = ({ data }) => {
         onClick={() => {
           submit();
         }}
+        type="primary"
       >
         Сохранить
       </Button>
