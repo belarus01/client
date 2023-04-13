@@ -13,9 +13,8 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
-import Error404Page from '@app/pages/Error404Page'
-
-
+import Error404Page from '@app/pages/Error404Page';
+import DepartmentsPage from '@app/pages/handbooks/DepartmentsPage';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
 const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
@@ -27,9 +26,10 @@ const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersManagmentPage'));
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
-const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'))
+const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'));
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
-const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'))
+const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'));
+const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/DepartmentsPage'));
 
 export const MAIN_PATH = '/';
 
@@ -45,7 +45,6 @@ const Payments = withLoading(PaymentsPage);
 const AuthLayoutFallback = withLoading(AuthLayout);
 const LogoutFallback = withLoading(Logout);
 
-
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
 const Subjects = withLoading(SubjectsPage);
@@ -53,6 +52,7 @@ const SubjectSettings = withLoading(SubjectSettingsPage);
 const SubjectEvents = withLoading(SubjectEventsPage);
 
 const AteObl = withLoading(AteOblPage);
+const Departaments = withLoading(DepartamentsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -65,7 +65,6 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
-
           <Route index path="planning" element={<Planning />} />
           <Route path="server-error" element={<ServerError />} />
 
@@ -81,13 +80,13 @@ export const AppRouter: React.FC = () => {
           <Route path="handbooks">
             <Route path="users" element={<UsersManagment />} />
             <Route path="subjects" element={<Subjects />} />
-            <Route path='ate' element={<AteObl />} />
+            <Route path="ate" element={<AteObl />} />
+            <Route path="departaments" element={<Departaments />} />
           </Route>
-          <Route path='subject' element={<SubjectProfileLayout />}>
-            <Route path='events' element={<SubjectEventsPage />} />
+          <Route path="subject" element={<SubjectProfileLayout />}>
+            <Route path="events" element={<SubjectEventsPage />} />
             {/* <Route path='objects' element={}/> */}
-            <Route path='settings' element={<SubjectSettings />} />
-
+            <Route path="settings" element={<SubjectSettings />} />
           </Route>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>

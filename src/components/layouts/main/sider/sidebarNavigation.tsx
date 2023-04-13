@@ -24,10 +24,10 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
-    title:'Планирование',
-    key:'planning',
-    url:'/planning',
-    icon: <CalendarOutlined />
+    title: 'Планирование',
+    key: 'planning',
+    url: '/planning',
+    icon: <CalendarOutlined />,
   },
   {
     title: 'Справочники',
@@ -63,7 +63,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         title: 'Ате',
         key: 'ate',
         url: 'handbooks/ate',
-      }
+      },
+      {
+        title: 'Департаменты',
+        key: 'deparatments',
+        url: 'handbooks/departaments',
+      },
     ],
   },
 ];
