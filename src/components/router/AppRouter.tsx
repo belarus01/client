@@ -23,6 +23,7 @@ const NotificationsPage = React.lazy(() => import('@app/pages/test/Notifications
 const PaymentsPage = React.lazy(() => import('@app/pages/test/PaymentsPage'));
 
 const Logout = React.lazy(() => import('./Logout'));
+const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
 
 const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersManagmentPage'));
@@ -46,10 +47,6 @@ const LogoutFallback = withLoading(Logout);
 
 
 const Planning = withLoading(PlanningPage);
-const UsersManagment = withLoading(UserManagmentPage);
-const Subjects = withLoading(SubjectsPage);
-const SubjectSettings = withLoading(SubjectSettingsPage);
-const SubjectEvents = withLoading(SubjectEventsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -85,6 +82,7 @@ export const AppRouter: React.FC = () => {
             <Route path='settings' element={<SubjectSettings />} />
 
           </Route>
+          <Route path="planning" element={<Planning/>} />
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
