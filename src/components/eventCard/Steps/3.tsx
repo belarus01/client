@@ -1,22 +1,25 @@
 //import { useTranslation } from 'react-i18next';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import * as S from '../eventCard.styles';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, ComponentProps } from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { useTranslation } from 'react-i18next';
-import { Col, Row, Space, TablePaginationConfig } from 'antd';
+import { Col, Form, Row, Space, TablePaginationConfig } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Table } from '@app/components/common/Table/Table';
 import { DataType, getBasicDataType, vid1, vid2 } from '@app/api/eventCard.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { Status } from '@app/components/profile/profileCard/profileFormNav/nav/payments/paymentHistory/Status/Status';
 import { Button } from '@app/components/common/buttons/Button/Button';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 
 
 
 export const Step3: React.FC = () => {
   //const { t } = useTranslation();
+  const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [tableData, setTableData] = useState<{ data: DataType[], loading: boolean }>({
     data: [],
     loading: false
@@ -33,6 +36,10 @@ export const Step3: React.FC = () => {
     },
     [isMounted],
   );
+
+  const onFinish = (values: any) => {
+    console.log('Received values of form:', values);
+  };
 
   useEffect(() => {
     fetch();
@@ -276,14 +283,14 @@ export const Step3: React.FC = () => {
         <Input />
       </BaseButtonsForm.Item>
 
-      <Button type="primary" style={{ marginLeft: "auto" }} >Добавить проверяющего</Button>
+      {/* <Button type="primary" style={{ marginLeft: "auto" }} >Добавить проверяющего</Button> */}
 
       <Row>
         <BaseButtonsForm.Item
           name="dolg_prov"
           label={'Должность проверяющего '}
           hasFeedback
-          style={{ width: 600, marginRight: "30px"  }}
+          style={{ width: 600, marginRight: "8px" }}
           rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
         >
           <Input />
@@ -292,12 +299,60 @@ export const Step3: React.FC = () => {
         <BaseButtonsForm.Item
           name="fio_prov"
           label={'Ф.И.О проверяющего'}
-          style={{ width: 600}}
+          hasFeedback
+          style={{ width: 600 }}
           rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
         >
           <Input />
         </BaseButtonsForm.Item>
       </Row>
+
+      <BaseButtonsForm
+        name="dobavit_prov"
+        isFieldsChanged={isFieldsChanged}
+        onFinish={onFinish}
+        autoComplete="off"
+        
+      >
+
+        <BaseButtonsForm.List name="users">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map((field) => (
+                <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <BaseButtonsForm.Item
+                    {...field}
+                    name={[field.name, 'first']}
+                    label={'Должность проверяющего '}
+                    hasFeedback
+                    style={{ width: 600 }}
+                    rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+                  >
+                    <Input />
+                  </BaseButtonsForm.Item>
+                  <BaseButtonsForm.Item
+                    {...field}
+                    name={[field.name, 'last']}
+                    label={'Ф.И.О проверяющего'}
+                    hasFeedback
+                    style={{ width: 600 }}
+                    rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                  >
+                    <Input />
+                  </BaseButtonsForm.Item>
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+                </Space>
+              ))}
+              <BaseButtonsForm.Item>
+                <Button type="primary" style={{ width: 300 }} onClick={() => add()} block icon={<PlusOutlined />}>
+                  Добавить проверяющего
+                </Button>
+              </BaseButtonsForm.Item>
+            </>
+          )}
+        </BaseButtonsForm.List>
+
+      </BaseButtonsForm>
 
       <BaseButtonsForm.Item
         name="prov_period"

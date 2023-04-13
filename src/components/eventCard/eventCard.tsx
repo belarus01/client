@@ -48,19 +48,19 @@ export const EventCard: React.FC = () => {
   const formLabels: FormValues = {
     group: 'group',
     unp: 'unp',
-    confirmPassword: t('common.confirmPassword'),
-    salutation: t('forms.stepFormLabels.salutation'),
-    gender: t('forms.stepFormLabels.gender'),
-    firstName: t('common.firstName'),
-    lastName: t('common.lastName'),
-    birthday: t('forms.stepFormLabels.birthday'),
-    phone: t('common.phone'),
-    email: t('common.email'),
-    address1: `${t('common.address')} 1`,
-    address2: `${t('common.address')} 2`,
-    zipCode: t('common.zipcode'),
-    city: t('common.city'),
-    country: t('common.country'),
+    // confirmPassword: t('common.confirmPassword'),
+    // salutation: t('forms.stepFormLabels.salutation'),
+    // gender: t('forms.stepFormLabels.gender'),
+    // firstName: t('common.firstName'),
+    // lastName: t('common.lastName'),
+    // birthday: t('forms.stepFormLabels.birthday'),
+    // phone: t('common.phone'),
+    // email: t('common.email'),
+    // address1: `${t('common.address')} 1`,
+    // address2: `${t('common.address')} 2`,
+    // zipCode: t('common.zipcode'),
+    // city: t('common.city'),
+    // country: t('common.country'),
   };
 
   const formValues = fields
@@ -72,10 +72,10 @@ export const EventCard: React.FC = () => {
     }));
 
   const next = () => {
-    // form.validateFields().then(() => {
-    //   setCurrent(current + 1);
-    // });
-    setCurrent(current + 1);
+    form.validateFields().then(() => {
+      setCurrent(current + 1);
+    });
+    //setCurrent(current + 1);
   };
 
   const prev = () => {
