@@ -1,17 +1,13 @@
-import { Modal } from '@app/components/common/Modal/Modal';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
-import { IDepartment } from '../DepatmentsTable';
+import { IDepartment } from '../tables/DepatmentsTable';
 import { useState } from 'react';
 
 export interface IAddEditDepartmentForm {
-  modalName: string;
-  open: boolean;
-  cancle: (isOpen: boolean) => void;
   data?: IDepartment;
 }
-export const AddEditDepartmentForm: React.FC<IAddEditDepartmentForm> = ({ modalName, cancle, open, data }) => {
+export const AddEditDepartmentForm: React.FC<IAddEditDepartmentForm> = ({ data }) => {
   const [department, setDepartmnent] = useState<IDepartment>({
     address: '',
     idDept: null,
@@ -28,7 +24,7 @@ export const AddEditDepartmentForm: React.FC<IAddEditDepartmentForm> = ({ modalN
   console.log(data, department);
 
   return (
-    <Modal closable footer={null} onCancel={() => cancle(false)} destroyOnClose title={modalName} centered open={open}>
+    <>
       <BaseButtonsForm labelCol={{ span: 8 }} wrapperCol={{ span: 14 }} layout="horizontal" isFieldsChanged={false}>
         <BaseButtonsForm.Item label="Адрес">
           <Input
@@ -98,6 +94,6 @@ export const AddEditDepartmentForm: React.FC<IAddEditDepartmentForm> = ({ modalN
           <Button type="primary">Сохранить</Button>
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
-    </Modal>
+    </>
   );
 };

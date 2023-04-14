@@ -1,13 +1,13 @@
 import { Card } from '@app/components/common/Card/Card';
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import { DepartmentsTable } from '@app/components/departments/DepatmentsTable';
+import DepartmentsTabs from '@app/components/departments/DepartmentsTabs';
 
 const DepartmentsPage: React.FC = () => {
   return (
     <>
       <Card title="Департаменты">
         <PageTitle>{'Департаменты'}</PageTitle>
-        <DepartmentsTable />
+        <DepartmentsTabs />
         {/* <AteObl /> */}
       </Card>
     </>
