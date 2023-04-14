@@ -11,17 +11,18 @@ interface ITheTableData {
 interface ITheTableProps {
   dataTable: ITheTableData;
   columns: any[];
-  titleModalAdding: string | null | undefined;
-  titleMoadlEditing: string | null | undefined;
-  FormComponent: React.ElementType;
-  selected: object;
-  searchFunc: (value: string) => void;
-  setSearchFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  search: string;
-  toggleModalAdding: (isOpen: boolean) => void;
-  toggleModalEditing: (isOpen: boolean) => void;
-  openAddingForm: boolean;
-  openEditingForm: boolean;
+  titleModalAdding?: string | null | undefined;
+  titleMoadlEditing?: string | null | undefined;
+  FormComponent?: React.ElementType | Element;
+  selected?: object;
+  searchFunc?: (value: string) => void;
+  setSearchFunc?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  search?: string;
+  toggleModalAdding?: (isOpen: boolean) => void;
+  toggleModalEditing?: (isOpen: boolean) => void;
+  openAddingForm?: boolean;
+  openEditingForm?: boolean;
+  onRow?: undefined | ((recod?: any, rowIndex?: number | undefined) => object);
 }
 
 export const TheTable: React.FC<ITheTableProps> = ({
@@ -38,26 +39,38 @@ export const TheTable: React.FC<ITheTableProps> = ({
   toggleModalEditing,
   openAddingForm,
   openEditingForm,
+  onRow,
 }) => {
   return (
     <>
       <Row gutter={[30, 30]}>
-        <Col sm={24} md={8} lg={8}>
-          <SearchInput
-            value={search}
-            onChange={(e) => setSearchFunc(e)}
-            placeholder={''}
-            enterButton="Поиск"
-            size="middle"
-            onSearch={searchFunc}
-          />
-        </Col>
-        <Col sm={24} md={6} lg={6}>
-          <Button onClick={() => toggleModalAdding(true)}>Добавить новую категорию</Button>
-        </Col>
+        {setSearchFunc && (
+          <Col sm={24} md={8} lg={8}>
+            <SearchInput
+              value={search}
+              onChange={(e) => setSearchFunc(e)}
+              placeholder={''}
+              enterButton="Поиск"
+              size="middle"
+              onSearch={searchFunc}
+            />
+          </Col>
+        )}
+        {toggleModalAdding && (
+          <Col sm={24} md={6} lg={6}>
+            <Button onClick={() => toggleModalAdding(true)}>Добавить новую категорию</Button>
+          </Col>
+        )}
       </Row>
-      <Table columns={columns} dataSource={dataTable.data} loading={dataTable.loading} scroll={{ x: 800 }} bordered />
-      {openAddingForm && (
+      <Table
+        columns={columns}
+        dataSource={dataTable.data}
+        loading={dataTable.loading}
+        scroll={{ x: 800 }}
+        bordered
+        onRow={onRow}
+      />
+      {toggleModalAdding && openAddingForm && (
         <Modal
           closable
           footer={null}
@@ -67,10 +80,10 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openAddingForm}
         >
-          <Component />
+          {Component && <Component />}
         </Modal>
       )}
-      {openEditingForm && (
+      {toggleModalEditing && openEditingForm && (
         <Modal
           closable
           footer={null}
@@ -80,7 +93,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openEditingForm}
         >
-          <Component data={selected} />
+          {Component && <Component data={selected} />}
         </Modal>
       )}
     </>

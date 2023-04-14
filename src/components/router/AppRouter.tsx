@@ -14,7 +14,6 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page';
-import DepartmentsPage from '@app/pages/handbooks/DepartmentsPage';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
 const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
@@ -30,6 +29,8 @@ const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/Subject
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
 const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'));
 const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/DepartmentsPage'));
+
+const SoapbPage = React.lazy(() => import('@app/pages/soapbs/SoapbsPage'));
 
 export const MAIN_PATH = '/';
 
@@ -53,6 +54,8 @@ const SubjectEvents = withLoading(SubjectEventsPage);
 
 const AteObl = withLoading(AteOblPage);
 const Departaments = withLoading(DepartamentsPage);
+
+const Soapb = withLoading(SoapbPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -82,6 +85,10 @@ export const AppRouter: React.FC = () => {
             <Route path="subjects" element={<Subjects />} />
             <Route path="ate" element={<AteObl />} />
             <Route path="departaments" element={<Departaments />} />
+          </Route>
+          <Route path="soapb">
+            <Route path="" element={<Soapb />} />
+            <Route path=":id" element={<div>asdafsdfasdf</div>} />
           </Route>
           <Route path="subject" element={<SubjectProfileLayout />}>
             <Route path="events" element={<SubjectEventsPage />} />
