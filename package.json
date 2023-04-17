@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@ant-design/plots": "^1.2.5",
     "@craco/craco": "^6.1.2",
     "@fullcalendar/core": "^6.1.5",
     "@fullcalendar/interaction": "^6.1.5",
