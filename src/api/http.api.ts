@@ -2,6 +2,7 @@ import axios from 'axios';
 import { AxiosError } from 'axios';
 import { ApiError } from '@app/api/ApiError';
 import { readToken } from '@app/services/localStorage.service';
+import { notificationController } from '@app/controllers/notificationController';
 
 export const httpApi = axios.create({
   baseURL: 'http://localhost:4000',

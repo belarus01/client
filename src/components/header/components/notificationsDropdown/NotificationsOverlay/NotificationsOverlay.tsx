@@ -19,8 +19,7 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
   setNotifications,
   ...props
 }) => {
-  const { t } = useTranslation();
-
+  const {t} = useTranslation();
   const noticesList = useMemo(
     () =>
       notifications.map((notification, index) => {
@@ -31,7 +30,7 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
             key={index}
             type={type || 'warning'}
             title={capitalize(type || 'warning')}
-            description={t(notification.description)}
+            description={'Описание'}
             {...(type === 'mention' && {
               mentionIconSrc: (notification as Mention).userIcon,
               title: (notification as Mention).userName,
@@ -46,7 +45,7 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
           />
         );
       }),
-    [notifications, t],
+    [notifications],
   );
 
   return (
@@ -58,7 +57,7 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
               {noticesList}
             </Space>
           ) : (
-            <S.Text>{t('header.notifications.noNotifications')}</S.Text>
+            <S.Text>{'Нет уведомлений'}</S.Text>
           )}
         </Col>
         <Col span={24}>
@@ -66,13 +65,13 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
             {notifications.length > 0 && (
               <Col span={24}>
                 <S.Btn type="ghost" onClick={() => setNotifications([])}>
-                  {t('header.notifications.readAll')}
+                  {'Отметить как прочитанные'}
                 </S.Btn>
               </Col>
             )}
             <Col span={24}>
               <S.Btn type="link">
-                <Link to="/">{t('header.notifications.viewAll')}</Link>
+                <Link to="/">{'Просмотреть все'}</Link>
               </S.Btn>
             </Col>
           </Row>

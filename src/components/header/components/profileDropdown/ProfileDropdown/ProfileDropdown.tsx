@@ -15,7 +15,7 @@ export const ProfileDropdown: React.FC = () => {
     <Popover content={<ProfileOverlay />} trigger="click">
       <S.ProfileDropdownHeader as={Row} gutter={[10, 10]} align="middle">
           <Col>
-            <H6>{`${user.firstName} ${user.lastName[0]}`}</H6>
+            <H6>{`${user.fName} ${user.lName[0]}`}</H6>
           </Col>
       </S.ProfileDropdownHeader>
     </Popover>
