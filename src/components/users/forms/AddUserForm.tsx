@@ -12,18 +12,14 @@ import { getAllDepartments } from "@app/api/departments.api";
 import { InputPassword } from "@app/components/common/inputs/InputPassword/InputPassword";
 
 interface AddUserFormProps {
-    open: boolean;
-    onCancel: () => void;
-    onTableChange: (pagination: Pagination) => void;
+    data:User;
 }
 
 
-export const AddUserForm: React.FC<AddUserFormProps> = ({ open, onCancel, onTableChange }) => {
+export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
     const [positions, setPositions] = useState<SDeptJob[]>([]);
     const [positionsStr, setPositionsStr] = useState<string[]>([]);
     const [departments, setDepartments] = useState<SDeptNode[]>([]);
-
-    //const admin = useCurrentUser();
 
     useEffect(() => {
         getAllJobs().then((responce) => {
@@ -53,7 +49,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ open, onCancel, onTabl
 
     const onFinish = (values: any) => {
         console.log(values);
-        onCancel();
     }
 
     return (

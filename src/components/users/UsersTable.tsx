@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
-import { Col, Row, Space, TablePaginationConfig } from 'antd';
+import { Col, Modal, Row, Space, TablePaginationConfig } from 'antd';
 import { getAllUsers, searchUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -32,9 +32,8 @@ export const UsersTable: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
   const [type, setType] = useState<boolean>(false);
 
-  const { t } = useTranslation();
   const { isMounted } = useMounted();
-  
+
   // const fetch = useCallback(
   //     (pagination: Pagination) => {
   //       setTableData((tableData) => ({ ...tableData, loading: true }));
@@ -79,19 +78,19 @@ export const UsersTable: React.FC = () => {
     setOpen(false);
   };
 
-  const showUpdatePasswordModal =()=>{
+  const showUpdatePasswordModal = () => {
     setOpenPassword(true);
   }
 
-  const hideUpdatePasswordModal = () =>{
+  const hideUpdatePasswordModal = () => {
     setOpenPassword(false);
   }
 
-  const showEditUserModal = () =>{
+  const showEditUserModal = () => {
     setOpenEdit(true);
   }
 
-  const hideEditUserModal = () =>{
+  const hideEditUserModal = () => {
     setOpenEdit(false);
   }
   // const handleDeleteRow = (rowId: number) => {
@@ -119,11 +118,11 @@ export const UsersTable: React.FC = () => {
   }
 
   const handleSearch = (value: string) => {
-    setTableData({...tableData, loading:true});
-    if(value.length === 0)
+    setTableData({ ...tableData, loading: true });
+    if (value.length === 0)
       fetch(tableData.pagination)
-    searchUsers(value).then((res)=>{
-      setTableData({...tableData, data:res, loading:false})
+    searchUsers(value).then((res) => {
+      setTableData({ ...tableData, data: res, loading: false })
     })
   }
 
@@ -132,7 +131,7 @@ export const UsersTable: React.FC = () => {
       key: "2",
       title: "Фамилия",
       dataIndex: "lName",
-      sorter:true
+      sorter: true
     },
     {
       key: "3",
@@ -235,9 +234,20 @@ export const UsersTable: React.FC = () => {
         scroll={{ x: 800 }}
         bordered
       />
+      <Modal
+        closable
+        footer={null}
+        destroyOnClose
+        title={'Изменение пароля'}
+        centered
+        open={openPassword}
+      >
+        <UpdatePasswordForm />
+      </Modal>
+      <Modal
       <AddUserForm open={open} onCancel={hideAddUserModal} onTableChange={updateTable} />
-      <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser}/>
-      <UpdatePasswordForm open={openPassword} onCancel={hideUpdatePasswordModal}/>
+      <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser} />
+      <UpdatePasswordForm open={openPassword} onCancel={hideUpdatePasswordModal} />
     </>
 
   )
