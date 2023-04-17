@@ -38,7 +38,11 @@ export const SubjectEvents:React.FC = () =>{
  useEffect(()=>{
     fetch(initialPagination);
  }, [fetch]);
- 
+
+    const handleAddClick = ()=>{
+
+    }
+    
     const columns = [
         {
             key: "1",
@@ -61,7 +65,7 @@ export const SubjectEvents:React.FC = () =>{
             dataIndex: "idDept2",
             render: (idDept2:SDept)=>{
                 return(
-                    <p>{idDept2.departament}</p>
+                    <p>{idDept2!==null ?idDept2.departament:''}</p>
                 )
             }
                 
@@ -138,7 +142,7 @@ export const SubjectEvents:React.FC = () =>{
     return (
         <>
         
-        <Button>Добавить мероприятие</Button>
+        <Button onClick={handleAddClick}>Добавить мероприятие</Button>
         <Table
             dataSource={tableData.data}
             pagination={tableData.pagination}

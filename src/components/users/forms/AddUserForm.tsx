@@ -12,7 +12,7 @@ import { getAllDepartments } from "@app/api/departments.api";
 import { InputPassword } from "@app/components/common/inputs/InputPassword/InputPassword";
 
 interface AddUserFormProps {
-    data:User;
+    data:User| undefined;
 }
 
 
@@ -52,15 +52,7 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
     }
 
     return (
-        <Modal
-            closable
-            footer={null}
-            onCancel={onCancel}
-            destroyOnClose
-            title={'Создание пользователя'}
-            centered
-            open={open}
-        >
+        
             <BaseButtonsForm
                 layout="vertical"
                 onFinish={onFinish}
@@ -119,6 +111,5 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
 
 
             </BaseButtonsForm>
-        </Modal>
     )
 }

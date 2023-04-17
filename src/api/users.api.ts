@@ -1,5 +1,6 @@
 import { CreateUserDTO, DeleteUserDTO, SDeptJob, User } from "@app/domain/interfaces";
 import { httpApi } from "./http.api";
+import { notificationController } from "@app/controllers/notificationController";
 
 export interface Pagination {
     current?: number;
@@ -18,7 +19,9 @@ export interface BasicTableData {
 }
 
 export const getAllUsers = () =>
-    httpApi.get<User[]>('users/get/all/relations').then(({data}) => data);
+    httpApi.get<User[]>('users/get/all/relations').then(({data}) => data).catch((e)=>{
+        notificationController.error({message:'Ошибка'});
+    });
 
 export const getUsersByPage = () =>
     httpApi.get<User[]>('').then(({data})=>data);

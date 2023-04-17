@@ -7,8 +7,8 @@ import { getCpuUsage, getMemorySize, getMemoryStatus } from '@app/api/serverStat
 
 export const ServerStatistics:React.FC = () => {
     const [cpuUsage, setCpuUsage] = useState<number>();
-    const [memoryStatus, setMemoryStatus] = useState<MemoryResponse[]>([]);
-    const [memorySize, setMemorySize] = useState<MemorySizeResponse[]>([]);
+    const [memoryStatus, setMemoryStatus] = useState<MemoryResponse[]| null>([]);
+    const [memorySize, setMemorySize] = useState<MemorySizeResponse[] | null>([]);
     useEffect(() => {
         getCpuUsage().then((value) => {
             const cpu = Number(value);
@@ -59,7 +59,7 @@ export const ServerStatistics:React.FC = () => {
 
 
     const dbConfig = {
-        percent: memorySize.length === 2 ? Number(memorySize[0].percentage.slice(memorySize[0].percentage.length - 2, 1)) / 100 : 0.5,
+        percent: memorySize!==null ? memorySize.length === 2 ? Number(memorySize[0].percentage.slice(memorySize[0].percentage.length - 2, 1)) / 100 : 0.5 : 0.5,
         range: {
             ticks: [0, 1 / 3, 2 / 3, 1],
             color: ['#30BF78', '#FAAD14', '#F4664A'],
@@ -86,7 +86,7 @@ export const ServerStatistics:React.FC = () => {
         },
     };
     const appConfig = {
-        percent: memorySize.length === 2 ? Number(memorySize[1].percentage.slice(memorySize[1].percentage.length - 2, 1)) / 100 : 0.5,
+        percent: memorySize!==null ? memorySize.length === 2 ? Number(memorySize[1].percentage.slice(memorySize[1].percentage.length - 2, 1)) / 100 : 0.5 :0.5,
         range: {
             ticks: [0, 1 / 3, 2 / 3, 1],
             color: ['#30BF78', '#FAAD14', '#F4664A'],

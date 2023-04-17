@@ -8,7 +8,6 @@ import { getAllUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
-import { AddUserForm } from '@app/components/users/forms/AddUserForm';
 import { Button } from '../common/buttons/Button/Button';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { notificationController } from '@app/controllers/notificationController';
@@ -111,6 +110,11 @@ export const SubjectsTable: React.FC = () => {
         },
         {
             key: "3",
+            title: "Название",
+            dataIndex: "subj",
+        },
+        {
+            key: "4",
             title: "Юридический адрес",
             dataIndex: "addrYur"
         },
@@ -120,6 +124,10 @@ export const SubjectsTable: React.FC = () => {
             title: "Действия",
             width: '15%',
             render: (subj: SSubj) => {
+                function handleDeleteRow(user: User | null) {
+                    throw new Error('Function not implemented.');
+                }
+
                 return (
                     <Space>
                         <Button
@@ -132,6 +140,12 @@ export const SubjectsTable: React.FC = () => {
                         >
                             {'Открыть'}
                         </Button>
+                        <DeleteOutlined
+              onClick={() => {
+                handleDeleteRow(user);
+              }}
+              style={{ color: "red", marginLeft: 12 }}
+            />
 
                     </Space>
 

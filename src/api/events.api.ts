@@ -6,3 +6,6 @@ export const getAllEvents = () =>
 
 export const getAllEventsBySubjectId = (idSubj:number) =>
     httpApi.get<SEventsOrder[]>('events/get/all/subjId='+1460).then(({data})=>data);
+
+export const addEvent = (event:SEvents) =>
+    httpApi.post<SEvents>('events/create', event).then(({data})=>data);

@@ -2,10 +2,11 @@ import { getAllObjectsBySubjectId } from "@app/api/objects.api";
 import { Pagination } from "@app/api/users.api";
 import { Table } from "@app/components/common/Table/Table";
 import { Button } from "@app/components/common/buttons/Button/Button";
+import { SearchInput } from "@app/components/common/inputs/SearchInput/SearchInput";
 import { SSubjObj } from "@app/domain/interfaces";
 import { useAppSelector } from "@app/hooks/reduxHooks"
 import { useMounted } from "@app/hooks/useMounted";
-import { Space } from "antd";
+import { Col, Row, Space } from "antd";
 import { useCallback, useEffect, useState } from "react";
 
 const initialPagination: Pagination = {
@@ -88,6 +89,20 @@ export const SubjectObjects:React.FC = () =>{
         },
     ];
     return (
+        <>
+        <Row gutter={[30, 30]}>
+        <Col sm={24} md={8} lg={8} >
+          <SearchInput
+            placeholder={'Не менее 6 символов'}
+            enterButton="Поиск"
+            size="middle"
+            onSearch={handleSearch}
+          />
+        </Col>
+        <Col sm={24} md={6} lg={6}>
+          <Button onClick={showAddUserModal}>Добавить пользователя</Button>
+        </Col>
+      </Row>
         <Table
             dataSource={tableData.data}
             pagination={tableData.pagination}
@@ -97,5 +112,7 @@ export const SubjectObjects:React.FC = () =>{
             bordered
 
         />
+        </>
+        
     )
 }

@@ -30,6 +30,19 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <CalendarOutlined />
   },
   {
+    title:'Статистика сервера',
+    key:'server-statistics',
+    url:'/server-statistics',
+    icon: <CalendarOutlined />
+  },
+  {
+    title: 'Субъекты',
+    key: 'subjects',
+    url: '/subjects',
+    icon: <CalendarOutlined />
+  },
+  
+  {
     title: 'Справочники',
     key: 'handbooks',
     icon: <BookOutlined />,
@@ -49,11 +62,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'events',
         url: '/handbooks/events',
       },
-      {
-        title: 'Субъекты',
-        key: 'subjects',
-        url: '/handbooks/subjects',
-      },
+      
       {
         title: 'Геолокация',
         key: 'geo',
@@ -61,4 +70,5 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       },
     ],
   },
-];
+]
+

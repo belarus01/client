@@ -8,7 +8,7 @@ import { getAllUsers, searchUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
-import { AddUserForm } from '@app/components/users/forms/AddUserForm';
+import { AddEditUserForm } from '@app/components/users/forms/AddUserForm';
 import { Button } from '../common/buttons/Button/Button';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { notificationController } from '@app/controllers/notificationController';
@@ -240,14 +240,22 @@ export const UsersTable: React.FC = () => {
         destroyOnClose
         title={'Изменение пароля'}
         centered
+        onCancel={()=>setOpenPassword(false)}
         open={openPassword}
       >
         <UpdatePasswordForm />
       </Modal>
       <Modal
-      <AddUserForm open={open} onCancel={hideAddUserModal} onTableChange={updateTable} />
+      closable
+      footer={null}
+      destroyOnClose
+      title={'Изменение пароля'}
+      centered
+      open={open}>
+        <AddEditUserForm data={selectedUser} />
+      </Modal>
+      
       <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser} />
-      <UpdatePasswordForm open={openPassword} onCancel={hideUpdatePasswordModal} />
     </>
 
   )
