@@ -1,3 +1,5 @@
+import { httpApi } from "./http.api";
+
 export interface vid1 {
   meri_admin_prin_vid: string;
   meri_admin_prin_col: string;
@@ -68,4 +70,9 @@ export const getBasicDataType = (): Promise<BasicDataType> => {
       ]
     });
   });
+
+
 };
+
+export const getFirst = () =>
+httpApi.get("eventCard/get/first").then(({data})=>data);

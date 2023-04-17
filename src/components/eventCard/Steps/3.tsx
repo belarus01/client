@@ -183,6 +183,9 @@ export const Step3: React.FC = () => {
 
 
   return (
+
+
+
     <S.FormContent>
       <BaseButtonsForm.Item
         name="vid_meropr"
@@ -285,64 +288,74 @@ export const Step3: React.FC = () => {
 
       {/* <Button type="primary" style={{ marginLeft: "auto" }} >Добавить проверяющего</Button> */}
 
-      <Row>
-        <BaseButtonsForm.Item
-          name="dolg_prov"
-          label={'Должность проверяющего '}
-          hasFeedback
-          style={{ width: 600, marginRight: "8px" }}
-          rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
-        >
-          <Input />
-        </BaseButtonsForm.Item>
+      <Row gutter={[8, 8]}>
+        <Col span={12}>
+          <BaseButtonsForm.Item
+            name="dolg_prov"
+            label={'Должность проверяющего '}
+            hasFeedback
+            //style={{ marginRight: "8px" }}
+            rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+          >
+            <Input />
+          </BaseButtonsForm.Item>
+        </Col>
 
-        <BaseButtonsForm.Item
-          name="fio_prov"
-          label={'Ф.И.О проверяющего'}
-          hasFeedback
-          style={{ width: 600 }}
-          rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
-        >
-          <Input />
-        </BaseButtonsForm.Item>
+        <Col span={12}>
+          <BaseButtonsForm.Item
+            name="fio_prov"
+            label={'Ф.И.О проверяющего'}
+            hasFeedback
+            //style={{ width: 600 }}
+            rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+          >
+            <Input />
+          </BaseButtonsForm.Item>
+        </Col>
       </Row>
+
 
       <BaseButtonsForm
         name="dobavit_prov"
         isFieldsChanged={isFieldsChanged}
         onFinish={onFinish}
         autoComplete="off"
-        
       >
 
         <BaseButtonsForm.List name="users">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
-                <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                  <BaseButtonsForm.Item
-                    {...field}
-                    name={[field.name, 'first']}
-                    label={'Должность проверяющего '}
-                    hasFeedback
-                    style={{ width: 600 }}
-                    rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
-                  >
-                    <Input />
-                  </BaseButtonsForm.Item>
-                  <BaseButtonsForm.Item
-                    {...field}
-                    name={[field.name, 'last']}
-                    label={'Ф.И.О проверяющего'}
-                    hasFeedback
-                    style={{ width: 600 }}
-                    rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
-                  >
-                    <Input />
-                  </BaseButtonsForm.Item>
-                  <MinusCircleOutlined onClick={() => remove(field.name)} />
-                </Space>
+                <Row key={field.key} gutter={[10, 10]}>
+                  <Col span={12}>
+                    <BaseButtonsForm.Item
+                      {...field}
+                      name={[field.name, 'first']}
+                      label={'Должность проверяющего '}
+                      hasFeedback
+                      rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+                    >
+                      <Input />
+                    </BaseButtonsForm.Item>
+                  </Col>
+
+                  <Col span={12}>
+                    <BaseButtonsForm.Item
+                      {...field}
+                      name={[field.name, 'last']}
+                      label={'Ф.И.О проверяющего'}
+                      hasFeedback
+                      rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                    >
+                      <S.Wrapper>
+                        <Input />
+                        <S.RemoveBtn onClick={() => remove(field.name)} />
+                      </S.Wrapper>
+                    </BaseButtonsForm.Item>
+                  </Col>
+                </Row>
               ))}
+
               <BaseButtonsForm.Item>
                 <Button type="primary" style={{ width: 300 }} onClick={() => add()} block icon={<PlusOutlined />}>
                   Добавить проверяющего
@@ -352,7 +365,10 @@ export const Step3: React.FC = () => {
           )}
         </BaseButtonsForm.List>
 
+
       </BaseButtonsForm>
+
+
 
       <BaseButtonsForm.Item
         name="prov_period"
@@ -547,4 +563,5 @@ export const Step3: React.FC = () => {
       </BaseButtonsForm.Item>
     </S.FormContent>
   );
+
 };

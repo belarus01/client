@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { Button } from '@app/components/common/buttons/Button/Button';
@@ -9,6 +9,8 @@ import { Step4 } from './Steps/4';
 import { notificationController } from '@app/controllers/notificationController';
 import { mergeBy } from '@app/utils/utils';
 import * as S from './eventCard.styles';
+import { getFirst } from '@app/api/eventCard.api';
+import { useMounted } from '@app/hooks/useMounted';
 
 
 interface FormValues {
@@ -24,9 +26,9 @@ interface FieldData {
 export const EventCard: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const [form] = BaseForm.useForm();
+  const [data1, setData] = useState<any>();
   const [fields, setFields] = useState<FieldData[]>([
-    { name: 'group', value: '' },
-    { name: 'unp', value: '' },
+    
     // { name: 'confirmPassword', value: '123456' },
     // { name: 'salutation', value: 'mr' },
     // { name: 'gender', value: 'male' },
@@ -43,11 +45,29 @@ export const EventCard: React.FC = () => {
     // { name: 'prefix', value: '+7' },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const { isMounted } = useMounted();
   const { t } = useTranslation();
+
+  useEffect(()=>{
+    getFirst().then((data)=>{
+        if(isMounted.current){
+          console.log(data);
+          setFields([...fields,
+            { name: 'group', value: data['result1'][0].subj },
+            
+          ]);
+        }
+          
+
+    }).catch((e)=>{
+      notificationController.error({message:'Ошибка'})
+    })
+},[]);
 
   const formLabels: FormValues = {
     group: 'group',
     unp: 'unp',
+    
     // confirmPassword: t('common.confirmPassword'),
     // salutation: t('forms.stepFormLabels.salutation'),
     // gender: t('forms.stepFormLabels.gender'),
@@ -72,10 +92,10 @@ export const EventCard: React.FC = () => {
     }));
 
   const next = () => {
-    form.validateFields().then(() => {
-      setCurrent(current + 1);
-    });
-    //setCurrent(current + 1);
+    // form.validateFields().then(() => {
+    //   setCurrent(current + 1);
+    // });
+    setCurrent(current + 1);
   };
 
   const prev = () => {

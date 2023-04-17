@@ -6,6 +6,7 @@ import { DayjsDatePicker } from "../common/pickers/DayjsDatePicker";
 import { Steps as AntdSteps } from 'antd';
 import { Select as CommonSelect } from '@app/components/common/selects/Select/Select';
 import { DatePicker } from "../common/pickers/DatePicker";
+import { MinusCircleOutlined } from '@ant-design/icons';
 
 
 export const RangePicker = styled(DayjsDatePicker.RangePicker)`
@@ -101,4 +102,15 @@ export const DetailsValue = styled.div`
 export const Row = styled.div`
   display: flex;
   gap: 0.5rem;
+`;
+
+export const Wrapper = styled.div`
+  position: relative;
+`;
+
+export const RemoveBtn = styled(MinusCircleOutlined)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateY(-150%);
 `;

@@ -3,15 +3,23 @@ import * as S from '../eventCard.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { InputNumber } from '@app/components/common/inputs/InputNumber/InputNumber';
+import { useState } from 'react';
+import { useEffect } from 'preact/hooks';
+import { getFirst } from '@app/api/eventCard.api';
+import { useMounted } from '@app/hooks/useMounted';
 
-export const Step1: React.FC = () => {
+export const Step1: React.FC<any> = ({data}) => {
+   
     //const { t } = useTranslation();
+   
+
     return (
         <S.FormContent>
             <BaseButtonsForm.Item
                 name="group"
                 label={'Наименование субъекта'}
                 rules={[{ required: true, message: 'Введите наименование субъекта' }]}
+                
             >
                 <Input />
             </BaseButtonsForm.Item>
