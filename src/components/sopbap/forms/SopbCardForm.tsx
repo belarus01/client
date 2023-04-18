@@ -1,7 +1,7 @@
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { ISopbCard } from '../sopbTables/SopbCardTable';
 import { DatePicker, Space } from 'antd';
@@ -41,6 +41,10 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
       setSopbName(result.name);
     });
   };
+
+  useEffect(() => {
+    getSopb(idSopb);
+  }, []);
 
   const changeStatusDoc = (value: 1 | null | 0) => {
     setCard({ ...card, statusDoc: value });
@@ -149,26 +153,16 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
           </Space>
         </BaseButtonsForm.Item>
 
-        <BaseButtonsForm.Item name={'inf'} label="Статус документа об оценке соответствия, дата сверки статуса	 ">
-          <Space direction="horizontal" size="large" style={{ width: '100%' }} align="baseline">
-            <BaseButtonsForm.Item name={'statusDoc'} label="оценка соответствия" style={{ minWidth: '200px' }}>
-              <Select
-                defaultValue={card.statusDoc}
-                onChange={(value) => changeStatusDoc(value as 1 | null)}
-                options={[
-                  { value: 1, label: 'Действующий' },
-                  {
-                    value: null || 0,
-                    label: 'Не действующий',
-                  },
-                ]}
-              />
-            </BaseButtonsForm.Item>
-
-            <BaseButtonsForm.Item name={'dateStatus'} label="дата сверки статуса">
-              <DatePicker />
-            </BaseButtonsForm.Item>
-          </Space>
+        <BaseButtonsForm.Item
+          name={'inf'}
+          label="Информация о направлении запроса о представлении документов, послуживших основанием для выдачи сертификата, регистрации декларации (подразделение, дата и номер исх.)"
+        >
+          <TextArea
+            defaultValue={card.numRequest}
+            onChange={(e) => {
+              setCard({ ...card, numRequest: e.target.value });
+            }}
+          />
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item

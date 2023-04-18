@@ -24,7 +24,7 @@ export interface ISopbCard {
   model?: string | null;
   name: string;
   numDoc?: string;
-  numRequest?: null;
+  numRequest?: string;
   solution?: string | null | 1 | 0;
   statusDoc: string | null | 1 | 0;
   submit: number | null;
