@@ -64,10 +64,85 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
+          <Route path='common'>
+            <Route path="subjects" element={<Subjects />}>
+              <Route path='subject' element={<SubjectProfileLayout />}>
+                <Route path='events' element={<SubjectEvents />} />
+                <Route path='objects' element={<SubjectObjects/>}/>
+                <Route path='settings' element={<SubjectSettings />} />
+              </Route>
+            </Route>
+            {/* <Route path='objects' element={}/> */}
+            {/* <Route path='npm' element={}/> */}
+            {/* <Route path='pog' element={}/> */}
+            {/* <Route path='pb' element={}/> */}
+            {/* <Route path='ptc' element={}/> */}
+            {/* <Route path='auto' element={}/> */}
+            {/* <Route path='railway' element={}/> */}
+            {/* <Route path='water' element={}/> */}
+            {/* <Route path='air' element={}/> */}
+            {/* <Route path='sopb' element={}/> */}
+            {/* <Route path='npm' element={}/> */}
+          </Route>
+          <Route path='planning'>
+            <Route path="calendar" element={<Planning />} />
+            {/* <Route index path="events" element={< />} /> */}
+            {/* <Route path="groups" element={< />} /> */}
+          </Route>
+          <Route path="admin">
+            <Route path="users" element={<UsersManagment />} />
+            <Route path="server-statistics" element={<ServerStatistics/>}/>
+            {/* <Route path="geo" element={</>}/> */}
+            {/* <Route path="arhiv" element={</>}/> */}
 
-          <Route index path="planning" element={<Planning />} />
+          </Route>
+          <Route path="handbooks">
+            {/* <Route path='soato' element={}/> */}
+            {/* <Route path='ate' element={}/> */}
+            {/* <Route path='oked' element={}/> */}
+            {/* <Route path='events' element={}/> */}
+            {/* <Route path='tnpanpa' element={}/> */}
+            {/* <Route path='tnpastrelem' element={}/> */}
+            {/* <Route path='jobs' element={}/> */}
+            {/* <Route path='deptunits' element={}/> */}
+            {/* <Route path='questions' element={}/> */}
+            {/* <Route path='eventquestions' element={}/> */}
+            {/* <Route path='defections' element={}/> */}
+
+            {/* <Route path='eventsdefections' element={}/> */}
+            {/* <Route path='sopbcard' element={}/> */}
+            {/* <Route path='state' element={}/> */}
+            {/* <Route path='spoo' element={}/> */}
+            {/* <Route path='opo' element={}/> */}
+            {/* <Route path='admban' element={}/> */}
+            {/* <Route path='admforce' element={}/> */}
+            {/* <Route path='typebuild' element={}/> */}
+            {/* <Route path='docsform' element={}/> */}
+          </Route>
+          <Route path='tnpa'>
+            {/* <Route path='tnpanpa' element={}/> */}
+            {/* <Route path='defections' element={}/> */}
+          </Route>
+          <Route path='journals'>
+            {/* <Route path='tnpanpa' element={}/> */}
+            {/* <Route path='defections' element={}/> */}
+          </Route>
+          <Route path='documents'>
+            {/* <Route path='chlist1' element={}/> */}
+            {/* <Route path='chlist2' element={}/> */}
+            {/* <Route path='chlist3' element={}/> */}
+            {/* <Route path='chlist4' element={}/> */}
+            {/* <Route path='chlist5' element={}/> */}
+            {/* <Route path='chlist6' element={}/> */}
+            {/* <Route path='chlist7' element={}/> */}
+            {/* <Route path='chlist8' element={}/> */}
+            {/* <Route path='chlist9' element={}/> */}
+            {/* <Route path='chlist10' element={}/> */}
+            {/* <Route path='chlist11' element={}/> */}
+
+          </Route>
           <Route path="server-error" element={<ServerError />} />
-          <Route path="server-statistics" element={<ServerStatistics/>}/>
+          
           <Route path="404" element={<Error404 />} />
 
           <Route path="profile" element={<ProfileLayout />}>
@@ -77,16 +152,9 @@ export const AppRouter: React.FC = () => {
             <Route path="payments" element={<Payments />} />
           </Route>
 
-          <Route path="handbooks">
-            <Route path="users" element={<UsersManagment />} />
-            <Route path="subjects" element={<Subjects />} />
-          </Route>
+          
 
-          <Route path='subject' element={<SubjectProfileLayout />}>
-            <Route path='events' element={<SubjectEvents />} />
-            <Route path='objects' element={<SubjectObjects/>}/>
-            <Route path='settings' element={<SubjectSettings />} />
-          </Route>
+          
 
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
