@@ -47,7 +47,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         url: '/common/npm',
       },
       {
-        title: 'Карта ПОГ',
+        title: 'ПОГ',
         key: 'pog',
         url: '/common/pog',
       },
@@ -56,31 +56,31 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'pb',
         url: '/common/pb',
       },
-      {
-        title: 'Пожарно-техническая карта',
-        key: 'ptc',
-        url: '/common/ptc',
-      },
-      {
-        title: 'Автотранспорт',
-        key: 'auto',
-        url: '/common/auto',
-      },
-      {
-        title: 'ЖД',
-        key: 'railway',
-        url: '/common/railway',
-      },
-      {
-        title: 'Водный траспорт',
-        key: 'water',
-        url: '/common/water',
-      },
-      {
-        title: 'Воздушный траспорт',
-        key: 'air',
-        url: '/common/air',
-      },
+      // {
+      //   title: 'Пожарно-техническая карта',
+      //   key: 'ptc',
+      //   url: '/common/ptc',
+      // },
+      // {
+      //   title: 'Автотранспорт',
+      //   key: 'auto',
+      //   url: '/common/auto',
+      // },
+      // {
+      //   title: 'ЖД',
+      //   key: 'railway',
+      //   url: '/common/railway',
+      // },
+      // {
+      //   title: 'Водный траспорт',
+      //   key: 'water',
+      //   url: '/common/water',
+      // },
+      // {
+      //   title: 'Воздушный траспорт',
+      //   key: 'air',
+      //   url: '/common/air',
+      // },
       {
         title: 'СОПБиП',
         key: 'sopb',

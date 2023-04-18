@@ -34,6 +34,7 @@ const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/Departmen
 
 const SopbPage = React.lazy(() => import('@app/pages/sopbs/SopbsPage'));
 const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage'));
+const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 
 export const MAIN_PATH = '/';
 
@@ -61,6 +62,7 @@ const Departaments = withLoading(DepartamentsPage);
 
 const Sopb = withLoading(SopbPage);
 const SopbCards = withLoading(SopbCardsPage);
+const PogPage = withLoading(PogPageTabs);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -83,7 +85,7 @@ export const AppRouter: React.FC = () => {
             </Route>
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
-            {/* <Route path='pog' element={}/> */}
+            <Route path="pog" element={<PogPage />} />
             {/* <Route path='pb' element={}/> */}
             {/* <Route path='ptc' element={}/> */}
             {/* <Route path='auto' element={}/> */}
