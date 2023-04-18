@@ -19,9 +19,7 @@ export interface BasicTableData {
 }
 
 export const getAllUsers = () =>
-    httpApi.get<User[]>('users/get/all/relations').then(({data}) => data).catch((e)=>{
-        notificationController.error({message:'Ошибка'});
-    });
+    httpApi.get<User[]>('users/get/all/relations').then(({data}) => data);
 
 export const getUsersByPage = () =>
     httpApi.get<User[]>('').then(({data})=>data);

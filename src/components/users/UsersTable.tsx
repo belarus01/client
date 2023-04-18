@@ -53,6 +53,8 @@ export const UsersTable: React.FC = () => {
         if (isMounted.current) {
           setTableData({ data: res, pagination: initialPagination, loading: false });
         }
+      }).catch((e)=>{
+        notificationController.error({message:'Произошла ошибка при загрузке пользователей'});
       });
     },
     [isMounted],

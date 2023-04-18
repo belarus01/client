@@ -88,6 +88,14 @@ export const SubjectObjects:React.FC = () =>{
             }
         },
     ];
+    function handleSearch(value: string, ): void {
+        throw new Error("Function not implemented.");
+    }
+
+    function showAddUserModal(): void {
+        throw new Error("Function not implemented.");
+    }
+
     return (
         <>
         <Row gutter={[30, 30]}>
