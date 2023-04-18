@@ -14,6 +14,7 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page'
+import { EventCard } from '../eventCard/eventCard';
 
 
 
@@ -25,7 +26,7 @@ const PaymentsPage = React.lazy(() => import('@app/pages/test/PaymentsPage'));
 const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(()=>import('@app/pages/PlanningPage'));
 
-const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
+//const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersManagmentPage'));
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
 const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'))
@@ -47,6 +48,9 @@ const LogoutFallback = withLoading(Logout);
 
 
 const Planning = withLoading(PlanningPage);
+const UsersManagment = withLoading(UserManagmentPage);
+const Subjects = withLoading(SubjectsPage);
+const SubjectSettings = withLoading(SecuritySettingsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -83,11 +87,13 @@ export const AppRouter: React.FC = () => {
 
           </Route>
           <Route path="planning" element={<Planning/>} />
+          <Route path='/event-card' element={<EventCard />} />
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />
         </Route>
         <Route path="/logout" element={<LogoutFallback />} />
+       
       </Routes>
     </BrowserRouter>
   );

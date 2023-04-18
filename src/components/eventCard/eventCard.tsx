@@ -48,21 +48,37 @@ export const EventCard: React.FC = () => {
   const { isMounted } = useMounted();
   const { t } = useTranslation();
 
+  
+
   useEffect(()=>{
     getFirst().then((data)=>{
         if(isMounted.current){
           console.log(data);
-          setFields([...fields,
+          setData(data);
+          setFields([
             { name: 'group', value: data['result1'][0].subj },
-            
+            { name: 'unp', value: data['result1'][0].unp },
+            { name: 'date', value: data['result1'][0].date_reg_unp },
+            { name: 'prin', value: data['result1'][0].ved },
+            { name: 'ur_adress', value: data['result1'][0].addr_yur },
+            { name: 'fak_adress', value: data['result1'][0].addr_fact },
+            { name: 'fio', value: data['result1'][0].boss_name },
+            { name: 'dolgnost', value: data['result1'][0].staff_boss },
+            { name: 'sfera', value: data['result1'][0].name_oked },
+            { name: 'col_zdani', value: data['result2'][0].num_zdan },
+            { name: 'name_zdani', value: data['result2'][0].zdan },
+            { name: 'col_sooryg', value: data['result2'][1].num_zdan },
+            { name: 'name_sooryg', value: data['result2'][1].zdan },
           ]);
         }
-          
+        
+        
 
     }).catch((e)=>{
       notificationController.error({message:'Ошибка'})
     })
 },[]);
+ 
 
   const formLabels: FormValues = {
     group: 'group',
@@ -130,7 +146,7 @@ export const EventCard: React.FC = () => {
   ];
 
   const formFieldsUi = [
-    <Step1 key="1" />,
+    <Step1 key="1" data={data1}/>,
     <Step2 key="2" />,
     <Step3 key="3" />,
     // <Step4 key="4" formValues={formValues} />,
