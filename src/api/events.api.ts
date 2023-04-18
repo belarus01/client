@@ -9,3 +9,6 @@ export const getAllEventsBySubjectId = (idSubj:number) =>
 
 export const addEvent = (event:SEvents) =>
     httpApi.post<SEvents>('events/create', event).then(({data})=>data);
+
+export const getAllEventsOrders = () =>
+    httpApi.get<SEventsOrder[]>('events/get/all/eventsOrders').then(({data})=>data);

@@ -29,7 +29,7 @@ const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/Subject
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
 const SubjectObjectsPage = React.lazy(()=>import('@app/pages/subjects/SubjectObjectsPage'));
 const ServerStatisticsPage = React.lazy(()=>import('@app/pages/ServerStatisticsPage'));
-
+const EventsPage = React.lazy(()=>import('@app/pages/events/EventsPage'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -52,6 +52,7 @@ const SubjectSettings = withLoading(SubjectSettingsPage);
 const SubjectEvents = withLoading(SubjectEventsPage);
 const SubjectObjects = withLoading(SubjectObjectsPage);
 const ServerStatistics = withLoading(ServerStatisticsPage);
+const Events = withLoading(EventsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -87,7 +88,7 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path='planning'>
             <Route path="calendar" element={<Planning />} />
-            {/* <Route index path="events" element={< />} /> */}
+            <Route index path="events" element={< Events/>} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">

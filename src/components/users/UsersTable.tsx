@@ -253,6 +253,7 @@ export const UsersTable: React.FC = () => {
       destroyOnClose
       title={'Изменение пароля'}
       centered
+      onCancel={()=>setOpen(false)}
       open={open}>
         <AddEditUserForm data={selectedUser} />
       </Modal>

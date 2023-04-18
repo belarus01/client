@@ -284,9 +284,11 @@ export interface SEventsOrder {
     otherInfo: string | null;
     idEventPlan: number | null;
     idDept2: SDept;
+    idDeptIss2:SDept;
     idEvent2: SEvents;
     idGroup2: Group;
     idSubj2: SSubj;
+    
     sEventsOrderAdmBans: SEventsOrderAdmBan[];
     sEventsOrderAdmForces: SEventsOrderAdmForce[];
     sEventsOrderData: SEventsOrderData[];
