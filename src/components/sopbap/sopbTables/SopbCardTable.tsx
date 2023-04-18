@@ -11,24 +11,24 @@ export interface ISopbCard {
   brend?: string;
   comm?: string;
   dataRequest?: string;
-  dateDoc?: string;
+  dateDoc?: string | 1 | 0;
   dateFrom?: string;
   dateRecord?: string;
   dateStatus?: string;
   dateTo?: string;
-  fioStaff?: string | null;
+  fioStaff?: string;
   idCard: number | null;
   idDeptRequest: number | null;
   idSopb: number | null | undefined;
-  mnfData?: string | null;
+  mnfData?: string;
   model?: string | null;
   name: string;
   numDoc?: string;
   numRequest?: null;
-  solution?: string | null;
-  statusDoc: string | null;
+  solution?: string | null | 1 | 0;
+  statusDoc: string | null | 1 | 0;
   submit: number | null;
-  uid: number | null;
+  uid: number | string | null;
 }
 
 export const SopbCardTable: React.FC = () => {
@@ -189,9 +189,13 @@ export const SopbCardTable: React.FC = () => {
       width: '15%',
       render: (value: string) => <div>{value == '0' ? 'удалено' : 'активно'}</div>,
     },
-
     {
       key: '20',
+      title: 'Примечание',
+      dataIndex: 'comm',
+    },
+    {
+      key: '21',
       title: 'Действия',
       render: (sopbSelected: ISopbCard) => {
         function onDeleteDep() {

@@ -1,34 +1,23 @@
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { Input } from '@app/components/common/inputs/Input/Input';
-import { useEffect, useMemo, useState } from 'react';
+import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
+import { useState } from 'react';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { ISopbCard } from '../sopbTables/SopbCardTable';
-import { Col, DatePicker, Row, Space } from 'antd';
-import dayjs from 'dayjs';
+import { DatePicker, Space } from 'antd';
+
 import moment from 'moment';
-// import dayjs from 'dayjs';
-// import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useParams } from 'react-router';
+import { getSopbById } from './../../../api/sopb.api';
 
 export interface ISopbCardFormProps {
   data?: ISopbCard;
 }
 
-// dayjs.extend(customParseFormat);
-
-const { RangePicker } = DatePicker;
-
-// const dateFormat = 'DD-MM-YYYY';
 const dateFormat = 'YYYY-MM-DD';
 
-interface ISopbCardForm extends ISopbCard {
-  dateFrom: string;
-  dateTo: string;
-  numDoc: string;
-}
-
 export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
-  const [card, setCard] = useState<ISopbCardForm>({
+  const [card, setCard] = useState<ISopbCard>({
     idCard: null,
     idDeptRequest: null,
     idSopb: null,
@@ -36,98 +25,204 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
     submit: null,
     uid: null,
     name: '',
-    dateTo: '',
-    dateFrom: '',
+    dateTo: new Date().toLocaleDateString().split('.').reverse().join('-'),
+    dateFrom: new Date().toLocaleDateString().split('.').reverse().join('-'),
+    dateStatus: new Date().toLocaleDateString().split('.').reverse().join('-'),
     numDoc: '',
     ...data,
   });
-  const [dataPick, setDataPick] = useState([]);
-  console.log(card.dateTo, dayjs);
 
-  useEffect(() => {
-    console.log(dataPick);
-    if (dataPick.length == 2 && dataPick[1]) {
-      console.log(
-        dataPick[0]._d.toLocaleDateString().split('.').join('-'),
-        dataPick[1]._d.toLocaleDateString().split('.').join('-'),
-      );
-    }
-  }, [dataPick]);
+  const [sopbName, setSopbName] = useState('');
 
-  const changeStatus = (value: 1 | 0) => {
-    setCard({ ...card, active: value });
-  };
+  const { idSopb } = useParams();
 
-  const setDates = (val: RangeValue<moment.Moment>, info: string[]) => {
-    if (info.length == 2) {
-      setCard({ ...card, dateFrom: info[0], dateTo: info[1] });
-    }
-  };
-
-  console.log(data);
-
-  const defaultDateRange = [new Date('2015-06-06'), new Date('2015-06-06')];
-  const defaultDayjsRange = defaultDateRange.map((date) => dayjs(date));
-
-  const dateCurrent = useMemo(() => {
-    const currentDate = [card.dateFrom, card.dateTo];
-    const res = currentDate.map((date) => {
-      if (date) {
-        return date.split('.').reverse().join('-');
-      }
-      return new Date().toLocaleDateString().split('.').reverse().join('-');
+  const getSopb = (idSopb: string | undefined) => {
+    getSopbById(idSopb).then((result) => {
+      setSopbName(result.name);
     });
-    console.log(res);
-    return res;
-  }, [card]);
+  };
+
+  const changeStatusDoc = (value: 1 | null | 0) => {
+    setCard({ ...card, statusDoc: value });
+  };
+
+  const changeSubmit = (value: 1 | null | 0) => {
+    setCard({ ...card, submit: value });
+  };
+
+  const changeSolution = (value: 1 | null | 0) => {
+    setCard({ ...card, solution: value });
+  };
   return (
     <>
-      <BaseButtonsForm isFieldsChanged={false}>
+      <BaseButtonsForm
+        isFieldsChanged={false}
+        initialValues={{
+          ['dateFrom']: moment(card.dateFrom, dateFormat),
+          ['dateTo']: moment(card.dateTo, dateFormat),
+          ['dateStatus']: moment(card.dateStatus, dateFormat),
+        }}
+      >
         <BaseButtonsForm.Item name={'doc'} label="№ документа об оценке соответствия и период его действия:">
           <Space direction="horizontal">
             <BaseButtonsForm.Item name="numdoc">
               <Input
-                name="numdoc"
-                onChange={(e) => setCard({ ...card, numdoc: e.target.value })}
+                onChange={(e) => setCard({ ...card, numDoc: e.target.value })}
                 placeholder="№ документа"
                 defaultValue={card.numDoc}
               />
             </BaseButtonsForm.Item>
-            <BaseButtonsForm.Item name="dateTo">
-              <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+            <BaseButtonsForm.Item name="dateFrom">
+              <DatePicker
+                format={dateFormat}
+                onChange={(value) => {
+                  setCard({ ...card, dateFrom: value?.format(dateFormat) });
+                }}
+              />
             </BaseButtonsForm.Item>
-            <BaseButtonsForm.Item name="numdoc">
-              <DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+            <BaseButtonsForm.Item name="dateTo">
+              <DatePicker
+                format={dateFormat}
+                onChange={(value) => {
+                  setCard({ ...card, dateTo: value?.format(dateFormat) });
+                }}
+              />
             </BaseButtonsForm.Item>
           </Space>
         </BaseButtonsForm.Item>
 
-        <BaseButtonsForm.Item label="Наименование СОПБиП" name="name">
-          <Input name="name" onChange={(e) => setCard({ ...card, name: e.target.value })} defaultValue={card.name} />
-        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item
-          label="Оценка соответствия средств обеспечения пожарной безопасности и пожаротушения проводится в форме сертификации"
-          name={'conditions'}
+          name={'sopbName'}
+          label="Наименование продукции в соответствии с перечнем средств обеспечения пожарной безопасности и пожаротушения ТР ЕАЭС 043/2017"
+        >
+          <Input defaultValue={sopbName} key={sopbName} disabled />
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
+          name={'name'}
+          label="Наименование продукции, указанное в документе об оценке соответствия"
         >
           <Input
-            name="conditions"
-            onChange={(e) => setCard({ ...card, name: e.target.value })}
             defaultValue={card.name}
+            onChange={(e) => {
+              setCard({ ...card, name: e.target.value });
+            }}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Статус" name={'active'}>
+
+        <BaseButtonsForm.Item
+          name={'mnfData'}
+          label="Информация об изготовителе, указанная в документе об оценке соответствия"
+        >
+          <Input
+            defaultValue={card.mnfData}
+            onChange={(e) => {
+              setCard({ ...card, mnfData: e.target.value });
+            }}
+          />
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item name={'statusRate'} label="Статус документа об оценке соответствия, дата сверки статуса	 ">
+          <Space direction="horizontal" size="large" style={{ width: '100%' }} align="baseline">
+            <BaseButtonsForm.Item name={'statusDoc'} label="оценка соответствия" style={{ minWidth: '200px' }}>
+              <Select
+                defaultValue={card.statusDoc}
+                onChange={(value) => changeStatusDoc(value as 1 | null)}
+                options={[
+                  { value: 1, label: 'Действующий' },
+                  {
+                    value: null || 0,
+                    label: 'Не действующий',
+                  },
+                ]}
+              />
+            </BaseButtonsForm.Item>
+
+            <BaseButtonsForm.Item name={'dateStatus'} label="дата сверки статуса">
+              <DatePicker
+                format={dateFormat}
+                onChange={(value) => {
+                  setCard({ ...card, dateStatus: value?.format(dateFormat) });
+                }}
+              />
+            </BaseButtonsForm.Item>
+          </Space>
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item name={'inf'} label="Статус документа об оценке соответствия, дата сверки статуса	 ">
+          <Space direction="horizontal" size="large" style={{ width: '100%' }} align="baseline">
+            <BaseButtonsForm.Item name={'statusDoc'} label="оценка соответствия" style={{ minWidth: '200px' }}>
+              <Select
+                defaultValue={card.statusDoc}
+                onChange={(value) => changeStatusDoc(value as 1 | null)}
+                options={[
+                  { value: 1, label: 'Действующий' },
+                  {
+                    value: null || 0,
+                    label: 'Не действующий',
+                  },
+                ]}
+              />
+            </BaseButtonsForm.Item>
+
+            <BaseButtonsForm.Item name={'dateStatus'} label="дата сверки статуса">
+              <DatePicker />
+            </BaseButtonsForm.Item>
+          </Space>
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
+          name={'submitInfo'}
+          label="Сведения о представлении (непредставлении) запрошенных документов"
+        >
           <Select
-            defaultValue={card.active || 1}
-            onChange={(value) => changeStatus(value as 1 | 0)}
+            defaultValue={card.submit}
+            onChange={(value) => changeSubmit(value as 1 | null | 0)}
             options={[
-              { value: 1, label: 'активно' },
+              { value: 1, label: 'Предоставлены' },
               {
-                value: 0,
-                label: 'удалено',
+                value: null || 0,
+                label: 'Не предоставлены',
               },
             ]}
           />
         </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
+          name={'solution'}
+          label="Результаты рассмотрения документа об оценке соответствия, а также документов, послуживших основанием для его выдачи (регистрации)"
+        >
+          <Select
+            defaultValue={card.solution}
+            onChange={(value) => changeSolution(value as 1 | null | 0)}
+            options={[
+              { value: 1, label: 'Одобрено' },
+              {
+                value: null || 0,
+                label: 'Неодобренно',
+              },
+            ]}
+          />
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
+          name={'fioStaf'}
+          label="ФИО, должность и место работы работника, рассмотревшего документы"
+        >
+          <Input defaultValue={card.fioStaff} onChange={(e) => setCard({ ...card, fioStaff: e.target.value })} />
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
+          name={'fioUid'}
+          label="ФИО, должность и место работы работников, вносивших корректировки в настоящие сведения"
+        >
+          <Input defaultValue={card.uid} onChange={(e) => setCard({ ...card, uid: e.target.value })} />
+        </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item name={'comm'} label="Примечание">
+          <TextArea defaultValue={card.comm} onChange={(e) => setCard({ ...card, uid: e.target.value })} />
+        </BaseButtonsForm.Item>
+
         <BaseButtonsForm.Item>
           <Button type="primary">Сохранить</Button>
         </BaseButtonsForm.Item>
