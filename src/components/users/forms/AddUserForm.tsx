@@ -23,9 +23,11 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
 
     useEffect(() => {
         getAllJobs().then((responce) => {
+            console.log("jobs");
+            console.log(responce);
             let arr: string[] = [];
             setPositions(responce);
-            positions.forEach(element => {
+            responce.forEach(element => {
                 arr.push(element.job);
             });
             setPositionsStr(arr);
