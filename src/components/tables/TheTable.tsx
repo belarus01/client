@@ -13,7 +13,7 @@ interface ITheTableProps {
   columns: any[];
   titleModalAdding?: string | null | undefined;
   titleMoadlEditing?: string | null | undefined;
-  FormComponent?: React.ElementType | Element;
+  FormComponent?: React.ElementType;
   selected?: object;
   searchFunc?: (value: string) => void;
   setSearchFunc?: (e: React.ChangeEvent<HTMLInputElement>) => void;

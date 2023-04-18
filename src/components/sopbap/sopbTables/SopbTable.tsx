@@ -2,11 +2,11 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getAllSoapb } from '@app/api/sopb.api';
+import { getAllSopb } from '@app/api/sopb.api';
 import { Link } from 'react-router-dom';
-import { SoapbForm } from './forms/SoapbForm';
+import { SopbForm } from '../forms/SopbForm';
 
-export interface ISoapb {
+export interface ISopb {
   // numDoc: string;
   // dateDoc?: Date;
   // dateFrom?: Date;
@@ -32,12 +32,12 @@ export interface ISoapb {
   uid?: number | null;
 }
 
-export const SoapbTable: React.FC = () => {
-  const [soapb, setSoapb] = useState<{ data: ISoapb[]; loading: boolean }>({
+export const SopbTable: React.FC = () => {
+  const [sopb, setSopb] = useState<{ data: ISopb[]; loading: boolean }>({
     data: [],
     loading: false,
   });
-  const [selectedSoapb, setSelectedSoapb] = useState<ISoapb>({
+  const [selectedSopb, setSelectedSopb] = useState<ISopb>({
     idSopb: null,
     name: '',
   });
@@ -45,16 +45,16 @@ export const SoapbTable: React.FC = () => {
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
 
-  const getSoapbs = () => {
-    setSoapb({ ...soapb, loading: true });
-    getAllSoapb().then((soapbs) => {
-      console.log(soapbs);
-      setSoapb({ data: soapbs, loading: false });
+  const getSopbs = () => {
+    setSopb({ ...sopb, loading: true });
+    getAllSopb().then((sopbs) => {
+      console.log(sopbs);
+      setSopb({ data: sopbs, loading: false });
     });
   };
 
   useEffect(() => {
-    getSoapbs();
+    getSopbs();
   }, []);
 
   const toggleModalAdding = (isOpen = true) => {
@@ -71,14 +71,14 @@ export const SoapbTable: React.FC = () => {
   //no be
 
   const filtredTable = useMemo(
-    () => soapb.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())),
-    [search, soapb],
+    () => sopb.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())),
+    [search, sopb],
   );
 
-  const deleteItem = (departmentSelected: ISoapb) => {
+  const deleteItem = (departmentSelected: ISopb) => {
     //deleteDepartment(id)
-    const newSoapb = soapb.data.filter((soapb) => soapb.idSopb !== departmentSelected.idSopb);
-    setSoapb({ ...soapb, data: newSoapb });
+    const newSopb = sopb.data.filter((sopb) => sopb.idSopb !== departmentSelected.idSopb);
+    setSopb({ ...sopb, data: newSopb });
   };
 
   const searchCategories = (value: string) => {
@@ -90,15 +90,6 @@ export const SoapbTable: React.FC = () => {
     setSearch(e.target.value);
   };
 
-  // const navigate = useNavigate();
-
-  // const onRow = (recod: ISoapb, rowIndex: number | undefined) => {
-  //   return {
-  //     onClick: (e: ChangeEvent<HTMLTemplateElement>) => {
-  //       navigate(`${recod.idSopb}`);
-  //     },
-  //   };
-  // };
   const columns = [
     {
       key: '1',
@@ -134,7 +125,7 @@ export const SoapbTable: React.FC = () => {
     {
       key: '6',
       title: 'Действия',
-      render: (departmentSelected: ISoapb) => {
+      render: (departmentSelected: ISopb) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -152,7 +143,7 @@ export const SoapbTable: React.FC = () => {
           <>
             <EditOutlined
               onClick={() => {
-                setSelectedSoapb(departmentSelected);
+                setSelectedSopb(departmentSelected);
                 toggleModalEditing(true);
               }}
             />
@@ -169,15 +160,14 @@ export const SoapbTable: React.FC = () => {
   ];
   return (
     <>
-      <div>soapbs</div>
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <SoapbForm data={props.data} />}
+        FormComponent={(props) => <SopbForm data={props.data} />}
         searchFunc={searchCategories}
-        selected={selectedSoapb}
+        selected={selectedSopb}
         setSearchFunc={searchFunc}
-        dataTable={{ data: filtredTable, loading: soapb.loading }}
+        dataTable={{ data: filtredTable, loading: sopb.loading }}
         columns={columns}
         titleMoadlEditing={'Редактирование'}
         titleModalAdding={'Создание'}
@@ -190,4 +180,4 @@ export const SoapbTable: React.FC = () => {
   );
 };
 
-export default SoapbTable;
+export default SopbTable;

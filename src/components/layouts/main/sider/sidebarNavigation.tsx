@@ -75,6 +75,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'СОПБиП',
     key: 'sopbap',
     icon: <BookOutlined />,
-    url: '/soapb',
+    url: '/sopb',
   },
 ];

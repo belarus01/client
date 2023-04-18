@@ -30,7 +30,8 @@ const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEv
 const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'));
 const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/DepartmentsPage'));
 
-const SoapbPage = React.lazy(() => import('@app/pages/soapbs/SoapbsPage'));
+const SopbPage = React.lazy(() => import('@app/pages/sopbs/SopbsPage'));
+const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage'));
 
 export const MAIN_PATH = '/';
 
@@ -55,7 +56,8 @@ const SubjectEvents = withLoading(SubjectEventsPage);
 const AteObl = withLoading(AteOblPage);
 const Departaments = withLoading(DepartamentsPage);
 
-const Soapb = withLoading(SoapbPage);
+const Sopb = withLoading(SopbPage);
+const SopbCards = withLoading(SopbCardsPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -86,9 +88,9 @@ export const AppRouter: React.FC = () => {
             <Route path="ate" element={<AteObl />} />
             <Route path="departaments" element={<Departaments />} />
           </Route>
-          <Route path="soapb">
-            <Route path="" element={<Soapb />} />
-            <Route path=":id" element={<div>asdafsdfasdf</div>} />
+          <Route path="sopb">
+            <Route path="" element={<Sopb />} />
+            <Route path=":idSopb" element={<SopbCards />} />
           </Route>
           <Route path="subject" element={<SubjectProfileLayout />}>
             <Route path="events" element={<SubjectEventsPage />} />
