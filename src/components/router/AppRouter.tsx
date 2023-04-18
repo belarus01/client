@@ -65,13 +65,14 @@ export const AppRouter: React.FC = () => {
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
           <Route path='common'>
-            <Route path="subjects" element={<Subjects />}>
-              <Route path='subject' element={<SubjectProfileLayout />}>
+            <Route path="subjects" element={<Subjects />}/>
+            <Route path='subject' element={<SubjectProfileLayout />}>
                 <Route path='events' element={<SubjectEvents />} />
                 <Route path='objects' element={<SubjectObjects/>}/>
                 <Route path='settings' element={<SubjectSettings />} />
-              </Route>
             </Route>
+              
+          
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
             {/* <Route path='pog' element={}/> */}
