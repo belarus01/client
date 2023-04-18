@@ -1,6 +1,5 @@
 import { Table } from '@app/components/common/Table/Table';
 import React, { useCallback, useEffect, useState } from 'react';
-import { UserModel } from '../../domain/UserModel';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +8,6 @@ import { getAllUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
-import { AddUserForm } from '@app/components/users/forms/AddUserForm';
 import { Button } from '../common/buttons/Button/Button';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { notificationController } from '@app/controllers/notificationController';
@@ -18,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { AddSubjectForm } from './forms/AddSubjectForm';
 import { getAllDepartments } from '@app/api/departments.api';
 import { getAllSubjects } from '@app/api/subjects.api';
+import { useAppSelector } from '@app/hooks/reduxHooks';
 
 const initialPagination: Pagination = {
     current: 1,
@@ -37,6 +36,7 @@ export const SubjectsTable: React.FC = () => {
     const { t } = useTranslation();
     const { isMounted } = useMounted();
     const navigate = useNavigate();
+    const user = useAppSelector((state)=>state.user.user);
 
     // const fetch = useCallback(
     //     (pagination: Pagination) => {
@@ -94,14 +94,6 @@ export const SubjectsTable: React.FC = () => {
     //   });
     // };
 
-    const handleDeleteRow = (user: SSubj) => {
-
-    }
-
-    const handleSwitchClick = (user: User) => {
-
-    }
-
     const handleEditClick = (user: User) => {
         setOpen
     }
@@ -118,6 +110,11 @@ export const SubjectsTable: React.FC = () => {
         },
         {
             key: "3",
+            title: "Название",
+            dataIndex: "subj",
+        },
+        {
+            key: "4",
             title: "Юридический адрес",
             dataIndex: "addrYur"
         },
@@ -127,6 +124,10 @@ export const SubjectsTable: React.FC = () => {
             title: "Действия",
             width: '15%',
             render: (subj: SSubj) => {
+                function handleDeleteRow(user: User | null) {
+                    throw new Error('Function not implemented.');
+                }
+
                 return (
                     <Space>
                         <Button
@@ -139,6 +140,12 @@ export const SubjectsTable: React.FC = () => {
                         >
                             {'Открыть'}
                         </Button>
+                        <DeleteOutlined
+              onClick={() => {
+                handleDeleteRow(user);
+              }}
+              style={{ color: "red", marginLeft: 12 }}
+            />
 
                     </Space>
 

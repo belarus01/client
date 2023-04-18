@@ -15,6 +15,8 @@ export interface SubjectSettingsProps{
 
 export const SubjectSettings:React.FC<SubjectSettingsProps> = ({subject})=>{
     const user = useAppSelector((state) => state.user.user);
+    const subj = useAppSelector((state)=> state.subj.subj);
+
     
     const [form] = BaseButtonsForm.useForm();
 
@@ -27,9 +29,6 @@ export const SubjectSettings:React.FC<SubjectSettingsProps> = ({subject})=>{
     const [city, setCity] = useState<React.ReactNode[]>([]);
     const [street, setStreet] = useState<React.ReactNode[]>([]);
    
-
-    
-
     const handleOblSelect = (selected:any) =>{
         getRayonsByOblId(selected).then((res)=>{
             const childrenRayon: React.ReactNode[] = [];
@@ -96,8 +95,9 @@ export const SubjectSettings:React.FC<SubjectSettingsProps> = ({subject})=>{
                 layout="vertical"
                 onFinish={onFinish}
                 isFieldsChanged={false}
+                initialValues={subj? subj :undefined}
             >
-                <BaseButtonsForm.Item label="УНП" name="unp">
+                <BaseButtonsForm.Item label="УНП" name="unp" >
                     <Input />
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Наименование субъекта промышленной беезопасности" name="subj">

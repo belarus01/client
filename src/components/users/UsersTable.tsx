@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
-import { Col, Row, Space, TablePaginationConfig } from 'antd';
+import { Col, Modal, Row, Space, TablePaginationConfig } from 'antd';
 import { getAllUsers, searchUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
-import { AddUserForm } from '@app/components/users/forms/AddUserForm';
+import { AddEditUserForm } from '@app/components/users/forms/AddUserForm';
 import { Button } from '../common/buttons/Button/Button';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { notificationController } from '@app/controllers/notificationController';
@@ -32,9 +32,8 @@ export const UsersTable: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
   const [type, setType] = useState<boolean>(false);
 
-  const { t } = useTranslation();
   const { isMounted } = useMounted();
-  
+
   // const fetch = useCallback(
   //     (pagination: Pagination) => {
   //       setTableData((tableData) => ({ ...tableData, loading: true }));
@@ -54,6 +53,8 @@ export const UsersTable: React.FC = () => {
         if (isMounted.current) {
           setTableData({ data: res, pagination: initialPagination, loading: false });
         }
+      }).catch((e)=>{
+        notificationController.error({message:'Произошла ошибка при загрузке пользователей'});
       });
     },
     [isMounted],
@@ -79,19 +80,19 @@ export const UsersTable: React.FC = () => {
     setOpen(false);
   };
 
-  const showUpdatePasswordModal =()=>{
+  const showUpdatePasswordModal = () => {
     setOpenPassword(true);
   }
 
-  const hideUpdatePasswordModal = () =>{
+  const hideUpdatePasswordModal = () => {
     setOpenPassword(false);
   }
 
-  const showEditUserModal = () =>{
+  const showEditUserModal = () => {
     setOpenEdit(true);
   }
 
-  const hideEditUserModal = () =>{
+  const hideEditUserModal = () => {
     setOpenEdit(false);
   }
   // const handleDeleteRow = (rowId: number) => {
@@ -119,11 +120,11 @@ export const UsersTable: React.FC = () => {
   }
 
   const handleSearch = (value: string) => {
-    setTableData({...tableData, loading:true});
-    if(value.length === 0)
+    setTableData({ ...tableData, loading: true });
+    if (value.length === 0)
       fetch(tableData.pagination)
-    searchUsers(value).then((res)=>{
-      setTableData({...tableData, data:res, loading:false})
+    searchUsers(value).then((res) => {
+      setTableData({ ...tableData, data: res, loading: false })
     })
   }
 
@@ -132,7 +133,7 @@ export const UsersTable: React.FC = () => {
       key: "2",
       title: "Фамилия",
       dataIndex: "lName",
-      sorter:true
+      sorter: true
     },
     {
       key: "3",
@@ -235,9 +236,28 @@ export const UsersTable: React.FC = () => {
         scroll={{ x: 800 }}
         bordered
       />
-      <AddUserForm open={open} onCancel={hideAddUserModal} onTableChange={updateTable} />
-      <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser}/>
-      <UpdatePasswordForm open={openPassword} onCancel={hideUpdatePasswordModal}/>
+      <Modal
+        closable
+        footer={null}
+        destroyOnClose
+        title={'Изменение пароля'}
+        centered
+        onCancel={()=>setOpenPassword(false)}
+        open={openPassword}
+      >
+        <UpdatePasswordForm />
+      </Modal>
+      <Modal
+      closable
+      footer={null}
+      destroyOnClose
+      title={'Изменение пароля'}
+      centered
+      open={open}>
+        <AddEditUserForm data={selectedUser} />
+      </Modal>
+      
+      <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser} />
     </>
 
   )

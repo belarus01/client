@@ -13,19 +13,29 @@ import axios from 'axios';
 import { httpApi } from '@app/api/http.api';
 import { Modal } from '../common/Modal/Modal';
 import { notificationController } from '@app/controllers/notificationController';
+import { Col, Row } from 'antd';
+import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
+import { Button } from '../common/buttons/Button/Button';
 //import { httpApi } from '@app/api/http.api';
 
 export const Planning: React.FC = () => {
     const { t } = useTranslation();
     const [data, setData] = useState<any[]>([]);
+    const [addOpen, setAddOpen] = useState(false);
 
     const onDateClick = (info:any) =>{
         const date = info.start;
+        //setData([...data, {title:'', start:info., end:}])
         alert('clicked ' + date);
+    }
+
+    const handleAddClick = () =>{
+        setAddOpen(true);
     }
 
     const onSelect = (info:any) =>{
         alert('selected ' + info.startStr + ' to ' + info.endStr);
+        setData(current =>[...current, {title:'Мероприятие', start:info.start, endStr:info.end}]);
     }
 
     useEffect(()=>{
@@ -38,7 +48,9 @@ export const Planning: React.FC = () => {
         })
     },[])
     return (
-            <FullCalendar
+        <>
+        <Button onClick={handleAddClick} type='default'>Создать мероприятие</Button>
+        <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView='dayGridMonth'
                 locale={ruLocale}
@@ -57,6 +69,7 @@ export const Planning: React.FC = () => {
                     })
                     alert(data.find(element=>element.title == info.event.title))
                     if(!confirm(info.event.title)){
+
                         info.revert();
                     }
                 }}
@@ -66,5 +79,7 @@ export const Planning: React.FC = () => {
                 // }}
                 events={data} 
             />
+        </>
+            
     )
 }

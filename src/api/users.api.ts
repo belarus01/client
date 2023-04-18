@@ -1,5 +1,6 @@
 import { CreateUserDTO, DeleteUserDTO, SDeptJob, User } from "@app/domain/interfaces";
 import { httpApi } from "./http.api";
+import { notificationController } from "@app/controllers/notificationController";
 
 export interface Pagination {
     current?: number;
