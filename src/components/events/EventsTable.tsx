@@ -9,6 +9,7 @@ import { Table } from "../common/Table/Table";
 import { Col, Modal, Row, Space, TablePaginationConfig } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { SearchInput } from "../common/inputs/SearchInput/SearchInput";
+import { AddEventOrderForm } from "./forms/AddEventForm";
 
 const initialPagination: Pagination = {
     current: 1,
@@ -44,10 +45,12 @@ export const EventsTable: React.FC = () => {
     }, [fetch]);
 
     function handleAddClick(): void {
-        throw new Error("Function not implemented.");
+        setOpenAdd(true);
     }
 
-
+    const onCancelAdd = () =>{
+        setOpenAdd(false);
+    }
 
     const handleDeleteRow = (event: SEventsOrder) => {
         Modal.confirm({
@@ -232,7 +235,7 @@ export const EventsTable: React.FC = () => {
                     />
                 </Col>
                 <Col sm={24} md={6} lg={6}>
-                    <Button onClick={handleAddClick}>Добавить пользователя</Button>
+                    <Button onClick={handleAddClick}>Добавить мероприятие</Button>
                 </Col>
             </Row>
             <Table
@@ -243,6 +246,17 @@ export const EventsTable: React.FC = () => {
                 columns={columns}
                 bordered
             />
+            <Modal
+            closable
+            footer={null}
+            onCancel={onCancelAdd}
+            destroyOnClose
+            title={'Создание мероприятия'}
+            centered
+            open={openAdd}
+            >
+                <AddEventOrderForm/>
+            </Modal>
         </>
 
     )
