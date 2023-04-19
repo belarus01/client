@@ -4,7 +4,7 @@ import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
 import { Col, Modal, Row, Space, TablePaginationConfig } from 'antd';
-import { getAllUsers, searchUsers } from '@app/api/users.api';
+import { blockUser, deleteUser, deleteUserById, getAllUsers, searchUsers, unblockUser } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Switch } from '@app/components/common/Switch/Switch';
@@ -14,6 +14,7 @@ import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { notificationController } from '@app/controllers/notificationController';
 import { EditUserForm } from './forms/EditUserForm';
 import { UpdatePasswordForm } from './forms/UpdatePasswordForm';
+import { DeleteUserDTO } from '../../domain/interfaces';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -53,8 +54,8 @@ export const UsersTable: React.FC = () => {
         if (isMounted.current) {
           setTableData({ data: res, pagination: initialPagination, loading: false });
         }
-      }).catch((e)=>{
-        notificationController.error({message:'Произошла ошибка при загрузке пользователей'});
+      }).catch((e) => {
+        notificationController.error({ message: 'Произошла ошибка при загрузке пользователей' });
       });
     },
     [isMounted],
@@ -65,11 +66,11 @@ export const UsersTable: React.FC = () => {
   }, [fetch]);
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
-    // fetch(pagination);
+    fetch(pagination);
   };
 
   const updateTable = () => {
-    // fetch(tableData.pagination);
+    fetch(tableData.pagination);
   }
 
   const showAddUserModal = () => {
@@ -107,11 +108,43 @@ export const UsersTable: React.FC = () => {
   // };
 
   const handleDeleteRow = (user: User) => {
+    Modal.confirm({
+      title: "Вы действительно хотите удалить пользователя?",
+      okText: 'Удалить',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        deleteUser({ uid: user.uid, adminUid: 1 }).then((res) => {
+          notificationController.success({ message: 'Пользователь удален' });
+          handleTableChange(initialPagination);
+        }).catch((e) => {
+          notificationController.error({ message: 'Ошибка при удалении пользователя' });
+        })
+      }
+    }
+    );
 
   }
 
   const handleSwitchClick = (user: User) => {
-    //block
+    if (user.active === 1) {
+      Modal.confirm({
+        title: "Вы действительно хотите заблокировать пользователя?",
+        okText: 'Заблокировать',
+        cancelText: 'Отмена',
+        onOk: async () => {
+
+          blockUser({ uid: user.uid, adminUid: 1 }).then((res) => {
+            handleTableChange(initialPagination);
+          });
+        }
+      }
+      );
+    } else if(user.active === 0){
+      unblockUser({ uid: user.uid, adminUid: 1 }).then((res)=>{
+        handleTableChange(initialPagination);
+      })
+    }
+
   }
 
   const handleEditClick = (user: User) => {
@@ -242,22 +275,22 @@ export const UsersTable: React.FC = () => {
         destroyOnClose
         title={'Изменение пароля'}
         centered
-        onCancel={()=>setOpenPassword(false)}
+        onCancel={() => setOpenPassword(false)}
         open={openPassword}
       >
         <UpdatePasswordForm />
       </Modal>
       <Modal
-      closable
-      footer={null}
-      destroyOnClose
-      title={'Изменение пароля'}
-      centered
-      onCancel={()=>setOpen(false)}
-      open={open}>
-        <AddEditUserForm data={selectedUser} />
+        closable
+        footer={null}
+        destroyOnClose
+        title={'Добавление пользователя'}
+        centered
+        onCancel={() => hideAddUserModal()}
+        open={open}>
+        <AddEditUserForm data={selectedUser} onSuccess={hideAddUserModal} />
       </Modal>
-      
+
       <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser} />
     </>
 

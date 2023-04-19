@@ -2,11 +2,13 @@ import { SDept, SEvents, SEventsOrder } from "@app/domain/interfaces";
 import { useMounted } from "@app/hooks/useMounted";
 import { useCallback, useEffect, useState } from "react";
 import { Pagination } from '../../api/users.api';
-import { getAllEvents, getAllEventsOrders } from "@app/api/events.api";
+import { deleteEventOrder, getAllEvents, getAllEventsOrders, searchEventsOrders } from "@app/api/events.api";
 import { notificationController } from "@app/controllers/notificationController";
 import { Button } from "../common/buttons/Button/Button";
 import { Table } from "../common/Table/Table";
-import { Space } from "antd";
+import { Col, Modal, Row, Space, TablePaginationConfig } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { SearchInput } from "../common/inputs/SearchInput/SearchInput";
 
 const initialPagination: Pagination = {
     current: 1,
@@ -44,6 +46,40 @@ export const EventsTable: React.FC = () => {
     function handleAddClick(): void {
         throw new Error("Function not implemented.");
     }
+
+
+
+    const handleDeleteRow = (event: SEventsOrder) => {
+        Modal.confirm({
+            title: "Вы действительно хотите удалить мероприятие?",
+            okText: 'Удалить',
+            cancelText: 'Отмена',
+            onOk: async () => {
+                deleteEventOrder(event.idEventOrder).then((res) => {
+                    notificationController.success({ message: 'Мероприятие удалено' })
+                    handleTableChange(initialPagination);
+                }).catch((e) => {
+                    notificationController.error({ message: 'Ошибка при удалении мероприятия' });
+                })
+            }
+        }
+        );
+
+    }
+
+    const handleSearch = (value: string) => {
+        // setTableData({ ...tableData, loading: true });
+        // if (value.length === 0)
+        //   fetch(tableData.pagination)
+        // searchEventsOrders(value).then((res) => {
+        //   setTableData({ ...tableData, data: res, loading: false })
+        // })
+    }
+
+    const handleTableChange = (pagination: TablePaginationConfig) => {
+        fetch(pagination);
+    };
+
     const columns = [
         {
             key: "1",
@@ -89,7 +125,7 @@ export const EventsTable: React.FC = () => {
             render: (str: number) => {
                 return (
                     <>
-                        {str === 91 ? <p>проверка</p> : str === 92 ? <p>мониторинг</p> : str === 93 ? <p>обследование</p> : str === 94 ? <p>мониторинг</p> : <p> </p>}
+                        {String(str) === '91' ? <p>проверка</p> : String(str) === '92' ? <p>мониторинг</p> : String(str) === '93' ? <p>обследование</p> : String(str) === '94' ? <p>мониторинг</p> : <p> </p>}
                     </>
                 )
             }
@@ -99,17 +135,17 @@ export const EventsTable: React.FC = () => {
             title: "Вид",
 
             render: (event: SEventsOrder) => {
-                
-               
-                    if (event.idUnit_4 === 91 && event.idUnit_3 === 81) {
-                        console.log("2");
-                        return (<p>выборочная</p>);
-                    }
-                    else if (event.idUnit_4 === 91 && event.idUnit_3 === 82) {
-                        console.log("3");
-                        return (<p>внеплановая</p>);
-                    }
-                
+
+                console.log(typeof (event.idUnit_4));
+                if (String(event.idUnit_4) === '91' && String(event.idUnit_3) === '81') {
+                    console.log("2");
+                    return (<p>выборочная</p>);
+                }
+                else if (String(event.idUnit_4) === '91' && String(event.idUnit_3) === '82') {
+                    console.log("3");
+                    return (<p>внеплановая</p>);
+                }
+
                 else
                     return (<p> </p>);
             }
@@ -171,6 +207,12 @@ export const EventsTable: React.FC = () => {
                         >
                             {'Открыть'}
                         </Button>
+                        <DeleteOutlined
+                            onClick={() => {
+                                handleDeleteRow(event);
+                            }}
+                            style={{ color: "red", marginLeft: 12 }}
+                        />
                     </Space>
 
                 )
@@ -180,8 +222,19 @@ export const EventsTable: React.FC = () => {
 
     return (
         <>
-
-            <Button onClick={handleAddClick}>Добавить мероприятие</Button>
+            <Row gutter={[30, 30]}>
+                <Col sm={24} md={8} lg={8} >
+                    <SearchInput
+                        placeholder={'Не менее 6 символов'}
+                        enterButton="Поиск"
+                        size="middle"
+                        onSearch={handleSearch}
+                    />
+                </Col>
+                <Col sm={24} md={6} lg={6}>
+                    <Button onClick={handleAddClick}>Добавить пользователя</Button>
+                </Col>
+            </Row>
             <Table
                 dataSource={tableData.data}
                 pagination={tableData.pagination}
@@ -189,7 +242,6 @@ export const EventsTable: React.FC = () => {
                 scroll={{ x: 800 }}
                 columns={columns}
                 bordered
-
             />
         </>
 

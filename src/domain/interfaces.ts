@@ -29,7 +29,7 @@ export interface User {
    
 }
 export interface CreateUserDTO{
-    login?: string;
+    user?: string;
     password: string;
     fName?: string;
     sName?: string;
@@ -38,6 +38,20 @@ export interface CreateUserDTO{
     idDept?: number;
     idDeptUnits: number;
     idDeptJob: number;
+    email?: string;
+    position?: string;
+    role?:number;
+    uidAdm?: number;
+}
+export interface UpdateUserDTO{
+    user?: string;
+    fName?: string;
+    sName?: string;
+    lName?: string;
+    tel?: string;
+    idDept?: number;
+    idDeptUnits?: number;
+    idDeptJob?: number;
     email?: string;
     position?: string;
     role?:number;

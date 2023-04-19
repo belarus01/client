@@ -6,7 +6,7 @@ import { Input } from "@app/components/common/inputs/Input/Input";
 import { Select, Option } from "@app/components/common/selects/Select/Select";
 import { TreeSelect } from "antd";
 import { Button } from "@app/components/common/buttons/Button/Button";
-import { Pagination, createUser, getAllJobs } from "@app/api/users.api";
+import { Pagination, getAllJobs } from "@app/api/users.api";
 import { deptToTreeNode, makeTree } from "@app/utils/utils";
 import { getAllDepartments } from "@app/api/departments.api";
 import { InputPassword } from "@app/components/common/inputs/InputPassword/InputPassword";
@@ -16,36 +16,26 @@ import { registerUser } from "@app/api/auth.api";
 
 interface AddUserFormProps {
     data:User| undefined;
+    onSuccess: () => void;
 }
 
 
-export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
+export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data, onSuccess }) => {
     const [positions, setPositions] = useState<SDeptJob[]>([]);
     const [departments, setDepartments] = useState<SDeptNode[]>([]);
 
     useEffect(() => {
         getAllJobs().then((responce) => {
-            console.log("jobs");
-            console.log(responce);
-            // let arr: string[] = [];
-            // responce.forEach(element => {
-            //     arr.push(element.job);
-            // });
             setPositions(responce);
         })
     }, []);
 
     useEffect(() => {
         getAllDepartments().then((responce) => {
-            console.log(responce);
             const arr:SDeptNode[] = [];
-            //console.log(responce.data.length);
             for(let i = 0; i<responce.length; i++){
-                console.log(responce[i]);
                 arr.push(deptToTreeNode(responce[i]));
             }
-            console.log('arr');
-            console.log(arr);
             setDepartments(makeTree(arr));
         })
     }, []);
@@ -54,10 +44,10 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
         console.log(values);
         registerUser(values).then((res)=>{
             notificationController.success({message:'Пользователь добавлен'});
+            onSuccess();
         }).catch((e)=>{
             notificationController.error({message:'Ошибка'});
         })
-
     }
 
     return (
