@@ -49,11 +49,7 @@ export const Step2: React.FC = () => {
         hasFeedback
         rules={[{ required: true, message: 'Введите должность руководителя надзорного органа' }]}
       >
-        <Select placeholder={('Должность руководителя надзорного органа')}>
-          <Option value="Серый-машина">{('Серый-машина')}</Option>
-          <Option value="Серый-милашка">{('Серый-милашка')}</Option>
-          <Option value="Серый-красавчик">{('Серый-красавчик')}</Option>
-        </Select>
+         <Input />
       </BaseButtonsForm.Item>
     </S.FormContent>
   );

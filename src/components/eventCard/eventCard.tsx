@@ -66,9 +66,15 @@ export const EventCard: React.FC = () => {
             { name: 'dolgnost', value: data['result1'][0].staff_boss },
             { name: 'sfera', value: data['result1'][0].name_oked },
             { name: 'col_zdani', value: data['result2'][0].num_zdan },
-            { name: 'name_zdani', value: data['result2'][0].zdan },
+            { name: 'name_zdani', value: data['result2'][0].name_build },
             { name: 'col_sooryg', value: data['result2'][1].num_zdan },
-            { name: 'name_sooryg', value: data['result2'][1].zdan },
+            { name: 'name_sooryg', value: data['result2'][1].name_build },
+            { name: 'name_nadz', value: data['result1'][0].departament },
+            { name: 'unp_nadz', value: data['result1'][0].unp_nadz_organ },
+            { name: 'adress_nadz', value: data['result1'][0].address },
+            { name: 'fio_nadz', value: data['result1'][0].fio_boss },
+            { name: 'dolgn_nadz', value: data['result1'][0].dolzn_boss_nadz_org },
+            { name: 'vid_meropr', value: data['result1'][0].type_check },
           ]);
         }
         
@@ -178,7 +184,7 @@ export const EventCard: React.FC = () => {
           </S.PrevButton>
         )}
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
+          <Button type="primary" style={{ marginLeft: "8px"}} onClick={() => next()}>
             {'Следующий'}
           </Button>
         )}

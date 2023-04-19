@@ -193,11 +193,7 @@ export const Step3: React.FC = () => {
         hasFeedback
         rules={[{ required: true, message: 'Введите вид надзорно-профилактического мероприятия ' }]}
       >
-        <Select placeholder={('Вид надзорно-профилактического мероприятия ')}>
-          <Option value="Проверка">{('Проверка')}</Option>
-          <Option value="Мониторинг">{('Мониторинг')}</Option>
-          <Option value="Обследование">{('Обследование')}</Option>
-        </Select>
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
