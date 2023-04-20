@@ -1,12 +1,14 @@
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { IPogAuto } from '../pogTables/PogAutoTable';
 import moment from 'moment';
 import { DatePicker } from 'antd';
 import { getObl, getOblById } from '@app/api/ate.api';
+import { getAllSubjects } from '@app/api/subjects.api';
+import { SSubj } from '@app/domain/interfaces';
 
 export interface ISopbFormProps {
   data?: IPogAuto;
@@ -21,6 +23,8 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
     data: [],
     loading: false,
   });
+
+  const [subjects, setSubjects] = useState<SSubj[]>([]);
   const getCurrentObl = (id: string | number) => {
     getOblById(id).then((result) => {
       console.log(result);
@@ -34,6 +38,17 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
       setIdOblSubj({ data: result, loading: false });
     });
   };
+
+  const getSubjects = () => {
+    getAllSubjects().then((result) => {
+      console.log(result);
+      setSubjects(result);
+    });
+  };
+
+  useEffect(() => {
+    getSubjects();
+  }, []);
 
   const clickSelectObl = () => {
     setIdOblSubj({ ...idOblSubj, loading: true });
@@ -66,6 +81,8 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
     }
   };
 
+  const subjectsMemo = useMemo(() => {}, []);
+
   const idOblSubjData = useMemo(
     () => (Array.isArray(idOblSubj.data) ? idOblSubj.data : [idOblSubj.data]),
     [idOblSubj.data],
@@ -84,6 +101,16 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
           ['dateRegPoo']: moment(auto.dateRegPoo || today, dateFormat),
         }}
       >
+        <BaseButtonsForm.Item label="Область местонахождения субъекта" name="idOblSubj">
+          <Select
+            options={}
+            loading={idOblSubj.loading}
+            onClick={clickSelectObl}
+            onChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Регистрационный номер" name="numGosnadz">
           <Input
             defaultValue={auto.numGosnadz || ''}
@@ -134,7 +161,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             }}
           />
         </BaseButtonsForm.Item>
-        {/* 
+        {/*
 
 
     {
