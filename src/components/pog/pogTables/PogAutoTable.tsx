@@ -6,6 +6,7 @@ import { getPogAuto } from '@app/api/pogAuto.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
 
 export interface IPogAuto {
+  comm: string | number | readonly string[] | undefined;
   idLlist?: number | null;
   idDept?: number | null;
   idDeptDom?: number | null;
@@ -21,13 +22,13 @@ export interface IPogAuto {
   nameAddrOvnerPoo?: string;
   idOblSubj?: number | null | string;
   idRayonSubj?: number | null | string;
-  idCitySubj?: number | null;
-  idStreetSubj?: number | null;
+  idCitySubj?: number | null | string;
+  idStreetSubj?: number | null | string;
   numBuild?: number | string | null;
   contacts?: number | string | null;
   idTypeTs?: number | null;
   typeTs?: number | string | null;
-  idTypeDopogTs?: number | null;
+  idTypeDopogTs?: number | null | string;
   typeDopogTs?: number | string | null;
   brendTs?: number | string | null;
   modelTs?: number | string | null;
@@ -59,8 +60,8 @@ export interface IPogAuto {
   pressure?: number | string | null;
   flIso?: number | string | null;
   flScreen?: number | string | null;
-  Binding?: number | string | null;
-  RegInspector?: number | string | null;
+  binding?: number | string | null;
+  regInspector?: number | string | null;
   fioStaff?: number | string | null;
   dateUnreg?: number | string | null;
   numUnreg?: number | string | null;
@@ -154,11 +155,6 @@ export const PogAutoTable: React.FC = () => {
       dataIndex: 'nameAddrOvnerPoo',
     },
     {
-      key: '5',
-      title: 'Наименование организации, фамилия, собственное имя, отчество (если таковое имеется)',
-      dataIndex: 'nameAddrOvnerPoo',
-    },
-    {
       key: '6',
       title: 'Область местонахождения субъекта',
       dataIndex: 'idOblSubj',
@@ -192,16 +188,6 @@ export const PogAutoTable: React.FC = () => {
       key: '12',
       title: 'Тип транспортного средства',
       dataIndex: 'typeTs',
-    },
-    {
-      key: '12',
-      title: 'Тип транспортного средства',
-      dataIndex: 'typeTs',
-    },
-    {
-      key: '12',
-      title: 'Тип транспортного средства по ДОПОГ',
-      dataIndex: 'idTypeDopogTs',
     },
     {
       key: '13',
@@ -244,22 +230,12 @@ export const PogAutoTable: React.FC = () => {
       dataIndex: 'numRegGai',
     },
     {
-      key: '21',
-      title: 'Регистрационный знак',
-      dataIndex: 'numRegGai',
-    },
-    {
       key: '22',
       title: 'Класс опасного груза',
       dataIndex: 'dangerClass',
     },
     {
       key: '23',
-      title: 'Место стоянки',
-      dataIndex: 'streetTs',
-    },
-    {
-      key: '24',
       title: 'Место стоянки',
       dataIndex: 'streetTs',
     },
@@ -352,6 +328,17 @@ export const PogAutoTable: React.FC = () => {
       key: '42',
       title: 'Фамилия, инициалы государственного инспектора, снявшего с учета транспортное средство',
       dataIndex: 'unregInspector',
+    },
+    {
+      key: '42',
+      title: 'Статус',
+      dataIndex: 'active',
+      render: (active: '0' | '1') => <>{active == '0' ? 'Неактивен' : 'Активно'}</>,
+    },
+    {
+      key: '43',
+      title: 'Примечание',
+      dataIndex: 'comm',
     },
     {
       key: '43',
