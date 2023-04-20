@@ -145,7 +145,7 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path="server-error" element={<ServerError />} />
           
-          <Route path="404" element={<Error404 />} />
+          <Route path='*' element={<Error404 />} />
 
           <Route path="profile" element={<ProfileLayout />}>
             <Route path="personal-info" element={<PersonalInfo />} />
