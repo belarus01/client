@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
+import PogAutoTable from './pogTables/PogAutoTable';
 
 const onChange = (key: string) => {
   console.log(key);
@@ -14,27 +15,22 @@ const items: TabsProps['items'] = [
   },
   {
     key: '2',
-    label: `Инциденты`,
-    children: <div>инциденты</div>,
+    label: `Автотранспорт`,
+    children: <PogAutoTable />,
   },
   {
     key: '3',
-    label: `Автотранспорт`,
-    children: <div>Автотранспорт</div>,
-  },
-  {
-    key: '4',
     label: `Авия`,
     children: <div>Авия</div>,
   },
   {
-    key: '5',
+    key: '4',
     label: `ЖД`,
     children: <div>ЖД</div>,
   },
   {
     key: '5',
-    label: `Воздушный`,
+    label: `Водный`,
     children: <div>Воздушный</div>,
   },
 ];
