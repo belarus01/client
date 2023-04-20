@@ -133,40 +133,48 @@ export interface SDeptNode{
 }
 
 export interface SSubjObj{
-    idSubj: number;
-    numOpo: string | null;
-    subj: string | null;
-    unp: string | null;
-    addrYur: string | null;
-    dateRecord: string | null;
-    active: number;
-    uid: number | null;
-    codeSoatoYur: string | null;
-    numReg: string | null;
-    idOked: number | null;
-    dateRegOpo: string | null;
-    dateRegUnp: string | null;
-    addrFact: string | null;
-    bossName: string | null;
-    staffBoss: string | null;
-    numBuild: number | null;
-    nameBuild: string | null;
-    statusUnp: string | null;
-    dateLikv: string | null;
-    typeSubj: string | null;
-    bankRekv: string | null;
-    idReestrYur: number | null;
-    idStreetYur: string | null;
-    numCorpYur: string | null;
-    numBuildYur: string | null;
-    codeSoatoFact: string | null;
-    idReestrFact: number | null;
-    idStreetFact: string | null;
-    numCorpFact: string | null;
-    numBuildFact: string | null;
-    contactData: string | null;
-    //codeSoatoYur2: SSoato;
-    sSubjObjs: SSubjObj[]; 
+        idObj: number;
+      
+        idSubj: number;
+        idTypeDanger: number;
+      
+        note: string | null;
+      
+        unp: string | null;
+      
+        addrObj: string | null;
+      
+        addrDescr: string | null;
+      
+        dateRecord: Date | null;
+      
+        active: number;
+      
+        uid: number | null;
+      
+        soatoCode: number | null;
+      
+        idReestr: number | null;
+      
+        idStreet: number | null;
+      
+        nameObj: string;
+      
+        fioFireman: string | null;
+      
+        org: number | null;
+      
+        numOpo: string | null;
+      
+        sEventsOrderAdmBans: SEventsOrderAdmBan[];
+      
+        sEventsOrderAdmForces: SEventsOrderAdmForce[];
+      
+        sEventsOrderObjs: SEventsOrderObj[];
+        //sEventsOrderQueDefs: SEventsOrderQueDef[];
+        u: User;
+      
+        idSubj2: SSubj;
 }
 
 export interface GeolocationDTO{
