@@ -5,13 +5,14 @@ import { BaseButtonsForm } from "@app/components/common/forms/BaseButtonsForm/Ba
 import { Input } from "@app/components/common/inputs/Input/Input"
 import { Select, Option } from "@app/components/common/selects/Select/Select"
 import { notificationController } from "@app/controllers/notificationController"
-import { SDept, SDeptNode, SSubj, SSubjObj } from "@app/domain/interfaces"
+import { SDept, SDeptNode, SSubj, SSubjObj, SUnits } from "@app/domain/interfaces"
 import { deptToTreeNode, makeTree } from "@app/utils/utils"
-import { Col, Row, TreeSelect } from "antd"
+import { Col, Row, TreeSelect, message } from "antd"
 import { useEffect, useState } from "react"
-import { Cascader } from "antd"
+import { Collapse } from "antd"
 import { getAllObjectsBySubjectId } from "@app/api/objects.api"
 import { DefaultOptionType } from "antd/lib/cascader"
+import { getUnitsByTypeUnit } from "@app/api/units.api"
 
 interface Option extends DefaultOptionType {
    
@@ -32,6 +33,7 @@ export const AddEventOrderForm: React.FC = () => {
     const [selectGroup, setSelectGroup] = useState<boolean>();
     const [objects, setObjects] = useState<SSubjObj[]>([]);
     const [options, setOptions] = useState<Option[]>([]);
+    const [units, setUnits] = useState<SUnits[]>([]);
 
     const onFinish = (values: any) => {
         // subj?.sSubjObjs.
@@ -51,6 +53,14 @@ export const AddEventOrderForm: React.FC = () => {
         })
     }, []);
 
+    useEffect(()=>{
+        getUnitsByTypeUnit(0).then((res)=>{
+            setUnits(res);
+        }).catch((e)=>{
+            notificationController.error({message:'Произошла ошибка'});
+        })
+    },[]);
+
     const getSubject = () => {
         if (unp)
             getSubjectByUnp(unp).then((res) => {
@@ -66,7 +76,6 @@ export const AddEventOrderForm: React.FC = () => {
             }).catch((e) => {
                 notificationController.error({ message: 'Произошла ошибка при загрузке' });
             })
-
     }
 
     const handleUnpChange = (event: any) => {
@@ -93,7 +102,7 @@ export const AddEventOrderForm: React.FC = () => {
     const loadData = (selectedOptions: Option[]) => {
         const targetOption = selectedOptions[selectedOptions.length - 1];
         targetOption.loading = true;
-        get
+        
         
     }
         return (
@@ -131,18 +140,7 @@ export const AddEventOrderForm: React.FC = () => {
 
                         ) : null
                     }
-                    <BaseButtonsForm.Item>
-                        <Cascader
-                            style={{ width: '100%' }}
-                            options={options}
-                            //onChange={onChange}
-                            multiple
-                            loadData={loadData}
-                            changeOnSelect 
 
-                            maxTagCount="responsive"
-                        />
-                    </BaseButtonsForm.Item>
                     {
                         departments.length === 0 ? (<BaseButtonsForm.Item label="Подразделение" name='departament'>
                             <TreeSelect onSelect={onDepartmentSelect} fieldNames={{
@@ -159,6 +157,16 @@ export const AddEventOrderForm: React.FC = () => {
                         </BaseButtonsForm.Item>) : null
                     }
 
+                      <BaseButtonsForm.Item label="Сфера мероприятия" name='sphera'>
+                        <Select>
+                            {
+                                units.map((unit)=>{
+                                    return <Option key={unit.idUnit} value={unit.idUnit}>{unit.name}</Option>
+                                })
+                            }
+                        </Select>
+                    </BaseButtonsForm.Item>
+
 
                     <BaseButtonsForm.Item label="Тип мероприятия" name='type'>
                         <Select onSelect={onSelectType}>
@@ -168,7 +176,7 @@ export const AddEventOrderForm: React.FC = () => {
                             <Option key={4} value={4}>Технологическая???</Option>
                         </Select>
                     </BaseButtonsForm.Item>
-
+                  
                     {
                         type === 1 ? (
                             <BaseButtonsForm.Item label="Вид мероприятия" name='vid'>
@@ -179,6 +187,37 @@ export const AddEventOrderForm: React.FC = () => {
                             </BaseButtonsForm.Item>
                         ) : null
                     }
+
+                    <BaseButtonsForm.Item>
+                        
+                    </BaseButtonsForm.Item>
+                    
+                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
+                        <Collapse>
+
+                        </Collapse>
+                    </BaseButtonsForm.Item>
+                    <BaseButtonsForm.Item label="Авиа" name="auto">
+                        <Collapse>
+
+                        </Collapse>
+                    </BaseButtonsForm.Item>
+                    <BaseButtonsForm.Item label="Водный транспорт" name="auto">
+                        <Collapse>
+
+                        </Collapse>
+                    </BaseButtonsForm.Item>
+                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
+                        <Collapse>
+
+                        </Collapse>
+                    </BaseButtonsForm.Item>
+                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
+                        <Collapse>
+
+                        </Collapse>
+                    </BaseButtonsForm.Item>
+
 
                     {/* <BaseButtonsForm.Item>
                         <Row gutter={[30, 30]}>
