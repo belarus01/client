@@ -9,6 +9,7 @@ import { DatePicker, Space } from 'antd';
 import moment from 'moment';
 import { useParams } from 'react-router';
 import { getSopbById } from './../../../api/sopb.api';
+import React from 'react';
 
 export interface ISopbCardFormProps {
   data?: ISopbCard;

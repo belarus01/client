@@ -11,6 +11,8 @@ import { getAllSubjects, getSubjectByUnp } from '@app/api/subjects.api';
 import { SSubj } from '@app/domain/interfaces';
 import Search from 'antd/lib/transfer/search';
 import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
+import React from 'react';
+import axios from 'axios';
 
 export interface ISopbFormProps {
   data?: IPogAuto;
@@ -23,6 +25,16 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
   });
 
   const [unp, setUnp] = useState('');
+  const [subject, setSubject] = useState<SSubj>({});
+  const [id, setId] = useState('');
+  const [todos, setTodos] = useState('');
+
+  const loaderTodo = () => {
+    axios.get('https://jsonplaceholder.typicode.com/todos/1').then((result) => {
+      console.log(result.data);
+      setTodos(result.data);
+    });
+  };
 
   const changeUnp = (e: ChangeEvent<HTMLInputElement>) => {
     setAuto({ ...auto, unp: e.target.value });
@@ -32,7 +44,8 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
     getSubjectByUnp(unp).then((result) => {
       if (result) {
         // setSubject(result);
-        setAuto({ ...auto, idCitySubj: 'aaaaaa', idOblSubj: 'asdfasdfas', ...result });
+        setSubject({ idOblSubj: 'qdqfefqwef' });
+        setId('qdqfefqwef');
       }
     });
   };
@@ -41,6 +54,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
     console.log(value);
 
     loadSearchingUnp(value);
+    loaderTodo();
   };
 
   const [idOblSubj, setIdOblSubj] = useState<{ data: any[] | object; loading: boolean }>({
@@ -54,8 +68,6 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
   });
 
   const [searchSubject, setSearchSubject] = useState('');
-
-  const [subject, setSubject] = useState<SSubj>({});
 
   const getCurrentObl = (id: string | number) => {
     getOblById(id).then((result) => {
@@ -147,8 +159,8 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
   };
 
   useEffect(() => {
-    console.log(subject);
-  }, [subject]);
+    console.log(id);
+  }, [id]);
   const dateFormat = 'YYYY-MM-DD';
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
@@ -175,7 +187,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
               value={unp}
               placeholder="Введите УНП"
               onChange={(e) => {
-                setUnp(e.target.value);
+                setId(e.target.value);
               }}
               onSearch={searchByUnp}
             />
@@ -195,7 +207,10 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             }}
           /> */}
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Область местонахождения субъекта" name="idOblSubj">
+        <BaseButtonsForm.Item
+          label="Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя"
+          name="id"
+        >
           {/* <Select
               options={idOblSubjData}
               loading={idOblSubj.loading}
@@ -204,8 +219,26 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
                 console.log(value);
               }}
             /> */}
-          <Input defaultValue={auto.idOblSubj} key={auto.idOblSubj} />
-          {auto.idOblSubj}
+          <Input
+            defaultValue={id}
+            key={id}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setSubject({ ...subject, idOblSubj: e.target.value });
+            }}
+            disabled
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="todos" name="todos">
+          <Input
+            defaultValue={todos.title}
+            key={todos}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setTodos(e.target.value);
+            }}
+            disabled
+          />
         </BaseButtonsForm.Item>
         {/* <BaseButtonsForm.Item label="Область местонахождения субъекта" name="idOblSubj">
           <Input
