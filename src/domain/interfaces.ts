@@ -570,3 +570,39 @@ export interface MemorySizeResponse{
     free:string;
     percentage: string;
 }
+
+export interface SUnits {
+  idUnit: number;
+  idParent: number | null;
+  typeUnit: number | null;
+  num: string | null;
+  type: string | null;
+  typeSub: string | null;
+  name: string | null;
+  dateRecord: Date | null;
+  active: number;
+  org: number;
+  uid: number | null;
+  comm: string | null;
+  //sPooSubjPbs: SPooSubjPb[]; 
+  //sQuestions: SQuestion[];
+}
+
+
+export interface SSubjObjSpecif{
+  idSpecif: number;
+  idSubjObj: number;
+  nameBuild: string | null;
+  idUnit_6: number | null;
+  idUnit_17: number | null;
+  idUnit_41: number | null;
+  area: number | null;
+  dateReg: Date | null;
+  dateAnnul: Date | null;
+  nameAgent: string | null;
+  jobAgent: string | null;
+  telAgent: string | null;
+  active: number;
+  dateRecord: Date | null;
+  uid: number | null;
+}

@@ -30,6 +30,7 @@ const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEv
 const SubjectObjectsPage = React.lazy(()=>import('@app/pages/subjects/SubjectObjectsPage'));
 const ServerStatisticsPage = React.lazy(()=>import('@app/pages/ServerStatisticsPage'));
 const EventsPage = React.lazy(()=>import('@app/pages/events/EventsPage'));
+const Testpage = React.lazy(()=>import('@app/pages/test'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -53,6 +54,7 @@ const SubjectEvents = withLoading(SubjectEventsPage);
 const SubjectObjects = withLoading(SubjectObjectsPage);
 const ServerStatistics = withLoading(ServerStatisticsPage);
 const Events = withLoading(EventsPage);
+const Test = withLoading(Testpage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -65,6 +67,7 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
+          <Route path='test' element={<Test/>}/>
           <Route path='common'>
             <Route path="subjects" element={<Subjects />}/>
             <Route path='subject' element={<SubjectProfileLayout />}>
