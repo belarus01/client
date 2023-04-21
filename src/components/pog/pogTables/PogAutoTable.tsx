@@ -2,10 +2,11 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getPogAuto } from '@app/api/pogAuto.api';
+import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
 
 export interface IPogAuto {
+  idList: number | string;
   comm: string | number | readonly string[] | undefined;
   idLlist?: number | null;
   idDept?: number | null;
@@ -113,9 +114,17 @@ export const PogAutoTable: React.FC = () => {
   );
 
   const deleteItem = (deletedItem: IPogAuto) => {
+    console.log(deletedItem.idList);
+    setAutos({ ...autos, loading: true });
+    deletePogSubjAutoById(deletedItem.idList).then((data) => {
+      console.log(data);
+      console.log('deleted');
+      getAutos();
+    });
+
     //deleteDepartment(id)
-    const newAuto = autos.data.filter((autos) => autos.numGosnadz !== deletedItem.numGosnadz);
-    setAutos({ ...autos, data: newAuto });
+    // const newAuto = autos.data.filter((autos) => autos.numGosnadz !== deletedItem.numGosnadz);
+    // setAutos({ ...autos, data: newAuto });
   };
 
   const searchCategories = (value: string) => {
@@ -125,6 +134,12 @@ export const PogAutoTable: React.FC = () => {
 
   const searchFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+  };
+
+  const toggleModal = () => {
+    setModalAddding(false);
+    setModalEditing(false);
+    getAutos();
   };
 
   const columns = [
@@ -381,7 +396,7 @@ export const PogAutoTable: React.FC = () => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <PogAutoForm data={props.data} />}
+        FormComponent={(props) => <PogAutoForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selectedAuto}
         setSearchFunc={searchFunc}

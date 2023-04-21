@@ -6,33 +6,106 @@ import { Select } from '@app/components/common/selects/Select/Select';
 import { IPogAuto } from '../pogTables/PogAutoTable';
 import moment from 'moment';
 import { DatePicker } from 'antd';
-import { getObl, getOblById } from '@app/api/ate.api';
+import { getObl, getOblById, getRayonsByRayonId } from '@app/api/ate.api';
 import { getAllSubjects, getSubjectByUnp } from '@app/api/subjects.api';
-import { SSubj } from '@app/domain/interfaces';
+import { SSubj, SSubjObj, ateObl } from '@app/domain/interfaces';
 import Search from 'antd/lib/transfer/search';
 import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
 import React from 'react';
-import axios from 'axios';
+import { getAllObjectsBySubjectId } from '@app/api/objects.api';
+import { Spinner } from '@app/components/common/Spinner/Spinner';
+import { type } from './../../../types/generalTypes';
+import { createPogSubjAuto } from '@app/api/pogAuto.api';
 
 export interface ISopbFormProps {
   data?: IPogAuto;
+  close: () => void;
 }
 
-export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
+export const PogAutoForm: React.FC<ISopbFormProps> = ({ data, close }) => {
   const [auto, setAuto] = useState<IPogAuto>({
     numGosnadz: null,
     idOblSubj: '',
+    comm: '',
+    ...data,
   });
 
   const [unp, setUnp] = useState('');
-  const [subject, setSubject] = useState<SSubj>({});
-  const [id, setId] = useState('');
-  const [todos, setTodos] = useState('');
+  const [subject, setSubject] = useState({});
 
-  const loaderTodo = () => {
-    axios.get('https://jsonplaceholder.typicode.com/todos/1').then((result) => {
-      console.log(result.data);
-      setTodos(result.data);
+  const [id, setId] = useState('');
+  const [oblSubj, setOblSubj] = useState<ateObl>({
+    nameObl: '',
+    idObl: 0,
+  });
+
+  const [rayonSubj, setRayonSubj] = useState('');
+  const [citySubj, setCitySubj] = useState('');
+  const [streetSubj, setStreetSubj] = useState('');
+  const [objSubj, setObjSubj] = useState<SSubjObj[]>([]);
+
+  const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  //fetch for obl street rayon city
+  const getCurrentObl = (id: string) => {
+    getOblById(id).then((result) => {
+      console.log('getCurrentObl', result);
+      setOblSubj(result);
+    });
+  };
+
+  const getCurrentRayon = (id: string) => {
+    console.log(id);
+    getRayonsByRayonId(id).then((result) => {
+      console.log('getCurrentRayon', result);
+      setRayonSubj(result);
+    });
+  };
+
+  const getCurrentCity = (id: string) => {
+    console.log(id);
+    getRayonsByRayonId(id).then((result) => {
+      console.log('getCurrentCity', result);
+      setRayonSubj(result);
+    });
+  };
+
+  const getCurrentStreet = (id: string) => {
+    if (id) {
+      return;
+    }
+    getRayonsByRayonId(id).then((result) => {
+      console.log('getCurrentStreet', result);
+      setStreetSubj(result);
+    });
+  };
+
+  // ADD NEW INFO IN AUTO OBJ
+  const changeInfoAuto = (subj: SSubj) => {
+    const newAuto: IPogAuto = {
+      ...auto,
+      unp: subj.unp,
+      contacts: subj.contactData,
+      idCitySubj: subj?.idCity || 1,
+      idOblSubj: subj?.idObl || 1,
+      nameAddrOvnerPoo: subj.subj + ' ' + subj.bossName,
+      idRayonSubj: subj?.idRayon || 1,
+      idStreetSubj: subj.idStreetFact,
+    };
+    // change place after fix tables
+    getCurrentObl(newAuto.idOblSubj as string);
+    getCurrentRayon(newAuto.idRayonSubj as string);
+    getCurrentCity(newAuto.idCitySubj as string);
+    // getCurrentStreet(newAuto.idStreetSubj);
+    setStreetSubj(subj.addrYur as string);
+    setAuto({ ...newAuto });
+    setLoading(false);
+  };
+
+  const getObjsSubj = (idSubj: string) => {
+    getAllObjectsBySubjectId(parseFloat(idSubj)).then((result) => {
+      console.log('getObjsSubj', result);
     });
   };
 
@@ -43,154 +116,78 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
   const loadSearchingUnp = (unp: string) => {
     getSubjectByUnp(unp).then((result) => {
       if (result) {
-        // setSubject(result);
-        setSubject({ idOblSubj: 'qdqfefqwef' });
-        setId('qdqfefqwef');
+        setSubject(result);
+        changeInfoAuto(result);
+        //100071274
+        console.log(result);
+        console.log(result.idSubj);
+        getObjsSubj(result.idSubj.toString());
+        // getCurrentObl(result.idObl);
+        // getCurrentRayon(result.idRayon);
+        // getCurrentCity(result.idCity);
+        // getCurrentStreet(result.idStreet);
       }
     });
   };
 
   const searchByUnp = (value: string) => {
     console.log(value);
+    setLoading(true);
 
     loadSearchingUnp(value);
-    loaderTodo();
   };
 
-  const [idOblSubj, setIdOblSubj] = useState<{ data: any[] | object; loading: boolean }>({
-    data: [],
-    loading: false,
-  });
-
-  const [subjects, setSubjects] = useState<{ data: SSubj[]; loading: boolean }>({
-    data: [],
-    loading: false,
-  });
-
-  const [searchSubject, setSearchSubject] = useState('');
-
-  const getCurrentObl = (id: string | number) => {
-    getOblById(id).then((result) => {
-      console.log(result);
-      setIdOblSubj({ data: result, loading: false });
-    });
-  };
-
-  const getAllObl = () => {
-    getObl().then((result) => {
-      console.log(result);
-      setIdOblSubj({ data: result, loading: false });
-    });
-  };
-
-  const getSubjects = () => {
-    setSubjects({ ...subjects, loading: true });
-    getAllSubjects().then((result) => {
-      console.log(result);
-      setSubjects({ data: result, loading: false });
-    });
-  };
-
-  useEffect(() => {
-    getSubjects();
-  }, []);
-
-  useEffect(() => {
-    console.log(auto);
-  }, [auto]);
-  const clickSelectObl = () => {
-    setIdOblSubj({ ...idOblSubj, loading: true });
-    if (auto.idOblSubj) {
-      // getCurrentObl(auto.idOblSubj);
-      setTimeout(() => {
-        setIdOblSubj({
-          data: [
-            {
-              nameObl: 'asdfasdfadf',
-            },
-            {
-              nameObl: 'asdfasdfadf2222222',
-            },
-          ],
-          loading: false,
-        });
-      }, 1000);
-    } else {
-      // getAllObl();
-      setTimeout(() => {
-        setIdOblSubj({
-          data: {
-            nameObl: 'asdfasdfadf',
-          },
-
-          loading: false,
-        });
-      }, 1000);
-    }
-  };
-
-  const subjectsMemo = useMemo(() => {
-    const keys: (string | null)[] = [];
-    const newDataFiltred = subjects.data.filter((subject) => {
-      if (!keys.includes(subject.unp)) {
-        keys.push(subject.unp);
-        return true;
-      }
-      return false;
-    });
-    return {
-      ...subjects,
-      data: newDataFiltred,
-    };
-  }, [subjects]);
-
-  useEffect(() => {
-    console.log(subjectsMemo);
-  }, [subjectsMemo]);
-
-  const idOblSubjData = useMemo(
-    () => (Array.isArray(idOblSubj.data) ? idOblSubj.data : [idOblSubj.data]),
-    [idOblSubj.data],
-  );
-
-  const selectSubject = (value) => {
-    const subj = subjectsMemo.data.find((subj) => subj.unp == value);
-    setSubject(subj);
-  };
-
-  useEffect(() => {
-    console.log(id);
-  }, [id]);
+  //DATE
   const dateFormat = 'YYYY-MM-DD';
+
+  const dateFormatYaer = 'YYYY';
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
 
-  console.log(today);
+  const yearToday = today.split('-')[0];
+  // EDITABLE
+  useEffect(() => {
+    if (data) {
+      setDisabled(false);
+      searchByUnp(auto.unp as string);
+    }
+  }, []);
 
-  // const setDefaultValue = <T extends IPogAuto & SSubj, K extends keyof T>(field: K, defaultValue: T[K]): T[K] => {
-  //   return auto[field] || subject[field] || defaultValue;
-  // };
+  // SUBMIT
 
+  const submitCreate = () => {
+    console.log(auto);
+    createPogSubjAuto(auto);
+    close();
+  };
+
+  const submitChanges = () => {
+    console.log(auto);
+  };
+
+  const submit = () => {
+    if (data) {
+      submitChanges();
+    } else {
+      submitCreate();
+    }
+  };
   return (
     <>
       <BaseButtonsForm
         isFieldsChanged={false}
         initialValues={{
           ['dateRegPoo']: moment(auto.dateRegPoo || today, dateFormat),
+          ['manufactYearTs']: moment(auto.manufactYearTs || yearToday, dateFormatYaer),
+          ['manufactYearTanc']: moment(auto.manufactYearTanc || yearToday, dateFormatYaer),
+          ['dateControlTanc']: moment(auto.dateControlTanc || today, dateFormat),
         }}
       >
         <BaseButtonsForm.Item label="УНП" name="subjectsMemo">
           {data ? (
             <Input defaultValue={auto.unp || ''} onChange={changeUnp} />
           ) : (
-            <SearchInput
-              value={unp}
-              placeholder="Введите УНП"
-              onChange={(e) => {
-                setId(e.target.value);
-              }}
-              onSearch={searchByUnp}
-            />
+            <SearchInput value={unp} placeholder="Введите УНП" onSearch={searchByUnp} />
           )}
 
           {/* <Select
@@ -207,64 +204,35 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             }}
           /> */}
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item
-          label="Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя"
-          name="id"
-        >
-          {/* <Select
-              options={idOblSubjData}
-              loading={idOblSubj.loading}
-              onClick={clickSelectObl}
-              onChange={(value) => {
-                console.log(value);
-              }}
-            /> */}
-          <Input
-            defaultValue={id}
-            key={id}
-            onChange={(e) => {
-              console.log(e.target.value);
-              setSubject({ ...subject, idOblSubj: e.target.value });
-            }}
-            disabled
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="todos" name="todos">
-          <Input
-            defaultValue={todos.title}
-            key={todos}
-            onChange={(e) => {
-              console.log(e.target.value);
-              setTodos(e.target.value);
-            }}
-            disabled
-          />
-        </BaseButtonsForm.Item>
-        {/* <BaseButtonsForm.Item label="Область местонахождения субъекта" name="idOblSubj">
-          <Input
-            defaultValue={auto.idOblSubj || ''}
-            key={unp}
-            onChange={(e) => {
-              setAuto({ ...auto, idOblSubj: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Район местонахождения субъекта" name="idOblSubj">
-          <Input
-            defaultValue={auto.idRayonSubj || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, idRayonSubj: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Город местонахождения субъекта" name="idCitySubj">
-          <Input
-            defaultValue={auto.idCitySubj || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, idCitySubj: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item> */}
+        <Spinner spinning={loading}>
+          <BaseButtonsForm.Item
+            label="Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя"
+            name="nameAddrOvnerPoo"
+          >
+            <Input defaultValue={auto.nameAddrOvnerPoo} key={auto.nameAddrOvnerPoo} disabled={disabled} />
+          </BaseButtonsForm.Item>
+          <BaseButtonsForm.Item label="Область местонахождения субъекта" name="oblSubj">
+            <Input defaultValue={oblSubj.nameObl} key={oblSubj.nameObl} disabled={disabled} />
+          </BaseButtonsForm.Item>
+          <BaseButtonsForm.Item label="Район местонахождения субъекта" name="rayonSubj">
+            <Input defaultValue={rayonSubj} key={rayonSubj} disabled={disabled} />
+            {rayonSubj}
+          </BaseButtonsForm.Item>
+          <BaseButtonsForm.Item label="Город местонахождения субъекта" name="citySubj">
+            <Input defaultValue={citySubj} key={citySubj} disabled={disabled} />
+            {citySubj}
+          </BaseButtonsForm.Item>
+          <BaseButtonsForm.Item
+            label="Улица, № дома (офиса, строения и т.д.) индекс, местонахождения субъекта"
+            name="streetSubj"
+          >
+            <Input defaultValue={streetSubj} key={streetSubj} disabled={disabled} />
+          </BaseButtonsForm.Item>
+          <BaseButtonsForm.Item label="Контактные данные" name="contacts">
+            <Input defaultValue={auto.contacts as string} key={auto.contacts} disabled={disabled} />
+          </BaseButtonsForm.Item>
+        </Spinner>
+
         <BaseButtonsForm.Item label="Регистрационный номер" name="numGosnadz">
           <Input
             defaultValue={auto.numGosnadz || ''}
@@ -297,31 +265,14 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             }}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item
-          label="Улица, № дома (офиса, строения и т.д.) индекс, местонахождения субъекта"
-          name="idStreetSubj"
-        >
-          <Input
-            defaultValue={auto.idStreetSubj || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, idStreetSubj: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Контактные данные" name="contacts">
-          <Input
-            defaultValue={auto.contacts || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, contacts: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item>
+
         <BaseButtonsForm.Item label="Тип транспортного средства" name="typeTs">
           <Input
             defaultValue={auto.typeTs || ''}
             onChange={(e) => {
               setAuto({ ...auto, typeTs: e.target.value });
             }}
+            type="number"
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Тип транспортного средства по ДОПОГ" name="idTypeDopogTs">
@@ -361,20 +312,22 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item label="Год выпуска транспортного средства" name="manufactYearTs">
-          <Input
-            defaultValue={auto.manufactYearTs || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, manufactYearTs: e.target.value });
+          <DatePicker
+            format={dateFormatYaer}
+            onChange={(value) => {
+              setAuto({ ...auto, manufactYearTs: value?.format(dateFormatYaer) });
             }}
+            picker="year"
           />
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item label="Год изготовления цистерны (если известно)" name="manufactYearTanc">
-          <Input
-            defaultValue={auto.manufactYearTanc || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, manufactYearTanc: e.target.value });
+          <DatePicker
+            format={dateFormatYaer}
+            onChange={(value) => {
+              setAuto({ ...auto, manufactYearTanc: value?.format(dateFormatYaer) });
             }}
+            picker="year"
           />
         </BaseButtonsForm.Item>
 
@@ -415,10 +368,10 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item label="Дата проведенной проверки цистерны" name="dateControlTanc">
-          <Input
-            defaultValue={auto.dateControlTanc || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, dateControlTanc: e.target.value });
+          <DatePicker
+            format={dateFormat}
+            onChange={(value) => {
+              setAuto({ ...auto, dateControlTanc: value?.format(dateFormat) });
             }}
           />
         </BaseButtonsForm.Item>
@@ -429,6 +382,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             onChange={(e) => {
               setAuto({ ...auto, typeControlTanc: e.target.value });
             }}
+            type="number"
           />
         </BaseButtonsForm.Item>
 
@@ -456,6 +410,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             onChange={(e) => {
               setAuto({ ...auto, numSections: e.target.value });
             }}
+            type="number"
           />
         </BaseButtonsForm.Item>
 
@@ -587,117 +542,16 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data }) => {
             }}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item
-          label="Фамилия, инициалы государственного инспектора, снявшего с учета транспортное средство"
-          name="unregInspector"
-        >
-          <Input
-            defaultValue={auto.unregInspector || ''}
-            onChange={(e) => {
-              setAuto({ ...auto, unregInspector: e.target.value });
-            }}
-          />
-        </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item name={'comm'} label="Примечание">
           <TextArea defaultValue={auto.comm} onChange={(e) => setAuto({ ...auto, uid: e.target.value })} />
         </BaseButtonsForm.Item>
-        {/*
-  
-      `id_dept` int unsigned DEFAULT NULL COMMENT 'Департамент, владелец записи',
-  `id_dept_dom` int unsigned DEFAULT NULL COMMENT 'Индекс структурного подразделения, зарегистрировавшего ПОГ',
-  `id_obl` int unsigned DEFAULT '1' COMMENT 'Область департамента',
-  `id_subj_obj` bigint unsigned DEFAULT NULL,
-  `id_num_reg` int unsigned DEFAULT '1100' COMMENT 'ид.журнала о регистрации ПОГ doc.s_poo_docs',
-  `num_reg` int unsigned DEFAULT '1100' COMMENT '№ журнала регистра-ции ПОГ',
-  `num_gosnadz` int unsigned DEFAULT NULL COMMENT 'Регистрационный № ПОГ',
-  `num_order` varchar(85) DEFAULT NULL COMMENT 'Порядковый номер в журнале регистрации ПОГ',
-  `date_reg_poo` date DEFAULT NULL COMMENT 'Дата регистрации заявления о регистрации трасп.средства ПОГ',
-  `num_reg_poo` varchar(85) DEFAULT NULL COMMENT '№ регистрации заявления о регистрации трасп.средства ПОГ',
-  `unp` varchar(30) DEFAULT NULL COMMENT 'УНП субъекта',
-  `name_addr_ovner_poo` varchar(250) DEFAULT NULL COMMENT 'Наименование организации субъекта, ФИО ИП владельца ПОГ',
-  `id_obl_subj` int unsigned DEFAULT NULL COMMENT 'Область субъекта владельца ПОГ mchs.s_ate_obl',
-  `id_rayon_subj` int unsigned DEFAULT NULL COMMENT 'Район субъекта владельца ПОГ mchs.s_ate_rayon',
-  `id_city_subj` int unsigned DEFAULT NULL COMMENT 'Город субъекта владельца ПОГ mchs.s_ate_street.name_reestr',
-  `id_street_subj` int unsigned DEFAULT NULL COMMENT 'Улица субъекта владельца ПОГ mchs.s_ate_street.name_rus',
-  `num_build` varchar(150) DEFAULT NULL COMMENT 'Номер дома,корп.,индекс субъекта владельца ПОГ',
-  `contacts` varchar(150) DEFAULT NULL COMMENT 'Контактные данные субъекта владельца ПОГ',
-  `id_type_ts` bigint unsigned DEFAULT NULL COMMENT 'Класс опасности  из s_units.type из doc.s_units.type_unit=12',
-  `type_ts` varchar(60) DEFAULT NULL COMMENT 'Тип транспортного средства s_units.type из doc.s_units.type_unit=12',
-  `id_type_dopog_ts` bigint unsigned DEFAULT NULL COMMENT 'Тип транспортного средства по DOPOG из doc.s_units.type_unit=13',
-  `type_dopog_ts` varchar(60) DEFAULT NULL COMMENT 'Тип транспортного средства по DOPOG doc.s_units.type из doc.s_units.type_unit=13',
-  `brend_ts` varchar(60) DEFAULT NULL COMMENT 'Марка транспортного средства ',
-  `model_ts` varchar(60) DEFAULT NULL COMMENT 'Модель транспортного средства ',
-  `vin_ts` varchar(60) DEFAULT NULL COMMENT 'Номер шасси транспортного средства ',
-  `manufact_num_tanc` varchar(150) DEFAULT NULL COMMENT 'Заводской номер цистерны',
-  `manufact_year_ts` varchar(150) DEFAULT NULL COMMENT 'Год выпуска ТС',
-  `manufact_year_tanc` varchar(150) DEFAULT NULL COMMENT 'Год выпуска цистерны',
-  `manufact_ts` varchar(150) DEFAULT NULL COMMENT 'Завод-изготовитель ТС',
-  `num_reg_gai` varchar(55) DEFAULT NULL COMMENT 'Регистрационный знак',
-  `id_danger_class` bigint unsigned DEFAULT NULL COMMENT 'Класс опасности  из doc.s_units.type_unit=5',
-  `danger_class` varchar(85) DEFAULT NULL COMMENT 'Класс опасности doc.s_units.type_unit=5 doc.s_units.type+doc.s_units.name',
-  `id_street_ts` int unsigned DEFAULT NULL COMMENT 'СОАТО код места стоянки mchs.s_ate_street.soato_code',
-  `street_ts` int unsigned DEFAULT NULL COMMENT 'Улица  места стоянки mchs.s_ate_street.name_rus',
-  `num_build_ts` varchar(150) DEFAULT NULL COMMENT 'Номер дома места стоянки ТС',
-  `date_control_tanc` date DEFAULT NULL COMMENT 'Дата проведенной проверки цистерны',
-  `id_type_control_tanc` int unsigned DEFAULT NULL COMMENT 'Тип проведенной проверки цистерны из doc.s_units.type_unit=14',
-  `type_control_tanc` varchar(150) DEFAULT NULL COMMENT 'Тип проведенной проверки цистерны  doc.s_units.type из doc.s_units.type_unit=14',
-  `pre_exploit` tinyint unsigned DEFAULT NULL COMMENT 'Предэксплуатационная проверка (1-да,0-нет)',
-  `size_tanc` decimal(10,0) DEFAULT NULL COMMENT 'Объем цистерны м3',
-  `num_sections` tinyint unsigned DEFAULT NULL COMMENT 'Количество секций',
-  `tanc_code` varchar(25) DEFAULT NULL COMMENT 'Код цистерны',
-  `num_ok` varchar(25) DEFAULT NULL COMMENT 'Номер официального утверждения типа',
-  `date_ok` date DEFAULT NULL COMMENT 'Дата официального утверждения типа',
-  `doc_ok` varchar(25) DEFAULT NULL COMMENT 'Официальное утверждение типа (№документа,подтверждающего соотв.требованиям ТР ТС)',
-  `date_doc_ok` date DEFAULT NULL COMMENT 'Дата документа,подтверждающего соотв.требованиям ТР ТС',
-  `num_device` varchar(255) DEFAULT NULL COMMENT 'Колич.и тип устройств безопасности и (ДУ или ПК, или ВК) цистерны',
-  `num_membr` tinyint unsigned DEFAULT NULL COMMENT 'Наличие разрывной мембраны (количество) цистерны',
-  `material` varchar(125) DEFAULT NULL COMMENT 'Материал цистерны',
-  `pressure` decimal(10,0) DEFAULT NULL COMMENT 'Расчетное давление Pa (цистерны)',
-  `fl_iso` tinyint unsigned DEFAULT NULL COMMENT 'Наличие изоляции (цистерны) 0-нет,1-да',
-  `fl_screen` tinyint unsigned DEFAULT NULL COMMENT 'Наличие солнцезащитного экрана (цистерны) 0-нет,1-да',
-  `binding` varchar(85) DEFAULT NULL COMMENT 'Вид крепления волнорезов (сварка/резьбовое) цистерны',
-  `reg_inspector` varchar(185) DEFAULT NULL COMMENT 'Фамилия, инициалы инспетора, зарегистрировавшего ТС',
-  `fio_staff` varchar(185) DEFAULT NULL COMMENT 'Фамилия, имя, отчество лица, получившего регистрационную карточку ТС',
-  `date_unreg` date DEFAULT NULL COMMENT 'Дата регистрации заявления о снятии с учета ТС',
-  `num_unreg` varchar(55) DEFAULT NULL COMMENT 'Номер заявления о снятии с учета ТС',
-  `why_unreg` varchar(85) DEFAULT NULL COMMENT 'Причина снятия с учета ТС',
-  `unreg_inspector` varchar(185) DEFAULT NULL COMMENT 'Фамилия, инициалы инспетора, снявшего с учета ТС',
-  `org` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '0-Госнадзор, 1-пожарники,2-другие',
-  `date_record` date DEFAULT (now()) COMMENT 'Дата изменения записи',
-  `active` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '0-удалено, 1-активно',
-  `uid` int unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший запись',
-  PRIMARY KEY (`id_list`),
-    */}
-        {/* <BaseButtonsForm.Item label="Наименование СОПБиП" name="name">
-          <Input name="name" onChange={(e) => setSopb({ ...sopb, name: e.target.value })} defaultValue={sopb.name} />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item
-          label="Оценка соответствия средств обеспечения пожарной безопасности и пожаротушения проводится в форме сертификации"
-          name={'conditions'}
-        >
-          <Input
-            name="conditions"
-            onChange={(e) => setSopb({ ...sopb, name: e.target.value })}
-            defaultValue={sopb.name}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Статус" name={'active'}>
-          <Select
-            defaultValue={sopb.active || 1}
-            onChange={(value) => changeStatus(value as number)}
-            options={[
-              { value: 1, label: 'активно' },
-              {
-                value: 0,
-                label: 'удалено',
-              },
-            ]}
-          />
-        </BaseButtonsForm.Item>
+
         <BaseButtonsForm.Item>
-          <Button type="primary">Сохранить</Button>
-        </BaseButtonsForm.Item> */}
+          <Button type="primary" onClick={submit}>
+            Сохранить
+          </Button>
+        </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
   );

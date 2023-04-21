@@ -5,7 +5,9 @@ export const getObl = () =>
 
 export const getRayonsByOblId = (id:string) =>
     httpApi.get<any[]>('ate/get/rayons/in_obl/' + id).then(({data})=>data);
-
+    
+export const getRayonsByRayonId = (id:string) =>
+    httpApi.get<any[]>('ate/get/rayon/' + id).then(({data})=>data);
 export const getCitiesByRayonId = (id:string) =>
     httpApi.get<any[]>('ate/get/reestrs/id_rayon/'+id).then(({data})=>data);
 
@@ -25,4 +27,4 @@ httpApi.get<any[]>('ate/get/all/reestrs').then(({data}) => data);
 httpApi.get<any[]>('ate/get/all/streets').then(({data}) => data);
 
     export const getOblById = (idObl) => 
-httpApi.get<any[]>('/get/obl/'+idObl).then(({data}) => data);
+httpApi.get<any[]>('ate/get/obl/'+idObl).then(({data}) => data);
