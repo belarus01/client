@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Col, Form, Row, Space, TablePaginationConfig } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Table } from '@app/components/common/Table/Table';
-import { DataType, getBasicDataType, vid1, vid2 } from '@app/api/eventCard.api';
+import { DataType, getBasicDataType, getFirst, vid1, vid2 } from '@app/api/eventCard.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { Status } from '@app/components/profile/profileCard/profileFormNav/nav/payments/paymentHistory/Status/Status';
 import { Button } from '@app/components/common/buttons/Button/Button';
@@ -17,7 +17,7 @@ import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 
 
 
-export const Step3: React.FC = () => {
+export const Step3: React.FC<any> = ({data}) => {
   //const { t } = useTranslation();
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [tableData, setTableData] = useState<{ data: DataType[], loading: boolean }>({
@@ -28,9 +28,16 @@ export const Step3: React.FC = () => {
   const fetch = useCallback(
     () => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      getBasicDataType().then((res) => {
+      getFirst().then((res) => {
+        console.log(res);
+        console.log(res.result8);
+        const dataTable = [];
+        dataTable.push(...res.result8);
+        dataTable.push(...res.result10);
+        dataTable.push(...res.result11);
+        dataTable.push(...res.result12);
         if (isMounted.current) {
-          setTableData({ data: res.data, loading: false });
+          setTableData({ data: dataTable, loading: false });
         }
       });
     },
@@ -45,91 +52,102 @@ export const Step3: React.FC = () => {
     fetch();
   }, [fetch]);
 
+  useEffect(()=>{
+    console.log(tableData.data);
+    
+  }, [tableData.data])
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'Перечень выявленных нарушений',
-      dataIndex: 'perech_narush',
-      key: 'perech_narush',
+      dataIndex: 'name_def',
+      key: 'name_def',
       width: '30%',
     },
     {
-      title: 'Сведения о принятых мерах административного принуждения',
-      children: [
-        {
-          title: 'Вид',
-          dataIndex: 'vid_prin',
-          key: 'vid_prin',
-          render: (vid_prin: vid1[]) => (
-            <Row gutter={[10, 10]}>
-              {vid_prin.map((data) => {
-                console.log(data);
-                return (
-                  <Col key={data.meri_admin_prin_vid}>
-                    <Status text={data.meri_admin_prin_vid} color={'red'} />
-                  </Col>
-                );
-              })}
-            </Row>
-          )
-        },
-        {
-          title: 'Количество',
-          dataIndex: 'vid_prin',
-          key: 'vid_prin',
-          render: (vid_prin: vid1[]) => (
-            <Row gutter={[10, 10]}>
-              {vid_prin.map((data) => {
-                console.log(data);
-                return (
-                  <Col key={data.meri_admin_prin_vid}>
-                    <Status text={data.meri_admin_prin_vid} color={'green'} />
-                  </Col>
-                );
-              })}
-            </Row>
-          )
-        },
-      ],
+      title: 'Сведения о принятых мерах административного принуждения (вид, количество)',
+      dataIndex: 'adm_force',
+      key: 'adm_force',
+      width: '30%',
+      // children: [
+      //   {
+      //     title: 'Вид',
+      //     dataIndex: 'vid_prin',
+      //     key: 'vid_prin',
+      //     render: (vid_prin: vid1[]) => (
+      //       <Row gutter={[10, 10]}>
+      //         {vid_prin.map((data) => {
+      //           console.log(data);
+      //           return (
+      //             <Col key={data.meri_admin_prin_vid}>
+      //               <Status text={data.meri_admin_prin_vid} color={'red'} />
+      //             </Col>
+      //           );
+      //         })}
+      //       </Row>
+      //     )
+      //   },
+      //   {
+      //     title: 'Количество',
+      //     dataIndex: 'vid_prin',
+      //     key: 'vid_prin',
+      //     render: (vid_prin: vid1[]) => (
+      //       <Row gutter={[10, 10]}>
+      //         {vid_prin.map((data) => {
+      //           console.log(data);
+      //           return (
+      //             <Col key={data.meri_admin_prin_vid}>
+      //               <Status text={data.meri_admin_prin_vid} color={'green'} />
+      //             </Col>
+      //           );
+      //         })}
+      //       </Row>
+      //     )
+      //   },
+      // ],
     },
     {
-      title: 'Сведения о принятых мерах административного пресечения',
-      children: [
-        {
-          title: 'Вид',
-          dataIndex: 'vid_pres',
-          key: 'vid_pres',
+      title: 'Сведения о принятых мерах административного пресечения (вид, количество)',
+      dataIndex: 'adm_ban',
+      key: 'adm_ban',
+      width: '30%',
+      // children: [
+      //   {
+      //     title: 'Вид',
+      //     dataIndex: 'vid_pres',
+      //     key: 'vid_pres',
 
-          render: (vid_pres: vid2[]) => (
-            <Row gutter={[10, 10]}>
-              {vid_pres.map((data) => {
-                console.log(data);
-                return (
-                  <Col key={data.meri_admin_pres_vid}>
-                    <Status text={data.meri_admin_pres_vid} color={'blue'} />
-                  </Col>
-                );
-              })}
-            </Row>
-          )
-        },
-        {
-          title: 'Количество',
-          dataIndex: 'vid_pres',
-          key: 'vid_pres',
-          render: (vid_pres: vid2[]) => (
-            <Row gutter={[10, 10]}>
-              {vid_pres.map((data) => {
-                console.log(data);
-                return (
-                  <Col key={data.meri_admin_pres_col}>
-                    <Status text={String(data.meri_admin_pres_col)} color={'pink'} />
-                  </Col>
-                );
-              })}
-            </Row>
-          )
-        },
-      ],
+      //     render: (vid_pres: vid2[]) => (
+      //       <Row gutter={[10, 10]}>
+      //         {vid_pres.map((data) => {
+      //           console.log(data);
+      //           return (
+      //             <Col key={data.meri_admin_pres_vid}>
+      //               <Status text={data.meri_admin_pres_vid} color={'blue'} />
+      //             </Col>
+      //           );
+      //         })}
+      //       </Row>
+      //     )
+      //   },
+      //   {
+      //     title: 'Количество',
+      //     dataIndex: 'vid_pres',
+      //     key: 'vid_pres',
+      //     render: (vid_pres: vid2[]) => (
+      //       <Row gutter={[10, 10]}>
+      //         {vid_pres.map((data) => {
+      //           console.log(data);
+      //           return (
+      //             <Col key={data.meri_admin_pres_col}>
+      //               <Status text={String(data.meri_admin_pres_col)} color={'pink'} />
+      //             </Col>
+      //           );
+      //         })}
+      //       </Row>
+      //     )
+      //   },
+      // ],
     },
     {
       title: 'Сведения о подготовке предписания (рекомендаций) об устранении нарушений',
@@ -151,36 +169,38 @@ export const Step3: React.FC = () => {
     },
     {
       title: 'Дата (даты) устранения нарушений',
-      dataIndex: 'date_ustr_narush',
-      key: 'date_ustr_narush',
+      dataIndex: 'date_fix',
+      key: 'date_fix',
       width: 50,
     },
     {
       title: 'Дата (даты) информирования об устранении нарушений',
-      dataIndex: 'date_info_naush',
-      key: 'date_info_naush',
+      dataIndex: 'date_inform',
+      key: 'date_inform',
       width: 50,
     },
     {
       title: 'Дата проведения мероприятия по контролю за устранением нарушений',
-      dataIndex: 'date_meropri_po_control',
-      key: 'date_meropri_po_control',
+      dataIndex: 'date_check_fix',
+      key: 'date_check_fix',
       width: 50,
     },
     {
       title: 'Результат проведения мероприятия по контролю за устранением нарушений',
-      dataIndex: 'result_prov_meropri',
-      key: 'dresult_prov_meropri',
+      dataIndex: 'fl_ok',
+      key: 'fl_ok',
       width: 50,
     },
     {
       title: 'Перечень не устраненных (частично устраненных) нарушений',
-      dataIndex: 'perech_neustr_narush',
-      key: 'perech_neustr_narush',
+      dataIndex: 'transfer_data',
+      key: 'transfer_data',
       width: 50,
     },
   ];
 
+  console.log(data);
+  
 
   return (
 
@@ -202,10 +222,7 @@ export const Step3: React.FC = () => {
         hasFeedback
         rules={[{ required: true, message: 'Введите вид проверки ' }]}
       >
-        <Select placeholder={('Вид проверки ')}>
-          <Option value="Выборочная">{('Выборочная')}</Option>
-          <Option value="Внеплановая">{('Внеплановая')}</Option>
-        </Select>
+       <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -230,11 +247,7 @@ export const Step3: React.FC = () => {
         hasFeedback
         rules={[{ required: true, message: 'Введите должность лица, выдавшего предписание на проведение проверки ' }]}
       >
-        <Select placeholder={('Должность лица, выдавшего предписание на проведение проверки ')}>
-          <Option value="Директор">{('Директор')}</Option>
-          <Option value="Программист">{('Программист')}</Option>
-          <Option value="Инженер">{('Инженер')}</Option>
-        </Select>
+       <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -258,7 +271,7 @@ export const Step3: React.FC = () => {
         label={'Дата выдачи предписания на проведение проверки (решения на проведение мониторинга)'}
         rules={[{ required: true, message: 'Введите дату выдачи предписания на проведение проверки' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -267,11 +280,16 @@ export const Step3: React.FC = () => {
         hasFeedback
         rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
       >
-        <Select placeholder={('Должность руководителя проверки ')}>
-          <Option value="Директор">{('Директор')}</Option>
+        <Select placeholder={('Должность руководителя проверки ')} onChange={(value)=>{console.log(value);
+        }} options={data?.result4.map((item) => ({
+          value: item.job ,
+          label: item.job,
+        }))} >
+          {/* <Option value="Директор">{('Директор')}</Option>
           <Option value="Программист">{('Программист')}</Option>
-          <Option value="Инженер">{('Инженер')}</Option>
+          <Option value="Инженер">{('Инженер')}</Option> */}
         </Select>
+        
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item

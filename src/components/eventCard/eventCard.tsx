@@ -69,12 +69,22 @@ export const EventCard: React.FC = () => {
             { name: 'name_zdani', value: data['result2'][0].name_build },
             { name: 'col_sooryg', value: data['result2'][1].num_zdan },
             { name: 'name_sooryg', value: data['result2'][1].name_build },
-            { name: 'name_nadz', value: data['result1'][0].departament },
-            { name: 'unp_nadz', value: data['result1'][0].unp_nadz_organ },
-            { name: 'adress_nadz', value: data['result1'][0].address },
-            { name: 'fio_nadz', value: data['result1'][0].fio_boss },
-            { name: 'dolgn_nadz', value: data['result1'][0].dolzn_boss_nadz_org },
+            { name: 'name_nadz', value: data['result3'][0].departament },
+            { name: 'unp_nadz', value: data['result3'][0].unp },
+            { name: 'adress_nadz', value: data['result3'][0].address },
+            { name: 'fio_nadz', value: data['result3'][0].fio_boss },
+            { name: 'dolgn_nadz', value: data['result3'][0].dolzn_boss_nadz_org },
             { name: 'vid_meropr', value: data['result1'][0].type_check },
+            { name: 'vid_proverki', value: data['result1'][0].type_order },
+            { name: 'sfera_contolya', value: data['result1'][0].sphera },
+            { name: 'osnovanie', value: data['result1'][0].reason },
+            { name: 'dolg_lica', value: data['result1'][0].post_title },
+            { name: 'fio_proverki', value: data['result1'][0].fio_post_title },
+            { name: 'nomer', value: data['result1'][0].num_order },
+            { name: 'date_vidaci', value: data['result1'][0].date_order },
+            // { name: 'dolg_ruc_proverki', value: data['result4'][0].job },
+            //{ name: 'perech_narush', value: data['result8'][0].name_def },
+            
           ]);
         }
         
@@ -154,7 +164,7 @@ export const EventCard: React.FC = () => {
   const formFieldsUi = [
     <Step1 key="1" data={data1}/>,
     <Step2 key="2" />,
-    <Step3 key="3" />,
+    <Step3 key="3" data={data1} />,
     // <Step4 key="4" formValues={formValues} />,
     <Step4 key="4" />,
   ];

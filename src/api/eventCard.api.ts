@@ -1,3 +1,4 @@
+import { dataTool } from "echarts";
 import { httpApi } from "./http.api";
 
 export interface vid1 {
@@ -37,7 +38,7 @@ export const getBasicDataType = (): Promise<BasicDataType> => {
       data: [
         {
           key: 1,
-          perech_narush: 'qwe1111111111111111111111111111111111111111111111111111111111111',
+          perech_narush: '',
           vid_prin: [
             {
               meri_admin_prin_vid: 'rth',
