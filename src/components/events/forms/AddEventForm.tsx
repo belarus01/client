@@ -188,35 +188,7 @@ export const AddEventOrderForm: React.FC = () => {
                         ) : null
                     }
 
-                    <BaseButtonsForm.Item>
-                        
-                    </BaseButtonsForm.Item>
                     
-                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
-                        <Collapse>
-
-                        </Collapse>
-                    </BaseButtonsForm.Item>
-                    <BaseButtonsForm.Item label="Авиа" name="auto">
-                        <Collapse>
-
-                        </Collapse>
-                    </BaseButtonsForm.Item>
-                    <BaseButtonsForm.Item label="Водный транспорт" name="auto">
-                        <Collapse>
-
-                        </Collapse>
-                    </BaseButtonsForm.Item>
-                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
-                        <Collapse>
-
-                        </Collapse>
-                    </BaseButtonsForm.Item>
-                    <BaseButtonsForm.Item label="Автотранспорт" name="auto">
-                        <Collapse>
-
-                        </Collapse>
-                    </BaseButtonsForm.Item>
 
 
                     {/* <BaseButtonsForm.Item>

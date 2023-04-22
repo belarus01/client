@@ -253,6 +253,7 @@ export const EventsTable: React.FC = () => {
             destroyOnClose
             title={'Создание мероприятия'}
             centered
+            
             open={openAdd}
             >
                 <AddEventOrderForm/>
