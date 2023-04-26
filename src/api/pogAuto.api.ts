@@ -16,6 +16,8 @@ export const updatePogSubjAuto = (data: IPogAuto) =>
 export const deletePogSubjAutoById = (idList: number | string) =>
   httpApi.put<IPogAuto>(`${BASE_URL}/delete/pogSubjAuto/${idList}`).then(({ data }) => data);
 
+export const getPogSubjAutoById = (idList: number | string) =>
+  httpApi.get<IPogAuto>(`${BASE_URL}/get/pogSubjAuto/id/${idList}`).then(({ data }) => data);
 // const generateAuto = () => {
 //   const numbers = Math.random() * 10;
 //   const autos = [];

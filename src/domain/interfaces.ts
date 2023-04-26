@@ -171,39 +171,42 @@ export interface GeolocationData{
 }
 
 export interface SSubj{
-    idSubj: number;
-    numOpo: string | null;
-    subj: string | null;
+    idSubj: number | null;
+    numOpo?: string | null;
+    subj?: string | null;
     unp: string | null;
-    addrYur: string | null;
-    dateRecord: Date | null;
-    active: number;
-    uid: number | null;
-    codeSoatoYur: string | null;
-    numReg: string | null;
-    idOked: number | null;
-    dateRegOpo: string | null;
-    dateRegUnp: string | null;
-    addrFact: string | null;
-    bossName: string | null;
-    staffBoss: string | null;
-    numBuild: number | null;
-    nameBuild: string | null;
-    statusUnp: string | null
-    dateLikv: string | null;
-    typeSubj: string | null;
-    bankRekv: string | null;
-    idReestrYur: number | null;
-    idStreetYur: string | null;
-    numCorpYur: string | null;
-    numBuildYur: string | null;
-    codeSoatoFact: string | null;
-    idReestrFact: number | null;
-    idStreetFact: string | null;
-    numCorpFact: string | null;
-    numBuildFact: string | null;
-    contactData: string | null;
-    sSubjObjs: SSubjObj[]; 
+    addrYur?: string | null;
+    dateRecord?: Date | null;
+    active?: number;
+    uid?: number | null;
+    codeSoatoYur?: string | null;
+    numReg?: string | null;
+    idOked?: number | null;
+    dateRegOpo?: string | null;
+    dateRegUnp?: string | null;
+    addrFact?: string | null;
+    bossName?: string | null;
+    staffBoss?: string | null;
+    numBuild?: number | null;
+    nameBuild?: string | null;
+    statusUnp?: string | null
+    dateLikv?: string | null;
+    typeSubj?: string | null;
+    bankRekv?: string | null;
+    idReestrYur?: number | null;
+    idStreetYur?: string | null;
+    numCorpYur?: string | null;
+    numBuildYur?: string | null;
+    codeSoatoFact?: string | null;
+    idReestrFact?: number | null;
+    idStreetFact?: string | null;
+    numCorpFact?: string | null;
+    numBuildFact?: string | null;
+    contactData?: string | null;
+    idVed?: null | number | string;
+    chiefName?: string;
+    chiefTel?: string;
+    sSubjObjs?: SSubjObj[]; 
 }
 
 export interface SSoato{
@@ -552,4 +555,11 @@ export interface ateObl{
     active?: number,
     dateRecord?: string|number,
     idObl: number,
+}
+
+export interface IVesomstvo{
+    dateRecord?: null;
+    idVed: number | null;
+    name: string;
+    uid?: null| string |number;
 }

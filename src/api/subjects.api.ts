@@ -6,3 +6,6 @@ export const getAllSubjects = () =>
 
     export const getSubjectByUnp = (unp: string) =>
 httpApi.get<SSubj>(`subject/get/unp/${unp}`).then(({data})=> data);
+
+    export const getSubjById = (idSubj: string) =>
+httpApi.get<SSubj>(`subject/get/id/${idSubj}`).then(({data})=> data);

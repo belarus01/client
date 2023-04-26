@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import PogAutoTable from './pogTables/PogAutoTable';
+import PogMapSubjTable from './pogTables/PogMapSubjTable';
 
 const onChange = (key: string) => {
   console.log(key);
@@ -11,7 +12,7 @@ const items: TabsProps['items'] = [
   {
     key: '1',
     label: `Карта ПОГ`,
-    children: <div>Карта ПОГ</div>,
+    children: <PogMapSubjTable />,
   },
   {
     key: '2',

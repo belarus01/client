@@ -14,6 +14,7 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page';
+import pogMapSubjPage from '@app/pages/pog/pogMapSubjPage';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
 const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
@@ -35,6 +36,7 @@ const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/Departmen
 const SopbPage = React.lazy(() => import('@app/pages/sopbs/SopbsPage'));
 const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage'));
 const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
+const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
 
 export const MAIN_PATH = '/';
 
@@ -63,6 +65,7 @@ const Departaments = withLoading(DepartamentsPage);
 const Sopb = withLoading(SopbPage);
 const SopbCards = withLoading(SopbCardsPage);
 const PogPage = withLoading(PogPageTabs);
+const PogMapSubj = withLoading(PogMapSubjPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -85,7 +88,10 @@ export const AppRouter: React.FC = () => {
             </Route>
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
-            <Route path="pog" element={<PogPage />} />
+            <Route path="pog">
+              <Route path="" element={<PogPage />} />
+              <Route path=":idSubj" element={<PogMapSubj />} />
+            </Route>
             {/* <Route path='pb' element={}/> */}
             {/* <Route path='ptc' element={}/> */}
             {/* <Route path='auto' element={}/> */}
