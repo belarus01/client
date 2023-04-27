@@ -7,12 +7,29 @@ import * as S from './MainLayout.styles';
 import { Outlet, useLocation } from 'react-router-dom';
 import { MAIN_PATH, } from '@app/components/router/AppRouter';
 import { useResponsive } from '@app/hooks/useResponsive';
+import { sendGeolocation } from '@app/api/geolocation.api';
+import useGeolocation from 'react-hook-geolocation';
+import { useAppSelector } from '@app/hooks/reduxHooks';
 
 const MainLayout: React.FC = () => {
   const [isTwoColumnsLayout, setIsTwoColumnsLayout] = useState(true);
   const [siderCollapsed, setSiderCollapsed] = useState(true);
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile, isTablet } = useResponsive();
   const location = useLocation();
+  const user = useAppSelector((state) => state.user.user);
+  
+  const onGeolocationUpdate = (geolocation: any) => {
+    console.log(geolocation);
+    sendGeolocation({uid:user?.uid, latitude:geolocation.latitude, longitude:geolocation.longitude});
+  }
+
+  
+    const geolocation = useGeolocation({
+      enableHighAccuracy: true,
+      maximumAge: 15000,
+      timeout: 12000,
+    }, onGeolocationUpdate)
+  
 
   const toggleSider = () => setSiderCollapsed(!siderCollapsed);
 
