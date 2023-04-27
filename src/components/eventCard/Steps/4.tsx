@@ -1,10 +1,11 @@
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import * as S from '../eventCard.styles';
 import { H4 } from '@app/components/common/typography/H4/H4';
 import { useState } from 'preact/hooks';
+import { List } from 'antd';
 
 // interface Field {
 //   name?: string;
@@ -14,53 +15,85 @@ import { useState } from 'preact/hooks';
 // interface Step4Props {
 //   formValues: Field[];
 // }
-interface eventCount{
-  name:string;
+interface eventCount {
+  name: string;
   count: number;
 }
-interface cardResult{
-  name:string;
-  count:number;
-  names1?:eventCount[],
-  names2?:eventCount[],
+interface cardResult {
+  name: string;
+  count: number;
+  names1?: eventCount[],
+  names2?: eventCount[],
 
 }
 
-export const Step4: React.FC = () => {
+export const Step4: React.FC<any> = ({ data }) => {
   // const [res1, setRes1] = useState<cardResult>({name:'11111', count:12});
+
+  const items_col = useMemo(() => {
+    if (data) {
+      return data.result13.filter((item: { num: string; }) => item.num == '1')
+
+
+    }
+    return []
+  }, [data]);
+  console.log(items_col);
+
+  const items_vidi = useMemo(() => {
+    return data.result13 
+  }, [data]);
+
+  const items_np_meropri = useMemo(() => {
+    return data.result15 
+  }, [data]);
+
+  const items_sfer_control = useMemo(() => {
+    return data.result16 
+  }, [data]);
+
+  const items_adm_prin = useMemo(() => {
+    return data.result17 
+  }, [data]);
+
+  const items_adm_pres = useMemo(() => {
+    return data.result18 
+  }, [data]);
+
   return (
     //<S.Details key="4">
     <S.FormContent>
+
       <BaseButtonsForm.Item
-        label={'Количество надзорно-профилактических мероприятий (всего и по каждому виду в отдельности) '}
+        label={'Количество надзорно-профилактических мероприятий (всего и по каждому виду в отдельности)'}
       >
         <BaseButtonsForm.Item
           label={'Всего'}
           name="kol_meropri_vsego"
-          hasFeedback
-          rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий ' }]}
+          //hasFeedback
+          //rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий ' }]}
         >
-          <Input  />
-            
-        </BaseButtonsForm.Item>
-       
-        <BaseButtonsForm.Item
-          label={'Вид 1'}
-          name="kol_meropei_vid_1"
-          hasFeedback
-          rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий (вид 1) ' }]}
-        >
-          <Input  />
+          <Input  style={{ width: "100px", textAlign: "center" }} defaultValue={items_col.length} key={items_col} />
+
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item
-          label={'Вид 2'}
-          name="kol_meropei_vid_2"
-          hasFeedback
-          rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий (вид 2) ' }]}
-        >
-          <Input  />
-        </BaseButtonsForm.Item>
+        name="vidi_meropri"
+        label={'Виды мероприятий'}
+        rules={[{ required: true, message: 'Введите виды мероприятий' }]}
+      >
+        {data ? <List
+          bordered
+          dataSource={items_vidi}
+          renderItem={(item: { name: string; num: string }) => (
+
+            <List.Item>
+              {[item.name,"  -  ", item.num]}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
+      </BaseButtonsForm.Item>
 
       </BaseButtonsForm.Item>
 
@@ -69,42 +102,89 @@ export const Step4: React.FC = () => {
         label={'Количество выявленных нарушений'}
         rules={[{ required: true, message: 'Введите количество выявленных нарушений' }]}
       >
-        <Input />
+        <Input style={{ width: "100px", textAlign: "center" }}/>
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
-        name="kol_np_mer_po_vidam"
+        //name="kol_np_mer_po_vidam"
         label={'Количество надзорно-профилактических мероприятий по видам итогового документа по их результатам'}
-        rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий по видам итогового документа по их результатам' }]}
+        //rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий по видам итогового документа по их результатам' }]}
       >
-        <Input />
+        <BaseButtonsForm.Item
+        name="kol_np_mer_po_vidam"
+        //rules={[{ required: true, message: 'Введите виды мероприятий' }]}
+      >
+        {data ? <List
+          bordered
+          dataSource={items_np_meropri}
+          renderItem={(item: { vid_doc: string; sum_exit_docs: string; sum_events: string; }) => (
+
+            <List.Item>
+              {[item.vid_doc,"  -  ", item.sum_exit_docs, "  -  ", item.sum_events]}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
       </BaseButtonsForm.Item>
 
-      <BaseButtonsForm.Item
+      </BaseButtonsForm.Item>
+
+        <BaseButtonsForm.Item
         name="kol_np_meropri"
         label={'Количество надзорно-профилактических мероприятий по сферам контроля (надзора)'}
-        rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий по сферам контроля' }]}
+        //rules={[{ required: true, message: 'Введите количество надзорно-профилактических мероприятий по сферам контроля' }]}
       >
-        <Input />
+        {data ? <List
+          bordered
+          dataSource={items_sfer_control}
+          renderItem={(item: { name: string; ss: string }) => (
+
+            <List.Item>
+              {[item.name,"  -  ", item.ss]}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="kol_i_vid_mer_prin"
         label={'Количество и вид принятых мер административного принуждения'}
-        rules={[{ required: true, message: 'Введите количество и вид принятых мер административного принуждения' }]}
+        // rules={[{ required: true, message: 'Введите количество и вид принятых мер административного принуждения' }]}
       >
-        <Input />
+        {data ? <List
+          bordered
+          dataSource={items_adm_prin}
+          renderItem={(item: { adm_force: string }) => (
+
+            <List.Item>
+              {[item.adm_force]}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="kol_i_vid_mer_presech"
         label={'Количество и вид принятых мер административного пресечения'}
-        rules={[{ required: true, message: 'Введите количество и вид принятых мер административного пресечения' }]}
+        // rules={[{ required: true, message: 'Введите количество и вид принятых мер административного пресечения' }]}
       >
-        <Input />
+        {data ? <List
+          bordered
+          dataSource={items_adm_pres}
+          renderItem={(item: { adm_ban: string }) => (
+
+            <List.Item>
+              {[item.adm_ban]}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
       </BaseButtonsForm.Item>
+
     </S.FormContent>
-  
+
     //</S.Details>
   );
 };

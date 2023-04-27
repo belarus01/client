@@ -28,7 +28,7 @@ export const EventCard: React.FC = () => {
   const [form] = BaseForm.useForm();
   const [data1, setData] = useState<any>();
   const [fields, setFields] = useState<FieldData[]>([
-    
+
     // { name: 'confirmPassword', value: '123456' },
     // { name: 'salutation', value: 'mr' },
     // { name: 'gender', value: 'male' },
@@ -48,58 +48,81 @@ export const EventCard: React.FC = () => {
   const { isMounted } = useMounted();
   const { t } = useTranslation();
 
-  
 
-  useEffect(()=>{
-    getFirst().then((data)=>{
-        if(isMounted.current){
-          console.log(data);
-          setData(data);
-          setFields([
-            { name: 'group', value: data['result1'][0].subj },
-            { name: 'unp', value: data['result1'][0].unp },
-            { name: 'date', value: data['result1'][0].date_reg_unp },
-            { name: 'prin', value: data['result1'][0].ved },
-            { name: 'ur_adress', value: data['result1'][0].addr_yur },
-            { name: 'fak_adress', value: data['result1'][0].addr_fact },
-            { name: 'fio', value: data['result1'][0].boss_name },
-            { name: 'dolgnost', value: data['result1'][0].staff_boss },
-            { name: 'sfera', value: data['result1'][0].name_oked },
-            { name: 'col_zdani', value: data['result2'][0].num_zdan },
-            { name: 'name_zdani', value: data['result2'][0].name_build },
-            { name: 'col_sooryg', value: data['result2'][1].num_zdan },
-            { name: 'name_sooryg', value: data['result2'][1].name_build },
-            { name: 'name_nadz', value: data['result3'][0].departament },
-            { name: 'unp_nadz', value: data['result3'][0].unp },
-            { name: 'adress_nadz', value: data['result3'][0].address },
-            { name: 'fio_nadz', value: data['result3'][0].fio_boss },
-            { name: 'dolgn_nadz', value: data['result3'][0].dolzn_boss_nadz_org },
-            { name: 'vid_meropr', value: data['result1'][0].type_check },
-            { name: 'vid_proverki', value: data['result1'][0].type_order },
-            { name: 'sfera_contolya', value: data['result1'][0].sphera },
-            { name: 'osnovanie', value: data['result1'][0].reason },
-            { name: 'dolg_lica', value: data['result1'][0].post_title },
-            { name: 'fio_proverki', value: data['result1'][0].fio_post_title },
-            { name: 'nomer', value: data['result1'][0].num_order },
-            { name: 'date_vidaci', value: data['result1'][0].date_order },
-            // { name: 'dolg_ruc_proverki', value: data['result4'][0].job },
-            //{ name: 'perech_narush', value: data['result8'][0].name_def },
-            
-          ]);
-        }
-        
-        
 
-    }).catch((e)=>{
-      notificationController.error({message:'Ошибка'})
+  useEffect(() => {
+    getFirst().then((data) => {
+      if (isMounted.current) {
+        console.log(data);
+        setData(data);
+        setFields([
+          { name: 'group', value: data['result1'][0].subj },
+          { name: 'unp', value: data['result1'][0].unp },
+          { name: 'date', value: data['result1'][0].date_reg_unp },
+          { name: 'prin', value: data['result1'][0].ved },
+          { name: 'ur_adress', value: data['result1'][0].addr_yur },
+          { name: 'fak_adress', value: data['result1'][0].addr_fact },
+          { name: 'fio', value: data['result1'][0].boss_name },
+          { name: 'dolgnost', value: data['result1'][0].staff_boss },
+          { name: 'sfera', value: data['result1'][0].name_oked },
+          { name: 'col_zdani', value: data['result2'][0].num_zdan },
+          { name: 'name_zdani', value: data['result2'][0].name_build },
+          { name: 'col_sooryg', value: data['result2'][1].num_zdan },
+          { name: 'name_sooryg', value: data['result2'][1].name_build },
+          { name: 'name_nadz', value: data['result3'][0].departament },
+          { name: 'unp_nadz', value: data['result3'][0].unp },
+          { name: 'adress_nadz', value: data['result3'][0].address },
+          { name: 'fio_nadz', value: data['result3'][0].fio_boss },
+          { name: 'dolgn_nadz', value: data['result3'][0].dolzn_boss_nadz_org },
+          { name: 'vid_meropr', value: data['result1'][0].type_check },
+          { name: 'vid_proverki', value: data['result1'][0].type_order },
+          { name: 'sfera_contolya', value: data['result1'][0].sphera },
+          { name: 'osnovanie', value: data['result1'][0].reason },
+          { name: 'dolg_lica', value: data['result1'][0].post_title },
+          { name: 'fio_proverki', value: data['result1'][0].fio_post_title },
+          { name: 'nomer', value: data['result1'][0].num_order },
+          { name: 'date_vidaci', value: data['result1'][0].date_order },
+          { name: 'sved_o_vneplan_proverki', value: data['result9'][0].num },
+          { name: 'prov_period', value: data['result1'][0].period_check },
+          { name: 'date_nachala_meropr', value: data['result1'][0].date_begin },
+          { name: 'date_okonchaniya_meropr', value: data['result1'][0].date_end },
+          { name: 'fac_date_nacala', value: data['result1'][0].date_begin_fact },
+          { name: 'fac_date_oconchaniya', value: data['result1'][0].date_end_fact },
+          { name: 'date_stop', value: data['result1'][0].date_stop },
+          { name: 'date_vozobnovleniya', value: data['result1'][0].date_continue },
+          { name: 'sved_o_prodlenii', value: data['result1'][0].fl_longer },
+          { name: 'date_prodlenii', value: data['result1'][0].date_to },
+          { name: 'dolg_pred_subj', value: data['result1'][0].post_agent },
+          { name: 'fio_pred_subj', value: data['result1'][0].name_agent },
+          { name: 'itog_doc', value: data['result6'][0].num_last_doc },
+          { name: 'date_itog_doc', value: data['result6'][0].date_doc },
+          { name: 'date_vrucheniya_itog_doc', value: data['result6'][0].date_rec },
+          { name: 'sved_o_vozrag', value: data['result6'][0].other_info },
+          //30-31 вопросы
+          //{ name: 'date_po_vozrag', value: data['result7'][0].date_po_vozrag },
+          //{ name: 'reshenie_po_vozrag', value: data['result7'][0].reshenie_po_vozrag },
+          { name: 'adm_force', value: data['result10'][0].adm_force },
+          { name: 'adm_ban', value: data['result11'][0].adm_ban },
+          //35-37 вопросы
+          //{ name: 'sved_ob_ustr_narush', value: data['result12'][0].sved_ob_ustr_narush },
+          //{ name: 'date_predpis', value: data['result12'][0].date_predpis },
+          //{ name: 'date_vruch', value: data['result12'][0].date_vruch },
+          { name: 'kol_viyavlenih_narush', value: data['result14'][0].num },
+        ]);
+      }
+
+
+
+    }).catch((e) => {
+      notificationController.error({ message: 'Ошибка' })
     })
-},[]);
- 
+  }, []);
+
 
   const formLabels: FormValues = {
     group: 'group',
     unp: 'unp',
-    
+
     // confirmPassword: t('common.confirmPassword'),
     // salutation: t('forms.stepFormLabels.salutation'),
     // gender: t('forms.stepFormLabels.gender'),
@@ -120,14 +143,14 @@ export const EventCard: React.FC = () => {
     .map((item) => ({
       name: formLabels[item.name],
       value: String(item.value),
-     
+
     }));
 
   const next = () => {
-    // form.validateFields().then(() => {
-    //   setCurrent(current + 1);
-    // });
-    setCurrent(current + 1);
+    form.validateFields().then(() => {
+      setCurrent(current + 1);
+    });
+    //setCurrent(current + 1);
   };
 
   const prev = () => {
@@ -162,11 +185,11 @@ export const EventCard: React.FC = () => {
   ];
 
   const formFieldsUi = [
-    <Step1 key="1" data={data1}/>,
+    <Step1 key="1" data={data1} />,
     <Step2 key="2" />,
     <Step3 key="3" data={data1} />,
     // <Step4 key="4" formValues={formValues} />,
-    <Step4 key="4" />,
+    <Step4 key="4" data={data1} />,
   ];
 
   return (
@@ -194,7 +217,7 @@ export const EventCard: React.FC = () => {
           </S.PrevButton>
         )}
         {current < steps.length - 1 && (
-          <Button type="primary" style={{ marginLeft: "8px"}} onClick={() => next()}>
+          <Button type="primary" style={{ marginLeft: "8px" }} onClick={() => next()}>
             {'Следующий'}
           </Button>
         )}

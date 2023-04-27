@@ -117,9 +117,8 @@ export const Step1: React.FC<any> = ({ data }) => {
             <BaseButtonsForm.Item
                 label={'Количество отдельных зданий'}
                 name="col_zdani"
-                rules={[{ required: true, message: 'Введите количество отдельных зданий' }]}
+                //rules={[{ required: true, message: 'Введите количество отдельных зданий' }]}
             >
-                
                 <Input style={{ width: "100px", textAlign: "center" }} defaultValue={items_zdan.length} key={items_zdan} />
                 
             </BaseButtonsForm.Item>
@@ -139,9 +138,8 @@ export const Step1: React.FC<any> = ({ data }) => {
                                 {item.name_build}
                             </List.Item>
                         )}
-                    /> : <p>Petya</p>
+                    /> : <p></p>
                     }
-
                 </BaseButtonsForm.Item>
             </Col>
 
@@ -187,7 +185,7 @@ export const Step1: React.FC<any> = ({ data }) => {
             <BaseButtonsForm.Item
                 label={'Количество отдельных сооружений'}
                 name="col_sooryg"
-                rules={[{ required: true, message: 'Введите количество отдельных сооружений' }]}
+                //rules={[{ required: true, message: 'Введите количество отдельных сооружений' }]}
             >
                 <Input style={{ width: "100px", textAlign: "center" }} defaultValue={items_sooryg.length} key={items_sooryg} />
 
@@ -208,9 +206,8 @@ export const Step1: React.FC<any> = ({ data }) => {
                                 {item.name_build}
                             </List.Item>
                         )}
-                    /> : <p>Petya</p>
+                    /> : <p></p>
                     }
-
                 </BaseButtonsForm.Item>
             </Col>
 
@@ -257,8 +254,3 @@ export const Step1: React.FC<any> = ({ data }) => {
     )
 };
 
-// function setFields(arg0: { name: string; value: any; }[]) {
-//     throw new Error('Function not implemented.');
-// }
-
-//if (item.id_unit_41 === '4000')

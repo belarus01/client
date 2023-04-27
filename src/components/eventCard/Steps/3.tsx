@@ -1,11 +1,11 @@
 //import { useTranslation } from 'react-i18next';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import * as S from '../eventCard.styles';
-import React, { useEffect, useState, useCallback, ComponentProps } from 'react';
+import React, { useEffect, useState, useCallback, ComponentProps, useMemo } from 'react';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { useTranslation } from 'react-i18next';
-import { Col, Form, Row, Space, TablePaginationConfig } from 'antd';
+import { Col, Form, List, Row, Space, TablePaginationConfig } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Table } from '@app/components/common/Table/Table';
 import { DataType, getBasicDataType, getFirst, vid1, vid2 } from '@app/api/eventCard.api';
@@ -17,7 +17,7 @@ import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 
 
 
-export const Step3: React.FC<any> = ({data}) => {
+export const Step3: React.FC<any> = ({ data }) => {
   //const { t } = useTranslation();
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [tableData, setTableData] = useState<{ data: DataType[], loading: boolean }>({
@@ -33,9 +33,9 @@ export const Step3: React.FC<any> = ({data}) => {
         console.log(res.result8);
         const dataTable = [];
         dataTable.push(...res.result8);
-        dataTable.push(...res.result10);
-        dataTable.push(...res.result11);
-        dataTable.push(...res.result12);
+        //dataTable.push(...res.result10);
+        //dataTable.push(...res.result11);
+        //dataTable.push(...res.result12);
         if (isMounted.current) {
           setTableData({ data: dataTable, loading: false });
         }
@@ -43,6 +43,10 @@ export const Step3: React.FC<any> = ({data}) => {
     },
     [isMounted],
   );
+
+  const items_voprosi = useMemo(() => {
+    return data.result5
+  }, [data]);
 
   const onFinish = (values: any) => {
     console.log('Received values of form:', values);
@@ -52,9 +56,9 @@ export const Step3: React.FC<any> = ({data}) => {
     fetch();
   }, [fetch]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(tableData.data);
-    
+
   }, [tableData.data])
 
   const columns: ColumnsType<DataType> = [
@@ -64,109 +68,109 @@ export const Step3: React.FC<any> = ({data}) => {
       key: 'name_def',
       width: '30%',
     },
-    {
-      title: 'Сведения о принятых мерах административного принуждения (вид, количество)',
-      dataIndex: 'adm_force',
-      key: 'adm_force',
-      width: '30%',
-      // children: [
-      //   {
-      //     title: 'Вид',
-      //     dataIndex: 'vid_prin',
-      //     key: 'vid_prin',
-      //     render: (vid_prin: vid1[]) => (
-      //       <Row gutter={[10, 10]}>
-      //         {vid_prin.map((data) => {
-      //           console.log(data);
-      //           return (
-      //             <Col key={data.meri_admin_prin_vid}>
-      //               <Status text={data.meri_admin_prin_vid} color={'red'} />
-      //             </Col>
-      //           );
-      //         })}
-      //       </Row>
-      //     )
-      //   },
-      //   {
-      //     title: 'Количество',
-      //     dataIndex: 'vid_prin',
-      //     key: 'vid_prin',
-      //     render: (vid_prin: vid1[]) => (
-      //       <Row gutter={[10, 10]}>
-      //         {vid_prin.map((data) => {
-      //           console.log(data);
-      //           return (
-      //             <Col key={data.meri_admin_prin_vid}>
-      //               <Status text={data.meri_admin_prin_vid} color={'green'} />
-      //             </Col>
-      //           );
-      //         })}
-      //       </Row>
-      //     )
-      //   },
-      // ],
-    },
-    {
-      title: 'Сведения о принятых мерах административного пресечения (вид, количество)',
-      dataIndex: 'adm_ban',
-      key: 'adm_ban',
-      width: '30%',
-      // children: [
-      //   {
-      //     title: 'Вид',
-      //     dataIndex: 'vid_pres',
-      //     key: 'vid_pres',
+    // {
+    //   title: 'Сведения о принятых мерах административного принуждения (вид, количество)',
+    //   dataIndex: 'adm_force',
+    //   key: 'adm_force',
+    //   width: '30%',
+    //   // children: [
+    //   //   {
+    //   //     title: 'Вид',
+    //   //     dataIndex: 'vid_prin',
+    //   //     key: 'vid_prin',
+    //   //     render: (vid_prin: vid1[]) => (
+    //   //       <Row gutter={[10, 10]}>
+    //   //         {vid_prin.map((data) => {
+    //   //           console.log(data);
+    //   //           return (
+    //   //             <Col key={data.meri_admin_prin_vid}>
+    //   //               <Status text={data.meri_admin_prin_vid} color={'red'} />
+    //   //             </Col>
+    //   //           );
+    //   //         })}
+    //   //       </Row>
+    //   //     )
+    //   //   },
+    //   //   {
+    //   //     title: 'Количество',
+    //   //     dataIndex: 'vid_prin',
+    //   //     key: 'vid_prin',
+    //   //     render: (vid_prin: vid1[]) => (
+    //   //       <Row gutter={[10, 10]}>
+    //   //         {vid_prin.map((data) => {
+    //   //           console.log(data);
+    //   //           return (
+    //   //             <Col key={data.meri_admin_prin_vid}>
+    //   //               <Status text={data.meri_admin_prin_vid} color={'green'} />
+    //   //             </Col>
+    //   //           );
+    //   //         })}
+    //   //       </Row>
+    //   //     )
+    //   //   },
+    //   // ],
+    // },
+    // {
+    //   title: 'Сведения о принятых мерах административного пресечения (вид, количество)',
+    //   dataIndex: 'adm_ban',
+    //   key: 'adm_ban',
+    //   width: '30%',
+    //   // children: [
+    //   //   {
+    //   //     title: 'Вид',
+    //   //     dataIndex: 'vid_pres',
+    //   //     key: 'vid_pres',
 
-      //     render: (vid_pres: vid2[]) => (
-      //       <Row gutter={[10, 10]}>
-      //         {vid_pres.map((data) => {
-      //           console.log(data);
-      //           return (
-      //             <Col key={data.meri_admin_pres_vid}>
-      //               <Status text={data.meri_admin_pres_vid} color={'blue'} />
-      //             </Col>
-      //           );
-      //         })}
-      //       </Row>
-      //     )
-      //   },
-      //   {
-      //     title: 'Количество',
-      //     dataIndex: 'vid_pres',
-      //     key: 'vid_pres',
-      //     render: (vid_pres: vid2[]) => (
-      //       <Row gutter={[10, 10]}>
-      //         {vid_pres.map((data) => {
-      //           console.log(data);
-      //           return (
-      //             <Col key={data.meri_admin_pres_col}>
-      //               <Status text={String(data.meri_admin_pres_col)} color={'pink'} />
-      //             </Col>
-      //           );
-      //         })}
-      //       </Row>
-      //     )
-      //   },
-      // ],
-    },
-    {
-      title: 'Сведения о подготовке предписания (рекомендаций) об устранении нарушений',
-      dataIndex: 'podg_predpis',
-      key: 'podg_predpis',
-      width: 40,
-    },
-    {
-      title: 'Дата предписания (рекомендаций) об устранении нарушений',
-      dataIndex: 'date_predpis',
-      key: 'date_predpis',
-      width: 50,
-    },
-    {
-      title: 'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений',
-      dataIndex: 'date_vruch_predpis',
-      key: 'date_vruch_predpis',
-      width: 50,
-    },
+    //   //     render: (vid_pres: vid2[]) => (
+    //   //       <Row gutter={[10, 10]}>
+    //   //         {vid_pres.map((data) => {
+    //   //           console.log(data);
+    //   //           return (
+    //   //             <Col key={data.meri_admin_pres_vid}>
+    //   //               <Status text={data.meri_admin_pres_vid} color={'blue'} />
+    //   //             </Col>
+    //   //           );
+    //   //         })}
+    //   //       </Row>
+    //   //     )
+    //   //   },
+    //   //   {
+    //   //     title: 'Количество',
+    //   //     dataIndex: 'vid_pres',
+    //   //     key: 'vid_pres',
+    //   //     render: (vid_pres: vid2[]) => (
+    //   //       <Row gutter={[10, 10]}>
+    //   //         {vid_pres.map((data) => {
+    //   //           console.log(data);
+    //   //           return (
+    //   //             <Col key={data.meri_admin_pres_col}>
+    //   //               <Status text={String(data.meri_admin_pres_col)} color={'pink'} />
+    //   //             </Col>
+    //   //           );
+    //   //         })}
+    //   //       </Row>
+    //   //     )
+    //   //   },
+    //   // ],
+    // },
+    // {
+    //   title: 'Сведения о подготовке предписания (рекомендаций) об устранении нарушений',
+    //   dataIndex: 'podg_predpis',
+    //   key: 'podg_predpis',
+    //   width: 40,
+    // },
+    // {
+    //   title: 'Дата предписания (рекомендаций) об устранении нарушений',
+    //   dataIndex: 'date_predpis',
+    //   key: 'date_predpis',
+    //   width: 50,
+    // },
+    // {
+    //   title: 'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений',
+    //   dataIndex: 'date_vruch_predpis',
+    //   key: 'date_vruch_predpis',
+    //   width: 50,
+    // },
     {
       title: 'Дата (даты) устранения нарушений',
       dataIndex: 'date_fix',
@@ -200,12 +204,8 @@ export const Step3: React.FC<any> = ({data}) => {
   ];
 
   console.log(data);
-  
 
   return (
-
-
-
     <S.FormContent>
       <BaseButtonsForm.Item
         name="vid_meropr"
@@ -222,7 +222,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите вид проверки ' }]}
       >
-       <Input />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -247,7 +247,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите должность лица, выдавшего предписание на проведение проверки ' }]}
       >
-       <Input />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -280,16 +280,17 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
       >
-        <Select placeholder={('Должность руководителя проверки ')} onChange={(value)=>{console.log(value);
-        }} options={data?.result4.map((item) => ({
-          value: item.job ,
+        <Select placeholder={('Должность руководителя проверки ')} onChange={(value) => {
+          console.log(value);
+        }} options={data?.result4.map((item: { job: string }) => ({
+          value: item.job,
           label: item.job,
         }))} >
           {/* <Option value="Директор">{('Директор')}</Option>
           <Option value="Программист">{('Программист')}</Option>
           <Option value="Инженер">{('Инженер')}</Option> */}
         </Select>
-        
+
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -379,33 +380,30 @@ export const Step3: React.FC<any> = ({data}) => {
           )}
         </BaseButtonsForm.List>
 
-
       </BaseButtonsForm>
-
-
 
       <BaseButtonsForm.Item
         name="prov_period"
         label={'Проверяемый период'}
         rules={[{ required: true, message: 'Введите проверяемый период' }]}
       >
-        <S.RangePicker />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="date_nachala_meropr"
-        label={'Дата начала надзорно-профилактического мероприятия (по предписанию/решению))'}
+        label={'Дата начала надзорно-профилактического мероприятия (по предписанию/решению)'}
         rules={[{ required: true, message: 'Введите дату начала надзорно-профилактического мероприятия' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
         name="date_okonchaniya_meropr"
-        label={'Дата окончания надзорно-профилактического мероприятия (по предписанию/решению))'}
+        label={'Дата окончания надзорно-профилактического мероприятия (по предписанию/решению)'}
         rules={[{ required: true, message: 'Введите дату окончания надзорно-профилактического мероприятия' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -413,8 +411,20 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Перечень вопросов проверки (мониторинга)'}
         rules={[{ required: true, message: 'Введите перечень вопросов проверки' }]}
       >
-        <Input />
+        {data ? <List
+          bordered
+          dataSource={items_voprosi}
+          renderItem={(item: { name_que: string }) => (
+
+            <List.Item>
+              {item.name_que}
+            </List.Item>
+          )}
+        /> : <p></p>
+        }
       </BaseButtonsForm.Item>
+
+      <Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить вопрос</Button>
 
       <BaseButtonsForm.Item
         name="sved_o_sredstvah"
@@ -434,7 +444,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Фактическая дата начала надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -442,10 +452,8 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Фактическая дата окончания надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
-
-      <Button type="primary" style={{ marginLeft: "auto", marginBottom: "1%" }} >Добавить нарушение</Button>
 
       <Table
         columns={columns}
@@ -454,12 +462,54 @@ export const Step3: React.FC<any> = ({data}) => {
         scroll={{ x: 800 }}
       />
 
+<Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить нарушение</Button>
+
+      <BaseButtonsForm.Item
+        name="adm_force"
+        label={'Сведения о принятых мерах административного принуждения (вид, количество) '}
+        rules={[{ required: true, message: 'Введите сведения о принятых мерах административного принуждения (вид, количество) ' }]}
+      >
+        <Input />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="adm_ban"
+        label={'Сведения о принятых мерах административного пресечения (вид, количество) '}
+        rules={[{ required: true, message: 'Введите сведения о принятых мерах административного пресечения (вид, количество) ' }]}
+      >
+        <Input />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="sved_ob_ustr_narush"
+        label={'Сведения о подготовке предписания (рекомендаций) об устранении нарушений (да/нет) '}
+        rules={[{ required: true, message: 'Введите сведения о подготовке предписания (рекомендаций) об устранении нарушений ' }]}
+      >
+        <Input disabled />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="date_predpis"
+        label={'Дата предписания (рекомендаций) об устранении нарушений '}
+        rules={[{ required: true, message: 'Введите дату предписания (рекомендаций) об устранении нарушений ' }]}
+      >
+        <Input disabled />
+      </BaseButtonsForm.Item>
+
+      <BaseButtonsForm.Item
+        name="date_vruch"
+        label={'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений '}
+        rules={[{ required: true, message: 'Введите дату вручения (направления) предписания (рекомендаций) об устранении нарушений ' }]}
+      >
+        <Input disabled />
+      </BaseButtonsForm.Item>
+
       <BaseButtonsForm.Item
         name="date_stop"
         label={'Дата приостановления проведения надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите дату приостановления проведения надзорно-профилактического мероприятия ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -467,7 +517,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Дата возобновления проведения надзорно-профилактического мероприятия '}
         rules={[{ required: true, message: 'Введите дату возобновления проведения надзорно-профилактического мероприятия ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -476,10 +526,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите сведения о продлении срока проведения проверки ' }]}
       >
-        <Select placeholder={('Сведения о продлении срока проведения проверки ')}>
-          <Option value="Да">{('Да')}</Option>
-          <Option value="Нет">{('Нет')}</Option>
-        </Select>
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -487,7 +534,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Дата, до которой продлен срок проведения проверки '}
         rules={[{ required: true, message: 'Введите дату, до которой продлен срок проведения проверки ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -513,11 +560,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите итоговый документ ' }]}
       >
-        <Select placeholder={('Итоговый документ ')}>
-          <Option value="Акт">{('Акт')}</Option>
-          <Option value="Справка">{('Справка')}</Option>
-          <Option value="Аналитическая записка">{('Аналитическая записка')}</Option>
-        </Select>
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -525,7 +568,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Дата итогового документа '}
         rules={[{ required: true, message: 'Введите дату итогового документа ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -533,7 +576,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Дата вручения (направления) итогового документа '}
         rules={[{ required: true, message: 'Введите дату вручения итогового документа ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -542,10 +585,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите сведения о наличии возражений по акту проверки  ' }]}
       >
-        <Select placeholder={('Сведения о наличии возражений по акту проверки')}>
-          <Option value="Да">{('Да')}</Option>
-          <Option value="Нет">{('Нет')}</Option>
-        </Select>
+        <Input />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -553,7 +593,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Дата принятия решения по возражениям по акту проверки '}
         rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
       >
-        <S.Picker format="YYYY-MM-DD" />
+        <Input disabled />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -561,7 +601,7 @@ export const Step3: React.FC<any> = ({data}) => {
         label={'Принятое решение по возражениям по акту проверки'}
         rules={[{ required: true, message: 'Введите принятое решение по возражениям по акту проверки' }]}
       >
-        <Input />
+        <Input disabled />
       </BaseButtonsForm.Item>
 
       <BaseButtonsForm.Item
@@ -570,10 +610,7 @@ export const Step3: React.FC<any> = ({data}) => {
         hasFeedback
         rules={[{ required: true, message: 'Введите сведения о принятии решения о назначении внеплановой проверки' }]}
       >
-        <Select placeholder={('Сведения о наличии возражений по акту проверки')}>
-          <Option value="Да">{('Да')}</Option>
-          <Option value="Нет">{('Нет')}</Option>
-        </Select>
+        <Input />
       </BaseButtonsForm.Item>
     </S.FormContent>
   );
