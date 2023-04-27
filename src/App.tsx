@@ -12,6 +12,8 @@ import { usePWA } from './hooks/usePWA';
 import { useThemeWatcher } from './hooks/useThemeWatcher';
 import { useAppSelector } from './hooks/reduxHooks';
 import { themeObject } from './styles/themes/themeVariables';
+import useGeolocation from "react-hook-geolocation";
+import { sendGeolocation } from './api/geolocation.api';
 
 const App: React.FC = () => {
   const { language } = useLanguage();
