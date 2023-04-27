@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Input as AntInput } from 'antd';
+import { FONT_SIZE } from '@app/styles/themes/constants';
 
 export const InputLine = styled(AntInput)`
   border: none;
@@ -10,4 +11,5 @@ export const InputLine = styled(AntInput)`
   text-align: center;
   position: relative;
   position: relative;
+  font-size: ${FONT_SIZE.lg};
 `;

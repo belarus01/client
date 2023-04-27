@@ -9,6 +9,15 @@ import { getVedomstvoById } from '@app/api/vedomstava.api';
 import Text from './Text';
 import { InputLine } from './InputLine';
 import { getPogSubjAutoById } from '@app/api/pogAuto.api';
+import PogAutoTransportTable, { Column } from '../pogTables/PogAutoTransportTable';
+import { ColumnsType } from 'antd/lib/table';
+
+interface IAutoTransport {
+  idList: number;
+  numReg: number;
+  regZnak: string | number;
+  type: string | number;
+}
 
 const PogMapSubj: React.FC = () => {
   const [subj, setSubj] = useState<SSubj>({
@@ -46,8 +55,8 @@ const PogMapSubj: React.FC = () => {
     }
   };
 
-  const getCurrentPogsByUnp = (id) => {
-    getPogSubjAutoById(id).then((result) => {
+  const getCurrentPogsByUnp = (idList: string) => {
+    getPogSubjAutoById(idList).then((result) => {
       console.log(result);
     });
   };
@@ -65,7 +74,7 @@ const PogMapSubj: React.FC = () => {
       setLoading(false);
     }
     getCurrentVedomstvo(1);
-    getCurrentPogsByUnp(1);
+    getCurrentPogsByUnp('1');
   }, []);
 
   //del
@@ -73,6 +82,34 @@ const PogMapSubj: React.FC = () => {
     console.log(subj);
   }, [subj]);
 
+  const data: IAutoTransport[] = [
+    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
+    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
+    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
+  ];
+
+  const columns: Column[] = [
+    {
+      key: '1',
+      title: 'idList',
+      dataIndex: 'idList',
+    },
+    {
+      key: '2',
+      title: 'numReg',
+      dataIndex: 'numReg',
+    },
+    {
+      key: '3',
+      title: 'regZnak',
+      dataIndex: 'regZnak',
+    },
+    {
+      key: '1',
+      title: 'asdf',
+      dataIndex: 'adsfasd',
+    },
+  ];
   return (
     <>
       <Spin spinning={loading}>
@@ -100,6 +137,8 @@ const PogMapSubj: React.FC = () => {
           при перевозке опасных грузов:
         </Text>
         <InputLine />
+        <Text>Перечень объектов перевозки:</Text>
+        <PogAutoTransportTable data={data} columns={columns} title="lslls" />
       </Spin>
     </>
   );
