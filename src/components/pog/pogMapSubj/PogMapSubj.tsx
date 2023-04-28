@@ -1,16 +1,12 @@
 import { IVesomstvo, SSubj } from '@app/domain/interfaces';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Col, Row, Spin } from 'antd';
 import { getSubjById } from '@app/api/subjects.api';
-
-import BlockMapPogInput from './BlockMapPogInput';
 import { getVedomstvoById } from '@app/api/vedomstava.api';
-import Text from './Text';
-import { InputLine } from './InputLine';
 import { getPogSubjAutoById } from '@app/api/pogAuto.api';
-import PogAutoTransportTable, { Column } from '../pogTables/PogAutoTransportTable';
-import { ColumnsType } from 'antd/lib/table';
+import PogAutoTransportTable, { ColumnProp } from '../pogTables/PogAutoTransportTable';
+import * as P from './PogMapSubj.style';
 
 interface IAutoTransport {
   idList: number;
@@ -32,9 +28,9 @@ const PogMapSubj: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const { idSubj } = useParams();
-  const { state } = useLocation();
 
   const getCurrentSubject = (idSubj?: string) => {
+    setLoading(true);
     if (idSubj) {
       getSubjById(idSubj).then((result) => {
         console.log(result);
@@ -66,13 +62,7 @@ const PogMapSubj: React.FC = () => {
   }, [vedomstvo]);
 
   useEffect(() => {
-    setLoading(true);
-    if (!state) {
-      getCurrentSubject(idSubj);
-    } else {
-      setSubj(state);
-      setLoading(false);
-    }
+    getCurrentSubject(idSubj);
     getCurrentVedomstvo(1);
     getCurrentPogsByUnp('1');
   }, []);
@@ -83,17 +73,12 @@ const PogMapSubj: React.FC = () => {
   }, [subj]);
 
   const data: IAutoTransport[] = [
-    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
-    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
-    { idList: 0, numReg: 1, regZnak: 2, type: 'asdf' },
+    { idList: 0, numReg: 1, regZnak: 123, type: 'ert' },
+    { idList: 1, numReg: 3, regZnak: 4123, type: 'wettw' },
+    { idList: 2, numReg: 123, regZnak: 54345, type: 'sfdgsf' },
   ];
 
-  const columns: Column[] = [
-    {
-      key: '1',
-      title: 'idList',
-      dataIndex: 'idList',
-    },
+  const columns: ColumnProp[] = [
     {
       key: '2',
       title: 'numReg',
@@ -105,7 +90,7 @@ const PogMapSubj: React.FC = () => {
       dataIndex: 'regZnak',
     },
     {
-      key: '1',
+      key: '4',
       title: 'asdf',
       dataIndex: 'adsfasd',
     },
@@ -113,32 +98,39 @@ const PogMapSubj: React.FC = () => {
   return (
     <>
       <Spin spinning={loading}>
-        <BlockMapPogInput value={subj.subj || ''} readOnly>
+        <P.HeadDoc />
+        <P.BlockMapPogInput value={subj.subj || ''} readOnly>
           (Полное или сокращенное наименование субъекта перевозки опасных грузов)
-        </BlockMapPogInput>
-        <BlockMapPogInput value={subj.unp || ''} readOnly>
+        </P.BlockMapPogInput>
+        <P.BlockMapPogInput value={subj.unp || ''} readOnly>
           (УНП)
-        </BlockMapPogInput>
-        <BlockMapPogInput value={vedomstvo.name} readOnly>
+        </P.BlockMapPogInput>
+        <P.BlockMapPogInput value={vedomstvo.name} readOnly>
           (Ведомственная принаджлежнасть)
-        </BlockMapPogInput>
-        <BlockMapPogInput value={subj.bossName || ''} readOnly>
+        </P.BlockMapPogInput>
+        <P.BlockMapPogInput value={subj.bossName || ''} readOnly>
           (Ф.И.О. руководителя субъекта)
-        </BlockMapPogInput>
-        <BlockMapPogInput value={`${subj.chiefName} ${subj.chiefTel}`} readOnly>
+        </P.BlockMapPogInput>
+        <P.BlockMapPogInput value={`${subj.chiefName} ${subj.chiefTel}`} readOnly>
           (Ф.И.О. и должность лица, ответственного по вопросам безопасности перевозки опасных грузов, номера телефонов)
-        </BlockMapPogInput>
-        <BlockMapPogInput value={subj.bossName || ''} readOnly>
+        </P.BlockMapPogInput>
+        <P.BlockMapPogInput value={subj.bossName || ''} readOnly>
           (краткое описание деятельности субъекта: перевозчик, грузоотправитель, грузополучатель, изготовитель,
           международные перевозки, республиканские перевозки и т.д.)
-        </BlockMapPogInput>
-        <Text>
+        </P.BlockMapPogInput>
+        <P.Text>
           Количество зарегистрированных механических транспортных средств, прицепов или полуприцепов к ним, используемых
           при перевозке опасных грузов:
-        </Text>
-        <InputLine />
-        <Text>Перечень объектов перевозки:</Text>
-        <PogAutoTransportTable data={data} columns={columns} title="lslls" />
+        </P.Text>
+        <P.InputLine />
+        <P.Text>Перечень объектов перевозки:</P.Text>
+        <PogAutoTransportTable
+          data={data}
+          columns={columns}
+          title="Автомобильный транспорт"
+          numbered
+          titleNumbered="№ п.п"
+        />
       </Spin>
     </>
   );

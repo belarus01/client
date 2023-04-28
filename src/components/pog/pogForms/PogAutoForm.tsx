@@ -157,7 +157,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data, close }) => {
 
   const submitCreate = () => {
     console.log(auto);
-    createPogSubjAuto(auto);
+    // createPogSubjAuto(auto);
     close();
   };
 

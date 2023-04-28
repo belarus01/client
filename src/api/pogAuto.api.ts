@@ -1,7 +1,7 @@
 import { IPogAuto } from '@app/components/pog/pogTables/PogAutoTable';
 import { httpApi } from './http.api';
 
-const BASE_URL = 'pog'
+const BASE_URL = 'pog';
 
 // export const getPogAuto = () => httpApi.get<IPogAuto[]>('').then(({ data }) => data);
 

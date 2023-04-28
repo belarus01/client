@@ -1,19 +1,21 @@
-import { Table } from '@app/components/common/Table/Table';
+import { Table } from 'antd';
 import { FONT_SIZE, FONT_WEIGHT } from '@app/styles/themes/constants';
-import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
 import styled from 'styled-components';
+import { ColumnType } from 'antd/lib/table';
 
-export interface Column {
-  key: string;
-  dataIndex: string;
-  title: string;
+export interface ColumnProp {
+  key?: string;
+  dataIndex?: string;
+  title?: string;
+  render?: (text?: string, record?: object, index?: number) => JSX.Element;
 }
 
 interface IPogAutoTransportTableProps<T> {
-  columns: Column[];
-  title: string;
+  columns: ColumnProp[];
+  title?: string;
   data: T[];
+  numbered?: boolean;
+  titleNumbered?: string;
 }
 
 const Title = styled.h2`
@@ -22,22 +24,30 @@ const Title = styled.h2`
   text-align: center;
   width: 100%;
 `;
+const { Column, ColumnGroup } = Table;
 
-export default function PogAutoTransportTable<T>({ title, columns, data }: IPogAutoTransportTableProps<T>) {
+export default function PogAutoTransportTable<T extends object>({
+  title,
+  columns,
+  data,
+  numbered,
+  titleNumbered,
+}: IPogAutoTransportTableProps<T>) {
   return (
     <>
-      <Title>{title}</Title>
-      <Table dataSource={data} columns={columns} />
+      {title && <Title>{title}</Title>}
+      <Table dataSource={data} pagination={false}>
+        {numbered && (
+          <ColumnGroup align="center" title={1}>
+            <Column align="center" title={titleNumbered} render={(text, record, index) => index + 1} />
+          </ColumnGroup>
+        )}
+        {columns.map((item, index) => (
+          <ColumnGroup align="center" key={item.key} title={`${numbered ? index + 2 : index + 1}`}>
+            <Column align="center" title={item.title} dataIndex={item.dataIndex} key={item.key} />
+          </ColumnGroup>
+        ))}
+      </Table>
     </>
   );
 }
-// const PogAutoTransportTable = <T,>({ columns, title, data }: IPogAutoTransportTableProps<T>) => {
-//   return (
-//     <>
-//       <Title>{title}</Title>
-//       <Table dataSource={data} columns={columns} />
-//     </>
-//   );
-// };
-
-// export default PogAutoTransportTable;

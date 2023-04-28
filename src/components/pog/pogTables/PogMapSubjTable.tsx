@@ -73,10 +73,10 @@ export const PogMapSubjTable: React.FC = () => {
       key: '1',
       title: 'Перейти к карте',
       render: (subject: SSubj) => {
-        console.log(subject);
+        console.log('subject', subject);
 
         return (
-          <Link to={`${subject.idSubj}`} preventScrollReset={true} state={subject}>
+          <Link to={`${subject.idSubj}`} preventScrollReset={true}>
             Перейти
           </Link>
         );
