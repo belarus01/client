@@ -1,9 +1,10 @@
 import { Input } from '@app/components/common/inputs/Input/Input';
 import * as S from '../eventCard.styles';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { useMemo, useState } from 'react';
-import { Button, Col, Divider, List, Row, Typography } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Col, DatePicker, Divider, List, Row, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 
 //const data1 = getFirst(setFields([data]));
@@ -37,7 +38,23 @@ export const Step1: React.FC<any> = ({ data }) => {
         }
         return []
     }, [data]);
-      
+
+    const date_unp = useMemo(() => {
+        if(data){
+            console.log(data.result1[0].date_reg_unp);
+            const currentDate = data.result1[0].date_reg_unp.split('.').join('-');
+            console.log(currentDate);
+            return currentDate
+        }
+        const today = new Date().toLocaleDateString().split('.').join('-');
+        console.log(today);
+        return today;
+      }, [data]);
+
+    useEffect(()=>{
+        console.log(data);
+        
+    }, [data])
 
     return (
         <S.FormContent>
@@ -63,7 +80,7 @@ export const Step1: React.FC<any> = ({ data }) => {
                 label={'Дата государственной регистрации (присвоения УНП)'}
                 rules={[{ required: true, message: 'Введите дату государственной регистрации' }]}
             >
-                <Input />
+                {data && <DatePicker style={{ width: '10%' }} defaultValue={moment(date_unp, "DD-MM-YYYY")} format={"DD-MM-YYYY"} />}
             </BaseButtonsForm.Item>
 
             <BaseButtonsForm.Item

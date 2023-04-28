@@ -196,7 +196,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       width: 50,
     },
     {
-      title: 'Перечень не устраненных (частично устраненных) нарушений',
+      title: 'Примечания',
       dataIndex: 'transfer_data',
       key: 'transfer_data',
       width: 50,
@@ -278,7 +278,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         name="dolg_ruc_proverki"
         label={'Должность руководителя проверки '}
         hasFeedback
-        rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
+      //rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
       >
         <Select placeholder={('Должность руководителя проверки ')} onChange={(value) => {
           console.log(value);
@@ -296,7 +296,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fio_ruc_proverki"
         label={'Ф.И.О руководителя проверки'}
-        rules={[{ required: true, message: 'Введите Ф.И.О руководителя проверки' }]}
+      //rules={[{ required: true, message: 'Введите Ф.И.О руководителя проверки' }]}
       >
         <Input />
       </BaseButtonsForm.Item>
@@ -309,8 +309,8 @@ export const Step3: React.FC<any> = ({ data }) => {
             name="dolg_prov"
             label={'Должность проверяющего '}
             hasFeedback
-            //style={{ marginRight: "8px" }}
-            rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+          //style={{ marginRight: "8px" }}
+          //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
           >
             <Input />
           </BaseButtonsForm.Item>
@@ -321,8 +321,8 @@ export const Step3: React.FC<any> = ({ data }) => {
             name="fio_prov"
             label={'Ф.И.О проверяющего'}
             hasFeedback
-            //style={{ width: 600 }}
-            rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+          //style={{ width: 600 }}
+          //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
           >
             <Input />
           </BaseButtonsForm.Item>
@@ -348,7 +348,7 @@ export const Step3: React.FC<any> = ({ data }) => {
                       name={[field.name, 'first']}
                       label={'Должность проверяющего '}
                       hasFeedback
-                      rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+                    //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
                     >
                       <Input />
                     </BaseButtonsForm.Item>
@@ -360,7 +360,7 @@ export const Step3: React.FC<any> = ({ data }) => {
                       name={[field.name, 'last']}
                       label={'Ф.И.О проверяющего'}
                       hasFeedback
-                      rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                    //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
                     >
                       <S.Wrapper>
                         <Input />
@@ -409,7 +409,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="per_voprosov"
         label={'Перечень вопросов проверки (мониторинга)'}
-        rules={[{ required: true, message: 'Введите перечень вопросов проверки' }]}
+      //rules={[{ required: true, message: 'Введите перечень вопросов проверки' }]}
       >
         {data ? <List
           bordered
@@ -424,13 +424,13 @@ export const Step3: React.FC<any> = ({ data }) => {
         }
       </BaseButtonsForm.Item>
 
-      <Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить вопрос</Button>
+      {/* <Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить вопрос</Button> */}
 
       <BaseButtonsForm.Item
         name="sved_o_sredstvah"
         label={'Сведения о применении научно-технических средств (не применялись или указать какие средства применялись) '}
         hasFeedback
-        rules={[{ required: true, message: 'Введите сведения о применении научно-технических средств ' }]}
+      //rules={[{ required: true, message: 'Введите сведения о применении научно-технических средств ' }]}
       >
         <Select placeholder={('Сведения о применении научно-технических средств ')}>
           <Option value="Не применялись">{('Не применялись')}</Option>
@@ -442,7 +442,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fac_date_nacala"
         label={'Фактическая дата начала надзорно-профилактического мероприятия '}
-        rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
+      //rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
       >
         <Input />
       </BaseButtonsForm.Item>
@@ -450,7 +450,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fac_date_oconchaniya"
         label={'Фактическая дата окончания надзорно-профилактического мероприятия '}
-        rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
+      //rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
       >
         <Input />
       </BaseButtonsForm.Item>
@@ -462,7 +462,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         scroll={{ x: 800 }}
       />
 
-<Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить нарушение</Button>
+      <Button type="primary" style={{ marginRight: "auto", marginBottom: "1%" }} >Добавить нарушение</Button>
 
       <BaseButtonsForm.Item
         name="adm_force"
@@ -483,7 +483,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="sved_ob_ustr_narush"
         label={'Сведения о подготовке предписания (рекомендаций) об устранении нарушений (да/нет) '}
-        rules={[{ required: true, message: 'Введите сведения о подготовке предписания (рекомендаций) об устранении нарушений ' }]}
+      //rules={[{ required: true, message: 'Введите сведения о подготовке предписания (рекомендаций) об устранении нарушений ' }]}
       >
         <Input disabled />
       </BaseButtonsForm.Item>
@@ -491,7 +491,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_predpis"
         label={'Дата предписания (рекомендаций) об устранении нарушений '}
-        rules={[{ required: true, message: 'Введите дату предписания (рекомендаций) об устранении нарушений ' }]}
+      //rules={[{ required: true, message: 'Введите дату предписания (рекомендаций) об устранении нарушений ' }]}
       >
         <Input disabled />
       </BaseButtonsForm.Item>
@@ -499,7 +499,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_vruch"
         label={'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений '}
-        rules={[{ required: true, message: 'Введите дату вручения (направления) предписания (рекомендаций) об устранении нарушений ' }]}
+      // rules={[{ required: true, message: 'Введите дату вручения (направления) предписания (рекомендаций) об устранении нарушений ' }]}
       >
         <Input disabled />
       </BaseButtonsForm.Item>
@@ -591,7 +591,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_po_vozrag"
         label={'Дата принятия решения по возражениям по акту проверки '}
-        rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
+      // rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
       >
         <Input disabled />
       </BaseButtonsForm.Item>
@@ -599,7 +599,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="reshenie_po_vozrag"
         label={'Принятое решение по возражениям по акту проверки'}
-        rules={[{ required: true, message: 'Введите принятое решение по возражениям по акту проверки' }]}
+      //rules={[{ required: true, message: 'Введите принятое решение по возражениям по акту проверки' }]}
       >
         <Input disabled />
       </BaseButtonsForm.Item>
