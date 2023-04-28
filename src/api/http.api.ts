@@ -9,7 +9,7 @@ export const httpApi = axios.create({
 });
 
 httpApi.interceptors.request.use((config) => {
-  config.headers = {Authorization: `Bearer ${readToken()}` };
+  config.headers = { Authorization: `Bearer ${readToken()}` };
 
   return config;
 });

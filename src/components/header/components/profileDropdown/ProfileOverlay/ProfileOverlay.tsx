@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import * as S from './ProfileOverlay.styles';
 
 export const ProfileOverlay: React.FC = ({ ...props }) => {
-
   return (
     <div {...props}>
       <S.Text>

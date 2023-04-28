@@ -68,11 +68,7 @@ export const PersonalInfo: React.FC = () => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const userFormValues = useMemo(
-    () =>
-      initialPersonalInfoValues,
-    [user],
-  );
+  const userFormValues = useMemo(() => initialPersonalInfoValues, [user]);
 
   const [form] = BaseButtonsForm.useForm();
 
@@ -142,11 +138,11 @@ export const PersonalInfo: React.FC = () => {
           </Col>
 
           <Col xs={24} md={12}>
-            <PhoneItem verified={user?.tel!=null} />
+            <PhoneItem verified={user?.tel != null} />
           </Col>
 
           <Col xs={24} md={12}>
-            <EmailItem verified={user?.email!=null} />
+            <EmailItem verified={user?.email != null} />
           </Col>
 
           <Col span={24}>

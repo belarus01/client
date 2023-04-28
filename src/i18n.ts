@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import translationRu from './locales/ru/translation.json';
 
 const resources = {
-  ru:{
+  ru: {
     translation: translationRu,
   },
 };

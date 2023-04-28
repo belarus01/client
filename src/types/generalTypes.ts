@@ -9,15 +9,16 @@ export type WithChildrenProps<T = undefined> = T extends undefined
     };
 
 export type WithChildrenAndRolesProps<T = undefined> = T extends undefined
-?{
-  children?: ReactNode;
-  roles?:Roles[];
-}:T&{
-  children?: ReactNode;
-  roles?:Roles[];
-}
+  ? {
+      children?: ReactNode;
+      roles?: Roles[];
+    }
+  : T & {
+      children?: ReactNode;
+      roles?: Roles[];
+    };
 
-enum Roles{
+enum Roles {
   ADMIN = 1,
   SEQURITY = 2,
   USER = 3,

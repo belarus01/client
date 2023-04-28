@@ -10,7 +10,6 @@ import * as S from './UserForms.styles';
 import { Modal } from '@app/components/common/Modal/Modal';
 import { InputPassword } from '@app/components/common/inputs/InputPassword/InputPassword';
 
-
 export const UpdatePasswordForm: React.FC = () => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -28,11 +27,7 @@ export const UpdatePasswordForm: React.FC = () => {
 
   return (
     <>
-      <BaseButtonsForm
-        layout="vertical"
-        onFinish={onFinish}
-        isFieldsChanged={false}
-      >
+      <BaseButtonsForm layout="vertical" onFinish={onFinish} isFieldsChanged={false}>
         <BaseButtonsForm.Item label="Новый пароль" name="pas1">
           <InputPassword />
         </BaseButtonsForm.Item>
@@ -41,6 +36,5 @@ export const UpdatePasswordForm: React.FC = () => {
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
-
   );
 };

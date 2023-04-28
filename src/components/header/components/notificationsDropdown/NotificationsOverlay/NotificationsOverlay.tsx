@@ -19,7 +19,7 @@ export const NotificationsOverlay: React.FC<NotificationsOverlayProps> = ({
   setNotifications,
   ...props
 }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const noticesList = useMemo(
     () =>
       notifications.map((notification, index) => {

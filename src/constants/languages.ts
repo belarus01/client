@@ -8,7 +8,6 @@ interface Language {
 }
 
 export const languages: Language[] = [
-
   {
     id: 1,
     name: 'ru',

@@ -5,7 +5,7 @@ import MainContent from '../MainContent/MainContent';
 import { MainHeader } from '../MainHeader/MainHeader';
 import * as S from './MainLayout.styles';
 import { Outlet, useLocation } from 'react-router-dom';
-import { MAIN_PATH, } from '@app/components/router/AppRouter';
+import { MAIN_PATH } from '@app/components/router/AppRouter';
 import { useResponsive } from '@app/hooks/useResponsive';
 import { sendGeolocation } from '@app/api/geolocation.api';
 import useGeolocation from 'react-hook-geolocation';
@@ -17,24 +17,25 @@ const MainLayout: React.FC = () => {
   const { isDesktop, isMobile, isTablet } = useResponsive();
   const location = useLocation();
   const user = useAppSelector((state) => state.user.user);
-  
+
   const onGeolocationUpdate = (geolocation: any) => {
     console.log(geolocation);
-    sendGeolocation({uid:user?.uid, latitude:geolocation.latitude, longitude:geolocation.longitude});
-  }
+    sendGeolocation({ uid: user?.uid, latitude: geolocation.latitude, longitude: geolocation.longitude });
+  };
 
-  
-    const geolocation = useGeolocation({
+  const geolocation = useGeolocation(
+    {
       enableHighAccuracy: true,
       maximumAge: 15000,
       timeout: 12000,
-    }, onGeolocationUpdate)
-  
+    },
+    onGeolocationUpdate,
+  );
 
   const toggleSider = () => setSiderCollapsed(!siderCollapsed);
 
   useEffect(() => {
-    setIsTwoColumnsLayout([MAIN_PATH, ].includes(location.pathname) && isDesktop);
+    setIsTwoColumnsLayout([MAIN_PATH].includes(location.pathname) && isDesktop);
   }, [location.pathname, isDesktop]);
 
   return (
@@ -48,7 +49,6 @@ const MainLayout: React.FC = () => {
           <div>
             <Outlet />
           </div>
-        
         </MainContent>
       </S.LayoutMain>
     </S.LayoutMaster>

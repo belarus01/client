@@ -8,12 +8,10 @@ interface ErrorProps {
 }
 
 export const Error: React.FC<ErrorProps> = ({ img, msg }) => {
-
   return (
     <S.Wrapper>
       <S.Image preview={false} src={img} />
       <S.ContentWrapper>
-       
         <S.Text>{msg}</S.Text>
         {/*TODO make common component */}
         <Link to="/" className="ant-btn ant-btn-link">

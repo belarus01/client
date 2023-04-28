@@ -13,7 +13,7 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
-import Error404Page from '@app/pages/Error404Page'
+import Error404Page from '@app/pages/Error404Page';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
 const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
@@ -25,12 +25,12 @@ const Logout = React.lazy(() => import('./Logout'));
 const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersManagmentPage'));
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
-const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'))
+const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'));
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
-const SubjectObjectsPage = React.lazy(()=>import('@app/pages/subjects/SubjectObjectsPage'));
-const ServerStatisticsPage = React.lazy(()=>import('@app/pages/ServerStatisticsPage'));
-const EventsPage = React.lazy(()=>import('@app/pages/events/EventsPage'));
-const Testpage = React.lazy(()=>import('@app/pages/test'));
+const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
+const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
+const EventsPage = React.lazy(() => import('@app/pages/events/EventsPage'));
+const Testpage = React.lazy(() => import('@app/pages/test'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -44,7 +44,6 @@ const Payments = withLoading(PaymentsPage);
 
 const AuthLayoutFallback = withLoading(AuthLayout);
 const LogoutFallback = withLoading(Logout);
-
 
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
@@ -67,16 +66,15 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
-          <Route path='test' element={<Test/>}/>
-          <Route path='common'>
-            <Route path="subjects" element={<Subjects />}/>
-            <Route path='subject' element={<SubjectProfileLayout />}>
-                <Route path='events' element={<SubjectEvents />} />
-                <Route path='objects' element={<SubjectObjects/>}/>
-                <Route path='settings' element={<SubjectSettings />} />
+          <Route path="test" element={<Test />} />
+          <Route path="common">
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="subject" element={<SubjectProfileLayout />}>
+              <Route path="events" element={<SubjectEvents />} />
+              <Route path="objects" element={<SubjectObjects />} />
+              <Route path="settings" element={<SubjectSettings />} />
             </Route>
-              
-          
+
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
             {/* <Route path='pog' element={}/> */}
@@ -89,17 +87,16 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='sopb' element={}/> */}
             {/* <Route path='npm' element={}/> */}
           </Route>
-          <Route path='planning'>
+          <Route path="planning">
             <Route path="calendar" element={<Planning />} />
-            <Route index path="events" element={< Events/>} />
+            <Route index path="events" element={<Events />} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">
             <Route path="users" element={<UsersManagment />} />
-            <Route path="server-statistics" element={<ServerStatistics/>}/>
+            <Route path="server-statistics" element={<ServerStatistics />} />
             {/* <Route path="geo" element={</>}/> */}
             {/* <Route path="arhiv" element={</>}/> */}
-
           </Route>
           <Route path="handbooks">
             {/* <Route path='soato' element={}/> */}
@@ -124,15 +121,15 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='typebuild' element={}/> */}
             {/* <Route path='docsform' element={}/> */}
           </Route>
-          <Route path='tnpa'>
+          <Route path="tnpa">
             {/* <Route path='tnpanpa' element={}/> */}
             {/* <Route path='defections' element={}/> */}
           </Route>
-          <Route path='journals'>
+          <Route path="journals">
             {/* <Route path='tnpanpa' element={}/> */}
             {/* <Route path='defections' element={}/> */}
           </Route>
-          <Route path='documents'>
+          <Route path="documents">
             {/* <Route path='chlist1' element={}/> */}
             {/* <Route path='chlist2' element={}/> */}
             {/* <Route path='chlist3' element={}/> */}
@@ -144,11 +141,10 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='chlist9' element={}/> */}
             {/* <Route path='chlist10' element={}/> */}
             {/* <Route path='chlist11' element={}/> */}
-
           </Route>
           <Route path="server-error" element={<ServerError />} />
-          
-          <Route path='*' element={<Error404 />} />
+
+          <Route path="*" element={<Error404 />} />
 
           <Route path="profile" element={<ProfileLayout />}>
             <Route path="personal-info" element={<PersonalInfo />} />
@@ -156,11 +152,6 @@ export const AppRouter: React.FC = () => {
             <Route path="notifications" element={<Notifications />} />
             <Route path="payments" element={<Payments />} />
           </Route>
-
-          
-
-          
-
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>
           <Route path="login" element={<LoginPage />} />

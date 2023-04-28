@@ -29,18 +29,17 @@ const SubjectProfileLayout: React.FC = () => {
   const { isTablet } = useResponsive();
   const isTitleShown = isTabletOrHigher || (mobileOnly && location.pathname === '/subject');
   const isMenuShown = isTabletOrHigher || (mobileOnly && location.pathname !== '/subject');
-  const [subject, setSubject] = useState<SSubj>();  
+  const [subject, setSubject] = useState<SSubj>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     isTablet && location.pathname === '/profile' && navigate('personal-info');
   }, [isTablet, location.pathname, navigate]);
 
-
-  useEffect(()=>{
-    dispatch(setSubj(location.state))
+  useEffect(() => {
+    dispatch(setSubj(location.state));
     setSubject(location.state);
-  },[])
+  }, []);
 
   return (
     <>
@@ -61,7 +60,7 @@ const SubjectProfileLayout: React.FC = () => {
                 </Col>
 
                 <Col xs={24} md={12} xl={24}>
-                  <SubjectNav  />
+                  <SubjectNav />
                 </Col>
               </Row>
             </ProfileCard>

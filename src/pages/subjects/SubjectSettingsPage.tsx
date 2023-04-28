@@ -11,7 +11,7 @@ const SubjectSettingsPage: React.FC = () => {
   return (
     <>
       <PageTitle>{t('profile.nav.personalInfo.title')}</PageTitle>
-      <SubjectSettings subject={location.state}/>
+      <SubjectSettings subject={location.state} />
     </>
   );
 };
