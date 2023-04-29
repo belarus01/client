@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { InputProps as AntInputProps, Col, InputRef, Row } from 'antd';
 import { FONT_SIZE } from '@app/styles/themes/constants';
 import { Input as AntInput } from 'antd';
+import { PrinterTwoTone } from '@ant-design/icons';
 
 export interface InputProps extends AntInputProps {
   className?: string;
@@ -29,6 +30,11 @@ export const Text = styled.div`
   padding: 1.25rem 0 0;
 `;
 
+export const PageBreak = styled.div`
+  display: none;
+  page-break-before: always;
+`;
+
 export const InputLine = styled(AntInput)<IInputLineProps>`
   border: none;
   outline: none;
@@ -45,6 +51,34 @@ const DivFlex = styled.div`
   display: flex;
 `;
 
+const PrintBottom = styled(PrinterTwoTone)`
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  top: 15%;
+  right: 5%;
+  @media print {
+    display: none;
+  }
+`;
+
+interface PrintDocButtonProps {
+  clickEvent: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+}
+
+export const PrintDocButton: React.FC<PrintDocButtonProps> = ({ clickEvent }) => {
+  return (
+    <>
+      <PrintBottom
+        onClick={(e) => clickEvent(e)}
+        style={{ fontSize: '40px', width: '100px', height: '100px' }}
+        width={100}
+        height={100}
+      />
+    </>
+  );
+};
+
 export const HeadDoc = React.forwardRef<InputRef, InputProps>(({ ...props }, ref) => {
   return (
     <Row justify={'end'}>
@@ -52,7 +86,7 @@ export const HeadDoc = React.forwardRef<InputRef, InputProps>(({ ...props }, ref
         <div>Проект Приложения 3</div>
         <DivFlex>
           <div> к приказу Госпромнадзора от 11.12.2019 №</div>
-          <InputLine style={{ alignSelf: 'end', width: '30%'}} align="left" ref={ref} {...props} />
+          <InputLine style={{ alignSelf: 'end', width: '30%' }} align="left" ref={ref} {...props} />
         </DivFlex>
       </Col>
     </Row>

@@ -1,12 +1,13 @@
 import { IVesomstvo, SSubj } from '@app/domain/interfaces';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, Row, Spin } from 'antd';
+import { Spin } from 'antd';
 import { getSubjById } from '@app/api/subjects.api';
 import { getVedomstvoById } from '@app/api/vedomstava.api';
 import { getPogSubjAutoById } from '@app/api/pogAuto.api';
 import PogAutoTransportTable, { ColumnProp } from '../pogTables/PogAutoTransportTable';
 import * as P from './PogMapSubj.style';
+import { TextArea } from '@app/components/common/inputs/Input/Input';
 
 interface IAutoTransport {
   idList: number;
@@ -57,6 +58,55 @@ const PogMapSubj: React.FC = () => {
     });
   };
 
+  const printDoc = () => {
+    document.title = ' ';
+
+    const container = document.querySelector('.ant-spin-container');
+    const content = document.querySelector('.ant-spin-container');
+    if (content) {
+      console.log(content);
+      const pageHeight = window.innerHeight;
+      console.log('pageHeight', pageHeight);
+      const contentHeight = content.scrollHeight;
+      console.log('contentHeight', contentHeight);
+
+      const pageCount = Math.ceil(contentHeight / pageHeight);
+      console.log('pageCount', pageCount);
+
+      for (let i = 0; i < pageCount; i++) {
+        const page = document.createElement('div');
+        page.classList.add('page');
+        page.style.height = pageHeight + 'px';
+
+        const startY = -i * pageHeight;
+        page.style.transform = 'translateY(' + startY + 'px)';
+        page.style.pageBreakInside = 'avoid';
+        console.log(page);
+        content.appendChild(page);
+      }
+
+      const elements = content.children;
+      let pageIndex = 0;
+
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        const elementHeight = element.clientHeight;
+        const page = content.querySelector('.page:nth-of-type(' + (pageIndex + 1) + ')');
+        console.log('page', page);
+
+        if (pageHeight - elementHeight >= 0) {
+          if (page) {
+            page.appendChild(element);
+          }
+        } else {
+          pageIndex++;
+          i--;
+        }
+      }
+    }
+
+    window.print();
+  };
   useEffect(() => {
     console.log(vedomstvo);
   }, [vedomstvo]);
@@ -95,6 +145,102 @@ const PogMapSubj: React.FC = () => {
       dataIndex: 'adsfasd',
     },
   ];
+  interface rw {
+    text: string;
+    numReg: number;
+  }
+  const rw: rw[] = [
+    { text: 'asdfasdfasdfsd a', numReg: 1 },
+    {
+      text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro delectus ipsum, inventore dolorem officia qui exercitationem a soluta at laudantium pariatur tempore distinctio cumque eligendi voluptatem eius eveniet! Animi, ipsa!',
+      numReg: 3,
+    },
+    {
+      text: 'lorem  asdfasdfa fads fas f da adf f qwuqwu  whuwheqriu qhruqher qwerqwegrqwegrqweghweg   qw  hqwergqwhegrqw ehqwhjr',
+      numReg: 123,
+    },
+  ];
+
+  const columnsRW: ColumnProp[] = [
+    {
+      key: '1',
+      title: 'text',
+      dataIndex: 'text',
+    },
+    {
+      key: '2',
+      title: 'numReg',
+      dataIndex: 'numReg',
+      width: '20%',
+    },
+  ];
+  interface itog {
+    text: string;
+    numReg: number;
+    a: string;
+    b: string;
+    c: string;
+    v: string;
+  }
+  const itog: itog[] = [
+    { text: 'asdfasdfasdfsd a', numReg: 1, a: 'string', b: 'string', c: 'string', v: 'string' },
+    {
+      text: 'Lorem ipsum dolor, sit amet consecistinctio cumque eligendi voluptatem eius eveniet! Animi, ipsa!',
+      numReg: 3,
+      a: 'string',
+      b: 'string',
+      c: 'string',
+      v: 'string',
+    },
+    {
+      text: 'lorem  asdfasdfa fads fas f da adf f qwuqwu',
+      numReg: 123,
+      a: 'string',
+      b: 'string',
+      c: 'string',
+      v: 'string',
+    },
+  ];
+
+  const columnsItog: ColumnProp[] = [
+    {
+      key: '1',
+      title: 'text',
+      dataIndex: 'text',
+    },
+    {
+      key: '2',
+      title: 'numReg',
+      dataIndex: 'numReg',
+      width: '20%',
+    },
+    {
+      key: 'ch',
+      title: 'ch',
+      children: [
+        {
+          key: '3',
+          title: 'a',
+          dataIndex: 'a',
+        },
+        {
+          key: '4',
+          title: 'b',
+          dataIndex: 'b',
+        },
+        {
+          key: '5',
+          title: 'c',
+          dataIndex: 'c',
+        },
+      ],
+    },
+    {
+      key: '6',
+      title: 'v',
+      dataIndex: 'v',
+    },
+  ];
   return (
     <>
       <Spin spinning={loading}>
@@ -129,8 +275,38 @@ const PogMapSubj: React.FC = () => {
           columns={columns}
           title="Автомобильный транспорт"
           numbered
-          titleNumbered="№ п.п"
+          titleNumbered="№ п/п"
         />
+        <PogAutoTransportTable data={rw} columns={columnsRW} showHeader={false} title="Железнодорожный транспорт" />
+        <PogAutoTransportTable
+          data={data}
+          columns={columns}
+          title="Воздушный транспорт"
+          numbered
+          titleNumbered="№ п/п"
+        />
+        <PogAutoTransportTable
+          data={data}
+          columns={columns}
+          title="Внутренний водный транспорт"
+          numbered
+          titleNumbered="№ п/п"
+        />
+        <P.Text>Аварии:</P.Text>
+        <PogAutoTransportTable data={data} columns={columns} numbered titleNumbered="№ п/п" />
+        <P.Text>Инциденты:</P.Text>
+        <PogAutoTransportTable data={data} columns={columns} numbered titleNumbered="№ п/п" />
+        <P.Text>Информация о проведенных выборочных проверках:</P.Text>
+        <PogAutoTransportTable finaly data={itog} columns={columnsItog} numbered titleNumbered="№ п/п" />
+        <P.Text>Информация о проведенных внеплановых проверках:</P.Text>
+        <PogAutoTransportTable finaly data={itog} columns={columnsItog} numbered titleNumbered="№ п/п" />
+        <P.Text>Информация о проведенных мониторингах:</P.Text>
+        <PogAutoTransportTable finaly data={itog} columns={columnsItog} numbered titleNumbered="№ п/п" />
+        <P.Text>Информация о проведенных мероприятиях технического (технологического, поверочного) характера:</P.Text>
+        <PogAutoTransportTable finaly data={itog} columns={columnsItog} numbered titleNumbered="№ п/п" />
+        <P.Text>Сведения о проблемных вопросах:</P.Text>
+        <TextArea />
+        <P.PrintDocButton clickEvent={printDoc} />
       </Spin>
     </>
   );

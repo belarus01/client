@@ -14,13 +14,16 @@ export const Sider = styled(Layout.Sider)`
 
   color: var(--text-secondary-color);
 
-  @media only screen and ${media.md} {
+  @media only screen and (${media.md}) {
     right: unset;
     left: 0;
   }
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     position: unset;
+  }
+  @media print {
+    display: none;
   }
 `;
 
@@ -58,7 +61,7 @@ export const SiderContent = styled.div`
   overflow-x: hidden;
   max-height: calc(100vh - ${LAYOUT.mobile.headerHeight});
 
-  @media only screen and ${media.md} {
+  @media only screen and (${media.md}) {
     max-height: calc(100vh - ${LAYOUT.desktop.headerHeight});
   }
 `;
@@ -77,7 +80,7 @@ export const SiderLogoDiv = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  @media only screen and ${media.md} {
+  @media only screen and (${media.md}) {
     height: ${LAYOUT.desktop.headerHeight};
     padding-top: ${LAYOUT.desktop.paddingVertical};
     padding-bottom: ${LAYOUT.desktop.paddingVertical};

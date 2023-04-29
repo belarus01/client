@@ -1,9 +1,5 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useEffect, useMemo, useState } from 'react';
-import { Modal as Alert } from 'antd';
+import { useEffect, useState } from 'react';
 import TheTable from '@app/components/tables/TheTable';
-import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
-import { PogAutoForm } from '../pogForms/PogAutoForm';
 import { SSubj } from '@app/domain/interfaces';
 import { getAllSubjects } from '@app/api/subjects.api';
 import { Link } from 'react-router-dom';
@@ -13,7 +9,10 @@ export const PogMapSubjTable: React.FC = () => {
     data: [],
     loading: false,
   });
-  const [selectedAuto, setSelectedAuto] = useState<SSubj>({});
+  const [selectedAuto, setSelectedAuto] = useState<SSubj>({
+    unp: '',
+    idSubj: null,
+  });
   const [modalAdding, setModalAddding] = useState(false);
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
@@ -30,34 +29,34 @@ export const PogMapSubjTable: React.FC = () => {
     getAutos();
   }, []);
 
-  const toggleModalAdding = (isOpen = true) => {
-    setModalAddding(isOpen);
-  };
+  // const toggleModalAdding = (isOpen = true) => {
+  //   setModalAddding(isOpen);
+  // };
 
-  const toggleModalEditing = (isOpen = true) => {
-    setModalEditing(isOpen);
-  };
+  // const toggleModalEditing = (isOpen = true) => {
+  //   setModalEditing(isOpen);
+  // };
 
   //no be
 
-  const filtredTable = useMemo(
-    () => subjs.data.filter((item) => item.numGosnadz == parseFloat(search)),
-    [search, subjs],
-  );
+  // const filtredTable = useMemo(
+  //   () => subjs.data.filter((item) => item.numGosnadz == parseFloat(search)),
+  //   [search, subjs],
+  // );
 
-  const deleteItem = (deletedItem: IPogAuto) => {
-    console.log(deletedItem.idList);
-    setSubjs({ ...subjs, loading: true });
-    deletePogSubjAutoById(deletedItem.idList).then((data) => {
-      console.log(data);
-      console.log('deleted');
-      getAutos();
-    });
+  // const deleteItem = (deletedItem: IPogAuto) => {
+  //   console.log(deletedItem.idList);
+  //   setSubjs({ ...subjs, loading: true });
+  //   deletePogSubjAutoById(deletedItem.idList).then((data) => {
+  //     console.log(data);
+  //     console.log('deleted');
+  //     getAutos();
+  //   });
 
-    //deleteDepartment(id)
-    // const newAuto = autos.data.filter((autos) => autos.numGosnadz !== deletedItem.numGosnadz);
-    // setAutos({ ...autos, data: newAuto });
-  };
+  //deleteDepartment(id)
+  // const newAuto = autos.data.filter((autos) => autos.numGosnadz !== deletedItem.numGosnadz);
+  // setAutos({ ...autos, data: newAuto });
+  // };
 
   const searchCategories = (value: string) => {
     console.log(value);
@@ -106,59 +105,53 @@ export const PogMapSubjTable: React.FC = () => {
       title: 'Наименование oбъекта промышленной безопасности(cубъект)',
       dataIndex: 'subj',
     },
-    {
-      key: '43',
-      title: 'Действия',
-      render: (itemSelected: SSubj) => {
-        function onDeleteDep() {
-          Alert.confirm({
-            title: 'Вы действительно хотите удалить?',
-            okText: 'Удалить',
-            cancelText: 'Отмена',
-            closable: true,
-            onCancel: () => false,
-            onOk: () => {
-              deleteItem(itemSelected);
-            },
-          });
-        }
+    // {
+    //   key: '43',
+    //   title: 'Действия',
+    //   render: (itemSelected: SSubj) => {
+    //     function onDeleteDep() {
+    //       Alert.confirm({
+    //         title: 'Вы действительно хотите удалить?',
+    //         okText: 'Удалить',
+    //         cancelText: 'Отмена',
+    //         closable: true,
+    //         onCancel: () => false,
+    //         onOk: () => {
+    //           deleteItem(itemSelected);
+    //         },
+    //       });
+    //     }
 
-        return (
-          <>
-            <EditOutlined
-              onClick={() => {
-                setSelectedAuto(itemSelected);
-                toggleModalEditing(true);
-              }}
-            />
-            <DeleteOutlined
-              onClick={() => {
-                onDeleteDep();
-              }}
-              style={{ color: 'red', marginLeft: 12 }}
-            />
-          </>
-        );
-      },
-    },
+    //     return (
+    //       <>
+    //         <EditOutlined
+    //           onClick={() => {
+    //             setSelectedAuto(itemSelected);
+    //             toggleModalEditing(true);
+    //           }}
+    //         />
+    //         <DeleteOutlined
+    //           onClick={() => {
+    //             onDeleteDep();
+    //           }}
+    //           style={{ color: 'red', marginLeft: 12 }}
+    //         />
+    //       </>
+    //     );
+    //   },
+    // },
   ];
   return (
     <>
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <PogAutoForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selectedAuto}
         setSearchFunc={searchFunc}
         dataTable={subjs}
         columns={columns}
         titleMoadlEditing={'Редактирование'}
-        titleModalAdding={'Создание'}
-        toggleModalAdding={toggleModalAdding}
-        toggleModalEditing={toggleModalEditing}
-        openAddingForm={modalAdding}
-        openEditingForm={modalEditing}
       />
     </>
   );

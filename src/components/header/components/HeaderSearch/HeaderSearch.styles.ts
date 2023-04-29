@@ -10,7 +10,7 @@ export const SearchIcon = styled(SearchOutlined)`
     display: block;
     font-size: 1.25rem;
 
-    @media only screen and ${media.md} {
+    @media only screen and (${media.md}) {
       font-size: 1.625rem;
     }
   }
@@ -21,12 +21,15 @@ export const InputSearch = styled(SearchInput)`
     display: none;
   }
 
-  @media only screen and ${media.md} {
+  @media only screen and (${media.md}) {
     .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
       border-radius: 3.125rem;
       border: 0;
       padding: 0.5625rem 1.25rem;
     }
+  }
+  @media print {
+    display: none;
   }
 `;
 
