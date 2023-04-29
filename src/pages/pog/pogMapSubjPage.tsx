@@ -6,7 +6,7 @@ import PogMapSubj from '@app/components/pog/pogMapSubj/PogMapSubj';
 const PogMapSubjPage: React.FC = () => {
   return (
     <>
-      <Card title="КАРТА УЧЕТА СУБЪЕКТА ПЕРЕВОЗКИ ОПАСНЫХ ГРУЗОВ">
+      <Card>
         <PageTitle>{'КАРТА УЧЕТА СУБЪЕКТА ПЕРЕВОЗКИ ОПАСНЫХ ГРУЗОВ'}</PageTitle>
         <PogMapSubj />
       </Card>

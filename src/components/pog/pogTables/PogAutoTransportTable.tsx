@@ -26,8 +26,13 @@ const Title = styled.h2`
   font-weight: ${FONT_WEIGHT.bold};
   text-align: center;
   width: 100%;
-  margin-top: 1.875rem;
-  margin-bottom: 0.625rem;
+  margin-top: 3.125rem;
+  margin-bottom: 0.9375rem;
+`;
+const TablePageBreaker = styled(Table)`
+  @media print {
+    page-break-after: auto;
+  }
 `;
 const { Column, ColumnGroup } = Table;
 
@@ -43,7 +48,7 @@ export default function PogAutoTransportTable<T extends object>({
   return (
     <>
       {title && <Title>{title}</Title>}
-      <Table dataSource={data} pagination={false} showHeader={showHeader}>
+      <TablePageBreaker dataSource={data} bordered pagination={false} showHeader={showHeader}>
         {numbered && (
           <ColumnGroup align="center" title={1}>
             <Column align="center" title={titleNumbered} render={(text, record, index) => index + 1} />
@@ -88,7 +93,7 @@ export default function PogAutoTransportTable<T extends object>({
                 </ColumnGroup>
               ),
             )}
-      </Table>
+      </TablePageBreaker>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { InputProps as AntInputProps, Col, InputRef, Row } from 'antd';
-import { FONT_SIZE } from '@app/styles/themes/constants';
+import { FONT_SIZE, FONT_WEIGHT } from '@app/styles/themes/constants';
 import { Input as AntInput } from 'antd';
 import { PrinterTwoTone } from '@ant-design/icons';
 
@@ -27,12 +27,18 @@ const BlockItem = styled.div`
 
 export const Text = styled.div`
   font-size: ${FONT_SIZE.lg};
-  padding: 1.25rem 0 0;
+  padding: 3.125rem 0 0;
 `;
 
 export const PageBreak = styled.div`
   display: none;
   page-break-before: always;
+`;
+
+export const TitleMap = styled.h1`
+  font-size: ${FONT_SIZE.xxl};
+  font-weight: ${FONT_WEIGHT.extraBold};
+  text-align: center;
 `;
 
 export const InputLine = styled(AntInput)<IInputLineProps>`

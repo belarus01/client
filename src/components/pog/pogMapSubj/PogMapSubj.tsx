@@ -59,52 +59,6 @@ const PogMapSubj: React.FC = () => {
   };
 
   const printDoc = () => {
-    document.title = ' ';
-
-    const container = document.querySelector('.ant-spin-container');
-    const content = document.querySelector('.ant-spin-container');
-    if (content) {
-      console.log(content);
-      const pageHeight = window.innerHeight;
-      console.log('pageHeight', pageHeight);
-      const contentHeight = content.scrollHeight;
-      console.log('contentHeight', contentHeight);
-
-      const pageCount = Math.ceil(contentHeight / pageHeight);
-      console.log('pageCount', pageCount);
-
-      for (let i = 0; i < pageCount; i++) {
-        const page = document.createElement('div');
-        page.classList.add('page');
-        page.style.height = pageHeight + 'px';
-
-        const startY = -i * pageHeight;
-        page.style.transform = 'translateY(' + startY + 'px)';
-        page.style.pageBreakInside = 'avoid';
-        console.log(page);
-        content.appendChild(page);
-      }
-
-      const elements = content.children;
-      let pageIndex = 0;
-
-      for (let i = 0; i < elements.length; i++) {
-        const element = elements[i];
-        const elementHeight = element.clientHeight;
-        const page = content.querySelector('.page:nth-of-type(' + (pageIndex + 1) + ')');
-        console.log('page', page);
-
-        if (pageHeight - elementHeight >= 0) {
-          if (page) {
-            page.appendChild(element);
-          }
-        } else {
-          pageIndex++;
-          i--;
-        }
-      }
-    }
-
     window.print();
   };
   useEffect(() => {
@@ -244,6 +198,7 @@ const PogMapSubj: React.FC = () => {
   return (
     <>
       <Spin spinning={loading}>
+        <P.TitleMap>КАРТА УЧЕТА СУБЪЕКТА ПЕРЕВОЗКИ ОПАСНЫХ ГРУЗОВ</P.TitleMap>
         <P.HeadDoc />
         <P.BlockMapPogInput value={subj.subj || ''} readOnly>
           (Полное или сокращенное наименование субъекта перевозки опасных грузов)
