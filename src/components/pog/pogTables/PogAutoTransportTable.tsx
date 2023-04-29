@@ -43,7 +43,7 @@ export default function PogAutoTransportTable<T extends object>({
   return (
     <>
       {title && <Title>{title}</Title>}
-      <Table dataSource={data} pagination={false} showHeader={showHeader}>
+      <Table dataSource={data} pagination={false} bordered showHeader={showHeader}>
         {numbered && (
           <ColumnGroup align="center" title={1}>
             <Column align="center" title={titleNumbered} render={(text, record, index) => index + 1} />

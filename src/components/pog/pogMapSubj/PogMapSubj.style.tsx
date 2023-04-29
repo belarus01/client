@@ -32,7 +32,7 @@ export const Text = styled.div`
 
 export const PageBreak = styled.div`
   display: none;
-  page-break-before: always;
+  page-break-after: always;
 `;
 
 export const InputLine = styled(AntInput)<IInputLineProps>`
@@ -59,9 +59,13 @@ const PrintBottom = styled(PrinterTwoTone)`
   right: 5%;
   @media print {
     display: none;
+    position: relative;
   }
 `;
 
+export const PageBreaker: React.FC = () => {
+  return <PageBreak />;
+};
 interface PrintDocButtonProps {
   clickEvent: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
 }
