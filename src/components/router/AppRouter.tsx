@@ -86,7 +86,7 @@ export const AppRouter: React.FC = () => {
           <Route path="test" element={<Test />} />
           <Route path="common">
             <Route path="subjects" element={<Subjects />} />
-            <Route path="subject" element={<SubjectProfileLayout />}>
+            <Route path="subject/:idSubj" element={<SubjectProfileLayout />}>
               <Route path="events" element={<SubjectEvents />} />
               <Route path="objects" element={<SubjectObjects />} />
               <Route path="settings" element={<SubjectSettings />} />
