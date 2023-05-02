@@ -29,7 +29,7 @@ export interface User {
    
 }
 export interface CreateUserDTO{
-    login?: string;
+    user?: string;
     password: string;
     fName?: string;
     sName?: string;
@@ -38,6 +38,20 @@ export interface CreateUserDTO{
     idDept?: number;
     idDeptUnits: number;
     idDeptJob: number;
+    email?: string;
+    position?: string;
+    role?:number;
+    uidAdm?: number;
+}
+export interface UpdateUserDTO{
+    user?: string;
+    fName?: string;
+    sName?: string;
+    lName?: string;
+    tel?: string;
+    idDept?: number;
+    idDeptUnits?: number;
+    idDeptJob?: number;
     email?: string;
     position?: string;
     role?:number;
@@ -119,40 +133,48 @@ export interface SDeptNode{
 }
 
 export interface SSubjObj{
-    idSubj: number;
-    numOpo: string | null;
-    subj: string | null;
-    unp: string | null;
-    addrYur: string | null;
-    dateRecord: string | null;
-    active: number;
-    uid: number | null;
-    codeSoatoYur: string | null;
-    numReg: string | null;
-    idOked: number | null;
-    dateRegOpo: string | null;
-    dateRegUnp: string | null;
-    addrFact: string | null;
-    bossName: string | null;
-    staffBoss: string | null;
-    numBuild: number | null;
-    nameBuild: string | null;
-    statusUnp: string | null;
-    dateLikv: string | null;
-    typeSubj: string | null;
-    bankRekv: string | null;
-    idReestrYur: number | null;
-    idStreetYur: string | null;
-    numCorpYur: string | null;
-    numBuildYur: string | null;
-    codeSoatoFact: string | null;
-    idReestrFact: number | null;
-    idStreetFact: string | null;
-    numCorpFact: string | null;
-    numBuildFact: string | null;
-    contactData: string | null;
-    //codeSoatoYur2: SSoato;
-    sSubjObjs: SSubjObj[]; 
+        idObj: number;
+      
+        idSubj: number;
+        idTypeDanger: number;
+      
+        note: string | null;
+      
+        unp: string | null;
+      
+        addrObj: string | null;
+      
+        addrDescr: string | null;
+      
+        dateRecord: Date | null;
+      
+        active: number;
+      
+        uid: number | null;
+      
+        soatoCode: number | null;
+      
+        idReestr: number | null;
+      
+        idStreet: number | null;
+      
+        nameObj: string;
+      
+        fioFireman: string | null;
+      
+        org: number | null;
+      
+        numOpo: string | null;
+      
+        sEventsOrderAdmBans: SEventsOrderAdmBan[];
+      
+        sEventsOrderAdmForces: SEventsOrderAdmForce[];
+      
+        sEventsOrderObjs: SEventsOrderObj[];
+        //sEventsOrderQueDefs: SEventsOrderQueDef[];
+        u: User;
+      
+        idSubj2: SSubj;
 }
 
 export interface GeolocationDTO{
@@ -287,9 +309,11 @@ export interface SEventsOrder {
     otherInfo: string | null;
     idEventPlan: number | null;
     idDept2: SDept;
+    idDeptIss2:SDept;
     idEvent2: SEvents;
     idGroup2: Group;
     idSubj2: SSubj;
+    
     sEventsOrderAdmBans: SEventsOrderAdmBan[];
     sEventsOrderAdmForces: SEventsOrderAdmForce[];
     sEventsOrderData: SEventsOrderData[];
@@ -548,6 +572,42 @@ export interface MemorySizeResponse{
     used:string;
     free:string;
     percentage: string;
+}
+
+export interface SUnits {
+  idUnit: number;
+  idParent: number | null;
+  typeUnit: number | null;
+  num: string | null;
+  type: string | null;
+  typeSub: string | null;
+  name: string | null;
+  dateRecord: Date | null;
+  active: number;
+  org: number;
+  uid: number | null;
+  comm: string | null;
+  //sPooSubjPbs: SPooSubjPb[]; 
+  //sQuestions: SQuestion[];
+}
+
+
+export interface SSubjObjSpecif{
+  idSpecif: number;
+  idSubjObj: number;
+  nameBuild: string | null;
+  idUnit_6: number | null;
+  idUnit_17: number | null;
+  idUnit_41: number | null;
+  area: number | null;
+  dateReg: Date | null;
+  dateAnnul: Date | null;
+  nameAgent: string | null;
+  jobAgent: string | null;
+  telAgent: string | null;
+  active: number;
+  dateRecord: Date | null;
+  uid: number | null;
 }
 
 export interface ateObl{

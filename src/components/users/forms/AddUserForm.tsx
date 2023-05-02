@@ -10,45 +10,44 @@ import { Pagination, getAllJobs } from "@app/api/users.api";
 import { deptToTreeNode, makeTree } from "@app/utils/utils";
 import { getAllDepartments } from "@app/api/departments.api";
 import { InputPassword } from "@app/components/common/inputs/InputPassword/InputPassword";
+import { CreateUserDTO, DeleteUserDTO} from "@app/domain/interfaces";
+import { notificationController } from "@app/controllers/notificationController";
+import { registerUser } from "@app/api/auth.api";
 
 interface AddUserFormProps {
     data:User| undefined;
+    onSuccess: () => void;
 }
 
 
-export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
+export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data, onSuccess }) => {
     const [positions, setPositions] = useState<SDeptJob[]>([]);
-    const [positionsStr, setPositionsStr] = useState<string[]>([]);
     const [departments, setDepartments] = useState<SDeptNode[]>([]);
 
     useEffect(() => {
         getAllJobs().then((responce) => {
-            let arr: string[] = [];
             setPositions(responce);
-            positions.forEach(element => {
-                arr.push(element.job);
-            });
-            setPositionsStr(arr);
         })
     }, []);
 
     useEffect(() => {
         getAllDepartments().then((responce) => {
-            console.log(responce);
             const arr:SDeptNode[] = [];
-            //console.log(responce.data.length);
             for(let i = 0; i<responce.length; i++){
-                console.log(responce[i]);
                 arr.push(deptToTreeNode(responce[i]));
             }
-            console.log('arr');
-            console.log(arr);
             setDepartments(makeTree(arr));
         })
     }, []);
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: CreateUserDTO) => {
         console.log(values);
+        registerUser(values).then((res)=>{
+            notificationController.success({message:'Пользователь добавлен'});
+            onSuccess();
+        }).catch((e)=>{
+            notificationController.error({message:'Ошибка'});
+        })
     }
 
     return (
@@ -70,23 +69,23 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
                 <BaseButtonsForm.Item label="Телефон" name="tel">
                     <Input />
                 </BaseButtonsForm.Item>
-                <BaseButtonsForm.Item label="Логин" name="login">
+                <BaseButtonsForm.Item label="Логин" name="user">
                     <Input />
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Пароль" name="pas">
                     <InputPassword />
                 </BaseButtonsForm.Item>
-                <BaseButtonsForm.Item label="Должность" name='job'>
+                <BaseButtonsForm.Item label="Должность" name='idDeptJob'>
                     <Select>{
-                        positionsStr.map((option) => (
-                            <Option value={option}>{option}</Option>
+                        positions.map((option) => (
+                            <Option value={option.idDeptJob}>{option.job}</Option>
                         ))}
                     </Select>
                 </BaseButtonsForm.Item>
                 <BaseButtonsForm.Item label="Подразделение" name='departament'>
                     <TreeSelect fieldNames={{
                         label: 'departament',
-                        value: 'departament'
+                        value: 'idDept'
                     }} labelInValue={true} treeData={departments} treeDataSimpleMode={{
                         id: 'idDept',
                         pId: 'idParent',
@@ -96,7 +95,7 @@ export const AddEditUserForm: React.FC<AddUserFormProps> = ({ data }) => {
                     >
                     </TreeSelect>
                 </BaseButtonsForm.Item>
-                <BaseButtonsForm.Item label="Роль" name='userRole'>
+                <BaseButtonsForm.Item label="Роль" name='role'>
                     <Select >
                         <Option key={1} value={1}>Администратор АПК КНО</Option>
                         <Option key={2} value={2}>Руководитель подразделения</Option>

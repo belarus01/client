@@ -28,8 +28,7 @@ const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersMan
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
 const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'));
 const SubjectEventsPage = React.lazy(() => import('@app/pages/subjects/SubjectEventsPage'));
-const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
-const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
+
 const AteOblPage = React.lazy(() => import('@app/pages/handbooks/AteOblPage'));
 const DepartamentsPage = React.lazy(() => import('@app/pages/handbooks/DepartmentsPage'));
 
@@ -38,6 +37,10 @@ const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage')
 const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
 
+const SubjectObjectsPage = React.lazy(()=>import('@app/pages/subjects/SubjectObjectsPage'));
+const ServerStatisticsPage = React.lazy(()=>import('@app/pages/ServerStatisticsPage'));
+const EventsPage = React.lazy(()=>import('@app/pages/events/EventsPage'));
+const Testpage = React.lazy(()=>import('@app/pages/test'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -66,6 +69,8 @@ const Sopb = withLoading(SopbPage);
 const SopbCards = withLoading(SopbCardsPage);
 const PogPage = withLoading(PogPageTabs);
 const PogMapSubj = withLoading(PogMapSubjPage);
+const Events = withLoading(EventsPage);
+const Test = withLoading(Testpage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -78,14 +83,16 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
-          <Route path="common">
-            <Route path="subjects" element={<Subjects />}>
-              <Route path="subject" element={<SubjectProfileLayout />}>
-                <Route path="events" element={<SubjectEvents />} />
-                <Route path="objects" element={<SubjectObjects />} />
-                <Route path="settings" element={<SubjectSettings />} />
-              </Route>
+          <Route path='test' element={<Test/>}/>
+          <Route path='common'>
+            <Route path="subjects" element={<Subjects />}/>
+            <Route path='subject' element={<SubjectProfileLayout />}>
+                <Route path='events' element={<SubjectEvents />} />
+                <Route path='objects' element={<SubjectObjects/>}/>
+                <Route path='settings' element={<SubjectSettings />} />
             </Route>
+              
+          
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
             <Route path="pog">
@@ -107,7 +114,7 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path="planning">
             <Route path="calendar" element={<Planning />} />
-            {/* <Route index path="events" element={< />} /> */}
+            <Route index path="events" element={< Events/>} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">
@@ -164,8 +171,8 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='chlist11' element={}/> */}
           </Route>
           <Route path="server-error" element={<ServerError />} />
-
-          <Route path="404" element={<Error404 />} />
+          
+          <Route path='*' element={<Error404 />} />
 
           <Route path="profile" element={<ProfileLayout />}>
             <Route path="personal-info" element={<PersonalInfo />} />

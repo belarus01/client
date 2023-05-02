@@ -134,7 +134,7 @@ export const SubjectsTable: React.FC = () => {
                             type="ghost"
                             onClick={() => {
                                 console
-                                navigate('/subject', {state:subj})
+                                navigate('/common/subject', {state:subj})
                                 // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
                             }}
                         >

@@ -108,7 +108,7 @@ export const SubjectObjects:React.FC = () =>{
           />
         </Col>
         <Col sm={24} md={6} lg={6}>
-          <Button onClick={showAddUserModal}>Добавить пользователя</Button>
+          <Button onClick={showAddUserModal}>Добавить объект</Button>
         </Col>
       </Row>
         <Table

@@ -1,5 +1,5 @@
 import { httpApi } from '@app/api/http.api';
-import { User } from '@app/domain/interfaces';
+import { CreateUserDTO, User } from '@app/domain/interfaces';
 
 export interface AuthData {
   email: string;
@@ -49,3 +49,6 @@ export const verifySecurityCode = (securityCodePayload: SecurityCodePayload): Pr
 
 export const setNewPassword = (newPasswordData: NewPasswordData): Promise<undefined> =>
   httpApi.post<undefined>('setNewPassword', { ...newPasswordData }).then(({ data }) => data);
+
+export const registerUser = (user: CreateUserDTO) =>
+  httpApi.post('auth/registration', { ...user }).then(({ data }) => data);
