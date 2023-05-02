@@ -37,10 +37,10 @@ const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage')
 const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
 
-const SubjectObjectsPage = React.lazy(()=>import('@app/pages/subjects/SubjectObjectsPage'));
-const ServerStatisticsPage = React.lazy(()=>import('@app/pages/ServerStatisticsPage'));
-const EventsPage = React.lazy(()=>import('@app/pages/events/EventsPage'));
-const Testpage = React.lazy(()=>import('@app/pages/test'));
+const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
+const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
+const EventsPage = React.lazy(() => import('@app/pages/events/EventsPage'));
+const Testpage = React.lazy(() => import('@app/pages/test'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -83,16 +83,15 @@ export const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={MAIN_PATH} element={protectedLayout}>
-          <Route path='test' element={<Test/>}/>
-          <Route path='common'>
-            <Route path="subjects" element={<Subjects />}/>
-            <Route path='subject' element={<SubjectProfileLayout />}>
-                <Route path='events' element={<SubjectEvents />} />
-                <Route path='objects' element={<SubjectObjects/>}/>
-                <Route path='settings' element={<SubjectSettings />} />
+          <Route path="test" element={<Test />} />
+          <Route path="common">
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="subject" element={<SubjectProfileLayout />}>
+              <Route path="events" element={<SubjectEvents />} />
+              <Route path="objects" element={<SubjectObjects />} />
+              <Route path="settings" element={<SubjectSettings />} />
             </Route>
-              
-          
+
             {/* <Route path='objects' element={}/> */}
             {/* <Route path='npm' element={}/> */}
             <Route path="pog">
@@ -114,7 +113,7 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path="planning">
             <Route path="calendar" element={<Planning />} />
-            <Route index path="events" element={< Events/>} />
+            <Route index path="events" element={<Events />} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">
@@ -171,8 +170,8 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='chlist11' element={}/> */}
           </Route>
           <Route path="server-error" element={<ServerError />} />
-          
-          <Route path='*' element={<Error404 />} />
+
+          <Route path="*" element={<Error404 />} />
 
           <Route path="profile" element={<ProfileLayout />}>
             <Route path="personal-info" element={<PersonalInfo />} />
