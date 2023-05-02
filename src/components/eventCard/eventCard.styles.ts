@@ -47,6 +47,10 @@ export const Steps = styled(AntdSteps)`
     color: var(--subtext-color);
   }
 
+  .ant-steps-item-title {
+    margin-Left: -10px;
+  }
+
   .ant-steps-item-wait .ant-steps-item-icon {
     border-color: var(--subtext-color);
     & > .ant-steps-icon {

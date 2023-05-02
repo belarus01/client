@@ -13,6 +13,7 @@ import { getFirst } from '@app/api/eventCard.api';
 import { useMounted } from '@app/hooks/useMounted';
 
 
+
 interface FormValues {
   [key: string]: string | undefined;
 }
@@ -58,7 +59,7 @@ export const EventCard: React.FC = () => {
         setFields([
           { name: 'group', value: data['result1'][0].subj },
           { name: 'unp', value: data['result1'][0].unp },
-          { name: 'date', value: data['result1'][0].date_reg_unp },
+          //{ name: 'date', value: data['result1'][0].date_reg_unp },
           { name: 'prin', value: data['result1'][0].ved },
           { name: 'ur_adress', value: data['result1'][0].addr_yur },
           { name: 'fak_adress', value: data['result1'][0].addr_fact },
@@ -81,22 +82,22 @@ export const EventCard: React.FC = () => {
           { name: 'dolg_lica', value: data['result1'][0].post_title },
           { name: 'fio_proverki', value: data['result1'][0].fio_post_title },
           { name: 'nomer', value: data['result1'][0].num_order },
-          { name: 'date_vidaci', value: data['result1'][0].date_order },
+          //{ name: 'date_vidaci', value: data['result1'][0].date_order },
           { name: 'sved_o_vneplan_proverki', value: data['result9'][0].num },
-          { name: 'prov_period', value: data['result1'][0].period_check },
-          { name: 'date_nachala_meropr', value: data['result1'][0].date_begin },
-          { name: 'date_okonchaniya_meropr', value: data['result1'][0].date_end },
+          //{ name: 'prov_period', value: data['result1'][0].period_check },
+          //{ name: 'date_nachala_meropr', value: data['result1'][0].date_begin },
+          //{ name: 'date_okonchaniya_meropr', value: data['result1'][0].date_end },
           { name: 'fac_date_nacala', value: data['result1'][0].date_begin_fact },
           { name: 'fac_date_oconchaniya', value: data['result1'][0].date_end_fact },
-          { name: 'date_stop', value: data['result1'][0].date_stop },
-          { name: 'date_vozobnovleniya', value: data['result1'][0].date_continue },
+          //{ name: 'date_stop', value: data['result1'][0].date_stop },
+          //{ name: 'date_vozobnovleniya', value: data['result1'][0].date_continue },
           { name: 'sved_o_prodlenii', value: data['result1'][0].fl_longer },
-          { name: 'date_prodlenii', value: data['result1'][0].date_to },
+         // { name: 'date_prodlenii', value: data['result1'][0].date_to },
           { name: 'dolg_pred_subj', value: data['result1'][0].post_agent },
           { name: 'fio_pred_subj', value: data['result1'][0].name_agent },
           { name: 'itog_doc', value: data['result6'][0].num_last_doc },
-          { name: 'date_itog_doc', value: data['result6'][0].date_doc },
-          { name: 'date_vrucheniya_itog_doc', value: data['result6'][0].date_rec },
+          //{ name: 'date_itog_doc', value: data['result6'][0].date_doc },
+          //{ name: 'date_vrucheniya_itog_doc', value: data['result6'][0].date_rec },
           { name: 'sved_o_vozrag', value: data['result6'][0].other_info },
           //30-31 вопросы
           //{ name: 'date_po_vozrag', value: data['result7'][0].date_po_vozrag },
@@ -184,6 +185,8 @@ export const EventCard: React.FC = () => {
     },
   ];
 
+  
+
   const formFieldsUi = [
     <Step1 key="1" data={data1} />,
     <Step2 key="2" />,
@@ -209,7 +212,7 @@ export const EventCard: React.FC = () => {
     >
       <S.Steps labelPlacement="vertical" size="small" current={current} items={steps} />
 
-      <div>{formFieldsUi[current]}</div>
+      <div>{formFieldsUi[current]}</div>      
       <S.Row>
         {current > 0 && (
           <S.PrevButton type="default" onClick={() => prev()}>
