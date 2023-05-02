@@ -3,32 +3,55 @@ import { Pagination } from '@app/api/users.api';
 import { Table } from '@app/components/common/Table/Table';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
-import { SSubjObj } from '@app/domain/interfaces';
+import { notificationController } from '@app/controllers/notificationController';
+import { SSubj, SSubjObj } from '@app/domain/interfaces';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useMounted } from '@app/hooks/useMounted';
 import { Col, Row, Space } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import styled from 'styled-components';
 
 const initialPagination: Pagination = {
   current: 1,
   pageSize: 15,
 };
+
+const SwichUser = styled.div`
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+`;
 export const SubjectObjects: React.FC = () => {
-  const user = useAppSelector((state) => state.user.user);
-  const subj = useAppSelector((state) => state.subj.subj);
+  // const user = useAppSelector((state) => state.user.user);
+  // need add user from store after auth
+  const [user, setUser] = useState({
+    org: 0,
+  });
+  const subj = useState<SSubj>({
+    idSubj: null,
+    unp: '',
+  });
   const [tableData, setTableData] = useState<{ data: SSubjObj[]; pagination: Pagination; loading: boolean }>({
     data: [],
     pagination: initialPagination,
     loading: false,
   });
+
   const [obj, setObj] = useState<SSubjObj[]>([]);
   const { isMounted } = useMounted();
+  const { idSubj } = useParams<{ idSubj?: string }>();
+  console.log(idSubj);
 
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      if (subj)
-        getAllObjectsBySubjectId(subj?.idSubj).then((res) => {
+
+      if (idSubj)
+        getAllObjectsBySubjectId(idSubj).then((res) => {
           if (isMounted.current) {
             setTableData({ data: res, pagination: initialPagination, loading: false });
           }
@@ -78,7 +101,7 @@ export const SubjectObjects: React.FC = () => {
               type="ghost"
               onClick={() => {
                 //navigate('/subject', {state:subj})
-                // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
+                notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
               }}
             >
               {'Открыть'}
@@ -114,6 +137,7 @@ export const SubjectObjects: React.FC = () => {
         columns={columns}
         bordered
       />
+      <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );
 };
