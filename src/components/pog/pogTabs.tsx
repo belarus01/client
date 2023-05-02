@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import PogAutoTable from './pogTables/PogAutoTable';
 import PogMapSubjTable from './pogTables/PogMapSubjTable';
+import PogAviaTable from './pogTables/PogAviaTable';
 
 const onChange = (key: string) => {
   console.log(key);
@@ -22,7 +23,7 @@ const items: TabsProps['items'] = [
   {
     key: '3',
     label: `Авия`,
-    children: <div>Авия</div>,
+    children: <PogAviaTable />,
   },
   {
     key: '4',

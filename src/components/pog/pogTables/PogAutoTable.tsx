@@ -6,7 +6,7 @@ import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
 
 export interface IPogAuto {
-  idList: number | string;
+  idList: number | string | null;
   comm: string | number | readonly string[] | undefined;
   idLlist?: number | null;
   idDept?: number | null;
@@ -81,6 +81,8 @@ export const PogAutoTable: React.FC = () => {
   });
   const [selectedAuto, setSelectedAuto] = useState<IPogAuto>({
     numGosnadz: null,
+    comm: '',
+    idList: null,
   });
   const [modalAdding, setModalAddding] = useState(false);
   const [modalEditing, setModalEditing] = useState(false);
@@ -116,7 +118,7 @@ export const PogAutoTable: React.FC = () => {
   const deleteItem = (deletedItem: IPogAuto) => {
     console.log(deletedItem.idList);
     setAutos({ ...autos, loading: true });
-    deletePogSubjAutoById(deletedItem.idList).then((data) => {
+    deletePogSubjAutoById(deletedItem.idList as string).then((data) => {
       console.log(data);
       console.log('deleted');
       getAutos();
