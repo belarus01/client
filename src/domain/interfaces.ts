@@ -131,48 +131,48 @@ export interface SDeptNode {
 }
 
 export interface SSubjObj {
-  idObj: number;
+  idObj: number | null;
 
-  idSubj: number;
-  idTypeDanger: number;
+  idSubj: number | null;
+  idTypeDanger?: number;
 
-  note: string | null;
+  note?: string | null;
 
   unp: string | null;
 
-  addrObj: string | null;
+  addrObj?: string | null;
 
-  addrDescr: string | null;
+  addrDescr?: string | null;
 
-  dateRecord: Date | null;
+  dateRecord?: Date | null;
 
-  active: number;
+  active?: number;
 
-  uid: number | null;
+  uid?: number | null;
 
-  soatoCode: number | null;
+  soatoCode?: number | null;
 
-  idReestr: number | null;
+  idReestr?: number | null;
 
-  idStreet: number | null;
+  idStreet?: number | null;
 
-  nameObj: string;
+  nameObj?: string;
 
-  fioFireman: string | null;
+  fioFireman?: string | null;
 
   org: number | null;
 
-  numOpo: string | null;
+  numOpo?: string | null;
 
-  sEventsOrderAdmBans: SEventsOrderAdmBan[];
+  sEventsOrderAdmBans?: SEventsOrderAdmBan[];
 
-  sEventsOrderAdmForces: SEventsOrderAdmForce[];
+  sEventsOrderAdmForces?: SEventsOrderAdmForce[];
 
-  sEventsOrderObjs: SEventsOrderObj[];
+  sEventsOrderObjs?: SEventsOrderObj[];
   //sEventsOrderQueDefs: SEventsOrderQueDef[];
-  u: User;
-
-  idSubj2: SSubj;
+  u?: User;
+  opo?: null | string | number;
+  idSubj2?: SSubj;
 }
 
 export interface GeolocationDTO {
@@ -618,4 +618,52 @@ export interface IVesomstvo {
   idVed: number | null;
   name: string;
   uid?: null | string | number;
+}
+
+export interface IUnits {
+  idUnit: number | null;
+  idParent?: null | number;
+  typeUnit?: number | null;
+  num?: number | string | null;
+  type?: string;
+  typeSub?: string;
+  name: string;
+  dateRecord?: Date | string;
+  active?: 0 | 1;
+  org?: 0 | 1;
+  uid?: number | string;
+  comm?: string;
+}
+
+export interface IPooSubjPb {
+  active?: 1 | 0;
+  addrPoo?: string;
+  dateRecord?: Date | string;
+  dateRegPoo?: Date | string;
+  dateUnregPoo?: Date | string | null;
+  fioRegPoo?: string;
+  fioStaff?: string;
+  flPbPog?: number;
+  idDept?: number | null;
+  idDeptDom?: number | null;
+  idList?: string;
+  idNumReg?: number | null;
+  idObl?: number | null;
+  idSubj?: number | null;
+  idSubjObj: number | null;
+  idUnit_8: number | null;
+  idVed?: null | number;
+  infoChange?: null | string | number;
+  manufactName?: string;
+  manufactNum?: number | null;
+  manufactYear?: Date | string;
+  nameAddrOvnerPoo?: string;
+  numOrder?: number | null;
+  numReg?: null;
+  org?: null;
+  specificPoo?: string;
+  symbol?: string;
+  typePoo?: string;
+  uid?: string | null | number;
+  unp: number | string;
 }

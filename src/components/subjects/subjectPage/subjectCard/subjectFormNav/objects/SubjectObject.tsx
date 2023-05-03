@@ -3,14 +3,16 @@ import { Pagination } from '@app/api/users.api';
 import { Table } from '@app/components/common/Table/Table';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
+import TheTable from '@app/components/tables/TheTable';
 import { notificationController } from '@app/controllers/notificationController';
 import { SSubj, SSubjObj } from '@app/domain/interfaces';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useMounted } from '@app/hooks/useMounted';
 import { Col, Row, Space } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -41,17 +43,21 @@ export const SubjectObjects: React.FC = () => {
     loading: false,
   });
 
+  const navigate = useNavigate();
+
   const [obj, setObj] = useState<SSubjObj[]>([]);
   const { isMounted } = useMounted();
   const { idSubj } = useParams<{ idSubj?: string }>();
   console.log(idSubj);
-
+  // 100008077 1460
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
 
       if (idSubj)
-        getAllObjectsBySubjectId(idSubj).then((res) => {
+        getAllObjectsBySubjectId(1460).then((res) => {
+          console.log(res);
+
           if (isMounted.current) {
             setTableData({ data: res, pagination: initialPagination, loading: false });
           }
@@ -64,53 +70,77 @@ export const SubjectObjects: React.FC = () => {
     fetch(initialPagination);
   }, [fetch]);
 
-  const columns = [
-    {
-      key: '1',
-      title: 'УНП',
-      dataIndex: 'unp',
-    },
-    {
-      key: '2',
-      title: 'Наименование объекта',
-      dataIndex: 'nameObj',
-    },
-    {
-      key: '3',
-      title: 'Место нахождения объекта',
-      dataIndex: 'addrObj',
-    },
-    {
-      key: '4',
-      title: 'Место осуществления деятельности',
-      dataIndex: 'addrDescr',
-    },
-    {
-      key: '5',
-      title: 'Ответственное лицо',
-      dataIndex: 'fioFireman',
-    },
-    {
-      key: '4',
-      title: 'Действия',
-      width: '15%',
-      render: (subj: SSubjObj) => {
-        return (
-          <Space>
-            <Button
-              type="ghost"
-              onClick={() => {
-                //navigate('/subject', {state:subj})
-                notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
-              }}
-            >
-              {'Открыть'}
-            </Button>
-          </Space>
-        );
+  const data = useMemo(() => {
+    return tableData.data.filter((item) => item.org === user.org);
+  }, [tableData.data, user.org]);
+
+  const columns = useMemo(() => {
+    const columns = [
+      {
+        key: '1',
+        title: 'УНП',
+        dataIndex: 'unp',
       },
-    },
-  ];
+      {
+        key: '2',
+        title: 'Наименование объекта',
+        dataIndex: 'nameObj',
+      },
+      {
+        key: '3',
+        title: 'Место нахождения объекта',
+        dataIndex: 'addrObj',
+      },
+      {
+        key: '4',
+        title: 'Место осуществления деятельности',
+        dataIndex: 'addrDescr',
+      },
+      {
+        key: '5',
+        title: 'Ответственное лицо',
+        dataIndex: 'fioFireman',
+      },
+      {
+        key: '4',
+        title: 'Действия',
+        width: '15%',
+        render: (obj: SSubjObj) => {
+          return (
+            <Space>
+              <Button
+                type="ghost"
+                onClick={() => {
+                  //navigate('/subject', {state:subj})
+                  navigate(`${obj.idObj}`);
+                  console.log(obj.idObj);
+
+                  // notificationController.info({
+                  //   description: 'safas',
+                  //   message: 'asdfasdfadsfasdfasdf',
+                  // });
+                }}
+              >
+                Открыть
+              </Button>
+            </Space>
+          );
+        },
+      },
+    ];
+    if (user.org == 0) {
+      const actions = columns[columns.length - 1];
+      columns[columns.length - 1] = {
+        key: 'numOpo',
+        title: 'Номер ОПО',
+        dataIndex: 'numOpo',
+      };
+      columns.push(actions);
+      return columns;
+    }
+    return columns;
+  }, [user.org]);
+
   function handleSearch(value: string): void {
     throw new Error('Function not implemented.');
   }
@@ -121,22 +151,7 @@ export const SubjectObjects: React.FC = () => {
 
   return (
     <>
-      <Row gutter={[30, 30]}>
-        <Col sm={24} md={8} lg={8}>
-          <SearchInput placeholder={'Не менее 6 символов'} enterButton="Поиск" size="middle" onSearch={handleSearch} />
-        </Col>
-        <Col sm={24} md={6} lg={6}>
-          <Button onClick={showAddUserModal}>Добавить объект</Button>
-        </Col>
-      </Row>
-      <Table
-        dataSource={tableData.data}
-        pagination={tableData.pagination}
-        loading={tableData.loading}
-        scroll={{ x: 800 }}
-        columns={columns}
-        bordered
-      />
+      <TheTable columns={columns} dataTable={{ data: data, loading: tableData.loading }} />
       <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );

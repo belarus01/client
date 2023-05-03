@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Row, Table, TablePaginationConfig } from 'antd';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { Modal } from '@app/components/common/Modal/Modal';
 
@@ -23,6 +23,7 @@ interface ITheTableProps {
   openAddingForm?: boolean;
   openEditingForm?: boolean;
   onRow?: undefined | ((recod?: any, rowIndex?: number | undefined) => object);
+  pagination?: false | TablePaginationConfig;
 }
 
 export const TheTable: React.FC<ITheTableProps> = ({
@@ -40,6 +41,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
   openAddingForm,
   openEditingForm,
   onRow,
+  pagination,
 }) => {
   return (
     <>
@@ -68,6 +70,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
         loading={dataTable.loading}
         scroll={{ x: 800 }}
         bordered
+        pagination={pagination}
         onRow={onRow}
       />
       {toggleModalAdding && openAddingForm && (

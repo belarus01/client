@@ -38,6 +38,7 @@ const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
 
 const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
+const CurrenObjectPage = React.lazy(() => import('@app/pages/subjects/CurrentObjectPage'));
 const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
 const EventsPage = React.lazy(() => import('@app/pages/events/EventsPage'));
 const Testpage = React.lazy(() => import('@app/pages/test'));
@@ -71,6 +72,7 @@ const PogPage = withLoading(PogPageTabs);
 const PogMapSubj = withLoading(PogMapSubjPage);
 const Events = withLoading(EventsPage);
 const Test = withLoading(Testpage);
+const CurrenObject = withLoading(CurrenObjectPage);
 
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
@@ -89,6 +91,7 @@ export const AppRouter: React.FC = () => {
             <Route path="subject/:idSubj" element={<SubjectProfileLayout />}>
               <Route path="events" element={<SubjectEvents />} />
               <Route path="objects" element={<SubjectObjects />} />
+              <Route path="objects/:idObj" element={<CurrenObject />} />
               <Route path="settings" element={<SubjectSettings />} />
             </Route>
 
