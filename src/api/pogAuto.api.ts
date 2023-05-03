@@ -1,6 +1,8 @@
 import { IPogAuto } from '@app/components/pog/pogTables/PogAutoTable';
 import { httpApi } from './http.api';
 import { IPogAvia } from '@app/components/pog/pogTables/PogAviaTable';
+import { IPogGD } from '@app/components/pog/pogTables/PogGDTable';
+import { IPogWater } from '@app/components/pog/pogTables/PogWaterTable';
 
 const BASE_URL = 'pog';
 
@@ -19,6 +21,10 @@ export const deletePogSubjAutoById = (idList: number | string) =>
 
 export const getPogSubjAutoById = (idList: number | string) =>
   httpApi.get<IPogAuto>(`${BASE_URL}/get/pogSubjAuto/id/${idList}`).then(({ data }) => data);
+
+export const getAllPogSubjWaters = () => httpApi.get<IPogWater[]>(`${BASE_URL}/get/all`).then(({ data }) => data);
+
+export const getAllPogSubjRws = () => httpApi.get<IPogGD[]>(`${BASE_URL}/get/all/pogSubjRw`).then(({ data }) => data);
 
 export const getAllPogSubjAvias = () =>
   httpApi.get<IPogAvia[]>(`${BASE_URL}/get/all/pogSubjAvias`).then(({ data }) => data);
