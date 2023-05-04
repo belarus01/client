@@ -1,18 +1,15 @@
 import { getObjById } from '@app/api/objects.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
-import TheTable from '@app/components/tables/TheTable';
 import { notificationController } from '@app/controllers/notificationController';
 import { IPooSubjPb, IUnits, SSubj, SSubjObj } from '@app/domain/interfaces';
 import { Space } from 'antd';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { getAllPooSubjPbsBySubjObjId } from '@app/api/poo.api';
 import { getAllUnits } from '@app/api/units.api';
-import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
-import { Collapse } from '@app/components/common/Collapse/Collapse.styles';
-import { Panel } from '@app/components/common/Collapse/Collapse';
+import GroopedTables from './GroopedTables';
 
 const SwichUser = styled.div`
   position: fixed;
@@ -22,7 +19,7 @@ const SwichUser = styled.div`
   height: 50px;
   background-color: red;
 `;
-export const CurrentObject: React.FC = () => {
+export const CurrentObjectSupervision: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);
   // need add user from store after auth
   const [user, setUser] = useState({
@@ -127,46 +124,34 @@ export const CurrentObject: React.FC = () => {
     },
   ];
 
-  const currentUnits = useMemo(() => {
-    setLoading(true);
-    const currentTypes = pooSubjPbs.map((item) => item.idUnit_8).filter((item) => item);
-    const pooSubjPbsGrooped: { [key: string]: IPooSubjPb[] } = {};
-    currentTypes.forEach((item) => {
-      pooSubjPbsGrooped[`${item}`] = pooSubjPbs.filter((poo) => item == poo.idUnit_8);
-    });
-    pooSubjPbsGrooped.unsorted = pooSubjPbs.filter((poo) => poo.idUnit_8 == null);
-    const groops = units.filter((item) => currentTypes.includes(item.idUnit));
-    return {
-      groops,
-      pooSubjPbsGrooped,
-    };
-  }, [pooSubjPbs, units]);
+  // const currentUnits = useMemo(() => {
+  //   setLoading(true);
+  //   const currentTypes = pooSubjPbs.map((item) => item.idUnit_8).filter((item) => item);
+  //   const pooSubjPbsGrooped: { [key: string]: IPooSubjPb[] } = {};
+  //   currentTypes.forEach((item) => {
+  //     pooSubjPbsGrooped[`${item}`] = pooSubjPbs.filter((poo) => item == poo.idUnit_8);
+  //   });
+  //   pooSubjPbsGrooped.unsorted = pooSubjPbs.filter((poo) => poo.idUnit_8 == null);
+  //   const groops = units.filter((item) => currentTypes.includes(item.idUnit));
+  //   setLoading(false);
+  //   return {
+  //     groops,
+  //     pooSubjPbsGrooped,
+  //   };
+  // }, [pooSubjPbs, units]);
 
   return (
     <>
-      <Spinner spinning={loading}>
-        <Collapse defaultActiveKey={['1']}>
-          {currentUnits.groops.map((groop) => {
-            return (
-              <Panel header={groop.name} key={String(groop.idUnit)}>
-                <TheTable
-                  pagination={false}
-                  dataTable={{ data: currentUnits.pooSubjPbsGrooped[`${groop.idUnit}`], loading: loading }}
-                  columns={columns}
-                />
-              </Panel>
-            );
-          })}
-          <Panel header={'Несортированные'} key="unsorted">
-            <TheTable
-              pagination={false}
-              dataTable={{ data: currentUnits.pooSubjPbsGrooped.unsorted, loading: loading }}
-              columns={columns}
-            />
-          </Panel>
-        </Collapse>
-        <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
-      </Spinner>
+      <GroopedTables
+        objects={pooSubjPbs}
+        types={units}
+        keyObj={'idUnit_8'}
+        keyType={'idUnit'}
+        titleType={'name'}
+        columns={columns}
+        loadingProps={loading}
+      />
+      <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );
 };

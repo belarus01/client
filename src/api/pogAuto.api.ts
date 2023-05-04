@@ -103,3 +103,6 @@ export const getAllPogSubjAvias = () =>
 //     }, 500);
 //   });
 // };
+
+export const getAllPogSubjAutosBySubjObjId = (idSubjObj: number | string) =>
+  httpApi.get<IPogAuto[]>(`${BASE_URL}/get/all/pogSubjAutos/idSubjObj/${idSubjObj}`).then(({ data }) => data);

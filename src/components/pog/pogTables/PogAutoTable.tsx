@@ -1,9 +1,10 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
-import { Modal as Alert } from 'antd';
+import { Modal as Alert, Button, Space } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
 import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
+import { useNavigate } from 'react-router-dom';
 
 export interface IPogAuto {
   idList: number | string | null;
@@ -72,9 +73,14 @@ export interface IPogAuto {
   dateRecord?: number | string | null;
   active?: number | string | null;
   uid?: number | string | null;
+  idSubj?: number | null;
 }
 
-export const PogAutoTable: React.FC = () => {
+interface PogAutoTableProps {
+  data?: IPogAuto[];
+}
+
+export const PogAutoTable: React.FC<PogAutoTableProps> = ({ data }) => {
   const [autos, setAutos] = useState<{ data: IPogAuto[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -95,10 +101,6 @@ export const PogAutoTable: React.FC = () => {
       setAutos({ data: result, loading: false });
     });
   };
-
-  useEffect(() => {
-    getAutos();
-  }, []);
 
   const toggleModalAdding = (isOpen = true) => {
     setModalAddding(isOpen);
@@ -144,7 +146,7 @@ export const PogAutoTable: React.FC = () => {
     getAutos();
   };
 
-  const columns = [
+  const [columns, setColumns] = useState([
     {
       key: '1',
       title: 'Регистрационный номер',
@@ -347,18 +349,18 @@ export const PogAutoTable: React.FC = () => {
       dataIndex: 'unregInspector',
     },
     {
-      key: '42',
+      key: '43',
       title: 'Статус',
       dataIndex: 'active',
       render: (active: '0' | '1') => <>{active == '0' ? 'Неактивен' : 'Активно'}</>,
     },
     {
-      key: '43',
+      key: '44',
       title: 'Примечание',
       dataIndex: 'comm',
     },
     {
-      key: '43',
+      key: '45',
       title: 'Действия',
       render: (itemSelected: IPogAuto) => {
         function onDeleteDep() {
@@ -392,13 +394,55 @@ export const PogAutoTable: React.FC = () => {
         );
       },
     },
-  ];
+  ]);
+
+  const navigate = useNavigate();
+
+  const changeColumns = () => {
+    const newColumns = [...columns];
+    newColumns.splice(columns.length - 1, 1, {
+      key: `${columns.length + 1}`,
+      title: 'Действия',
+      render: () => {
+        return (
+          <>
+            <Space>
+              <Button
+                type="ghost"
+                onClick={() => {
+                  //navigate('/subject', {state:subj})
+                  navigate(`/hanbooks/pog`);
+                  // notificationController.info({
+                  //   description: 'safas',
+                  //   message: 'asdfasdfadsfasdfasdf',
+                  // });
+                }}
+              >
+                Открыть
+              </Button>
+            </Space>
+          </>
+        );
+      },
+    });
+    console.log(columns);
+    setColumns(newColumns);
+  };
+
+  useEffect(() => {
+    if (!data) {
+      getAutos();
+      return;
+    }
+    changeColumns();
+    setAutos({ ...autos, data: data });
+  }, []);
   return (
     <>
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <PogAutoForm data={props.data} close={toggleModal} />}
+        FormComponent={data ? undefined : (props) => <PogAutoForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selectedAuto}
         setSearchFunc={searchFunc}
@@ -406,10 +450,10 @@ export const PogAutoTable: React.FC = () => {
         columns={columns}
         titleMoadlEditing={'Редактирование'}
         titleModalAdding={'Создание'}
-        toggleModalAdding={toggleModalAdding}
-        toggleModalEditing={toggleModalEditing}
-        openAddingForm={modalAdding}
-        openEditingForm={modalEditing}
+        toggleModalAdding={data ? undefined : toggleModalAdding}
+        toggleModalEditing={data ? undefined : toggleModalEditing}
+        openAddingForm={data ? undefined : modalAdding}
+        openEditingForm={data ? undefined : modalEditing}
       />
     </>
   );

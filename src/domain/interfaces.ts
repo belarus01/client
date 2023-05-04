@@ -1,3 +1,5 @@
+import { number } from 'echarts';
+
 export interface User {
   uid: number;
   user: string;
@@ -666,4 +668,57 @@ export interface IPooSubjPb {
   typePoo?: string;
   uid?: string | null | number;
   unp: number | string;
+}
+
+export interface ISubjObjSpecif {
+  idSpecif: number | null;
+  idSubjObj: number | null;
+  nameBuild: string;
+  idUnit_6?: number | null;
+  idUnit_17?: number | null;
+  idUnit_41?: number | null;
+  area?: number | null | string;
+  numVisit?: number | null;
+  numStaff?: number | null;
+  serviceOrg?: string | null;
+  dateReg?: Date | string;
+  dateAnnul?: Date | string;
+  nameAgent?: string | null;
+  jobAgent?: string | null;
+  telAgent?: string | null;
+  addrAgent?: string | null;
+  active?: 0 | 1;
+  addrExect?: string | null;
+  dateRecord?: Date | string | null;
+  uid?: string | null;
+}
+
+export interface IFireCardBuild {
+  idList: number | null;
+  idCard?: number | null;
+  idDept?: number | null;
+  idObl?: number | null;
+  idSubj?: number | null;
+  idSubjObj: number | null;
+  numReg?: number | null;
+  nameBuild: string | null;
+  idUnit_6?: number | null;
+  addr?: string | null;
+  numStaff?: number | null;
+  numPerson?: number | null;
+  levelBuild?: string | null;
+  space?: string | number | null;
+  area?: string | number | null;
+  idUnit_17_37?: number | null;
+  idUnit_21?: number | null;
+  area_A?: string | number | null;
+  area_6?: string | number | null;
+  area_B1?: string | number | null;
+  area_B2?: string | number | null;
+  area_B3?: string | number | null;
+  area_B4?: string | number | null;
+  uid?: string | null;
+  dateRecord?: Date | string | null;
+  active?: 0 | 1;
+  info?: string;
 }

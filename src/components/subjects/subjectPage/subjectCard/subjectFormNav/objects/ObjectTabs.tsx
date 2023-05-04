@@ -4,7 +4,9 @@ import type { TabsProps } from 'antd';
 import styled from 'styled-components';
 import PogMapSubjTable from '@app/components/pog/pogTables/PogMapSubjTable';
 import PogAutoTable from '@app/components/pog/pogTables/PogAutoTable';
-import { CurrentObject } from './CurrentObject';
+import { CurrentObjectSupervision } from './CurrentObjectsupervision';
+import CurrentObjectSupervisionPog from './CurrentObjectSupervisionPog';
+import CurrentObjectFireSupervision from './CurrentObjectFireSupervision';
 
 const SwichUser = styled.div`
   position: fixed;
@@ -29,12 +31,12 @@ const ObjectTabs: React.FC = () => {
         {
           key: '1',
           label: `Промбез`,
-          children: <CurrentObject />,
+          children: <CurrentObjectSupervision />,
         },
         {
           key: '2',
           label: `ПОГ`,
-          children: <PogAutoTable />,
+          children: <CurrentObjectSupervisionPog />,
         },
       ];
     } else {
@@ -42,7 +44,7 @@ const ObjectTabs: React.FC = () => {
         {
           key: '3',
           label: `Пожнадзор`,
-          children: <PogMapSubjTable />,
+          children: <CurrentObjectFireSupervision />,
         },
         {
           key: '4',
