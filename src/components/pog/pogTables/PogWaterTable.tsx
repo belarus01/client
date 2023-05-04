@@ -40,7 +40,7 @@ export interface IPogWater {
   uid?: number | null | string;
 }
 
-export const PogWaterTable: React.FC = () => {
+const PogWaterTable: React.FC = () => {
   const [Waters, setWaters] = useState<{ data: IPogWater[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -104,17 +104,20 @@ export const PogWaterTable: React.FC = () => {
       title:
         'УНП (регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей)',
       dataIndex: 'unp',
+      align: 'center',
     },
     {
       key: '2',
       title:
         ' Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя',
       dataIndex: 'nameAddrOvnerPoo',
+      align: 'center',
     },
     {
       key: '3',
       title: 'Наименование судна',
       dataIndex: 'nameSud',
+      align: 'center',
     },
     {
       key: '4',
@@ -126,11 +129,13 @@ export const PogWaterTable: React.FC = () => {
       key: '5',
       title: 'Год выпуска',
       dataIndex: 'dateVipusk',
+      align: 'center',
     },
     {
       key: '6',
       title: 'Дата последнего освидетельствования',
       dataIndex: 'dateOsvid',
+      align: 'center',
     },
 
     // {
@@ -143,6 +148,7 @@ export const PogWaterTable: React.FC = () => {
     {
       key: '7',
       title: 'Действия',
+      align: 'center',
       render: (itemSelected: IPogWater) => {
         function onDeleteDep() {
           Alert.confirm({

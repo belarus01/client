@@ -32,7 +32,7 @@ export interface IPogAvia {
   uid?: number | null | string;
 }
 
-export const PogAviaTable: React.FC = () => {
+const PogAviaTable: React.FC = () => {
   const [avias, setAvias] = useState<{ data: IPogAvia[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -96,32 +96,38 @@ export const PogAviaTable: React.FC = () => {
       title:
         'УНП (регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей)',
       dataIndex: 'unp',
+      align: 'center',
     },
     {
       key: '2',
       title:
         ' Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя',
       dataIndex: 'nameAddrOvnerPoo',
+      align: 'center',
     },
     {
       key: '3',
       title: 'Тип воздушного судна',
       dataIndex: 'typeAvia',
+      align: 'center',
     },
     {
       key: '4',
       title: 'Государственный регистрационный знак',
       dataIndex: 'numReGai',
+      align: 'center',
     },
     {
       key: '5',
       title: 'Год выпуска',
       dataIndex: 'manufactYear',
+      align: 'center',
     },
     {
       key: '6',
       title: 'Срок действия сертификата летной годности или назначенного ресурса',
       dataIndex: 'dateEnd',
+      align: 'center',
     },
 
     // {
@@ -134,6 +140,7 @@ export const PogAviaTable: React.FC = () => {
     {
       key: '7',
       title: 'Действия',
+      align: 'center',
       render: (itemSelected: IPogAvia) => {
         function onDeleteDep() {
           Alert.confirm({

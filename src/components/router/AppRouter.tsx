@@ -36,6 +36,7 @@ const SopbPage = React.lazy(() => import('@app/pages/sopbs/SopbsPage'));
 const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage'));
 const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
+const SStatePage = React.lazy(() => import('@app/pages/handbooks/StatesPage'));
 
 const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
 const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
@@ -69,6 +70,7 @@ const Sopb = withLoading(SopbPage);
 const SopbCards = withLoading(SopbCardsPage);
 const PogPage = withLoading(PogPageTabs);
 const PogMapSubj = withLoading(PogMapSubjPage);
+const StatePage = withLoading(SStatePage);
 const Events = withLoading(EventsPage);
 const Test = withLoading(Testpage);
 
@@ -139,7 +141,7 @@ export const AppRouter: React.FC = () => {
 
             {/* <Route path='eventsdefections' element={}/> */}
             {/* <Route path='sopbcard' element={}/> */}
-            {/* <Route path='state' element={}/> */}
+            <Route path="state" element={<StatePage />} />
             {/* <Route path='spoo' element={}/> */}
             {/* <Route path='opo' element={}/> */}
             {/* <Route path='admban' element={}/> */}

@@ -36,7 +36,7 @@ export interface IPogGD {
   uid?: number | null | string;
 }
 
-export const PogGDTable: React.FC = () => {
+const PogGDTable: React.FC = () => {
   const [GDs, setGDs] = useState<{ data: IPogGD[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -100,17 +100,20 @@ export const PogGDTable: React.FC = () => {
       title:
         'УНП (регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей)',
       dataIndex: 'unp',
+      align: 'center',
     },
     {
       key: '2',
       title:
         ' Наименование организации, фамилия, собственное имя, отчество (если таковое имеется) индивидуального предпринимателя',
       dataIndex: 'nameAddrOvnerPoo',
+      align: 'center',
     },
     {
       key: '3',
       title: 'Количество вагонов-цистерн, предназначенных для перевозки опасных грузов',
       dataIndex: 'colGD',
+      align: 'center',
     },
     {
       key: '4',
@@ -123,11 +126,13 @@ export const PogGDTable: React.FC = () => {
       key: '5',
       title: 'Количество локомотивов, занятых перевозкой опасных грузов',
       dataIndex: 'colLoc',
+      align: 'center',
     },
     {
       key: '6',
       title: 'Количество локомотивов, занятых перевозкой опасных грузов, отработавших нормативный срок службы',
       dataIndex: 'colLocOtrab',
+      align: 'center',
     },
 
     // {
@@ -140,6 +145,7 @@ export const PogGDTable: React.FC = () => {
     {
       key: '7',
       title: 'Действия',
+      align: 'center',
       render: (itemSelected: IPogGD) => {
         function onDeleteDep() {
           Alert.confirm({
