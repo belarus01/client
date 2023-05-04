@@ -22,8 +22,10 @@ interface ITheTableProps {
   toggleModalEditing?: (isOpen: boolean) => void;
   openAddingForm?: boolean;
   openEditingForm?: boolean;
+  titleButtonAdd?: string;
   onRow?: undefined | ((recod?: any, rowIndex?: number | undefined) => object);
   pagination?: false | TablePaginationConfig;
+  propsFrom?: any;
 }
 
 export const TheTable: React.FC<ITheTableProps> = ({
@@ -42,6 +44,8 @@ export const TheTable: React.FC<ITheTableProps> = ({
   openEditingForm,
   onRow,
   pagination,
+  titleButtonAdd,
+  propsFrom,
 }) => {
   return (
     <>
@@ -60,7 +64,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
         )}
         {toggleModalAdding && (
           <Col sm={24} md={6} lg={6}>
-            <Button onClick={() => toggleModalAdding(true)}>Добавить новую категорию</Button>
+            <Button onClick={() => toggleModalAdding(true)}>{titleButtonAdd || 'Добавить новую категорию'}</Button>
           </Col>
         )}
       </Row>
@@ -83,7 +87,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openAddingForm}
         >
-          {Component && <Component />}
+          {Component && <Component {...propsFrom} />}
         </Modal>
       )}
       {toggleModalEditing && openEditingForm && (
@@ -96,7 +100,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openEditingForm}
         >
-          {Component && <Component data={selected} />}
+          {Component && <Component data={selected} {...propsFrom} />}
         </Modal>
       )}
     </>

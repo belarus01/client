@@ -1,24 +1,18 @@
 import { getObjById } from '@app/api/objects.api';
-import { Pagination } from '@app/api/users.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import TheTable from '@app/components/tables/TheTable';
 import { notificationController } from '@app/controllers/notificationController';
-import { IPooSubjPb, IUnits, SSubjObj } from '@app/domain/interfaces';
+import { IPooSubjPb, IUnits, SSubj, SSubjObj } from '@app/domain/interfaces';
 import { Space } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getAllPooSubjPbsBySubjObjId } from '@app/api/poo.api';
 import { getAllUnits } from '@app/api/units.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Collapse } from '@app/components/common/Collapse/Collapse.styles';
 import { Panel } from '@app/components/common/Collapse/Collapse';
-
-const initialPagination: Pagination = {
-  current: 1,
-  pageSize: 15,
-};
 
 const SwichUser = styled.div`
   position: fixed;
@@ -35,7 +29,7 @@ export const CurrentObject: React.FC = () => {
     org: 0,
   });
 
-  const [obj, setObj] = useState<SSubjObj>({
+  const [, setObj] = useState<SSubjObj>({
     idObj: null,
     idSubj: null,
     unp: null,
@@ -46,7 +40,15 @@ export const CurrentObject: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pooSubjPbs, setPooSubjPbs] = useState<IPooSubjPb[]>([]);
 
-  const navigate = useNavigate();
+  const [, setSubj] = useState<SSubj>({
+    idSubj: null,
+    unp: '',
+  });
+  const { state } = useLocation();
+
+  useEffect(() => {
+    setSubj(state);
+  }, [state]);
 
   const { idObj } = useParams<{ idObj?: string }>();
   console.log(idObj);
@@ -70,34 +72,7 @@ export const CurrentObject: React.FC = () => {
   useEffect(() => {
     fetch();
   }, [fetch]);
-  // dateRecord?: Date | string;
-  // dateRegPoo?: Date | string;
-  // dateUnregPoo?: Date | string | null;
-  // fioRegPoo?: string;
-  // fioStaff?: string;
-  // flPbPog?: number;
-  // idDept?: number | null;
-  // idDeptDom?: number | null;
-  // idList?: string;
-  // idNumReg?: number | null;
-  // idObl?: number | null;
-  // idSubj?: number | null;
-  // idSubjObj: number | null;
-  // idUnit_8: number | null;
-  // idVed?: null | number;
-  // infoChange?: null | string | number;
-  // manufactName?: string;
-  // manufactNum?: number | null;
-  // manufactYear?: Date | string;
-  // nameAddrOvnerPoo?: string;
-  // numOrder?: number | null;
-  // numReg?: null;
-  // org?: null;
-  // specificPoo?: string;
-  // symbol?: string;
-  // typePoo?: string;
-  // uid?: string | null | number;
-  // unp: number | string;
+
   const columns = [
     {
       key: '1',

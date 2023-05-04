@@ -52,7 +52,7 @@ const SubjectProfileLayout: React.FC = () => {
 
       <Row gutter={[30, 30]}>
         {isTitleShown && (
-          <Col xs={24} md={24} xl={8}>
+          <Col xs={24} md={24} xl={24}>
             <ProfileCard>
               <Row gutter={[30, 30]}>
                 <Col xs={24} md={12} xl={24}>
@@ -66,13 +66,8 @@ const SubjectProfileLayout: React.FC = () => {
             </ProfileCard>
           </Col>
         )}
-
-        {isMenuShown && (
-          <Col xs={24} md={24} xl={16}>
-            <Outlet />
-          </Col>
-        )}
       </Row>
+      {isMenuShown && <Outlet />}
     </>
   );
 };
