@@ -1,14 +1,10 @@
-import { getAllObjectsBySubjectId, getObjById, getSubjObjSpecifByIdSubjObj } from '@app/api/objects.api';
+import { getObjById } from '@app/api/objects.api';
 import { Pagination } from '@app/api/users.api';
-import { Table } from '@app/components/common/Table/Table';
 import { Button } from '@app/components/common/buttons/Button/Button';
-import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
 import TheTable from '@app/components/tables/TheTable';
 import { notificationController } from '@app/controllers/notificationController';
-import { IPooSubjPb, IUnits, SSubj, SSubjObj } from '@app/domain/interfaces';
-import { useAppSelector } from '@app/hooks/reduxHooks';
-import { useMounted } from '@app/hooks/useMounted';
-import { Col, Row, Space } from 'antd';
+import { IPooSubjPb, IUnits, SSubjObj } from '@app/domain/interfaces';
+import { Space } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -61,7 +57,6 @@ export const CurrentObject: React.FC = () => {
       const promiseObj: Promise<SSubjObj> = getObjById(130);
       const promiseSpetific: Promise<IPooSubjPb[]> = getAllPooSubjPbsBySubjObjId(130);
       const promiseUnits: Promise<IUnits[]> = getAllUnits();
-      // <[SSubjObj, <IUnits[]>, <IPooSubjPb[]>]>
       Promise.all([promiseObj, promiseSpetific, promiseUnits]).then((res) => {
         console.log(res);
         setObj(res[0]);
@@ -75,32 +70,59 @@ export const CurrentObject: React.FC = () => {
   useEffect(() => {
     fetch();
   }, [fetch]);
-
+  // dateRecord?: Date | string;
+  // dateRegPoo?: Date | string;
+  // dateUnregPoo?: Date | string | null;
+  // fioRegPoo?: string;
+  // fioStaff?: string;
+  // flPbPog?: number;
+  // idDept?: number | null;
+  // idDeptDom?: number | null;
+  // idList?: string;
+  // idNumReg?: number | null;
+  // idObl?: number | null;
+  // idSubj?: number | null;
+  // idSubjObj: number | null;
+  // idUnit_8: number | null;
+  // idVed?: null | number;
+  // infoChange?: null | string | number;
+  // manufactName?: string;
+  // manufactNum?: number | null;
+  // manufactYear?: Date | string;
+  // nameAddrOvnerPoo?: string;
+  // numOrder?: number | null;
+  // numReg?: null;
+  // org?: null;
+  // specificPoo?: string;
+  // symbol?: string;
+  // typePoo?: string;
+  // uid?: string | null | number;
+  // unp: number | string;
   const columns = [
     {
       key: '1',
-      title: 'УНП',
-      dataIndex: 'unp',
+      title: 'Основные технические характеристики ПОО',
+      dataIndex: 'specificPoo',
     },
     {
       key: '2',
-      title: 'num_order',
-      dataIndex: 'numReg',
+      title: 'Наименование организации – изготовителя ПОО',
+      dataIndex: 'manufactName',
     },
     {
       key: '3',
-      title: 'typePoo',
-      dataIndex: 'typePoo',
+      title: 'Расположение ПОО/ Адрес ПОО',
+      dataIndex: 'addrPoo',
     },
     {
       key: '4',
-      title: 'Место осуществления деятельности',
-      dataIndex: 'addrDescr',
+      title: 'Наименование владельца ПОО, адрес, номер телефона',
+      dataIndex: 'nameAddrOvnerPoo',
     },
     {
       key: '5',
-      title: 'Ответственное лицо',
-      dataIndex: 'fioFireman',
+      title: 'Тип (марка) ПОО',
+      dataIndex: 'typePoo',
     },
     {
       key: '4',
@@ -138,13 +160,9 @@ export const CurrentObject: React.FC = () => {
       pooSubjPbsGrooped[`${item}`] = pooSubjPbs.filter((poo) => item == poo.idUnit_8);
     });
     pooSubjPbsGrooped.unsorted = pooSubjPbs.filter((poo) => poo.idUnit_8 == null);
-    console.log(currentTypes);
-    console.log(pooSubjPbsGrooped);
-
-    const nes = units.filter((item) => currentTypes.includes(item.idUnit));
-    console.log(nes);
+    const groops = units.filter((item) => currentTypes.includes(item.idUnit));
     return {
-      nes,
+      groops,
       pooSubjPbsGrooped,
     };
   }, [pooSubjPbs, units]);
@@ -153,31 +171,23 @@ export const CurrentObject: React.FC = () => {
     <>
       <Spinner spinning={loading}>
         <Collapse defaultActiveKey={['1']}>
-          {currentUnits.nes.map((unit) => {
+          {currentUnits.groops.map((groop) => {
             return (
-              <Panel header={unit.name} key={String(unit.idUnit)}>
-                {console.log(currentUnits.pooSubjPbsGrooped[`${unit.idUnit}`])}
+              <Panel header={groop.name} key={String(groop.idUnit)}>
                 <TheTable
                   pagination={false}
-                  dataTable={{ data: currentUnits.pooSubjPbsGrooped[`${unit.idUnit}`], loading: loading }}
+                  dataTable={{ data: currentUnits.pooSubjPbsGrooped[`${groop.idUnit}`], loading: loading }}
                   columns={columns}
                 />
-                {/* {currentUnits.pooSubjPbsGrooped[`${unit.idUnit}`].map((item) => (
-                    <div>{item.idUnit_8}</div>
-                  ))} */}
               </Panel>
             );
           })}
           <Panel header={'Несортированные'} key="unsorted">
-            {console.log(currentUnits.pooSubjPbsGrooped.unsorted)}
             <TheTable
               pagination={false}
               dataTable={{ data: currentUnits.pooSubjPbsGrooped.unsorted, loading: loading }}
               columns={columns}
             />
-            {/* {currentUnits.pooSubjPbsGrooped[`${unit.idUnit}`].map((item) => (
-                    <div>{item.idUnit_8}</div>
-                  ))} */}
           </Panel>
         </Collapse>
         <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
