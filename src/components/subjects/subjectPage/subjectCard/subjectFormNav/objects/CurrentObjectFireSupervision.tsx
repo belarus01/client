@@ -1,5 +1,5 @@
 import { getAllFireCardBuildsBySubjObjId } from '@app/api/fire.api';
-import { getAllObjSpecifs, getAllObjectsBySubjectId, getObjById } from '@app/api/objects.api';
+import { getAllObjSpecifs, getObjById } from '@app/api/objects.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { IFireCardBuild, ISubjObjSpecif, SSubj, SSubjObj } from '@app/domain/interfaces';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -58,33 +58,72 @@ const CurrentObjectFireSupervision: React.FC = () => {
   }, [fetch]);
 
   const columns = [
+    // id_unit_6 bigint UNSIGNED DEFAULT NULL COMMENT 'Класс функциональной пожарной опасности doc.s_units.type_unit=6  type',
+    // idUnit_17_37 bigint UNSIGNED DEFAULT NULL COMMENT 'Категория здания (наружной установки)  по взрывопожарной, пожарной опасности doc.s_units.type_unit=17,37  type',
+    // idUnit_21 bigint UNSIGNED DEFAULT NULL COMMENT 'степень огнестойкости зданий',
+    // area_6 decimal(10, 3) DEFAULT 0.000 COMMENT 'Площадь помещений, м2 категории Б',
+    // areaB2 decimal(10, 3) DEFAULT 0.000 COMMENT 'Площадь помещений, м2 категории В2',
+    // areaB3 decimal(10, 3) DEFAULT 0.000 COMMENT 'Площадь помещений, м2 категории В3',
+    // areaB4 decimal(10, 3) DEFAULT 0.000 COMMENT 'Площадь помещений, м2 категории В4',
+    // active tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '0-удалено, 1-актино',
+    // uid int UNSIGNED DEFAULT NULL COMMENT 'Пользователь, внесший изменения',
     {
       key: '1',
-      title: 'Основные технические характеристики ПОО',
-      dataIndex: 'specificPoo',
+      title: 'Наименование отдельного объекта',
+      dataIndex: 'nameBuild',
     },
     {
       key: '2',
-      title: 'Наименование организации – изготовителя ПОО',
-      dataIndex: 'manufactName',
+      title: 'Адрес',
+      dataIndex: 'addr',
     },
     {
       key: '3',
-      title: 'Расположение ПОО/ Адрес ПОО',
-      dataIndex: 'addrPoo',
+      title: 'Колич.работников',
+      dataIndex: 'numStaff',
     },
     {
       key: '4',
-      title: 'Наименование владельца ПОО, адрес, номер телефона',
-      dataIndex: 'nameAddrOvnerPoo',
+      title: 'Максимальное количество единовременно находящихся  людей (чел.)',
+      dataIndex: 'numPerson',
     },
     {
       key: '5',
-      title: 'Тип (марка) ПОО',
-      dataIndex: 'typePoo',
+      title: 'Этажность, степень огнестойкости',
+      dataIndex: 'levelBuild',
     },
     {
-      key: '4',
+      key: '6',
+      title: 'Общий строительный объем, м3',
+      dataIndex: 'space',
+    },
+    {
+      key: '7',
+      title: 'Поэтажная площадь, м2',
+      dataIndex: 'area',
+    },
+    {
+      key: '8',
+      title: 'Площадь помещений, м2 категории А',
+      dataIndex: 'areaA',
+    },
+    {
+      key: '9',
+      title: 'Площадь помещений, м2 категории В1',
+      dataIndex: 'areaB1',
+    },
+    {
+      key: '10',
+      title: 'доп.инфо',
+      dataIndex: 'info',
+    },
+    {
+      key: '11',
+      title: 'Дата составления (изменения)',
+      dataIndex: 'dateRecord',
+    },
+    {
+      key: '12',
       title: 'Действия',
       width: '15%',
       render: (obj: SSubjObj) => {
@@ -98,8 +137,8 @@ const CurrentObjectFireSupervision: React.FC = () => {
                 console.log(obj.idObj);
 
                 notificationController.info({
-                  description: 'safas',
-                  message: 'asdfasdfadsfasdfasdf',
+                  description: 'переход',
+                  message: 'переход в подобъект',
                 });
               }}
             >
@@ -110,22 +149,6 @@ const CurrentObjectFireSupervision: React.FC = () => {
       },
     },
   ];
-
-  // const currentUnits = useMemo(() => {
-  //   setLoading(true);
-  //   const currentTypes = pooSubjPbs.map((item) => item.idUnit_8).filter((item) => item);
-  //   const pooSubjPbsGrooped: { [key: string]: IPooSubjPb[] } = {};
-  //   currentTypes.forEach((item) => {
-  //     pooSubjPbsGrooped[`${item}`] = pooSubjPbs.filter((poo) => item == poo.idUnit_8);
-  //   });
-  //   pooSubjPbsGrooped.unsorted = pooSubjPbs.filter((poo) => poo.idUnit_8 == null);
-  //   const groops = units.filter((item) => currentTypes.includes(item.idUnit));
-  //   setLoading(false);
-  //   return {
-  //     groops,
-  //     pooSubjPbsGrooped,
-  //   };
-  // }, [pooSubjPbs, units]);
 
   return (
     <>

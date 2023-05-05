@@ -1,3 +1,4 @@
+import { ISopbCardSubj, ISopbList } from '@app/domain/interfaces';
 import { httpApi } from './http.api';
 import { Params } from 'react-router';
 
@@ -10,3 +11,12 @@ export const getCardByIdSopb = (idSopb: number | string | undefined) =>
 
 export const getSopbById = (idSopb?: string) =>
   httpApi.get<any>(`${SOAPB_URL}/get/id/${idSopb}`).then(({ data }) => data);
+
+export const getAllSopbCardSubjsBySubjObjId = (idSubjObj: string | number) =>
+  httpApi.get<ISopbCardSubj[]>(`${SOAPB_URL}/get/all/sopbCardSubj/idSubjObj/${idSubjObj}`).then(({ data }) => data);
+
+export const getAllSopbCardSubjListsBySopbCardSubjId = (idSubjSopb: string | number) =>
+  httpApi.get<ISopbList[]>(`${SOAPB_URL}/get/all/sopbCardSubjLists/idSubjSopb/${idSubjSopb}`).then(({ data }) => data);
+
+export const getAllSopbCardSubjLists = () =>
+  httpApi.get<ISopbList[]>(`${SOAPB_URL}/get/all/sopbCardSubjList`).then(({ data }) => data);

@@ -722,3 +722,40 @@ export interface IFireCardBuild {
   active?: 0 | 1;
   info?: string;
 }
+
+export interface ISopbList {
+  idList: number | null;
+  idSubjSopb: number;
+  idCard: number | null;
+  name: string;
+  brend: string;
+  model: number | string;
+  flMnfExp: number | string;
+  flDocumMade: number | string;
+  flDocumNlich: string;
+  numDocu: Date | string;
+  numDocumMade: string;
+  dateDocumMade: Date | string;
+  flDocumSale: number | string | null;
+  numDocumSale: string | number;
+  dateDocumSale: Date | string;
+  uid: number | string | null;
+  dateRecord: Date | string;
+  active: 0 | 1 | null;
+}
+
+export interface ISopbCardSubj {
+  idData: number;
+  idSubj: number | null;
+  idSubjObj: number | null;
+  flProisv: number | null;
+  flRozn: number | null;
+  flOpt: number | null;
+  dateRecord: Date | string;
+  uid: string | number | null;
+  active: 1 | 0 | null;
+  nameAgent: string;
+  jobAgent: string;
+  telAgent: string;
+  addrAgent: string;
+}

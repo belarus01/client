@@ -2,11 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import styled from 'styled-components';
-import PogMapSubjTable from '@app/components/pog/pogTables/PogMapSubjTable';
 import PogAutoTable from '@app/components/pog/pogTables/PogAutoTable';
 import { CurrentObjectSupervision } from './CurrentObjectsupervision';
 import CurrentObjectSupervisionPog from './CurrentObjectSupervisionPog';
 import CurrentObjectFireSupervision from './CurrentObjectFireSupervision';
+import CurrentObjectSopbSupervision from './CurrentObjectSopbSupervision';
 
 const SwichUser = styled.div`
   position: fixed;
@@ -49,7 +49,7 @@ const ObjectTabs: React.FC = () => {
         {
           key: '4',
           label: `СОПБиП`,
-          children: <PogAutoTable />,
+          children: <CurrentObjectSopbSupervision />,
         },
       ];
     }
