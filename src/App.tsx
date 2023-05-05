@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ConfigProvider } from 'antd';
 import { HelmetProvider } from 'react-helmet-async';
 import enUS from 'antd/lib/locale/en_US';
@@ -14,6 +14,7 @@ import { useAppSelector } from './hooks/reduxHooks';
 import { themeObject } from './styles/themes/themeVariables';
 import useGeolocation from "react-hook-geolocation";
 import { sendGeolocation } from './api/geolocation.api';
+import { useGeolocated } from "react-geolocated";
 
 const App: React.FC = () => {
   const { language } = useLanguage();
@@ -22,6 +23,62 @@ const App: React.FC = () => {
   usePWA();
 
   useThemeWatcher();
+  useEffect(() => {
+    console.log(navigator.geolocation);
+    
+    // if (isEnabled && navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(updateCoordinates, setError);
+    //   watchId = navigator.geolocation.watchPosition(
+    //     updateCoordinates,
+    //     setError,
+    //     {
+    //       enableHighAccuracy,
+    //       maximumAge,
+    //       timeout,
+    //     }
+    //   );
+    // }
+
+    // return () => {
+    //   if (watchId) {
+    //     navigator.geolocation.clearWatch(watchId);
+    //   }
+    // };
+  }, [
+  ]);
+
+
+//   const sendCoords = (coords) => {
+//     console.log(coords);
+    
+//   }
+
+//   const { coords, isGeolocationAvailable, isGeolocationEnabled, getPosition } =
+//         useGeolocated({
+//             positionOptions: {
+//                 enableHighAccuracy: false,
+//             },
+//             userDecisionTimeout: 5000,
+          
+//         });
+
+const success =(position)=>{
+  console.log(position);
+  
+}
+const error = (e) => {
+  console.log('error', e);
+}
+useEffect(()=>{
+ const timer = setInterval(()=>{
+  navigator.geolocation.getCurrentPosition(success, error);
+  
+ }, 5000)
+ return()=>{
+  clearInterval(timer)
+ }
+}, [])
+
 
   return (
     <>

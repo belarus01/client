@@ -18,17 +18,7 @@ const MainLayout: React.FC = () => {
   const location = useLocation();
   const user = useAppSelector((state) => state.user.user);
   
-  const onGeolocationUpdate = (geolocation: any) => {
-    console.log(geolocation);
-    sendGeolocation({uid:user?.uid, latitude:geolocation.latitude, longitude:geolocation.longitude});
-  }
 
-  
-    const geolocation = useGeolocation({
-      enableHighAccuracy: true,
-      maximumAge: 15000,
-      timeout: 12000,
-    }, onGeolocationUpdate)
   
 
   const toggleSider = () => setSiderCollapsed(!siderCollapsed);
