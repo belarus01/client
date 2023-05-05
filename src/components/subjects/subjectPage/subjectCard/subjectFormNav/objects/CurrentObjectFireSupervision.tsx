@@ -132,9 +132,9 @@ const CurrentObjectFireSupervision: React.FC = () => {
       <GroopedTables
         objects={cardBuild}
         types={specif}
-        keyObj={'idUnit_8'}
-        keyType={'idUnit'}
-        titleType={'name'}
+        keyObj={'idUnit_6'}
+        keyType={'idUnit_6'}
+        titleType={'nameBuild'}
         columns={columns}
         loadingProps={loading}
       />
