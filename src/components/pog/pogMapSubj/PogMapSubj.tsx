@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Spin } from 'antd';
 import { getSubjById } from '@app/api/subjects.api';
 import { getVedomstvoById } from '@app/api/vedomstava.api';
-import { getPogSubjAutoById } from '@app/api/pogAuto.api';
+import { getPogSubjAutoById } from '@app/api/pog.api';
 import PogAutoTransportTable, { ColumnProp } from '../pogTables/PogAutoTransportTable';
 import * as P from './PogMapSubj.style';
 import { TextArea } from '@app/components/common/inputs/Input/Input';

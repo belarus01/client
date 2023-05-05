@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
+import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
 
 export interface IPogAuto {

@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getAllPogSubjWaters } from '@app/api/pogAuto.api';
+import { getAllPogSubjWaters } from '@app/api/pog.api';
 import { PogWaterForm } from '../pogForms/PogWaterForm';
 
 export interface IPogWater {

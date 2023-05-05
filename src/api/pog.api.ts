@@ -22,7 +22,8 @@ export const deletePogSubjAutoById = (idList: number | string) =>
 export const getPogSubjAutoById = (idList: number | string) =>
   httpApi.get<IPogAuto>(`${BASE_URL}/get/pogSubjAuto/id/${idList}`).then(({ data }) => data);
 
-export const getAllPogSubjWaters = () => httpApi.get<IPogWater[]>(`${BASE_URL}/get/all`).then(({ data }) => data);
+export const getAllPogSubjWaters = () =>
+  httpApi.get<IPogWater[]>(`${BASE_URL}/get/all/pogSubjWater`).then(({ data }) => data);
 
 export const getAllPogSubjRws = () => httpApi.get<IPogGD[]>(`${BASE_URL}/get/all/pogSubjRw`).then(({ data }) => data);
 

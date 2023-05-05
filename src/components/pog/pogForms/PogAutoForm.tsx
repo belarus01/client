@@ -14,8 +14,7 @@ import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInp
 import React from 'react';
 import { getAllObjectsBySubjectId } from '@app/api/objects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner';
-import { type } from './../../../types/generalTypes';
-import { createPogSubjAuto } from '@app/api/pogAuto.api';
+import { createPogSubjAuto } from '@app/api/pog.api';
 
 export interface ISopbFormProps {
   data?: IPogAuto;
@@ -27,6 +26,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data, close }) => {
     numGosnadz: null,
     idOblSubj: '',
     comm: '',
+    idList: null,
     ...data,
   });
 
