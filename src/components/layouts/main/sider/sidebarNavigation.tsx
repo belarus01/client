@@ -220,13 +220,18 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         url: '/handbooks/state',
       },
       {
+        title: 'Типы Опасности(чл4)',
+        key: 'oon',
+        url: '/handbooks/oon',
+      },
+      {
         title: 'Перечень потенциально опасных объектов в области промышленной безопасности',
-        key: 'spoo',
-        url: '/handbooks/spoo',
+        key: 'poo',
+        url: '/handbooks/poo',
       },
       {
         title: 'Перечень опасных производственных объектов',
-        key: 'spoo',
+        key: 'opo',
         url: '/handbooks/opo',
       },
       {

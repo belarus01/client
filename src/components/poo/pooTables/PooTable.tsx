@@ -2,33 +2,33 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import StateForm from '../stateForm/StateForm';
-import { getAllStates } from '@app/api/state.api';
+import PooForm from '../pooForms/PooForm';
+import { getAllPoos } from '@app/api/poo.api';
 
-export interface IStateCategory {
-  worldPart: string;
-  capital: string;
-  state: string;
-  idState: number | null;
+export interface IPooCategory {
+  num: string;
+  idParent: string;
+  name: string;
+  idPoo: number | null;
 }
-const StateTable: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: IStateCategory[]; loading: boolean }>({
+const PooTable: React.FC = () => {
+  const [tableData, setTableData] = useState<{ data: IPooCategory[]; loading: boolean }>({
     data: [],
     loading: false,
   });
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
-  const [selected, setSelected] = useState<IStateCategory>({
-    state: '',
-    capital: '',
-    worldPart: '',
-    idState: null,
+  const [selected, setSelected] = useState<IPooCategory>({
+    num: '',
+    idParent: '',
+    name: '',
+    idPoo: null,
   });
   const [search, setSearch] = useState('');
 
   const fetch = () => {
     setTableData({ ...tableData, loading: true });
-    getAllStates().then((res) => {
+    getAllPoos().then((res) => {
       setTableData({ data: res, loading: false });
     });
   };
@@ -54,14 +54,14 @@ const StateTable: React.FC = () => {
     setSearch(e.target.value);
   };
 
-  const filtredTable = useMemo<IStateCategory[]>(() => {
-    return tableData.data.filter((item) => item.state.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+  const filtredTable = useMemo<IPooCategory[]>(() => {
+    return tableData.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
   }, [search, tableData]);
 
   // No BE
 
-  const deleteCategory = (category: IStateCategory) => {
-    const newData = tableData.data.filter((item) => item.idState !== category.idState);
+  const deleteCategory = (category: IPooCategory) => {
+    const newData = tableData.data.filter((item) => item.idPoo !== category.idPoo);
     setTableData({ ...tableData, data: newData });
   };
 
@@ -74,24 +74,29 @@ const StateTable: React.FC = () => {
   const columns = [
     {
       key: 1,
-      title: 'Страна',
-      dataIndex: 'state',
+      title: 'Номер',
+      dataIndex: 'num',
     },
     {
       key: 2,
-      title: 'Столица',
-      dataIndex: 'capital',
+      title: 'Тип',
+      dataIndex: 'type',
     },
     {
       key: 3,
-      title: 'Континент',
-      dataIndex: 'worldPart',
+      title: 'Тип субъекта',
+      dataIndex: 'typeSub',
     },
     {
       key: 4,
+      title: 'Название',
+      dataIndex: 'name',
+    },
+    {
+      key: 5,
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: IStateCategory) => {
+      render: (itemSelected: IPooCategory) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -127,10 +132,10 @@ const StateTable: React.FC = () => {
 
   return (
     <>
-      <TheTable
+      {/* <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <StateForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <OonForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selected}
         setSearchFunc={searchFunc}
@@ -142,9 +147,9 @@ const StateTable: React.FC = () => {
         toggleModalEditing={toggleModalEdding}
         openAddingForm={openAddingForm}
         openEditingForm={openEddingForm}
-      />
+      /> */}
     </>
   );
 };
 
-export default StateTable;
+export default PooTable;
