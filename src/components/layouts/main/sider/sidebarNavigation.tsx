@@ -190,9 +190,14 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         url: '/handbooks/deptunits',
       },
       {
+        title: 'Список мероприятий',
+        key: 'spisEvents',
+        url: '/handbooks/spisEvents',
+      },
+      {
         title: 'Вопросы МТХ',
-        key: 'questions',
-        url: '/handbooks/questions',
+        key: 'question',
+        url: '/handbooks/question',
       },
       {
         title: 'Вопросы МТХ к мероприятиям',

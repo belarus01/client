@@ -39,6 +39,9 @@ const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'))
 const SStatePage = React.lazy(() => import('@app/pages/handbooks/StatesPage'));
 const SOonPage = React.lazy(() => import('@app/pages/handbooks/OonPage'));
 const SPooPage = React.lazy(() => import('@app/pages/handbooks/PooPage'));
+const SEventsPage = React.lazy(() => import('@app/pages/handbooks/EventsPage'));
+const SQuestionPage = React.lazy(() => import('@app/pages/handbooks/QuestionPage'));
+const STnpaPage = React.lazy(() => import('@app/pages/handbooks/TnpaPage'));
 
 const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
 const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
@@ -75,6 +78,9 @@ const PogMapSubj = withLoading(PogMapSubjPage);
 const StatePage = withLoading(SStatePage);
 const OonPage = withLoading(SOonPage);
 const PooPage = withLoading(SPooPage);
+const SpisEventsPage = withLoading(SEventsPage);
+const QuestionPage = withLoading(SQuestionPage);
+const TnpaPage = withLoading(STnpaPage);
 const Events = withLoading(EventsPage);
 const Test = withLoading(Testpage);
 
@@ -135,7 +141,7 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='ate' element={}/> */}
             {/* <Route path='oked' element={}/> */}
             {/* <Route path='events' element={}/> */}
-            {/* <Route path='tnpanpa' element={}/> */}
+            <Route path="tnpanpa" element={<TnpaPage />} />
             {/* <Route path='tnpastrelem' element={}/> */}
             {/* <Route path='jobs' element={}/> */}
             {/* <Route path='deptunits' element={}/> */}
@@ -145,6 +151,8 @@ export const AppRouter: React.FC = () => {
 
             {/* <Route path='eventsdefections' element={}/> */}
             {/* <Route path='sopbcard' element={}/> */}
+            <Route path="question" element={<QuestionPage />} />
+            <Route path="spisEvents" element={<SpisEventsPage />} />
             <Route path="state" element={<StatePage />} />
             <Route path="oon" element={<OonPage />} />
             <Route path="poo" element={<PooPage />} />
