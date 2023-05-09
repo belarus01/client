@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import styled from 'styled-components';
-import PogAutoTable from '@app/components/pog/pogTables/PogAutoTable';
 import { CurrentObjectSupervision } from './CurrentObjectsupervision';
 import CurrentObjectSupervisionPog from './CurrentObjectSupervisionPog';
 import CurrentObjectFireSupervision from './CurrentObjectFireSupervision';

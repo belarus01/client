@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { IPogAuto, PogAutoTable } from '@app/components/pog/pogTables/PogAutoTable';
 import { IUnits, SSubj, SSubjObj } from '@app/domain/interfaces';
-import { getAllPogSubjAutosBySubjObjId } from '@app/api/pogAuto.api';
+import { getAllPogSubjAutosBySubjObjId } from '@app/api/pog.api';
 
 const CurrentObjectSupervisionPog: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);

@@ -1,19 +1,11 @@
-import { getAllFireCardBuildsBySubjObjId } from '@app/api/fire.api';
-import { getAllObjSpecifs, getAllObjectsBySubjectId, getObjById } from '@app/api/objects.api';
 import { notificationController } from '@app/controllers/notificationController';
-import { IFireCardBuild, ISopbCardSubj, ISopbList, ISubjObjSpecif, SSubj, SSubjObj } from '@app/domain/interfaces';
+import { ISopbCardSubj, ISopbList, SSubj, SSubjObj } from '@app/domain/interfaces';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import GroopedTables from './GroopedTables';
 import { Space } from '@app/components/common/inputs/SearchInput/SearchInput.styles';
 import { Button } from '@app/components/common/buttons/Button/Button.styles';
 import { Table } from '@app/components/common/Table/Table.styles';
-import { ISopbCard } from '@app/components/sopbap/sopbTables/SopbCardTable';
-import {
-  getAllSopbCardSubjLists,
-  getAllSopbCardSubjListsBySopbCardSubjId,
-  getAllSopbCardSubjsBySubjObjId,
-} from '@app/api/sopb.api';
+import { getAllSopbCardSubjListsBySopbCardSubjId, getAllSopbCardSubjsBySubjObjId } from '@app/api/sopb.api';
 
 const CurrentObjectSopbSupervision: React.FC = () => {
   const [user, setUser] = useState({
@@ -98,51 +90,6 @@ const CurrentObjectSopbSupervision: React.FC = () => {
   useEffect(() => {
     fetch();
   }, [fetch]);
-  // const data = [
-  //   // id_data bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  //   // id_subj bigint UNSIGNED NOT NULL,
-  //   // id_subj_obj bigint DEFAULT NULL COMMENT 'Если это поле NULL, то объектов нет и все относится к субъекту (УНП)',
-  //   // fl_proizv tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Производство 1-да,0-нет',
-  //   // fl_rozn tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Розничная торговля 1-да,0-нет',
-  //   // fl_opt tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Оптовая торговля 1-да,0-нет',
-  //   // date_record datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата изменения записи',
-  //   // uid int UNSIGNED DEFAULT NULL COMMENT 'Ид.пользователя, внесшего изменения',
-  //   // active tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '1-активная запись,2 - удалено',
-  //   // name_agent varchar(255) DEFAULT NULL COMMENT 'ФИО представителя (от субъекта)',
-  //   // job_agent varchar(255) DEFAULT NULL COMMENT 'Должность представителя суъекта',
-  //   // tel_agent varchar(55) DEFAULT NULL COMMENT 'Телефон представителя субъекта',
-  //   // addr_agent va
-  //   {
-  //     idData: 3,
-  //     idSubj: 1460,
-  //     idSubjObj: 247,
-  //     flProisv: 1,
-  //     flRozn: 1,
-  //     flOpt: 1,
-  //     dateRecord: '28.03.2023',
-  //     uid: '0:00:00',
-  //     active: null,
-  //     nameAgent: 1,
-  //     jobAgent: null,
-  //     telAgent: null,
-  //     addrAgent: null,
-  //   },
-  //   {
-  //     idData: 2,
-  //     idSubj: 1460,
-  //     idSubjObj: 247,
-  //     flProisv: 1,
-  //     flRozn: 1,
-  //     flOpt: 1,
-  //     dateRecord: '28.03.2023',
-  //     uid: '0:00:00',
-  //     active: null,
-  //     nameAgent: 1,
-  //     jobAgent: null,
-  //     telAgent: null,
-  //     addrAgent: null,
-  //   },
-  // ];
   const columns = [
     {
       key: '1',
@@ -302,6 +249,7 @@ const CurrentObjectSopbSupervision: React.FC = () => {
     <>
       <Table
         columns={columns}
+        scroll={{ x: 800 }}
         expandable={{
           expandedRowRender: (record: unknown) => (
             <>

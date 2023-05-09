@@ -145,7 +145,7 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     title: 'Карточка мероприятия',
     key: 'eventCard',
     url: '/event-card',
-    icon: <OrderedListOutlined />
+    icon: <OrderedListOutlined />,
   },
   {
     title: 'Справочники',

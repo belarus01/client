@@ -14,7 +14,6 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page';
-import { EventCard } from '../eventCard/eventCard';
 
 import pogMapSubjPage from '@app/pages/pog/pogMapSubjPage';
 
@@ -51,6 +50,7 @@ const CurrenObjectPage = React.lazy(() => import('@app/pages/subjects/CurrentObj
 const ServerStatisticsPage = React.lazy(() => import('@app/pages/ServerStatisticsPage'));
 const EventsPage = React.lazy(() => import('@app/pages/events/EventsPage'));
 const Testpage = React.lazy(() => import('@app/pages/test'));
+const EventsCardPage = React.lazy(() => import('@app/pages/EventCartPage'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -68,7 +68,7 @@ const LogoutFallback = withLoading(Logout);
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
 const Subjects = withLoading(SubjectsPage);
-const SubjectSettings = withLoading(SecuritySettingsPage);
+const SecuritySubjectSettings = withLoading(SecuritySettingsPage);
 const SubjectSettings = withLoading(SubjectSettingsPage);
 const SubjectEvents = withLoading(SubjectEventsPage);
 const SubjectObjects = withLoading(SubjectObjectsPage);
@@ -90,6 +90,7 @@ const Events = withLoading(EventsPage);
 const Test = withLoading(Testpage);
 const CurrenObject = withLoading(CurrenObjectPage);
 
+const EventCard = withLoading(EventsCardPage);
 export const AppRouter: React.FC = () => {
   const protectedLayout = (
     <RequireAuth>
@@ -176,6 +177,10 @@ export const AppRouter: React.FC = () => {
           <Route path="journals">
             {/* <Route path='tnpanpa' element={}/> */}
             {/* <Route path='defections' element={}/> */}
+          </Route>
+
+          <Route path="event-card">
+            <Route path="" element={<EventCard />} />
           </Route>
 
           <Route path="documents">

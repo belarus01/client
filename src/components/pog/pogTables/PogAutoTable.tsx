@@ -467,6 +467,7 @@ export const PogAutoTable: React.FC<PogAutoTableProps> = ({ data }) => {
           </>
         );
       },
+      align: 'center',
     });
     console.log(columns);
     setColumns(newColumns);

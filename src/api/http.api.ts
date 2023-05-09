@@ -5,7 +5,7 @@ import { readToken } from '@app/services/localStorage.service';
 import { notificationController } from '@app/controllers/notificationController';
 
 export const httpApi = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: 'http://192.168.0.154:4000', //192.168.0.154 | loacalhost
 });
 
 httpApi.interceptors.request.use((config) => {
