@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert, Button, Space } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { deletePogSubjAutoById, getPogAuto } from '@app/api/pogAuto.api';
+import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { PogAutoForm } from '../pogForms/PogAutoForm';
 import { useNavigate } from 'react-router-dom';
 
@@ -151,217 +151,260 @@ export const PogAutoTable: React.FC<PogAutoTableProps> = ({ data }) => {
       key: '1',
       title: 'Регистрационный номер',
       dataIndex: 'numGosnadz',
+      align: 'center',
     },
     {
       key: '2',
       title: 'Дата регистрации заявления о регистрации транспортного средства',
       dataIndex: 'dateRegPoo',
+      align: 'center',
     },
     {
       key: '3',
       title: 'Номер регистрации заявления о регистрации транспортного средства',
       dataIndex: 'numRegPoo',
+      align: 'center',
     },
     {
       key: '4',
       title:
         'УНП (регистрационный номер в Едином государственном регистре юридических лиц и индивидуальных предпринимателей)',
       dataIndex: 'unp',
+      align: 'center',
     },
     {
       key: '5',
       title: 'Наименование организации, фамилия, собственное имя, отчество (если таковое имеется)',
       dataIndex: 'nameAddrOvnerPoo',
+      align: 'center',
     },
     {
       key: '6',
       title: 'Область местонахождения субъекта',
       dataIndex: 'idOblSubj',
+      align: 'center',
     },
     {
       key: '7',
       title: 'Район местонахождения субъекта ',
       dataIndex: 'idRayonSubj',
+      align: 'center',
     },
     {
       key: '8',
       title: 'Город местонахождения субъекта ',
       dataIndex: 'idCitySubj',
+      align: 'center',
     },
     {
       key: '9',
       title: 'Индекс ',
       dataIndex: '',
+      align: 'center',
     },
     {
       key: '10',
       title: 'Улица, № дома (офиса, строения и т.д.) индекс, местонахождения субъекта ',
       dataIndex: 'idStreetSubj',
+      align: 'center',
     },
     {
       key: '11',
       title: 'Контактные данные',
       dataIndex: 'contacts',
+      align: 'center',
     },
     {
       key: '12',
       title: 'Тип транспортного средства',
       dataIndex: 'typeTs',
+      align: 'center',
     },
     {
       key: '13',
       title: 'Марка транспортного средства',
       dataIndex: 'brendTs',
+      align: 'center',
     },
     {
       key: '14',
       title: 'Номер шасси транспортного средства',
       dataIndex: 'vinTs',
+      align: 'center',
     },
     {
       key: '15',
       title: 'Заводской номер цистерны',
       dataIndex: 'manufactNumTanc',
+      align: 'center',
     },
     {
       key: '16',
       title: 'Год выпуска транспортного средства',
       dataIndex: 'manufactYearTs',
+      align: 'center',
     },
     {
       key: '17',
       title: 'Год выпуска транспортного средства',
       dataIndex: 'manufactYearTs',
+      align: 'center',
     },
     {
       key: '18',
       title: 'Год изготовления цистерны (если известно)',
       dataIndex: 'manufactYearTanc',
+      align: 'center',
     },
     {
       key: '19',
       title: 'Завод изготовитель транспортного средства',
       dataIndex: 'manufactTs',
+      align: 'center',
     },
     {
       key: '20',
       title: 'Регистрационный знак',
       dataIndex: 'numRegGai',
+      align: 'center',
     },
     {
       key: '22',
       title: 'Класс опасного груза',
       dataIndex: 'dangerClass',
+      align: 'center',
     },
     {
       key: '23',
       title: 'Место стоянки',
       dataIndex: 'streetTs',
+      align: 'center',
     },
     {
       key: '25',
       title: 'Дата проведенной проверки цистерны',
       dataIndex: 'dateControlTanc',
+      align: 'center',
     },
     {
       key: '26',
       title: 'Вид проведенной проверки цистерны',
       dataIndex: 'typeControlTanc',
+      align: 'center',
     },
     {
       key: '27',
       title: 'Предэксплуатационная проверка',
       dataIndex: 'preExploit',
+      align: 'center',
     },
     {
       key: '28',
       title: 'Объем цистерны',
       dataIndex: 'sizeTanc',
+      align: 'center',
     },
     {
       key: '29',
       title: 'Количество секций',
       dataIndex: 'numSections',
+      align: 'center',
     },
     {
       key: '30',
       title: 'Код цистерны',
       dataIndex: 'tancCode',
+      align: 'center',
     },
     {
       key: '31',
       title: 'Номер, дата официального утверждения типа',
       dataIndex: 'numOk',
+      align: 'center',
     },
     {
       key: '32',
       title: 'Количество и тип устройств безопасности (ДУ или ПК, или ВК)',
       dataIndex: 'numDevice',
+      align: 'center',
     },
     {
       key: '33',
       title: 'Наличие разрывной мембраны (количество)',
       dataIndex: 'numMembr',
+      align: 'center',
     },
     {
       key: '34',
       title: 'Материал цистерны',
       dataIndex: 'material',
+      align: 'center',
     },
     {
       key: '35',
       title: 'Расчетное давление',
       dataIndex: 'pressure',
+      align: 'center',
     },
     {
       key: '36',
       title: 'Наличие теплоизоляции',
       dataIndex: 'flIso',
+      align: 'center',
     },
     {
       key: '37',
       title: 'Наличие солнцезащитных экранов',
       dataIndex: 'flScreen',
+      align: 'center',
     },
     {
       key: '38',
       title: 'Вид крепления волнорезов (сварка/резьбовое)',
       dataIndex: 'binding',
+      align: 'center',
     },
     {
       key: '39',
       title: 'Фамилия, инициалы  государственного инспектора, зарегистрировавшего транспортное средство',
       dataIndex: 'regInspector',
+      align: 'center',
     },
     {
       key: '40',
       title: 'Фамилия, собственное имя, отчество (если таковое имеется) лица, получившего регистрационную карточку',
       dataIndex: 'fioStaff',
+      align: 'center',
     },
     {
       key: '41',
       title: 'Дата и номер регистрации заявления о снятии с учета транспортного средства',
       dataIndex: 'dateUnreg',
+      align: 'center',
     },
     {
       key: '42',
       title: 'Фамилия, инициалы государственного инспектора, снявшего с учета транспортное средство',
       dataIndex: 'unregInspector',
+      align: 'center',
     },
     {
       key: '43',
       title: 'Статус',
       dataIndex: 'active',
+      align: 'center',
       render: (active: '0' | '1') => <>{active == '0' ? 'Неактивен' : 'Активно'}</>,
     },
     {
       key: '44',
       title: 'Примечание',
       dataIndex: 'comm',
+      align: 'center',
     },
     {
       key: '45',
       title: 'Действия',
+      align: 'center',
       render: (itemSelected: IPogAuto) => {
         function onDeleteDep() {
           Alert.confirm({

@@ -36,6 +36,12 @@ const SopbPage = React.lazy(() => import('@app/pages/sopbs/SopbsPage'));
 const SopbCardsPage = React.lazy(() => import('@app/pages/sopbs/SopbsCardsPage'));
 const PogPageTabs = React.lazy(() => import('@app/pages/pog/pogPage'));
 const PogMapSubjPage = React.lazy(() => import('@app/pages/pog/pogMapSubjPage'));
+const SStatePage = React.lazy(() => import('@app/pages/handbooks/StatesPage'));
+const SOonPage = React.lazy(() => import('@app/pages/handbooks/OonPage'));
+const SPooPage = React.lazy(() => import('@app/pages/handbooks/PooPage'));
+const SEventsPage = React.lazy(() => import('@app/pages/handbooks/EventsPage'));
+const SQuestionPage = React.lazy(() => import('@app/pages/handbooks/QuestionPage'));
+const STnpaPage = React.lazy(() => import('@app/pages/handbooks/TnpaPage'));
 
 const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
 const CurrenObjectPage = React.lazy(() => import('@app/pages/subjects/CurrentObjectPage'));
@@ -70,6 +76,12 @@ const Sopb = withLoading(SopbPage);
 const SopbCards = withLoading(SopbCardsPage);
 const PogPage = withLoading(PogPageTabs);
 const PogMapSubj = withLoading(PogMapSubjPage);
+const StatePage = withLoading(SStatePage);
+const OonPage = withLoading(SOonPage);
+const PooPage = withLoading(SPooPage);
+const SpisEventsPage = withLoading(SEventsPage);
+const QuestionPage = withLoading(SQuestionPage);
+const TnpaPage = withLoading(STnpaPage);
 const Events = withLoading(EventsPage);
 const Test = withLoading(Testpage);
 const CurrenObject = withLoading(CurrenObjectPage);
@@ -132,7 +144,7 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='ate' element={}/> */}
             {/* <Route path='oked' element={}/> */}
             {/* <Route path='events' element={}/> */}
-            {/* <Route path='tnpanpa' element={}/> */}
+            <Route path="tnpanpa" element={<TnpaPage />} />
             {/* <Route path='tnpastrelem' element={}/> */}
             {/* <Route path='jobs' element={}/> */}
             {/* <Route path='deptunits' element={}/> */}
@@ -142,8 +154,11 @@ export const AppRouter: React.FC = () => {
 
             {/* <Route path='eventsdefections' element={}/> */}
             {/* <Route path='sopbcard' element={}/> */}
-            {/* <Route path='state' element={}/> */}
-            {/* <Route path='spoo' element={}/> */}
+            <Route path="question" element={<QuestionPage />} />
+            <Route path="spisEvents" element={<SpisEventsPage />} />
+            <Route path="state" element={<StatePage />} />
+            <Route path="oon" element={<OonPage />} />
+            <Route path="poo" element={<PooPage />} />
             {/* <Route path='opo' element={}/> */}
             {/* <Route path='admban' element={}/> */}
             {/* <Route path='admforce' element={}/> */}

@@ -4,7 +4,7 @@ import { SSubj } from '@app/domain/interfaces';
 import { getAllSubjects } from '@app/api/subjects.api';
 import { Link } from 'react-router-dom';
 
-export const PogMapSubjTable: React.FC = () => {
+const PogMapSubjTable: React.FC = () => {
   const [subjs, setSubjs] = useState<{ data: SSubj[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -71,6 +71,7 @@ export const PogMapSubjTable: React.FC = () => {
     {
       key: '1',
       title: 'Перейти к карте',
+      align: 'center',
       render: (subject: SSubj) => {
         console.log('subject', subject);
 
@@ -85,6 +86,7 @@ export const PogMapSubjTable: React.FC = () => {
       key: '2',
       title: 'УНП',
       dataIndex: 'unp',
+      align: 'center',
       // render: (text: string, { idSubj }: { idSubj: number }, { record }) => {
       //   console.log(record);
 
@@ -99,11 +101,13 @@ export const PogMapSubjTable: React.FC = () => {
       key: '3',
       title: 'Ф.И.О руководителя субъекта',
       dataIndex: 'bossName',
+      align: 'center',
     },
     {
       key: '4',
       title: 'Наименование oбъекта промышленной безопасности(cубъект)',
       dataIndex: 'subj',
+      align: 'center',
     },
     // {
     //   key: '43',

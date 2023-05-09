@@ -1,4 +1,3 @@
-import { number } from 'echarts';
 
 export interface User {
   uid: number;

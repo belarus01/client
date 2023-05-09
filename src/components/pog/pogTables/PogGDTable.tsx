@@ -2,10 +2,14 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getAllPogSubjAvias } from '@app/api/pog.api';
-import { PogAviaForm } from '../pogForms/PogAviaForm';
+import { getAllPogSubjRws } from '@app/api/pog.api';
+import { PogGDForm } from '../pogForms/PogGDForm';
 
-export interface IPogAvia {
+export interface IPogGD {
+  colLocOtrab?: string | null | number;
+  colLoc?: string | null | number;
+  colGDOtrab?: string | null | number;
+  colGD?: string | null | number;
   idList?: number | null | string;
   idDept: null | number;
   idDeptDom?: null | number;
@@ -22,22 +26,22 @@ export interface IPogAvia {
   idStreetSubj?: null | number | string;
   numBuild?: string | number | string | null;
   contacts?: string | null | number;
-  typeAvia?: string | null | number;
-  numRegGai?: string | null | number;
-  manufactYear?: string;
-  dateEnd?: string;
+  //typeAvia?: string | null | number;
+  //numRegGai?: string | null | number;
+  //manufactYear?: string;
+  //dateEnd?: string;
   org?: 0 | 1 | 2 | null | string | number | null | undefined;
   dateRecord?: string | null | number;
   active?: 0 | 1 | string | number | null | undefined;
   uid?: number | null | string;
 }
 
-const PogAviaTable: React.FC = () => {
-  const [avias, setAvias] = useState<{ data: IPogAvia[]; loading: boolean }>({
+const PogGDTable: React.FC = () => {
+  const [GDs, setGDs] = useState<{ data: IPogGD[]; loading: boolean }>({
     data: [],
     loading: false,
   });
-  const [selectedAvia, setSelectedAvia] = useState<IPogAvia>({
+  const [selectedGD, setSelectedGD] = useState<IPogGD>({
     idDept: null,
     idOblSubj: null,
   });
@@ -45,16 +49,16 @@ const PogAviaTable: React.FC = () => {
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
 
-  const getAvias = () => {
-    setAvias({ ...avias, loading: true });
-    getAllPogSubjAvias().then((result) => {
+  const getGDs = () => {
+    setGDs({ ...GDs, loading: true });
+    getAllPogSubjRws().then((result) => {
       console.log('result', result);
-      setAvias({ data: result, loading: false });
+      setGDs({ data: result, loading: false });
     });
   };
 
   useEffect(() => {
-    getAvias();
+    getGDs();
   }, []);
 
   const toggleModalAdding = (isOpen = true) => {
@@ -67,12 +71,12 @@ const PogAviaTable: React.FC = () => {
 
   //no be
 
-  const filtredTable = useMemo(() => avias.data.filter((item) => item.unp == parseFloat(search)), [search, avias]);
+  const filtredTable = useMemo(() => GDs.data.filter((item) => item.unp == parseFloat(search)), [search, GDs]);
 
-  const deleteItem = (deletedItem: IPogAvia) => {
+  const deleteItem = (deletedItem: IPogGD) => {
     //deleteDepartment(id)
-    const newAuto = avias.data.filter((avias) => avias.unp !== deletedItem.unp);
-    setAvias({ ...avias, data: newAuto });
+    const newAuto = GDs.data.filter((GDs) => GDs.unp !== deletedItem.unp);
+    setGDs({ ...GDs, data: newAuto });
   };
 
   const searchCategories = (value: string) => {
@@ -87,7 +91,7 @@ const PogAviaTable: React.FC = () => {
   const toggleModal = () => {
     setModalAddding(false);
     setModalEditing(false);
-    getAvias();
+    getGDs();
   };
 
   const columns = [
@@ -107,26 +111,27 @@ const PogAviaTable: React.FC = () => {
     },
     {
       key: '3',
-      title: 'Тип воздушного судна',
-      dataIndex: 'typeAvia',
+      title: 'Количество вагонов-цистерн, предназначенных для перевозки опасных грузов',
+      dataIndex: 'colGD',
       align: 'center',
     },
     {
       key: '4',
-      title: 'Государственный регистрационный знак',
-      dataIndex: 'numReGai',
+      title:
+        'Количество вагонов-цистерн, предназначенных для перевозки опасных грузов, отработавших нормативный срок службы',
+      dataIndex: 'colGDOtrab',
       align: 'center',
     },
     {
       key: '5',
-      title: 'Год выпуска',
-      dataIndex: 'manufactYear',
+      title: 'Количество локомотивов, занятых перевозкой опасных грузов',
+      dataIndex: 'colLoc',
       align: 'center',
     },
     {
       key: '6',
-      title: 'Срок действия сертификата летной годности или назначенного ресурса',
-      dataIndex: 'dateEnd',
+      title: 'Количество локомотивов, занятых перевозкой опасных грузов, отработавших нормативный срок службы',
+      dataIndex: 'colLocOtrab',
       align: 'center',
     },
 
@@ -141,7 +146,7 @@ const PogAviaTable: React.FC = () => {
       key: '7',
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: IPogAvia) => {
+      render: (itemSelected: IPogGD) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -159,7 +164,7 @@ const PogAviaTable: React.FC = () => {
           <>
             <EditOutlined
               onClick={() => {
-                setSelectedAvia(itemSelected);
+                setSelectedGD(itemSelected);
                 toggleModalEditing(true);
               }}
             />
@@ -179,11 +184,11 @@ const PogAviaTable: React.FC = () => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <PogAviaForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <PogGDForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
-        selected={selectedAvia}
+        selected={selectedGD}
         setSearchFunc={searchFunc}
-        dataTable={{ data: avias.data, loading: avias.loading }}
+        dataTable={{ data: GDs.data, loading: GDs.loading }}
         columns={columns}
         titleMoadlEditing={'Редактирование'}
         titleModalAdding={'Создание'}
@@ -196,4 +201,4 @@ const PogAviaTable: React.FC = () => {
   );
 };
 
-export default PogAviaTable;
+export default PogGDTable;

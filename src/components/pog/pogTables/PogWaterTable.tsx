@@ -2,10 +2,18 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getAllPogSubjAvias } from '@app/api/pog.api';
-import { PogAviaForm } from '../pogForms/PogAviaForm';
+import { getAllPogSubjWaters } from '@app/api/pog.api';
+import { PogWaterForm } from '../pogForms/PogWaterForm';
 
-export interface IPogAvia {
+export interface IPogWater {
+  nameSud?: string | null | number;
+  gruz?: string | null | number;
+  dateVipusk?: string;
+  dateOsvid?: string;
+  //colLocOtrab?: string | null | number;
+  //colLoc?: string | null | number;
+  //colGDOtrab?: string | null | number;
+  //colGD?: string | null | number;
   idList?: number | null | string;
   idDept: null | number;
   idDeptDom?: null | number;
@@ -22,22 +30,22 @@ export interface IPogAvia {
   idStreetSubj?: null | number | string;
   numBuild?: string | number | string | null;
   contacts?: string | null | number;
-  typeAvia?: string | null | number;
-  numRegGai?: string | null | number;
-  manufactYear?: string;
-  dateEnd?: string;
+  //typeAvia?: string | null | number;
+  //numRegGai?: string | null | number;
+  //manufactYear?: string;
+  //dateEnd?: string;
   org?: 0 | 1 | 2 | null | string | number | null | undefined;
   dateRecord?: string | null | number;
   active?: 0 | 1 | string | number | null | undefined;
   uid?: number | null | string;
 }
 
-const PogAviaTable: React.FC = () => {
-  const [avias, setAvias] = useState<{ data: IPogAvia[]; loading: boolean }>({
+const PogWaterTable: React.FC = () => {
+  const [Waters, setWaters] = useState<{ data: IPogWater[]; loading: boolean }>({
     data: [],
     loading: false,
   });
-  const [selectedAvia, setSelectedAvia] = useState<IPogAvia>({
+  const [selectedWater, setSelectedWater] = useState<IPogWater>({
     idDept: null,
     idOblSubj: null,
   });
@@ -45,16 +53,16 @@ const PogAviaTable: React.FC = () => {
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
 
-  const getAvias = () => {
-    setAvias({ ...avias, loading: true });
-    getAllPogSubjAvias().then((result) => {
+  const getWaters = () => {
+    setWaters({ ...Waters, loading: true });
+    getAllPogSubjWaters().then((result) => {
       console.log('result', result);
-      setAvias({ data: result, loading: false });
+      setWaters({ data: result, loading: false });
     });
   };
 
   useEffect(() => {
-    getAvias();
+    getWaters();
   }, []);
 
   const toggleModalAdding = (isOpen = true) => {
@@ -67,12 +75,12 @@ const PogAviaTable: React.FC = () => {
 
   //no be
 
-  const filtredTable = useMemo(() => avias.data.filter((item) => item.unp == parseFloat(search)), [search, avias]);
+  const filtredTable = useMemo(() => Waters.data.filter((item) => item.unp == parseFloat(search)), [search, Waters]);
 
-  const deleteItem = (deletedItem: IPogAvia) => {
+  const deleteItem = (deletedItem: IPogWater) => {
     //deleteDepartment(id)
-    const newAuto = avias.data.filter((avias) => avias.unp !== deletedItem.unp);
-    setAvias({ ...avias, data: newAuto });
+    const newAuto = Waters.data.filter((Waters) => Waters.unp !== deletedItem.unp);
+    setWaters({ ...Waters, data: newAuto });
   };
 
   const searchCategories = (value: string) => {
@@ -87,7 +95,7 @@ const PogAviaTable: React.FC = () => {
   const toggleModal = () => {
     setModalAddding(false);
     setModalEditing(false);
-    getAvias();
+    getWaters();
   };
 
   const columns = [
@@ -107,26 +115,26 @@ const PogAviaTable: React.FC = () => {
     },
     {
       key: '3',
-      title: 'Тип воздушного судна',
-      dataIndex: 'typeAvia',
+      title: 'Наименование судна',
+      dataIndex: 'nameSud',
       align: 'center',
     },
     {
       key: '4',
-      title: 'Государственный регистрационный знак',
-      dataIndex: 'numReGai',
+      title: 'Грузоподъемность',
+      dataIndex: 'gruz',
       align: 'center',
     },
     {
       key: '5',
       title: 'Год выпуска',
-      dataIndex: 'manufactYear',
+      dataIndex: 'dateVipusk',
       align: 'center',
     },
     {
       key: '6',
-      title: 'Срок действия сертификата летной годности или назначенного ресурса',
-      dataIndex: 'dateEnd',
+      title: 'Дата последнего освидетельствования',
+      dataIndex: 'dateOsvid',
       align: 'center',
     },
 
@@ -141,7 +149,7 @@ const PogAviaTable: React.FC = () => {
       key: '7',
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: IPogAvia) => {
+      render: (itemSelected: IPogWater) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -159,7 +167,7 @@ const PogAviaTable: React.FC = () => {
           <>
             <EditOutlined
               onClick={() => {
-                setSelectedAvia(itemSelected);
+                setSelectedWater(itemSelected);
                 toggleModalEditing(true);
               }}
             />
@@ -179,11 +187,11 @@ const PogAviaTable: React.FC = () => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <PogAviaForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <PogWaterForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
-        selected={selectedAvia}
+        selected={selectedWater}
         setSearchFunc={searchFunc}
-        dataTable={{ data: avias.data, loading: avias.loading }}
+        dataTable={{ data: Waters.data, loading: Waters.loading }}
         columns={columns}
         titleMoadlEditing={'Редактирование'}
         titleModalAdding={'Создание'}
@@ -196,4 +204,4 @@ const PogAviaTable: React.FC = () => {
   );
 };
 
-export default PogAviaTable;
+export default PogWaterTable;
