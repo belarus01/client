@@ -30,6 +30,7 @@ const CurrentObjectSopbSupervision: React.FC = () => {
   const [lists, setList] = useState<ISopbList[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [cards, setCards] = useState<ISopbCardSubj[]>([]);
+  const [dataTabales, setDataTebles] = useState<Record<string, ISopbList[]>>({});
 
   const [, setSubj] = useState<SSubj>({
     idSubj: null,
@@ -53,6 +54,7 @@ const CurrentObjectSopbSupervision: React.FC = () => {
       const promise = getAllSopbCardSubjListsBySopbCardSubjId(cardsSubj[i].idData);
       promises.push(promise);
     }
+
     return Promise.all(promises);
   };
 
@@ -63,11 +65,12 @@ const CurrentObjectSopbSupervision: React.FC = () => {
         .then((cardsSubj) => {
           console.log('getAllSopbCardSubjsBySubjObjId', cardsSubj);
           setCards(cardsSubj);
+          return cardsSubj;
         })
-        .then(() => {
+        .then((cards) => {
           console.log(cards);
           getSubjList(cards).then((lists) => {
-            const data = {};
+            const data: Record<string, ISopbList[]> = {};
             console.log(lists);
             console.log(cards);
 
@@ -77,114 +80,69 @@ const CurrentObjectSopbSupervision: React.FC = () => {
 
               const currentArray = lists.find((items) => {
                 console.log('item', items);
+                console.log(items[0].idSubjSopb == card.idData);
 
-                return items[0].idSubjSopb == card.idSubjObj;
+                return items[0].idSubjSopb == card.idData;
               });
-              data[`${card.idSubjObj}`] = currentArray;
+              if (currentArray) {
+                data[`${card.idData}`] = currentArray;
+              }
             });
-            console.log(data);
+            setDataTebles(data);
+            setLoading(false);
           });
         });
-      // const promiseBuilds: Promise<IFireCardBuild[]> = getAllSopbCardSubjListsBySopbCardSubjId();
-      // const promiseSpecifs: Promise<ISubjObjSpecif[]> = Promise.all([promiseObj, promiseBuilds, promiseSpecifs]).then(
-      //   (res) => {
-      //     console.log(res);
-      //     setObj(res[0]);
-      //     setCardBuild(res[1]);
-      //     setSpecif(res[2]);
-      //     setLoading(false);
-      //   },
-      // );
     }
   }, [idObj]);
 
   useEffect(() => {
     fetch();
   }, [fetch]);
-
-  const dataInTable = [
-    {
-      idList: 125,
-      idSubjObj: 2,
-      idCard: 1,
-      name: 'VG1',
-      brend: 'YAMAHA',
-      model: '12',
-      flMnfExp: 1,
-      flDocumMade: 1,
-      flDocumNlich: '33/PK',
-      numDocu: '29.03.2021',
-    },
-    {
-      idList: 125,
-      idSubjObj: 2,
-      idCard: 1,
-      name: 'VG1',
-      brend: 'YAMAHA',
-      model: '12',
-      flMnfExp: 1,
-      flDocumMade: 1,
-      flDocumNlich: '33/PK',
-      numDocu: '29.03.2021',
-    },
-    {
-      idList: 125,
-      idSubjObj: 2,
-      idCard: 1,
-      name: 'VG1',
-      brend: 'YAMAHA',
-      model: '12',
-      flMnfExp: 1,
-      flDocumMade: 1,
-      flDocumNlich: '33/PK',
-      numDocu: '29.03.2021',
-    },
-  ];
-  const data = [
-    // id_data bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-    // id_subj bigint UNSIGNED NOT NULL,
-    // id_subj_obj bigint DEFAULT NULL COMMENT 'Если это поле NULL, то объектов нет и все относится к субъекту (УНП)',
-    // fl_proizv tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Производство 1-да,0-нет',
-    // fl_rozn tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Розничная торговля 1-да,0-нет',
-    // fl_opt tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Оптовая торговля 1-да,0-нет',
-    // date_record datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата изменения записи',
-    // uid int UNSIGNED DEFAULT NULL COMMENT 'Ид.пользователя, внесшего изменения',
-    // active tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '1-активная запись,2 - удалено',
-    // name_agent varchar(255) DEFAULT NULL COMMENT 'ФИО представителя (от субъекта)',
-    // job_agent varchar(255) DEFAULT NULL COMMENT 'Должность представителя суъекта',
-    // tel_agent varchar(55) DEFAULT NULL COMMENT 'Телефон представителя субъекта',
-    // addr_agent va
-    {
-      idData: 2,
-      idSubj: 1460,
-      idSubjObj: 247,
-      flProisv: 1,
-      flRozn: 1,
-      flOpt: 1,
-      dateRecord: '28.03.2023',
-      uid: '0:00:00',
-      active: null,
-      nameAgent: 1,
-      jobAgent: null,
-      telAgent: null,
-      addrAgent: null,
-    },
-    {
-      idData: 2,
-      idSubj: 1460,
-      idSubjObj: 247,
-      flProisv: 1,
-      flRozn: 1,
-      flOpt: 1,
-      dateRecord: '28.03.2023',
-      uid: '0:00:00',
-      active: null,
-      nameAgent: 1,
-      jobAgent: null,
-      telAgent: null,
-      addrAgent: null,
-    },
-  ];
+  // const data = [
+  //   // id_data bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  //   // id_subj bigint UNSIGNED NOT NULL,
+  //   // id_subj_obj bigint DEFAULT NULL COMMENT 'Если это поле NULL, то объектов нет и все относится к субъекту (УНП)',
+  //   // fl_proizv tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Производство 1-да,0-нет',
+  //   // fl_rozn tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Розничная торговля 1-да,0-нет',
+  //   // fl_opt tinyint UNSIGNED DEFAULT NULL COMMENT '1.6 Осуществл.виды деят. в отношении СОПБ.Оптовая торговля 1-да,0-нет',
+  //   // date_record datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата изменения записи',
+  //   // uid int UNSIGNED DEFAULT NULL COMMENT 'Ид.пользователя, внесшего изменения',
+  //   // active tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '1-активная запись,2 - удалено',
+  //   // name_agent varchar(255) DEFAULT NULL COMMENT 'ФИО представителя (от субъекта)',
+  //   // job_agent varchar(255) DEFAULT NULL COMMENT 'Должность представителя суъекта',
+  //   // tel_agent varchar(55) DEFAULT NULL COMMENT 'Телефон представителя субъекта',
+  //   // addr_agent va
+  //   {
+  //     idData: 3,
+  //     idSubj: 1460,
+  //     idSubjObj: 247,
+  //     flProisv: 1,
+  //     flRozn: 1,
+  //     flOpt: 1,
+  //     dateRecord: '28.03.2023',
+  //     uid: '0:00:00',
+  //     active: null,
+  //     nameAgent: 1,
+  //     jobAgent: null,
+  //     telAgent: null,
+  //     addrAgent: null,
+  //   },
+  //   {
+  //     idData: 2,
+  //     idSubj: 1460,
+  //     idSubjObj: 247,
+  //     flProisv: 1,
+  //     flRozn: 1,
+  //     flOpt: 1,
+  //     dateRecord: '28.03.2023',
+  //     uid: '0:00:00',
+  //     active: null,
+  //     nameAgent: 1,
+  //     jobAgent: null,
+  //     telAgent: null,
+  //     addrAgent: null,
+  //   },
+  // ];
   const columns = [
     {
       key: '1',
@@ -345,11 +303,19 @@ const CurrentObjectSopbSupervision: React.FC = () => {
       <Table
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => (
-            <Table bordered pagination={false} dataSource={dataInTable} columns={columnsInTable} />
+          expandedRowRender: (record: unknown) => (
+            <>
+              <Table
+                bordered
+                pagination={false}
+                dataSource={dataTabales[`${(record as ISopbCardSubj).idData}`]}
+                columns={columnsInTable}
+              />
+            </>
           ),
         }}
-        dataSource={data}
+        dataSource={cards}
+        loading={loading}
       />
     </>
   );
