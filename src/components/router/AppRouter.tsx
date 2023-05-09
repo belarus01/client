@@ -14,6 +14,8 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import SubjectProfileLayout from '../subjects/subjectPage/SubjectEventsLayout';
 import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page';
+import { EventCard } from '../eventCard/eventCard';
+
 import pogMapSubjPage from '@app/pages/pog/pogMapSubjPage';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
@@ -22,8 +24,9 @@ const NotificationsPage = React.lazy(() => import('@app/pages/test/Notifications
 const PaymentsPage = React.lazy(() => import('@app/pages/test/PaymentsPage'));
 
 const Logout = React.lazy(() => import('./Logout'));
-
 const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
+
+//const PlanningPage = React.lazy(() => import('@app/pages/PlanningPage'));
 const UserManagmentPage = React.lazy(() => import('@app/pages/handbooks/UsersManagmentPage'));
 const SubjectsPage = React.lazy(() => import('@app/pages/handbooks/SubjectsPage'));
 const SubjectSettingsPage = React.lazy(() => import('@app/pages/subjects/SubjectSettingsPage'));
@@ -65,6 +68,7 @@ const LogoutFallback = withLoading(Logout);
 const Planning = withLoading(PlanningPage);
 const UsersManagment = withLoading(UserManagmentPage);
 const Subjects = withLoading(SubjectsPage);
+const SubjectSettings = withLoading(SecuritySettingsPage);
 const SubjectSettings = withLoading(SubjectSettingsPage);
 const SubjectEvents = withLoading(SubjectEventsPage);
 const SubjectObjects = withLoading(SubjectObjectsPage);
@@ -196,6 +200,16 @@ export const AppRouter: React.FC = () => {
             <Route path="security-settings" element={<SecuritySettings />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="payments" element={<Payments />} />
+          </Route>
+
+          <Route path="handbooks">
+            <Route path="users" element={<UsersManagment />} />
+            <Route path="subjects" element={<Subjects />} />
+          </Route>
+          <Route path="subject" element={<SubjectProfileLayout />}>
+            <Route path="events" element={<SubjectEventsPage />} />
+            {/* <Route path='objects' element={}/> */}
+            <Route path="settings" element={<SubjectSettings />} />
           </Route>
         </Route>
         <Route path="/auth" element={<AuthLayoutFallback />}>

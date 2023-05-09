@@ -11,8 +11,10 @@ import {
   BlockOutlined,
   CalendarOutlined,
   BookOutlined,
+  OrderedListOutlined,
 } from '@ant-design/icons';
 import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
+import EventsCardPage from '@app/pages/EventCartPage';
 
 export interface SidebarNavigationItem {
   title: string;
@@ -138,6 +140,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         url: 'admin/arhiv',
       },
     ],
+  },
+  {
+    title: 'Карточка мероприятия',
+    key: 'eventCard',
+    url: '/event-card',
+    icon: <OrderedListOutlined />
   },
   {
     title: 'Справочники',
