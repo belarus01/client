@@ -1,119 +1,149 @@
 import { getAllObjectsBySubjectId } from '@app/api/objects.api';
 import { Pagination } from '@app/api/users.api';
-import { Table } from '@app/components/common/Table/Table';
 import { Button } from '@app/components/common/buttons/Button/Button';
-import { SearchInput } from '@app/components/common/inputs/SearchInput/SearchInput';
-import { SSubjObj } from '@app/domain/interfaces';
-import { useAppSelector } from '@app/hooks/reduxHooks';
+import TheTable from '@app/components/tables/TheTable';
+import { SSubj, SSubjObj } from '@app/domain/interfaces';
 import { useMounted } from '@app/hooks/useMounted';
-import { Col, Row, Space } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { Space } from 'antd';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
+import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const initialPagination: Pagination = {
   current: 1,
   pageSize: 15,
 };
+
+const SwichUser = styled.div`
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+`;
 export const SubjectObjects: React.FC = () => {
-  const user = useAppSelector((state) => state.user.user);
-  const subj = useAppSelector((state) => state.subj.subj);
+  // const user = useAppSelector((state) => state.user.user);
+  // need add user from store after auth
+  const [user, setUser] = useState({
+    org: 0,
+  });
+  const [, setSubj] = useState<SSubj>({
+    idSubj: null,
+    unp: '',
+  });
+  const { state } = useLocation();
+
+  useEffect(() => {
+    setSubj(state);
+  }, [state]);
   const [tableData, setTableData] = useState<{ data: SSubjObj[]; pagination: Pagination; loading: boolean }>({
     data: [],
     pagination: initialPagination,
     loading: false,
   });
-  const [obj, setObj] = useState<SSubjObj[]>([]);
-  const { isMounted } = useMounted();
 
-  const fetch = useCallback(
-    (pagination: Pagination) => {
-      setTableData((tableData) => ({ ...tableData, loading: true }));
-      if (subj)
-        getAllObjectsBySubjectId(subj?.idSubj).then((res) => {
-          if (isMounted.current) {
-            setTableData({ data: res, pagination: initialPagination, loading: false });
-          }
-        });
-    },
-    [isMounted],
-  );
+  const navigate = useNavigate();
+
+  const { isMounted } = useMounted();
+  const { idSubj } = useParams<{ idSubj?: string }>();
+  console.log(idSubj);
+
+  // 100008077 1460
+
+  const fetch = useCallback(() => {
+    setTableData((tableData) => ({ ...tableData, loading: true }));
+
+    if (idSubj)
+      getAllObjectsBySubjectId(1460).then((res) => {
+        console.log(res);
+
+        if (isMounted.current) {
+          setTableData({ data: res, pagination: initialPagination, loading: false });
+        }
+      });
+  }, [idSubj, isMounted]);
 
   useEffect(() => {
-    fetch(initialPagination);
+    fetch();
   }, [fetch]);
 
-  const columns = [
-    {
-      key: '1',
-      title: 'УНП',
-      dataIndex: 'unp',
-    },
-    {
-      key: '2',
-      title: 'Наименование объекта',
-      dataIndex: 'nameObj',
-    },
-    {
-      key: '3',
-      title: 'Место нахождения объекта',
-      dataIndex: 'addrObj',
-    },
-    {
-      key: '4',
-      title: 'Место осуществления деятельности',
-      dataIndex: 'addrDescr',
-    },
-    {
-      key: '5',
-      title: 'Ответственное лицо',
-      dataIndex: 'fioFireman',
-    },
-    {
-      key: '4',
-      title: 'Действия',
-      width: '15%',
-      render: (subj: SSubjObj) => {
-        return (
-          <Space>
-            <Button
-              type="ghost"
-              onClick={() => {
-                //navigate('/subject', {state:subj})
-                // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
-              }}
-            >
-              {'Открыть'}
-            </Button>
-          </Space>
-        );
-      },
-    },
-  ];
-  function handleSearch(value: string): void {
-    throw new Error('Function not implemented.');
-  }
+  const data = useMemo(() => {
+    return tableData.data.filter((item) => item.org === user.org);
+  }, [tableData.data, user.org]);
 
-  function showAddUserModal(): void {
-    throw new Error('Function not implemented.');
-  }
+  const columns = useMemo(() => {
+    const columns = [
+      {
+        key: '1',
+        title: 'УНП',
+        dataIndex: 'unp',
+      },
+      {
+        key: '2',
+        title: 'Наименование объекта',
+        dataIndex: 'nameObj',
+      },
+      {
+        key: '3',
+        title: 'Место нахождения объекта',
+        dataIndex: 'addrObj',
+      },
+      {
+        key: '4',
+        title: 'Место осуществления деятельности',
+        dataIndex: 'addrDescr',
+      },
+      {
+        key: '5',
+        title: 'Ответственное лицо',
+        dataIndex: 'fioFireman',
+      },
+      {
+        key: '4',
+        title: 'Действия',
+        width: '15%',
+        render: (obj: SSubjObj) => {
+          return (
+            <Space>
+              <Button
+                type="ghost"
+                onClick={() => {
+                  //navigate('/subject', {state:subj})
+                  navigate(`${obj.idObj}`, { state: state });
+                  console.log(obj.idObj);
+
+                  // notificationController.info({
+                  //   description: 'safas',
+                  //   message: 'asdfasdfadsfasdfasdf',
+                  // });
+                }}
+              >
+                Открыть
+              </Button>
+            </Space>
+          );
+        },
+      },
+    ];
+    if (user.org == 0) {
+      const actions = columns[columns.length - 1];
+      columns[columns.length - 1] = {
+        key: 'numOpo',
+        title: 'Номер ОПО',
+        dataIndex: 'numOpo',
+      };
+      columns.push(actions);
+      return columns;
+    }
+    return columns;
+  }, [navigate, state, user.org]);
 
   return (
     <>
-      <Row gutter={[30, 30]}>
-        <Col sm={24} md={8} lg={8}>
-          <SearchInput placeholder={'Не менее 6 символов'} enterButton="Поиск" size="middle" onSearch={handleSearch} />
-        </Col>
-        <Col sm={24} md={6} lg={6}>
-          <Button onClick={showAddUserModal}>Добавить объект</Button>
-        </Col>
-      </Row>
-      <Table
-        dataSource={tableData.data}
-        pagination={tableData.pagination}
-        loading={tableData.loading}
-        scroll={{ x: 800 }}
-        columns={columns}
-        bordered
-      />
+      <TheTable columns={columns} dataTable={{ data: data, loading: tableData.loading }} pagination={false} />
+      <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );
 };

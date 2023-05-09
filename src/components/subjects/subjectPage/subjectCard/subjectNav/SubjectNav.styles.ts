@@ -8,6 +8,8 @@ interface BtnProps {
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-content: center;
+  justify-content: center;
   row-gap: 1.5rem;
 `;
 
@@ -16,7 +18,7 @@ export const Btn = styled(Button).withConfig({
 })<BtnProps>`
   display: flex;
   align-items: center;
-  justify-content: unset;
+  justify-content: center;
   width: 100%;
 
   &:hover {

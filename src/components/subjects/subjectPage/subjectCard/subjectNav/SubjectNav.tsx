@@ -16,7 +16,7 @@ export const SubjectNav: React.FC = () => {
         <S.Btn
           key={item.id}
           type="text"
-          onClick={() => navigate(item.href)}
+          onClick={() => navigate(item.href, { state: location.state })}
           isActive={`${item.href}` === location.pathname}
         >
           {t(item.name)}

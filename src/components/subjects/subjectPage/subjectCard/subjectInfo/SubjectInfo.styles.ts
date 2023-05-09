@@ -28,7 +28,7 @@ export const ImgWrapper = styled.div`
     #ff5252 384.13deg
   );
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     width: 11.125rem;
     margin: 0 auto 2rem auto;
   }
@@ -38,7 +38,7 @@ export const ImgWrapper = styled.div`
     width: calc(100% - 10px);
     height: calc(100% - 10px);
 
-    @media only screen and ${media.xl} {
+    @media only screen and (${media.xl}) {
       margin: 7px;
     }
   }
@@ -49,7 +49,7 @@ export const Title = styled(Typography.Text)`
   font-weight: 700;
   margin-bottom: 0.5rem;
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     font-size: 1.5rem;
     margin-bottom: 1rem;
   }
@@ -58,7 +58,7 @@ export const Title = styled(Typography.Text)`
 export const Subtitle = styled(Typography.Text)`
   margin-bottom: 2rem;
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     font-weight: 600;
     font-size: 1rem;
     margin-bottom: 2.5rem;
@@ -72,7 +72,7 @@ export const FullnessWrapper = styled.div`
 
   background-color: rgba(var(--warning-rgb-color), 0.5);
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     height: 2.5rem;
     margin-bottom: 1rem;
   }
@@ -92,7 +92,7 @@ export const FullnessLine = styled.div<FullnessLineProps>`
 
   color: var(--text-secondary-color);
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     font-size: 1rem;
     font-weight: 600;
     padding-right: 0.875rem;
@@ -105,11 +105,11 @@ export const Text = styled(Typography.Text)`
 
   color: var(--text-main-color);
 
-  @media only screen and ${media.md} {
+  @media only screen and (${media.md}) {
     text-align: center;
   }
 
-  @media only screen and ${media.xl} {
+  @media only screen and (${media.xl}) {
     font-size: 0.875rem;
     text-align: left;
   }
