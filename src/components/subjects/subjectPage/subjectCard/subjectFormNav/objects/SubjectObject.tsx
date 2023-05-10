@@ -9,19 +9,20 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserSwitchOutlined } from '@ant-design/icons';
 
 const initialPagination: Pagination = {
   current: 1,
   pageSize: 15,
 };
 
-const SwichUser = styled.div`
+const SwichUser = styled(UserSwitchOutlined)`
   position: fixed;
-  top: 10%;
+  top: 15%;
   right: 10%;
   width: 50px;
   height: 50px;
-  background-color: red;
+  font-size: 50px;
 `;
 export const SubjectObjects: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);

@@ -1,4 +1,3 @@
-
 export interface User {
   uid: number;
   user: string;
@@ -228,6 +227,12 @@ export interface SSubj {
   chiefName?: string;
   chiefTel?: string;
   sSubjObjs?: SSubjObj[];
+  bossTel?: string | number;
+  staffChief?: string | number;
+  idOblYur?: string | number;
+  idRayonFact?: string | number;
+  idOblFact?: string | number;
+  idRayonYur?: string | number;
 }
 
 export interface SSoato {
@@ -757,4 +762,17 @@ export interface ISopbCardSubj {
   jobAgent: string;
   telAgent: string;
   addrAgent: string;
+}
+
+export interface IOked {
+  idOked: number | null;
+  idOkedParent?: number | null;
+  section?: string | number;
+  nameOked: string;
+  levelSection?: number | string;
+  dateBegin: Date | string;
+  dateEnd: Date | string;
+  dateRecord: Date | string;
+  active: 0 | 1;
+  uid: string | number;
 }

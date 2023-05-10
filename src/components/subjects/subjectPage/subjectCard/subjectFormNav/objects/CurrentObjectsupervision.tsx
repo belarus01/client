@@ -10,14 +10,15 @@ import { useLocation } from 'react-router-dom';
 import { getAllPooSubjPbsBySubjObjId } from '@app/api/poo.api';
 import { getAllUnits } from '@app/api/units.api';
 import GroopedTables from './GroopedTables';
+import { UserSwitchOutlined } from '@ant-design/icons';
 
-const SwichUser = styled.div`
+const SwichUser = styled(UserSwitchOutlined)`
   position: fixed;
-  top: 10%;
+  top: 15%;
   right: 10%;
   width: 50px;
   height: 50px;
-  background-color: red;
+  font-size: 50px;
 `;
 export const CurrentObjectSupervision: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Pagination, getBasicTableData } from '../../api/table.api';
 import { useMounted } from '@app/hooks/useMounted';
 import { useTranslation } from 'react-i18next';
-import { Col, Row, Space, TablePaginationConfig } from 'antd';
+import { Col, Row, Space, TablePaginationConfig, Modal as Alert, Modal } from 'antd';
 import { getAllUsers } from '@app/api/users.api';
 import { User } from '@app/domain/interfaces';
 import { AudioOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -15,7 +15,7 @@ import { SSubj } from '../../domain/interfaces';
 import { useNavigate } from 'react-router-dom';
 import { AddSubjectForm } from './forms/AddSubjectForm';
 import { getAllDepartments } from '@app/api/departments.api';
-import { getAllSubjects } from '@app/api/subjects.api';
+import { deleteSubjById, getAllSubjSortAndPage, getAllSubjects } from '@app/api/subjects.api';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 
 const initialPagination: Pagination = {
@@ -53,9 +53,13 @@ export const SubjectsTable: React.FC = () => {
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      getAllSubjects().then((res) => {
+      getAllSubjSortAndPage({ ...pagination, order: '1', field: 'unp' }).then((res) => {
         if (isMounted.current) {
-          setTableData({ data: res, pagination: initialPagination, loading: false });
+          setTableData({
+            data: res.result,
+            pagination: { ...pagination, total: res.total },
+            loading: false,
+          });
         }
         console.log(res);
       });
@@ -68,6 +72,8 @@ export const SubjectsTable: React.FC = () => {
   }, [fetch]);
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
+    console.log(pagination);
+
     fetch(pagination);
   };
 
@@ -81,6 +87,21 @@ export const SubjectsTable: React.FC = () => {
 
   const hideAddSubjectModal = () => {
     setOpen(false);
+    updateTable();
+  };
+
+  const deleteItem = (deletedItem: SSubj) => {
+    console.log(deletedItem);
+    if (deletedItem.idSubj) {
+      console.log('delete');
+
+      // deleteSubjById(deletedItem.idSubj);
+      const index = tableData.data.findIndex((item) => item.idSubj === deletedItem.idSubj);
+      const newData = [...tableData.data];
+      newData.splice(index, 1);
+      setTableData({ ...tableData, data: newData });
+    }
+    // updateTable();
   };
 
   // const handleDeleteRow = (rowId: number) => {
@@ -118,16 +139,23 @@ export const SubjectsTable: React.FC = () => {
       title: 'Юридический адрес',
       dataIndex: 'addrYur',
     },
-
     {
-      key: '4',
+      key: '5',
       title: 'Действия',
       width: '15%',
       render: (subj: SSubj) => {
-        function handleDeleteRow(user: User | null) {
-          throw new Error('Function not implemented.');
+        function onDeleteDep() {
+          Alert.confirm({
+            title: 'Вы действительно хотите удалить?',
+            okText: 'Удалить',
+            cancelText: 'Отмена',
+            closable: true,
+            onCancel: () => false,
+            onOk: () => {
+              deleteItem(subj);
+            },
+          });
         }
-
         return (
           <Space>
             <Button
@@ -142,7 +170,8 @@ export const SubjectsTable: React.FC = () => {
             </Button>
             <DeleteOutlined
               onClick={() => {
-                handleDeleteRow(user);
+                onDeleteDep();
+                console.log(subj);
               }}
               style={{ color: 'red', marginLeft: 12 }}
             />
@@ -171,8 +200,17 @@ export const SubjectsTable: React.FC = () => {
         scroll={{ x: 800 }}
         bordered
       />
-
-      <AddSubjectForm open={open} onCancel={hideAddSubjectModal} onTableChange={updateTable} />
+      <Modal
+        closable
+        footer={null}
+        onCancel={hideAddSubjectModal}
+        destroyOnClose
+        title={'Создание субъекта'}
+        centered
+        open={open}
+      >
+        <AddSubjectForm onCancel={hideAddSubjectModal} onTableChange={updateTable} />
+      </Modal>
     </>
   );
 };
