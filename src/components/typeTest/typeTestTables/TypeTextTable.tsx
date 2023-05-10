@@ -2,34 +2,29 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import TnpaForm from '../tnpaForms/TnpaForm';
-import { getAllTnpaLists } from '@app/api/tnpa.api';
+import TypeTestForm from '../typeTestForms/TypeTestForm';
+import { getAllTypeTests } from '@app/api/typetest.api';
 
-export interface ITnpaCategory {
+export interface ITypeTestCategory {
   name: string;
-  addr: string;
-  numDoc: string;
-  dateDoc?: Date | string | number | null;
-  idList: number | null;
+  idTypeTest: number | null;
 }
-const TnpaTable: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: ITnpaCategory[]; loading: boolean }>({
+const TypeTestTable: React.FC = () => {
+  const [tableData, setTableData] = useState<{ data: ITypeTestCategory[]; loading: boolean }>({
     data: [],
     loading: false,
   });
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
-  const [selected, setSelected] = useState<ITnpaCategory>({
+  const [selected, setSelected] = useState<ITypeTestCategory>({
     name: '',
-    addr: '',
-    numDoc: '',
-    idList: null,
+    idTypeTest: null,
   });
   const [search, setSearch] = useState('');
 
   const fetch = () => {
     setTableData({ ...tableData, loading: true });
-    getAllTnpaLists().then((res) => {
+    getAllTypeTests().then((res) => {
       setTableData({ data: res, loading: false });
     });
   };
@@ -55,14 +50,14 @@ const TnpaTable: React.FC = () => {
     setSearch(e.target.value);
   };
 
-  const filtredTable = useMemo<ITnpaCategory[]>(() => {
+  const filtredTable = useMemo<ITypeTestCategory[]>(() => {
     return tableData.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
   }, [search, tableData]);
 
   // No BE
 
-  const deleteCategory = (category: ITnpaCategory) => {
-    const newData = tableData.data.filter((item) => item.idList !== category.idList);
+  const deleteCategory = (category: ITypeTestCategory) => {
+    const newData = tableData.data.filter((item) => item.idTypeTest !== category.idTypeTest);
     setTableData({ ...tableData, data: newData });
   };
 
@@ -75,29 +70,14 @@ const TnpaTable: React.FC = () => {
   const columns = [
     {
       key: 1,
-      title: 'Название',
+      title: 'Тип сооружения',
       dataIndex: 'name',
     },
     {
       key: 2,
-      title: 'Адрес',
-      dataIndex: 'addr',
-    },
-    {
-      key: 3,
-      title: 'Номер документа',
-      dataIndex: 'numDoc',
-    },
-    {
-      key: 4,
-      title: 'Дата документа',
-      dataIndex: 'dateDoc',
-    },
-    {
-      key: 5,
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: ITnpaCategory) => {
+      render: (itemSelected: ITypeTestCategory) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -136,7 +116,7 @@ const TnpaTable: React.FC = () => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <TnpaForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <TypeTestForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selected}
         setSearchFunc={searchFunc}
@@ -153,4 +133,4 @@ const TnpaTable: React.FC = () => {
   );
 };
 
-export default TnpaTable;
+export default TypeTestTable;

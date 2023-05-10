@@ -267,6 +267,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'docsform',
         url: '/handbooks/docsform',
       },
+      {
+        title: 'Ведомства РБ',
+        key: 'vedomstva',
+        url: '/handbooks/vedomstva',
+      },
     ],
   },
   {

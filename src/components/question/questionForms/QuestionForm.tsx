@@ -24,13 +24,13 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ data }) => {
   return (
     <>
       <BaseButtonsForm layout="vertical" isFieldsChanged={false}>
-        <BaseButtonsForm.Item label="Название" name="numReg">
+        <BaseButtonsForm.Item label="Номер" name="numReg">
           <Input
             defaultValue={newCategory.numReg}
             onChange={(e) => setNewCategory({ ...newCategory, numReg: (newCategory.numReg = e.target.value) })}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Номер" name="nameQue">
+        <BaseButtonsForm.Item label="Название" name="nameQue">
           <Input
             defaultValue={newCategory.nameQue}
             onChange={(e) => setNewCategory({ ...newCategory, nameQue: (newCategory.nameQue = e.target.value) })}

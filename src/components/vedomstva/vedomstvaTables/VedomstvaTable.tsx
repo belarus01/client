@@ -2,34 +2,29 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import TnpaForm from '../tnpaForms/TnpaForm';
-import { getAllTnpaLists } from '@app/api/tnpa.api';
+import VedomstvaForm from '../vedomstvaForms/VedomstvaForm';
+import { getAllVedomstvas } from '@app/api/vedomstava.api';
 
-export interface ITnpaCategory {
+export interface IVedomstvaCategory {
   name: string;
-  addr: string;
-  numDoc: string;
-  dateDoc?: Date | string | number | null;
-  idList: number | null;
+  idVed: number | null;
 }
-const TnpaTable: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: ITnpaCategory[]; loading: boolean }>({
+const VedomstvaTable: React.FC = () => {
+  const [tableData, setTableData] = useState<{ data: IVedomstvaCategory[]; loading: boolean }>({
     data: [],
     loading: false,
   });
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
-  const [selected, setSelected] = useState<ITnpaCategory>({
+  const [selected, setSelected] = useState<IVedomstvaCategory>({
     name: '',
-    addr: '',
-    numDoc: '',
-    idList: null,
+    idVed: null,
   });
   const [search, setSearch] = useState('');
 
   const fetch = () => {
     setTableData({ ...tableData, loading: true });
-    getAllTnpaLists().then((res) => {
+    getAllVedomstvas().then((res) => {
       setTableData({ data: res, loading: false });
     });
   };
@@ -55,14 +50,14 @@ const TnpaTable: React.FC = () => {
     setSearch(e.target.value);
   };
 
-  const filtredTable = useMemo<ITnpaCategory[]>(() => {
+  const filtredTable = useMemo<IVedomstvaCategory[]>(() => {
     return tableData.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
   }, [search, tableData]);
 
   // No BE
 
-  const deleteCategory = (category: ITnpaCategory) => {
-    const newData = tableData.data.filter((item) => item.idList !== category.idList);
+  const deleteCategory = (category: IVedomstvaCategory) => {
+    const newData = tableData.data.filter((item) => item.idVed !== category.idVed);
     setTableData({ ...tableData, data: newData });
   };
 
@@ -80,24 +75,9 @@ const TnpaTable: React.FC = () => {
     },
     {
       key: 2,
-      title: 'Адрес',
-      dataIndex: 'addr',
-    },
-    {
-      key: 3,
-      title: 'Номер документа',
-      dataIndex: 'numDoc',
-    },
-    {
-      key: 4,
-      title: 'Дата документа',
-      dataIndex: 'dateDoc',
-    },
-    {
-      key: 5,
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: ITnpaCategory) => {
+      render: (itemSelected: IVedomstvaCategory) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',
@@ -136,7 +116,7 @@ const TnpaTable: React.FC = () => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <TnpaForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <VedomstvaForm data={props.data} close={toggleModal} />}
         searchFunc={searchCategories}
         selected={selected}
         setSearchFunc={searchFunc}
@@ -153,4 +133,4 @@ const TnpaTable: React.FC = () => {
   );
 };
 
-export default TnpaTable;
+export default VedomstvaTable;
