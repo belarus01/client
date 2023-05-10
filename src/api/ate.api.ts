@@ -21,3 +21,6 @@ export const getAllReestr = () => httpApi.get<any[]>('ate/get/all/reestrs').then
 export const getAllStreets = () => httpApi.get<any[]>('ate/get/all/streets').then(({ data }) => data);
 
 export const getOblById = (idObl: string) => httpApi.get<any[]>('ate/get/obl/' + idObl).then(({ data }) => data);
+
+export const getStreetById = (idStreet: string) =>
+  httpApi.get<any[]>('ate/get/street/' + idStreet).then(({ data }) => data);

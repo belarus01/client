@@ -1,7 +1,7 @@
 import { notificationController } from '@app/controllers/notificationController';
 import { ISopbCardSubj, ISopbList, SSubj, SSubjObj } from '@app/domain/interfaces';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Space } from '@app/components/common/inputs/SearchInput/SearchInput.styles';
 import { Button } from '@app/components/common/buttons/Button/Button.styles';
 import { Table } from '@app/components/common/Table/Table.styles';
@@ -29,6 +29,7 @@ const CurrentObjectSopbSupervision: React.FC = () => {
     unp: '',
   });
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSubj(state);
@@ -150,13 +151,13 @@ const CurrentObjectSopbSupervision: React.FC = () => {
               type="ghost"
               onClick={() => {
                 //navigate('/subject', {state:subj})
-                // navigate(obj.idObj);
-                console.log(obj.idObj);
+                navigate('/common/sopb');
+                // console.log(obj.idObj);
 
-                notificationController.info({
-                  description: 'переход',
-                  message: 'переход в подобъект',
-                });
+                // notificationController.info({
+                //   description: 'переход',
+                //   message: 'переход в подобъект',
+                // });
               }}
             >
               Открыть
@@ -228,13 +229,13 @@ const CurrentObjectSopbSupervision: React.FC = () => {
               type="ghost"
               onClick={() => {
                 //navigate('/subject', {state:subj})
-                // navigate(obj.idObj);
-                console.log(obj.idObj);
+                navigate('/common/sopb');
+                // console.log(obj.idObj);
 
-                notificationController.info({
-                  description: 'переход',
-                  message: 'переход в подобъект',
-                });
+                // notificationController.info({
+                //   description: 'переход',
+                //   message: 'переход в подобъект',
+                // });
               }}
             >
               Открыть

@@ -3,7 +3,7 @@ import { getAllObjSpecifs, getObjById } from '@app/api/objects.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { IFireCardBuild, ISubjObjSpecif, SSubj, SSubjObj } from '@app/domain/interfaces';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GroopedTables from './GroopedTables';
 import { Space } from '@app/components/common/inputs/SearchInput/SearchInput.styles';
 import { Button } from '@app/components/common/buttons/Button/Button.styles';
@@ -29,6 +29,7 @@ const CurrentObjectFireSupervision: React.FC = () => {
     unp: '',
   });
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSubj(state);
@@ -133,13 +134,13 @@ const CurrentObjectFireSupervision: React.FC = () => {
               type="ghost"
               onClick={() => {
                 //navigate('/subject', {state:subj})
-                // navigate(obj.idObj);
+                navigate('/common/subjects');
                 console.log(obj.idObj);
 
-                notificationController.info({
-                  description: 'переход',
-                  message: 'переход в подобъект',
-                });
+                // notificationController.info({
+                //   description: 'переход',
+                //   message: 'переход в подобъект',
+                // });
               }}
             >
               Открыть

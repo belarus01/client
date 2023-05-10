@@ -1,17 +1,24 @@
-import { getCitiesByRayonId, getObl, getRayonsByOblId, getStreetsByCityId } from '@app/api/ate.api';
+import {
+  getAllReestr,
+  getCitiesByRayonId,
+  getObl,
+  getOblById,
+  getRayonsByOblId,
+  getStreetsByCityId,
+} from '@app/api/ate.api';
 import { getAllOked } from '@app/api/oked.api';
 import { createSubj } from '@app/api/subjects.api';
 import { Pagination } from '@app/api/users.api';
 import { getAllVedomstvas } from '@app/api/vedomstava.api';
+import { IAteReestr } from '@app/components/ate/ateTable/AteReestrTable';
 import { Modal } from '@app/components/common/Modal/Modal';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
 import { DatePicker } from '@app/components/common/pickers/DatePicker';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
-import { IVesomstvo, SSubj } from '@app/domain/interfaces';
-import { Dayjs } from 'dayjs';
-import moment from 'moment';
+import { IVesomstvo, SSubj, ateObl } from '@app/domain/interfaces';
+import dayjs from 'dayjs';
 import { Key, useEffect, useState } from 'react';
 
 interface AddSubjectFormProps {
@@ -25,7 +32,7 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
     if (!data) {
       console.log({ ...values, dateRegOpo: date });
       setLoading(true);
-      createSubj({ ...values, dateRegOpo: date });
+      // createSubj({ ...values, dateRegOpo: date });
       onCancel();
     }
   };
@@ -40,14 +47,14 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
   const [okeds, setOkeds] = useState<React.ReactNode[]>([]);
   const [date, setDate] = useState('');
   const [currentAddres, setCurrentAddres] = useState({
-    obl: '',
-    rayon: '',
-    city: '',
-    street: '',
-    oblFact: '',
-    rayonFact: '',
-    cityFact: '',
-    streetFact: '',
+    obl: {},
+    rayon: {},
+    city: {},
+    street: {},
+    oblFact: {},
+    rayonFact: {},
+    cityFact: {},
+    streetFact: {},
   });
   const [loading, setLoading] = useState(false);
 
@@ -132,53 +139,19 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
       setObl(childrenObl);
       return res;
     });
-    //   .then((obls) => {
-    //     if (data) {
-    //       const currentOblIndex = obls.findIndex((obl) => obl.idObl === data.idOblYur);
-    //       setCurrentAddres({ ...currentAddres, obl: obls[currentOblIndex] });
-    //       return obls[currentOblIndex];
-    //     }
-    //   })
-    //   .then((obl) => {
-    //     getRayonsByOblId(obl.idObl)
-    //       .then((rayons) => {
-    //         const currentRayonIndex = rayons.findIndex((rayon) => rayon.idRayon === data?.idRayonYur);
-    //         setCurrentAddres({ ...currentAddres, rayon: rayons[currentRayonIndex] });
-    //         return rayons[currentRayonIndex];
-    //       })
-    //       .then((rayon) => {
-    //         getRayonsByOblId(rayon.idRayon).then((cities) => {
-    //           const currentIndex = cities.findIndex((city) => city.idReestr === data?.idReestrYur);
-    //           setCurrentAddres({ ...currentAddres, city: cities[currentIndex] });
-    //           return cities[currentIndex];
-    //         });
-    //       });
-    //   });
+
     getAllVedomstvas().then((vedomstasRes) => {
       console.log(vedomstasRes);
       setOptions(setVedomstas, vedomstasRes, 'idVed', 'name');
       return vedomstasRes;
     });
-    //   .then((vedomstas) => {
-    //     if (data) {
-    //       const index = vedomstas.findIndex((ved: IVesomstvo) => ved.idVed === data.idVed);
-    //       const current = {
-    //         label: vedomstas[index].name,
-    //         value: vedomstas[index].idVed,
-    //       };
-    //       setCurrentVedomost(current);
-    //     }
-    //   });
     getAllOked().then((okeds) => {
       setOptions(setOkeds, okeds, 'idOked', 'nameOked');
     });
   }, []);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
+  const today = new Date().toLocaleDateString().split('.').reverse().join('-');
+  const dateFormToday = 'YYYY-MM-DD';
 
   return (
     <>
@@ -210,7 +183,7 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
               console.log(e?.format('DD.MM.YYYY'));
               setDate(e?.format('DD.MM.YYYY') as string);
             }}
-            defaultValue={moment(data?.dateRegOpo) as unknown as Dayjs}
+            defaultValue={dayjs(data?.dateRegOpo || today, dateFormToday)}
             format={'DD.MM.YYYY'}
           />
         </BaseButtonsForm.Item>
@@ -243,57 +216,59 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
           <Input defaultValue={data?.bankRekv || ''} />
         </BaseButtonsForm.Item>
 
-        <BaseButtonsForm.Item label="Область(юр. адрес)" name="idOblYur">
-          <Select onSelect={handleOblSelect} loading={loading} defaultValue={data?.idOblYur || ''}>
-            {obl}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Район(юр. адрес)" name="idRayonYur">
-          <Select onSelect={handleRayonSelect} loading={loading} defaultValue={data?.idRayonYur || ''}>
-            {rayon}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Город(юр. адрес)" name="idReestrYur">
-          <Select onSelect={handleCitySelect} loading={loading} defaultValue={data?.idReestrYur || ''}>
-            {city}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Улица(юр. адрес)" name="idStreetYur">
-          <Select defaultValue={data?.idStreetYur || ''}>{street}</Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Номер дома(юр. адрес)" name="numBuildYur">
-          <Input defaultValue={data?.numBuildYur || ''} />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Корпус(юр. адрес)" name="numCorpYur">
-          <Input defaultValue={data?.numCorpYur || ''} />
-        </BaseButtonsForm.Item>
-
-        <BaseButtonsForm.Item label="Область(факт. адрес)" name="idOblFact">
-          <Select onSelect={handleOblSelectFact} loading={loading} defaultValue={data?.idOblFact || ''}>
-            {obl}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Район(факт. адрес)" name="idRayonFact">
-          <Select onSelect={handleRayonSelectFact} loading={loading} defaultValue={data?.idRayonFact || ''}>
-            {rayonFact}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Город(факт. адрес)" name="idReestrFact">
-          <Select onSelect={handleCitySelectFact} loading={loading} defaultValue={data?.idReestrFact || ''}>
-            {cityFact}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Улица(факт. адрес)" name="idStreetFact">
-          <Select loading={loading} defaultValue={data?.idStreetFact || ''}>
-            {streetFact}
-          </Select>
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Номер дома(факт. адрес)" name="numBuildFact">
-          <Input defaultValue={data?.numBuildFact || ''} />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Корпус(факт. адрес)" name="numCorpFact">
-          <Input defaultValue={data?.numCorpFact || ''} />
-        </BaseButtonsForm.Item>
+        {!data ? (
+          <>
+            {' '}
+            <BaseButtonsForm.Item label="Область(юр. адрес)" name="idOblYur">
+              <Select onSelect={handleOblSelect} loading={loading}>
+                {obl}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Район(юр. адрес)" name="idRayonYur">
+              <Select onSelect={handleRayonSelect} loading={loading}>
+                {rayon}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Город(юр. адрес)" name="idReestrYur">
+              <Select onSelect={handleCitySelect} loading={loading}>
+                {city}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Улица(юр. адрес)" name="idStreetYur">
+              <Select>{street}</Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Номер дома(юр. адрес)" name="numBuildYur">
+              <Input />
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Корпус(юр. адрес)" name="numCorpYur">
+              <Input />
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Область(факт. адрес)" name="idOblFact">
+              <Select onSelect={handleOblSelectFact} loading={loading}>
+                {obl}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Район(факт. адрес)" name="idRayonFact">
+              <Select onSelect={handleRayonSelectFact} loading={loading}>
+                {rayonFact}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Город(факт. адрес)" name="idReestrFact">
+              <Select onSelect={handleCitySelectFact} loading={loading}>
+                {cityFact}
+              </Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Улица(факт. адрес)" name="idStreetFact">
+              <Select loading={loading}>{streetFact}</Select>
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Номер дома(факт. адрес)" name="numBuildFact">
+              <Input />
+            </BaseButtonsForm.Item>
+            <BaseButtonsForm.Item label="Корпус(факт. адрес)" name="numCorpFact">
+              <Input />
+            </BaseButtonsForm.Item>
+          </>
+        ) : null}
         <BaseButtonsForm.Item>
           <Button htmlType="submit" type="primary">
             Сохранить

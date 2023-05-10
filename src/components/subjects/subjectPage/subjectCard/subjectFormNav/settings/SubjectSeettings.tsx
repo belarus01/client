@@ -90,16 +90,17 @@ export const SubjectSettings: React.FC<SubjectSettingsProps> = ({ subject }) => 
     });
   }, []);
   return (
-    <AddSubjectForm
-      open={true}
-      data={subject}
-      onCancel={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-      onTableChange={function (pagination: Pagination): void {
-        throw new Error('Function not implemented.');
-      }}
-    />
+    <Card>
+      <AddSubjectForm
+        data={subject}
+        onCancel={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+        onTableChange={function (pagination: Pagination): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
+    </Card>
     // <Card>
     //   <BaseButtonsForm
     //     layout="vertical"

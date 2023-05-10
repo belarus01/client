@@ -454,7 +454,7 @@ export const PogAutoTable: React.FC<PogAutoTableProps> = ({ data }) => {
                 type="ghost"
                 onClick={() => {
                   //navigate('/subject', {state:subj})
-                  navigate(`/hanbooks/pog`);
+                  navigate(`/common/pog`);
                   // notificationController.info({
                   //   description: 'safas',
                   //   message: 'asdfasdfadsfasdfasdf',
