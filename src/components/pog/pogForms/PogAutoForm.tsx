@@ -118,6 +118,7 @@ export const PogAutoForm: React.FC<ISopbFormProps> = ({ data, close }) => {
       if (result) {
         setSubject(result);
         changeInfoAuto(result);
+        setAuto({ ...auto, idSubj: result.idSubj });
         //100071274
         console.log(result);
         console.log(result.idSubj);

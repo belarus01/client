@@ -1,6 +1,6 @@
 import { ISopbCardSubj, ISopbList } from '@app/domain/interfaces';
 import { httpApi } from './http.api';
-import { Params } from 'react-router';
+import { ISopb } from '@app/components/sopbap/sopbTables/SopbTable';
 
 const SOAPB_URL = 'sopb';
 
@@ -20,3 +20,12 @@ export const getAllSopbCardSubjListsBySopbCardSubjId = (idSubjSopb: string | num
 
 export const getAllSopbCardSubjLists = () =>
   httpApi.get<ISopbList[]>(`${SOAPB_URL}/get/all/sopbCardSubjList`).then(({ data }) => data);
+
+export const createSopb = (data: ISopb) =>
+  httpApi.post<ISopbList[]>(`${SOAPB_URL}/create/sopb`, { ...data }).then(({ data }) => data);
+
+export const updateSopb = (idSopb: number | string, data: ISopb) =>
+  httpApi.put<ISopbList[]>(`${SOAPB_URL}/update/${idSopb}`, { ...data }).then(({ data }) => data);
+
+export const deleteSopbById = (idSopb: number | string) =>
+  httpApi.put<ISopbList[]>(`${SOAPB_URL}/delete/${idSopb}`).then(({ data }) => data);

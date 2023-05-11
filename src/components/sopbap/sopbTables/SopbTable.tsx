@@ -2,9 +2,10 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal as Alert } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
-import { getAllSopb } from '@app/api/sopb.api';
+import { deleteSopbById, getAllSopb } from '@app/api/sopb.api';
 import { Link } from 'react-router-dom';
 import { SopbForm } from '../forms/SopbForm';
+import moment from 'moment';
 
 export interface ISopb {
   // numDoc: string;
@@ -71,14 +72,24 @@ export const SopbTable: React.FC = () => {
   //no be
 
   const filtredTable = useMemo(
-    () => sopb.data.filter((item) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())),
-    [search, sopb],
+    () =>
+      sopb.data.filter((item) => {
+        if (item.name) {
+          return item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+        }
+      }),
+    [search, sopb.data],
   );
 
   const deleteItem = (departmentSelected: ISopb) => {
+    if (departmentSelected.idSopb) {
+      deleteSopbById(departmentSelected.idSopb);
+      getSopbs();
+    }
+
     //deleteDepartment(id)
-    const newSopb = sopb.data.filter((sopb) => sopb.idSopb !== departmentSelected.idSopb);
-    setSopb({ ...sopb, data: newSopb });
+    // const newSopb = sopb.data.filter((sopb) => sopb.idSopb !== departmentSelected.idSopb);
+    // setSopb({ ...sopb, data: newSopb });
   };
 
   const searchCategories = (value: string) => {
@@ -102,6 +113,7 @@ export const SopbTable: React.FC = () => {
       title: 'Дата изменения записи',
       dataIndex: 'dateRecord',
       width: '18%',
+      render: (date: Date | string) => <span>{moment(date).format('DD.MM.YYYY')}</span>,
     },
     {
       key: '3',
@@ -158,12 +170,18 @@ export const SopbTable: React.FC = () => {
       },
     },
   ];
+
+  const toggleModal = () => {
+    setModalAddding(false);
+    setModalEditing(false);
+    getSopbs();
+  };
   return (
     <>
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <SopbForm data={props.data} />}
+        FormComponent={(props) => <SopbForm closeModal={toggleModal} data={props.data} />}
         searchFunc={searchCategories}
         selected={selectedSopb}
         setSearchFunc={searchFunc}

@@ -6,18 +6,19 @@ import { Space } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllPooSubjPbsBySubjObjId } from '@app/api/poo.api';
 import { getAllUnits } from '@app/api/units.api';
 import GroopedTables from './GroopedTables';
+import { UserSwitchOutlined } from '@ant-design/icons';
 
-const SwichUser = styled.div`
+const SwichUser = styled(UserSwitchOutlined)`
   position: fixed;
-  top: 10%;
+  top: 15%;
   right: 10%;
   width: 50px;
   height: 50px;
-  background-color: red;
+  font-size: 50px;
 `;
 export const CurrentObjectSupervision: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);
@@ -42,6 +43,7 @@ export const CurrentObjectSupervision: React.FC = () => {
     unp: '',
   });
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSubj(state);
@@ -107,13 +109,13 @@ export const CurrentObjectSupervision: React.FC = () => {
               type="ghost"
               onClick={() => {
                 //navigate('/subject', {state:subj})
-                // navigate(obj.idObj);
-                console.log(obj.idObj);
+                navigate('/common/sopb');
+                // console.log(obj.idObj);
 
-                notificationController.info({
-                  description: 'safas',
-                  message: 'asdfasdfadsfasdfasdf',
-                });
+                // notificationController.info({
+                //   description: 'safas',
+                //   message: 'asdfasdfadsfasdfasdf',
+                // });
               }}
             >
               Открыть

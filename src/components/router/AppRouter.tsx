@@ -44,6 +44,10 @@ const SPooPage = React.lazy(() => import('@app/pages/handbooks/PooPage'));
 const SEventsPage = React.lazy(() => import('@app/pages/handbooks/EventsPage'));
 const SQuestionPage = React.lazy(() => import('@app/pages/handbooks/QuestionPage'));
 const STnpaPage = React.lazy(() => import('@app/pages/handbooks/TnpaPage'));
+const SDeptJobPage = React.lazy(() => import('@app/pages/handbooks/DeptJobPage'));
+const SDeptUnitsPage = React.lazy(() => import('@app/pages/handbooks/DeptUnitsPage'));
+const STypeTestPage = React.lazy(() => import('@app/pages/handbooks/TypeTestPage'));
+const SVedomstvaPage = React.lazy(() => import('@app/pages/handbooks/VedomstvaPage'));
 
 const SubjectObjectsPage = React.lazy(() => import('@app/pages/subjects/SubjectObjectsPage'));
 const CurrenObjectPage = React.lazy(() => import('@app/pages/subjects/CurrentObjectPage'));
@@ -86,7 +90,11 @@ const PooPage = withLoading(SPooPage);
 const SpisEventsPage = withLoading(SEventsPage);
 const QuestionPage = withLoading(SQuestionPage);
 const TnpaPage = withLoading(STnpaPage);
+const DeptJobPage = withLoading(SDeptJobPage);
+const DeptUnitsPage = withLoading(SDeptUnitsPage);
+const VedomstvaPage = withLoading(SVedomstvaPage);
 const Events = withLoading(EventsPage);
+const TypeTestPage = withLoading(STypeTestPage);
 const Test = withLoading(Testpage);
 const CurrenObject = withLoading(CurrenObjectPage);
 
@@ -144,15 +152,15 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path="handbooks">
             <Route path="ate" element={<AteObl />} />
-            <Route path="departaments" element={<Departaments />} />
+            <Route path="departments" element={<Departaments />} />
             {/* <Route path='soato' element={}/> */}
             {/* <Route path='ate' element={}/> */}
             {/* <Route path='oked' element={}/> */}
             {/* <Route path='events' element={}/> */}
             <Route path="tnpanpa" element={<TnpaPage />} />
             {/* <Route path='tnpastrelem' element={}/> */}
-            {/* <Route path='jobs' element={}/> */}
-            {/* <Route path='deptunits' element={}/> */}
+            <Route path="jobs" element={<DeptJobPage />} />
+            <Route path="deptunits" element={<DeptUnitsPage />} />
             {/* <Route path='questions' element={}/> */}
             {/* <Route path='eventquestions' element={}/> */}
             {/* <Route path='defections' element={}/> */}
@@ -167,8 +175,9 @@ export const AppRouter: React.FC = () => {
             {/* <Route path='opo' element={}/> */}
             {/* <Route path='admban' element={}/> */}
             {/* <Route path='admforce' element={}/> */}
-            {/* <Route path='typebuild' element={}/> */}
+            <Route path="typebuild" element={<TypeTestPage />} />
             {/* <Route path='docsform' element={}/> */}
+            <Route path="vedomstva" element={<VedomstvaPage />} />
           </Route>
           <Route path="tnpa">
             {/* <Route path='tnpanpa' element={}/> */}

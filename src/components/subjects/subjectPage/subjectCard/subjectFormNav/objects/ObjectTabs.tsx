@@ -6,14 +6,15 @@ import { CurrentObjectSupervision } from './CurrentObjectsupervision';
 import CurrentObjectSupervisionPog from './CurrentObjectSupervisionPog';
 import CurrentObjectFireSupervision from './CurrentObjectFireSupervision';
 import CurrentObjectSopbSupervision from './CurrentObjectSopbSupervision';
+import { UserSwitchOutlined } from '@ant-design/icons';
 
-const SwichUser = styled.div`
+const SwichUser = styled(UserSwitchOutlined)`
   position: fixed;
-  top: 10%;
+  top: 15%;
   right: 10%;
   width: 50px;
   height: 50px;
-  background-color: red;
+  font-size: 50px;
 `;
 
 const onChange = (key: string) => {

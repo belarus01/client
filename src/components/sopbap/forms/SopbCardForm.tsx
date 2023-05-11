@@ -58,10 +58,15 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
   const changeSolution = (value: 1 | null | 0) => {
     setCard({ ...card, solution: value });
   };
+
+  const submit = (value: ISopbCard) => {
+    console.log(value);
+  };
   return (
     <>
       <BaseButtonsForm
         isFieldsChanged={false}
+        onFinish={submit}
         initialValues={{
           ['dateFrom']: moment(card.dateFrom, dateFormat),
           ['dateTo']: moment(card.dateTo, dateFormat),
@@ -211,7 +216,7 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
           name={'fioUid'}
           label="ФИО, должность и место работы работников, вносивших корректировки в настоящие сведения"
         >
-          <Input defaultValue={card.uid} onChange={(e) => setCard({ ...card, uid: e.target.value })} />
+          <Input defaultValue={card.uid || ''} onChange={(e) => setCard({ ...card, uid: e.target.value })} />
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item name={'comm'} label="Примечание">
@@ -219,7 +224,9 @@ export const SopbCardForm: React.FC<ISopbCardFormProps> = ({ data }) => {
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item>
-          <Button type="primary">Сохранить</Button>
+          <Button htmlType="submit" type="primary">
+            Сохранить
+          </Button>
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
