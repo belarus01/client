@@ -269,18 +269,18 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       // },
     ],
   },
-  {
-    title: 'Справочники',
-    key: 'profile',
-    icon: <BookOutlined />,
-    children: [
-      {
-        title: 'Персональная информация',
-        key: 'personal-info',
-        url: 'profile/personal-info',
-      },
-    ],
-  },
+  // {
+  //   title: 'Справочники',
+  //   key: 'profile',
+  //   icon: <BookOutlined />,
+  //   children: [
+  //     {
+  //       title: 'Персональная информация',
+  //       key: 'personal-info',
+  //       url: 'profile/personal-info',
+  //     },
+  //   ],
+  // },
   // {
   //   title: 'ТНПА и НПА',
   //   key: 'tnpa',
