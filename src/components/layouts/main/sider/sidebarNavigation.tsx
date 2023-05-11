@@ -192,21 +192,21 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'jobs',
         url: '/handbooks/jobs',
       },
-      // {
-      //   title: 'Подразделения (отделы)',
-      //   key: 'deptunits',
-      //   url: '/handbooks/deptunits',
-      // },
+      {
+        title: 'Подразделения (отделы)',
+        key: 'deptunits',
+        url: '/handbooks/deptunits',
+      },
       {
         title: 'Список мероприятий',
         key: 'spisEvents',
         url: '/handbooks/spisEvents',
       },
-      // {
-      //   title: 'Вопросы МТХ',
-      //   key: 'question',
-      //   url: '/handbooks/question',
-      // },
+      {
+        title: 'Вопросы МТХ',
+        key: 'question',
+        url: '/handbooks/question',
+      },
       // {
       //   title: 'Вопросы МТХ к мероприятиям',
       //   key: 'eventquestions',
@@ -242,31 +242,27 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'poo',
         url: '/handbooks/poo',
       },
-      {
-        title: 'Перечень опасных производственных объектов',
-        key: 'opo',
-        url: '/handbooks/opo',
-      },
-      {
-        title: 'Административные пресечения',
-        key: 'admban',
-        url: '/handbooks/admban',
-      },
-      {
-        title: 'Административные принуждения',
-        key: 'admforce',
-        url: '/handbooks/admforce',
-      },
+      // {
+      //   title: 'Перечень опасных производственных объектов',
+      //   key: 'opo',
+      //   url: '/handbooks/opo',
+      // },
+      // {
+      //   title: 'Административные пресечения',
+      //   key: 'admban',
+      //   url: '/handbooks/admban',
+      // },
+      // {
+      //   title: 'Административные принуждения',
+      //   key: 'admforce',
+      //   url: '/handbooks/admforce',
+      // },
       {
         title: 'Типы сооружений',
         key: 'typebuild',
         url: '/handbooks/typebuild',
       },
-      {
-        title: 'Типы документов',
-        key: 'docsform',
-        url: '/handbooks/docsform',
-      },
+
       {
         title: 'Ведомства РБ',
         key: 'vedomstva',
