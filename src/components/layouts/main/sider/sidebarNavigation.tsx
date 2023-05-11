@@ -247,26 +247,31 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'opo',
         url: '/handbooks/opo',
       },
-      // {
-      //   title: 'Административные пресечения',
-      //   key: 'admban',
-      //   url: '/handbooks/admban',
-      // },
-      // {
-      //   title: 'Административные принуждения',
-      //   key: 'admforce',
-      //   url: '/handbooks/admforce',
-      // },
-      // {
-      //   title: 'Типы сооружений',
-      //   key: 'typebuild',
-      //   url: '/handbooks/typebuild',
-      // },
-      // {
-      //   title: 'Типы документов',
-      //   key: 'docsform',
-      //   url: '/handbooks/docsform',
-      // },
+      {
+        title: 'Административные пресечения',
+        key: 'admban',
+        url: '/handbooks/admban',
+      },
+      {
+        title: 'Административные принуждения',
+        key: 'admforce',
+        url: '/handbooks/admforce',
+      },
+      {
+        title: 'Типы сооружений',
+        key: 'typebuild',
+        url: '/handbooks/typebuild',
+      },
+      {
+        title: 'Типы документов',
+        key: 'docsform',
+        url: '/handbooks/docsform',
+      },
+      {
+        title: 'Ведомства РБ',
+        key: 'vedomstva',
+        url: '/handbooks/vedomstva',
+      },
     ],
   },
   // {

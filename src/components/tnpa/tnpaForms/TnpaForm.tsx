@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Input } from 'antd';
+import { Button, DatePicker, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
+import moment from 'moment';
 
 export interface TnpaFormProps {
   data?: ITnpaCategory;
@@ -13,7 +14,6 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
     name: '',
     addr: '',
     numDoc: '',
-    dateDoc: '',
     idList: null,
     ...data,
   });
@@ -23,9 +23,19 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
     console.log('submit');
   };
 
+  const dateFormat = 'YYYY-MM-DD';
+
+  const today = new Date().toLocaleDateString().split('.').reverse().join('-');
+
   return (
     <>
-      <BaseButtonsForm layout="vertical" isFieldsChanged={false}>
+      <BaseButtonsForm
+        layout="vertical"
+        isFieldsChanged={false}
+        initialValues={{
+          ['dateDoc']: moment(newCategory.dateDoc || today, dateFormat),
+        }}
+      >
         <BaseButtonsForm.Item label="Название" name="name">
           <Input
             defaultValue={newCategory.name}
@@ -45,9 +55,9 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Дата документа" name="dateDoc">
-          <Input
-            defaultValue={newCategory.dateDoc}
-            onChange={(e) => setNewCategory({ ...newCategory, dateDoc: (newCategory.dateDoc = e.target.value) })}
+          <DatePicker
+            format={dateFormat}
+            onChange={(value) => setNewCategory({ ...newCategory, dateDoc: value?.format(dateFormat) })}
           />
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
