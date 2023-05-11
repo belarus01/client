@@ -144,7 +144,7 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path="handbooks">
             <Route path="ate" element={<AteObl />} />
-            <Route path="departaments" element={<Departaments />} />
+            <Route path="departments" element={<Departaments />} />
             {/* <Route path='soato' element={}/> */}
             {/* <Route path='ate' element={}/> */}
             {/* <Route path='oked' element={}/> */}

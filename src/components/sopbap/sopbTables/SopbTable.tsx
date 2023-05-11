@@ -5,6 +5,7 @@ import TheTable from '@app/components/tables/TheTable';
 import { deleteSopbById, getAllSopb } from '@app/api/sopb.api';
 import { Link } from 'react-router-dom';
 import { SopbForm } from '../forms/SopbForm';
+import moment from 'moment';
 
 export interface ISopb {
   // numDoc: string;
@@ -112,6 +113,7 @@ export const SopbTable: React.FC = () => {
       title: 'Дата изменения записи',
       dataIndex: 'dateRecord',
       width: '18%',
+      render: (date: Date | string) => <span>{moment(date).format('DD.MM.YYYY')}</span>,
     },
     {
       key: '3',

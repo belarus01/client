@@ -9,7 +9,7 @@ import { notificationController } from '@app/controllers/notificationController'
 import * as S from './UserForms.styles';
 import { Modal } from '@app/components/common/Modal/Modal';
 import { InputPassword } from '@app/components/common/inputs/InputPassword/InputPassword';
-
+import { Button } from '@app/components/common/buttons/Button/Button';
 
 export const UpdatePasswordForm: React.FC = () => {
   const [isFieldsChanged, setFieldsChanged] = useState(false);
@@ -28,19 +28,19 @@ export const UpdatePasswordForm: React.FC = () => {
 
   return (
     <>
-      <BaseButtonsForm
-        layout="vertical"
-        onFinish={onFinish}
-        isFieldsChanged={false}
-      >
+      <BaseButtonsForm layout="vertical" onFinish={onFinish} isFieldsChanged={false}>
         <BaseButtonsForm.Item label="Новый пароль" name="pas1">
           <InputPassword />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Повторите ввод пароля" name="pas2">
           <InputPassword />
         </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item>
+          <Button htmlType="submit" type="primary">
+            Сохранить
+          </Button>
+        </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
-
   );
 };
