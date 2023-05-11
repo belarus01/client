@@ -129,11 +129,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'server-statistics',
         url: 'admin/server-statistics',
       },
-      {
-        title: 'Геолокация',
-        key: 'geo',
-        url: 'admin/geo',
-      },
+      // {
+      //   title: 'Геолокация',
+      //   key: 'geo',
+      //   url: 'admin/geo',
+      // },
       // {
       //   title: 'Архивирование',
       //   key: 'arhiv',
