@@ -8,6 +8,7 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useMounted } from '@app/hooks/useMounted';
 import { Space } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
+import { EventsTable } from '@app/components/events/EvetsTableNew';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -127,7 +128,8 @@ export const SubjectEvents: React.FC = () => {
   ];
   return (
     <>
-      <Button onClick={handleAddClick}>Добавить мероприятие</Button>
+      <EventsTable />
+      {/* <Button onClick={handleAddClick}>Добавить мероприятие</Button>
       <Table
         dataSource={tableData.data}
         pagination={tableData.pagination}
@@ -135,7 +137,7 @@ export const SubjectEvents: React.FC = () => {
         scroll={{ x: 800 }}
         columns={columns}
         bordered
-      />
+      /> */}
     </>
   );
 };
