@@ -1,5 +1,5 @@
-import { dataTool } from "echarts";
-import { httpApi } from "./http.api";
+import { dataTool } from 'echarts';
+import { httpApi } from './http.api';
 
 export interface vid1 {
   meri_admin_prin_vid: string;
@@ -26,8 +26,6 @@ export interface DataType {
   perech_neustr_narush: string;
 }
 
-
-
 export interface BasicDataType {
   data: DataType[];
 }
@@ -47,7 +45,7 @@ export const getBasicDataType = (): Promise<BasicDataType> => {
             {
               meri_admin_prin_vid: 'dvdd34',
               meri_admin_prin_col: '13',
-            }
+            },
           ],
           vid_pres: [
             {
@@ -57,7 +55,7 @@ export const getBasicDataType = (): Promise<BasicDataType> => {
             {
               meri_admin_pres_vid: 'asd23',
               meri_admin_pres_col: 14,
-            }
+            },
           ],
           podg_predpis: 'qweqwdqwdqwd',
           date_predpis: '2022-03-06',
@@ -67,13 +65,10 @@ export const getBasicDataType = (): Promise<BasicDataType> => {
           date_meropri_po_control: '2022-03-06',
           result_prov_meropri: 'qwe23d23dsfewf',
           perech_neustr_narush: 'qwe12dcwefbbr',
-        }
-      ]
+        },
+      ],
     });
   });
-
-
 };
 
-export const getFirst = () =>
-httpApi.get("eventCard/get/first").then(({data})=>data);
+export const getFirst = () => httpApi.get('eventCard/get/first').then(({ data }) => data);
