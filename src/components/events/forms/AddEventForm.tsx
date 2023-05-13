@@ -166,6 +166,18 @@ export const AddEventOrderForm: React.FC = () => {
             </Option>
           </Select>
         </BaseButtonsForm.Item>
+        {type === 1 ? (
+          <BaseButtonsForm.Item label="Вид мероприятия" name="vid">
+            <Select>
+              <Option key={1} value={81}>
+                Внеплановая
+              </Option>
+              <Option key={2} value={82}>
+                Выборочная
+              </Option>
+            </Select>
+          </BaseButtonsForm.Item>
+        ) : null}
 
         {departments.length !== 0 ? (
           <BaseButtonsForm.Item label="Подразделение" name="departament">
@@ -198,19 +210,6 @@ export const AddEventOrderForm: React.FC = () => {
             })}
           </Select>
         </BaseButtonsForm.Item>
-
-        {type === 1 ? (
-          <BaseButtonsForm.Item label="Вид мероприятия" name="vid">
-            <Select>
-              <Option key={1} value={81}>
-                Внеплановая
-              </Option>
-              <Option key={2} value={82}>
-                Выборочная
-              </Option>
-            </Select>
-          </BaseButtonsForm.Item>
-        ) : null}
 
         {/* <BaseButtonsForm.Item>
                         <Row gutter={[30, 30]}>

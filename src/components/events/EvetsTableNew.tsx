@@ -4,7 +4,7 @@ import { Modal as Alert, Button, Space } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
 import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { useNavigate } from 'react-router-dom';
-import { SEventsOrder } from '@app/domain/interfaces';
+import { SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
 import { getAllEventsOrders } from '@app/api/events.api';
 import { AddEventOrderForm } from './forms/AddEventForm';
 
@@ -71,90 +71,120 @@ export const EventsTable: React.FC<IEventsTable> = () => {
     getEvents();
   };
 
-  const [columns, setColumns] = useState([
+  const columns = [
     {
       key: '1',
-      title: 'Регистрационный номер',
-      dataIndex: 'numGosnadz',
-      align: 'center',
+      title: 'Мероприятие',
+      dataIndex: 'idEvent2',
+      render: (idEvent2: SEvents) => {
+        return <p>{idEvent2.event}</p>;
+      },
     },
     {
       key: '2',
-      title: 'Дата регистрации заявления о регистрации транспортного средства',
-      dataIndex: 'dateRegPoo',
-      align: 'center',
+      title: 'Орган, выдавший предписание',
+      dataIndex: 'idDeptIss',
     },
     {
-      key: '45',
+      key: '3',
+      title: 'Орган, проводящий проверку',
+      dataIndex: 'idDept2',
+      render: (idDept2: SDept) => {
+        return <p>{idDept2 !== null ? idDept2.departament : ''}</p>;
+      },
+    },
+    {
+      key: '4',
+      title: 'Основание назначения мероприятия',
+      dataIndex: 'addrDescr',
+    },
+    {
+      key: '5',
+      title: 'Вид',
+      dataIndex: 'idUnit_3',
+    },
+    {
+      key: '6',
+      title: 'Тип',
+      dataIndex: 'idUnit_4',
+    },
+    {
+      key: '7',
+      title: 'Применяемые научно-технические средства',
+      dataIndex: 'technical',
+    },
+    {
+      key: '8',
+      title: 'Дата начала',
+      dataIndex: 'dateBegin',
+      render: (date: Date) => {
+        const newDate = new Date(date);
+        return <p>{newDate.toLocaleDateString()}</p>;
+      },
+    },
+    {
+      key: '9',
+      title: 'Дата окончания',
+      dataIndex: 'dateEnd',
+      render: (date: Date) => {
+        const newDate = new Date(date);
+        return <p>{newDate.toLocaleDateString()}</p>;
+      },
+    },
+    {
+      key: '10',
       title: 'Действия',
-      align: 'center',
-      render: (itemSelected: SEventsOrder) => {
-        function onDeleteDep() {
-          Alert.confirm({
-            title: 'Вы действительно хотите удалить?',
-            okText: 'Удалить',
-            cancelText: 'Отмена',
-            closable: true,
-            onCancel: () => false,
-            onOk: () => {
-              deleteItem(itemSelected);
-            },
-          });
-        }
-
+      width: '15%',
+      render: (subj: SSubjObj) => {
         return (
-          <>
-            <EditOutlined
+          <Space>
+            <Button
+              type="ghost"
               onClick={() => {
-                setSelectedAuto(itemSelected);
-                toggleModalEditing(true);
+                //navigate('/subject', {state:subj})
+                // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
               }}
-            />
-            <DeleteOutlined
-              onClick={() => {
-                onDeleteDep();
-              }}
-              style={{ color: 'red', marginLeft: 12 }}
-            />
-          </>
+            >
+              {'Открыть'}
+            </Button>
+          </Space>
         );
       },
     },
-  ]);
-
+  ];
   const navigate = useNavigate();
 
-  const changeColumns = () => {
-    const newColumns = [...columns];
-    newColumns.splice(columns.length - 1, 1, {
-      key: `${columns.length + 1}`,
-      title: 'Действия',
-      render: () => {
-        return (
-          <>
-            <Space>
-              <Button
-                type="ghost"
-                onClick={() => {
-                  //navigate('/subject', {state:subj})
-                  navigate(`/common/pog`);
-                  // notificationController.info({
-                  //   description: 'safas',
-                  //   message: 'asdfasdfadsfasdfasdf',
-                  // });
-                }}
-              >
-                Открыть
-              </Button>
-            </Space>
-          </>
-        );
-      },
-      align: 'center',
-    });
-    console.log(columns);
-    setColumns(newColumns);
-  };
+  // const changeColumns = () => {
+  //   const newColumns = [...columns];
+  //   newColumns.splice(columns.length - 1, 1, {
+  //     key: `${columns.length + 1}`,
+  //     title: 'Действия',
+  //     align: 'center',
+  //     render: () => {
+  //       return (
+  //         <>
+  //           <Space>
+  //             <Button
+  //               type="ghost"
+  //               onClick={() => {
+  //                 //navigate('/subject', {state:subj})
+  //                 navigate(`/common/pog`);
+  //                 // notificationController.info({
+  //                 //   description: 'safas',
+  //                 //   message: 'asdfasdfadsfasdfasdf',
+  //                 // });
+  //               }}
+  //             >
+  //               Открыть
+  //             </Button>
+  //           </Space>
+  //         </>
+  //       );
+  //     },
+  //   });
+  //   console.log(columns);
+  //   return newColumns;
+  // };
 
   useEffect(() => {
     getEvents();
@@ -176,6 +206,7 @@ export const EventsTable: React.FC<IEventsTable> = () => {
         toggleModalEditing={toggleModalEditing}
         openAddingForm={modalAdding}
         openEditingForm={modalEditing}
+        titleButtonAdd="Добавить новое мероприятие"
       />
     </>
   );
