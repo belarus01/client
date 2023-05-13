@@ -49,11 +49,22 @@ export const SubjectEvents: React.FC = () => {
     {
       key: '1',
       title: 'Мероприятие',
-      dataIndex: 'idEvent2',
+      dataIndex: 'idEvent',
       render: (idEvent2: SEvents) => {
         return <p>{idEvent2.event}</p>;
       },
     },
+    {
+      key: '2',
+      title: 'Тип',
+      dataIndex: 'idUnit_4',
+    },
+    {
+      key: '3',
+      title: 'Вид',
+      dataIndex: 'idUnit_3',
+    },
+    
     {
       key: '2',
       title: 'Орган, выдавший предписание',
@@ -72,16 +83,8 @@ export const SubjectEvents: React.FC = () => {
       title: 'Основание назначения мероприятия',
       dataIndex: 'addrDescr',
     },
-    {
-      key: '5',
-      title: 'Вид',
-      dataIndex: 'idUnit_3',
-    },
-    {
-      key: '6',
-      title: 'Тип',
-      dataIndex: 'idUnit_4',
-    },
+   
+ 
     {
       key: '7',
       title: 'Применяемые научно-технические средства',

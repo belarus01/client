@@ -4,15 +4,16 @@ import { Modal as Alert, Button, Space } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
 import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { useNavigate } from 'react-router-dom';
-import { SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
-import { getAllEventsOrders } from '@app/api/events.api';
+import { IEventsSphere, SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
+import { getAllEventsBySubjectId, getAllEventsOrders } from '@app/api/events.api';
 import { AddEventOrderForm } from './forms/AddEventForm';
 
 interface IEventsTable {
   data?: SEventsOrder[];
+  idSubj?: number;
 }
 
-export const EventsTable: React.FC<IEventsTable> = () => {
+export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   const [events, setEvents] = useState<{ data: SEventsOrder[]; loading: boolean }>({
     data: [],
     loading: false,
@@ -27,12 +28,37 @@ export const EventsTable: React.FC<IEventsTable> = () => {
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
 
-  const getEvents = () => {
+  const getCurrentEvents = (idSubj: number) => {
+    if (idSubj) {
+      return getAllEventsBySubjectId(idSubj);
+    }
+    return getAllEventsOrders();
+  };
+
+  const getEvents = (idSubj: number) => {
     setEvents({ ...events, loading: true });
-    getAllEventsOrders().then((result) => {
+    getCurrentEvents(idSubj).then((result) => {
       console.log(result);
       setEvents({ data: result, loading: false });
+      return result;
     });
+    // Add spheries array in events order
+    // .then((events) => {
+    //   const spheriesPromises = [];
+    //   for (let i = 0; i < events.length; i++) {
+    //     spheriesPromises.push(getSphereByIdEvent(events[i].idEventOrder));
+    //   }
+    //   Promise.all([spheriesPromises]).then((spheries) => {
+    //     events.map((event, index) => {
+    //       return {
+    //         ...event,
+    //         spheries: {
+    //           ...spheries[index],
+    //         },
+    //       };
+    //     });
+    //   });
+    // });
   };
 
   const toggleModalAdding = (isOpen = true) => {
@@ -68,7 +94,7 @@ export const EventsTable: React.FC<IEventsTable> = () => {
   const toggleModal = () => {
     setModalAddding(false);
     setModalEditing(false);
-    getEvents();
+    getEvents(idSubj as number);
   };
 
   const columns = [
@@ -82,32 +108,76 @@ export const EventsTable: React.FC<IEventsTable> = () => {
     },
     {
       key: '2',
-      title: 'Орган, выдавший предписание',
-      dataIndex: 'idDeptIss',
-    },
-    {
-      key: '3',
-      title: 'Орган, проводящий проверку',
-      dataIndex: 'idDept2',
-      render: (idDept2: SDept) => {
-        return <p>{idDept2 !== null ? idDept2.departament : ''}</p>;
-      },
-    },
-    {
-      key: '4',
-      title: 'Основание назначения мероприятия',
-      dataIndex: 'addrDescr',
-    },
-    {
-      key: '5',
       title: 'Вид',
       dataIndex: 'idUnit_3',
     },
     {
-      key: '6',
+      key: '3',
       title: 'Тип',
       dataIndex: 'idUnit_4',
     },
+    {
+      key: '4',
+      title: 'Орган, выдавший предписание',
+      dataIndex: 'idDeptIss',
+    },
+    {
+      key: '5',
+      title: 'Сфера контроля',
+      dataIndex: 'spheries',
+      // render: (record: IEventsSphere[]) => {
+      //   console.log(record);
+
+      //   return record.map((sphere) => {
+      //     return (
+      //       <>
+      //         <span>{sphere?.name}</span>
+      //       </>
+      //     );
+      //   });
+      // },
+    },
+    {
+      key: '6',
+      title: 'Дата начала надзорно-профилактического мероприятия',
+      dataIndex: 'dateBegin',
+      render: (date: Date) => {
+        const newDate = new Date(date);
+        return <p>{newDate.toLocaleDateString()}</p>;
+      },
+    },
+    {
+      key: '7',
+      title: 'Дата окончания надзорно-профилактического мероприятия',
+      dataIndex: 'dateEnd',
+      render: (date: Date) => {
+        const newDate = new Date(date);
+        return <p>{newDate.toLocaleDateString()}</p>;
+      },
+    },
+    {
+      key: '8',
+      title: 'Дата изменения записи',
+      dataIndex: 'dateRecord',
+      render: (date: Date) => {
+        const newDate = new Date(date);
+        return <p>{newDate.toLocaleDateString()}</p>;
+      },
+    },
+    // {
+    //   key: '3',
+    //   title: 'Орган, проводящий проверку',
+    //   dataIndex: 'idDept2',
+    //   render: (idDept2: SDept) => {
+    //     return <p>{idDept2 !== null ? idDept2.departament : ''}</p>;
+    //   },
+    // },
+    // {
+    //   key: '4',
+    //   title: 'Основание назначения мероприятия',
+    //   dataIndex: 'addrDescr',
+    // },
+
     {
       key: '7',
       title: 'Применяемые научно-технические средства',
@@ -115,6 +185,22 @@ export const EventsTable: React.FC<IEventsTable> = () => {
     },
     {
       key: '8',
+      title: 'Сфера контроля',
+      dataIndex: 'spheries',
+      // render: (record: IEventsSphere[]) => {
+      //   console.log(record);
+
+      //   return record.map((sphere) => {
+      //     return (
+      //       <>
+      //         <span>{sphere?.name}</span>
+      //       </>
+      //     );
+      //   });
+      // },
+    },
+    {
+      key: '9',
       title: 'Дата начала',
       dataIndex: 'dateBegin',
       render: (date: Date) => {
@@ -152,6 +238,7 @@ export const EventsTable: React.FC<IEventsTable> = () => {
       },
     },
   ];
+
   const navigate = useNavigate();
 
   // const changeColumns = () => {
@@ -187,7 +274,7 @@ export const EventsTable: React.FC<IEventsTable> = () => {
   // };
 
   useEffect(() => {
-    getEvents();
+    getEvents(idSubj as number);
   }, []);
   return (
     <>

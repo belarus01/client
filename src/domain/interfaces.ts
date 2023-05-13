@@ -262,7 +262,7 @@ export interface SSoato {
 
 export interface SEvents {
   idEvent: number;
-  event: string | null;
+  event: string;
   numEvent: number | null;
   org: number | null;
   dateBegin: Date | null;
@@ -317,6 +317,7 @@ export interface SEventsOrder {
   idGroup2?: Group;
   idSubj2?: SSubj;
 
+  spheries?: IEventsSphere[];
   sEventsOrderAdmBans?: SEventsOrderAdmBan[];
   sEventsOrderAdmForces?: SEventsOrderAdmForce[];
   sEventsOrderData?: SEventsOrderData[];
@@ -325,6 +326,16 @@ export interface SEventsOrder {
   sEventsOrderObjs?: SEventsOrderObj[];
   sEventsPrivates?: SEventsPrivate[];
   notifications?: Notification[];
+}
+
+export interface IEventsSphere {
+  idList: number | null;
+  idEventOrder: number;
+  org: number | null;
+  idUnits_4: number | null;
+  name?: string;
+  dateRecord?: Date | string;
+  uid?: string | number;
 }
 
 export interface Group {
@@ -775,4 +786,13 @@ export interface IOked {
   dateRecord: Date | string;
   active: 0 | 1;
   uid: string | number;
+}
+
+export interface IGroup {
+  idGroup: null | number;
+  org?: number | null;
+  idDept?: number;
+  name: string;
+  dateRecord?: Date | string;
+  uid?: string | number | null;
 }
