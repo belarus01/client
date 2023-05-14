@@ -518,28 +518,28 @@ export interface SEventsOrderQue {
 }
 
 export interface SEventsPlan {
-  idEventPlan: number;
+  idEventPlan?: number;
   idEvent: number | null;
   idSubj: number | null;
-  idDept: number | null;
-  numOrder: string | null;
-  unpDept: string | null;
-  nameDept: string | null;
-  idUnit_3: string | null;
-  idUnit_4: string | null;
-  org: number | null;
-  monthEvent: string | null;
-  halfyearEvent: number | null;
-  dateRecord: Date | null;
-  active: number;
-  status: string | null;
-  uid: number | null;
-  idObl: number | null;
-  unpSubj: string | null;
-  nameSubj: string | null;
-  telUser: string | null;
-  yearPlan: number | null;
-  idDept2: SDept;
+  idDept?: number | null;
+  numOrder?: string | null;
+  unpDept?: string | null;
+  nameDept?: string | null;
+  idUnit_3?: string | null;
+  idUnit_4?: string | null;
+  org?: number | null;
+  monthEvent?: string | null;
+  halfyearEvent?: number | null;
+  dateRecord?: Date | null;
+  active?: number;
+  status?: string | null;
+  uid?: number | null;
+  idObl?: number | null;
+  unpSubj?: string | null;
+  nameSubj?: string | null;
+  telUser?: string | null;
+  yearPlan?: number | null;
+  idDept2?: SDept;
 }
 
 export interface SEventsPrivate {
@@ -789,10 +789,32 @@ export interface IOked {
 }
 
 export interface IGroup {
-  idGroup: null | number;
+  idGroup?: null | number;
   org?: number | null;
-  idDept?: number;
+  idDept?: number | null;
   name: string;
   dateRecord?: Date | string;
   uid?: string | number | null;
+  users?: any[];
+}
+
+export interface IEventOrder {
+  dateBegin: Date | string;
+  dateBeginFact?: Date | string;
+  dateEnd: Date | string;
+  dateEndFact?: Date | string;
+  fioPostTitle: string;
+  idDept?: number;
+  idDeptIss?: number;
+  idEvent: number;
+  idEventsPlan?: number;
+  idGroup?: number;
+  idSubj: number;
+  idUnit_3: number | string;
+  idUnit_4: number;
+  nameAgent: string;
+  postAgent: string;
+  postTitle: string;
+  status: number;
+  technical: string;
 }

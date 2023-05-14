@@ -14,3 +14,6 @@ export const getAllEventsOrders = () =>
 export const deleteEventOrder = (id: number) => httpApi.put('events/delete/eventOrder/' + id).then(({ data }) => data);
 
 export const searchEventsOrders = (value: string) => httpApi.get<SEventsOrder>('').then(({ data }) => data);
+
+export const getAllEventPlansByUnpSubj = (unpSubj: string) =>
+  httpApi.get<any>(`events/get/all/eventPlans/by/unpSubj/${unpSubj}`).then(({ data }) => data);

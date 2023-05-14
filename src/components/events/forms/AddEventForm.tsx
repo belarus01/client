@@ -3,9 +3,20 @@ import { getSubjectByUnp } from '@app/api/subjects.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input } from '@app/components/common/inputs/Input/Input';
-import { Select, Option } from '@app/components/common/selects/Select/Select';
+import { Select } from '@app/components/common/selects/Select/Select';
 import { notificationController } from '@app/controllers/notificationController';
-import { IGroup, IUnits, SDept, SDeptNode, SSubj, SSubjObj, SUnits, User } from '@app/domain/interfaces';
+import {
+  IEventOrder,
+  IGroup,
+  IUnits,
+  SDept,
+  SDeptNode,
+  SEventsPlan,
+  SSubj,
+  SSubjObj,
+  SUnits,
+  User,
+} from '@app/domain/interfaces';
 import { deptToTreeNode, makeTree } from '@app/utils/utils';
 import { Card, Col, Row, TreeSelect, message, DatePicker } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
@@ -18,20 +29,23 @@ import { s } from '@fullcalendar/core/internal-common';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Loading } from '@app/components/common/Loading';
 import { IEventsCategory } from '@app/components/spisok_events/eventsTables/EventsTable';
-import { getAllEvents } from '@app/api/events.api';
+import { getAllEventPlansByUnpSubj, getAllEvents } from '@app/api/events.api';
 import { AddEditUserForm } from '@app/components/users/forms/AddUserForm';
 import { getAllUsers } from '@app/api/users.api';
-import { PlusOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import * as S from '../../eventCard/eventCard.styles';
+import { Option } from '@app/components/common/selects/Select/Select';
+import { IDepartment } from '@app/components/departments/tables/DepatmentsTable';
+import { createGroup, getAllGroups } from '@app/api/groups.api';
 
-interface Option extends DefaultOptionType {
-  children?: Option[];
-  isLeaf?: boolean;
-  loading?: boolean;
-}
+// interface Option extends DefaultOptionType {
+//   children?: Option[];
+//   isLeaf?: boolean;
+//   loading?: boolean;
+// }
 
-type options = {
-  label: string;
+type TOptions = {
+  label: string | number;
   value: string | number | null;
 };
 
@@ -41,21 +55,29 @@ export const AddEventOrderForm: React.FC = () => {
   const [type, setType] = useState<any>();
   const [deps, setDeps] = useState<SDept[]>();
   const [departments, setDepartments] = useState<SDeptNode[]>([]);
-  const [selectedDept, setSelectedDept] = useState<number | string | null>(null);
-  const [createGroup, setCreateGroup] = useState<boolean>();
+  const [selectedDept, setSelectedDept] = useState<{
+    idDept: number | string | null;
+    idDeptIss: number | string | null;
+  }>({
+    idDept: null,
+    idDeptIss: null,
+  });
   const [selectGroup, setSelectGroup] = useState<boolean>();
   const [objects, setObjects] = useState<SSubjObj[]>([]);
-  const [options, setOptions] = useState<Option[]>([]);
-  const [eventOptions, setEventsOptions] = useState<options[]>([]);
+  const [options, setOptions] = useState<TOptions[]>([]);
+  const [eventOptions, setEventsOptions] = useState<TOptions[]>([]);
   const [units, setUnits] = useState<IUnits[]>([]);
   const [allUnits, setAllUnits] = useState<IUnits[]>([]);
-  const [types, setTypes] = useState<options[]>([]);
-  const [kinds, setKinds] = useState<options[]>([]);
+  const [types, setTypes] = useState<TOptions[]>([]);
+  const [kinds, setKinds] = useState<TOptions[]>([]);
   const [kind, setKind] = useState<number | string | null>(null);
   const [plans, setPlans] = useState<any[]>([]);
-  const [plansOptions, setPlansOptions] = useState<options[]>([]);
-  const [plan, setPlan] = useState<options | null>(null);
-  const [groupOptions, setGroupOptions] = useState<options[]>([]);
+  const [plansOptions, setPlansOptions] = useState<TOptions[]>([]);
+  const [plan, setPlan] = useState<SEventsPlan>({
+    idEvent: null,
+    idSubj: null,
+  });
+  const [groupOptions, setGroupOptions] = useState<TOptions[]>([]);
   const [groupLoading, setGroupLoading] = useState<boolean>(false);
   const [shownGroupAdd, setShouwnGroupAdd] = useState<boolean>(false);
   const [isFieldsChanged, setFieldsChanged] = useState(false);
@@ -65,17 +87,65 @@ export const AddEventOrderForm: React.FC = () => {
   });
   const [users, setUsers] = useState<User[]>([]);
   const [usersLoading, setUsersLoading] = useState<boolean>(false);
-  const [usersOptions, setUsersOptions] = useState<options[]>([]);
+  const [usersOptions, setUsersOptions] = useState<TOptions[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [field, setField] = useState([]);
+  const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
     // subj?.sSubjObjs.
+    setLoading(true);
     console.log(values);
-  };
+    let idGroop = null;
+    if (values.group) {
+      idGroop = values.group;
+    } else {
+      const usersGroup: [] = values.users.map((userUid: number) => {
+        const userIndex = users.findIndex((user: { uid: number }) => user.uid == userUid);
+        const currentUser = users[userIndex];
+        return {
+          uid: currentUser.uid,
+          org: 1,
+          typeUser: null,
+        };
+      });
 
-  const onFinishField = (values) => {
-    console.log(values);
+      const group: IGroup = {
+        org: 1,
+        name: values.groupName,
+        idDept: selectedDept.idDept as number,
+        uid: null,
+        users: usersGroup,
+      };
+    }
+    console.log('create ggroup', group);
+
+    // createGroup(group);
+    const eventOrder: IEventOrder = {
+      idEvent: values.idEvent,
+      idUnit_4: values.idUnit_4,
+      idGroup: 1,
+      dateBegin: values.dateBegin.format('YYYY-MM-DD'),
+      dateEnd: values.dateEnd.format('YYYY-MM-DD'),
+      status: values.status,
+      technical: values.technical,
+      postTitle: values.postTitle,
+      fioPostTitle: values.fioPostTitle,
+      dateBeginFact: values.dateBeginFact ? values.dateBeginFact.format('YYYY-MM-DD') : values.dateBeginFact,
+      dateEndFact: values.dateEndFact ? values.dateEndFact.format('YYYY-MM-DD') : values.dateEndFact,
+      postAgent: values.postAgent,
+      nameAgent: values.nameAgent,
+      idDept: parseInt(selectedDept.idDept as string),
+      idDeptIss: parseInt(selectedDept.idDeptIss as string),
+      idSubj: parseInt(subj?.idSubj as unknown as string),
+      idUnit_3: values.idUnit_3,
+    };
+    if (values.idEventsPlan) {
+      eventOrder.idEventsPlan = values.idEventsPlan;
+    }
+    console.log('eventOrder', eventOrder);
+    setLoading(false);
   };
 
   const getTypesEvents = () => {
@@ -88,7 +158,7 @@ export const AddEventOrderForm: React.FC = () => {
         const currentTypes: IUnits[] = units.filter(
           (unit) => unit.idUnit == 91 || unit.idUnit == 92 || unit.idUnit == 94,
         );
-        const types: options[] = currentTypes.map((type) => ({
+        const types: TOptions[] = currentTypes.map((type) => ({
           label: type.name,
           value: type.idUnit,
         }));
@@ -109,8 +179,8 @@ export const AddEventOrderForm: React.FC = () => {
           if (res.idSubj)
             getAllObjectsBySubjectId(res.idSubj).then((responce) => {
               setObjects(responce);
-              const opt: Option[] = [];
-              responce.forEach((element) => opt.push({ value: element.idObj, label: element.nameObj }));
+              const opt: TOptions[] = [];
+              responce.forEach((element) => opt.push({ value: element.idObj, label: element.nameObj || '' }));
               console.log(responce);
               setOptions(opt);
             });
@@ -122,36 +192,44 @@ export const AddEventOrderForm: React.FC = () => {
 
   const getGroups = () => {
     setGroupLoading(true);
+    // getAllGroups();
     // if (selectedDept) {
     //   getAllGroupsByIdDept(selectedDept).then(groups);
     // }
-    return new Promise<IGroup[]>((resolve, reject) => {
-      setTimeout(() => {
-        resolve([
-          {
-            idGroup: 1,
-            org: 1,
-            name: 'группа_п',
-            dateRecord: '501	1	02.11.2022',
-            uid: null,
-          },
-          {
-            idGroup: 2,
-            org: 1,
-            name: 'группа_п2',
-            dateRecord: '501	1	02.11.2022',
-            uid: null,
-          },
-        ]);
-      }, 500);
-    }).then((res) => {
+    // return new Promise<IGroup[]>((resolve, reject) => {
+    //   setTimeout(() => {
+    //     resolve([
+    //       {
+    //         idGroup: 1,
+    //         org: 1,
+    //         name: 'группа_п',
+    //         dateRecord: '501	1	02.11.2022',
+    //         uid: null,
+    //       },
+    //       {
+    //         idGroup: 2,
+    //         org: 1,
+    //         name: 'группа_п2',
+    //         dateRecord: '501	1	02.11.2022',
+    //         uid: null,
+    //       },
+    //     ]);
+    //   }, 500);
+    // })
+    getAllGroups().then((res) => {
+      console.log(res);
+
       const gropupsOptions = res.map((group) => ({
         label: group.name,
-        value: group.idGroup,
+        value: group.idGroup || null,
       }));
       setGroupOptions(gropupsOptions);
       setGroupLoading(false);
     });
+  };
+
+  const createGroupEvent = (group: IGroup) => {
+    createGroup(group);
   };
 
   const getUsers = () => {
@@ -161,6 +239,8 @@ export const AddEventOrderForm: React.FC = () => {
         label: `${user.fName} ${user.lName}`,
         value: user.uid,
       }));
+      console.log(options);
+
       setUsersOptions(options);
       setUsersLoading(false);
     });
@@ -191,7 +271,7 @@ export const AddEventOrderForm: React.FC = () => {
       // mb we need req there
       const currentKinds: IUnits[] = allUnits.filter((unit) => unit.idUnit == 81 || unit.idUnit == 82);
 
-      const kinds: options[] = currentKinds.map((type) => ({
+      const kinds: TOptions[] = currentKinds.map((type) => ({
         label: type.name,
         value: type.idUnit,
       }));
@@ -215,32 +295,56 @@ export const AddEventOrderForm: React.FC = () => {
     if (kind === 'plan') {
       // getplanbyUnp() or id event+id subj
       // проверка если есть или нет
-      const res = [
-        {
-          idEventPlan: 1629,
-          idEvents: 64,
-          idDept: 501,
-          numOrder: 145,
-          nameDept:
-            'Департамент по надзору за безопасным ведением работ в промышленности Министерства по чрезвычайным ситуациям Республики Беларусь',
-          monthEvent: 'февраль',
-          halfYaerEvent: 1,
-          dateRecord: '03.04.2023 13:55:08',
-          telUser: '80165627140',
-          status: 'wait',
-          yearPlan: 2023,
-        },
-      ];
-      const optionsPlans = res.map((plan) => ({
-        label: plan.monthEvent,
-        value: plan.idEventPlan,
-      }));
-      setPlans(res);
-      setPlansOptions(optionsPlans);
+      console.log(subj);
+      if (subj?.unp) {
+        // getAllEventPlansByUnpSubj(subj.unp).then((res) => {
+        const res = [
+          {
+            idEventPlan: 1629,
+            idEvent: 64,
+            idDept: 501,
+            numOrder: 145,
+            nameDept:
+              'Департамент по надзору за безопасным ведением работ в промышленности Министерства по чрезвычайным ситуациям Республики Беларусь',
+            monthEvent: 'февраль',
+            halfYaerEvent: 1,
+            dateRecord: '03.04.2023 13:55:08',
+            telUser: '80165627140',
+            status: 'wait',
+            yearPlan: 2023,
+          },
+        ];
+        const optionsPlans = res.map((plan: { idEventPlan: any }) => ({
+          label: plan.idEventPlan,
+          value: plan.idEventPlan,
+        }));
+        setPlans(res);
+        setPlansOptions(optionsPlans);
+        // });
+      }
     } else {
       setPlansOptions([]);
-      setPlan(null);
+      setPlan({
+        idEvent: null,
+        idSubj: null,
+      });
     }
+    // const res = [
+    //   {
+    //     idEventPlan: 1629,
+    //     idEvent: 64,
+    //     idDept: 501,
+    //     numOrder: 145,
+    //     nameDept:
+    //       'Департамент по надзору за безопасным ведением работ в промышленности Министерства по чрезвычайным ситуациям Республики Беларусь',
+    //     monthEvent: 'февраль',
+    //     halfYaerEvent: 1,
+    //     dateRecord: '03.04.2023 13:55:08',
+    //     telUser: '80165627140',
+    //     status: 'wait',
+    //     yearPlan: 2023,
+    //   },
+    // ];
   };
   const onSelectKind = (selected: string | unknown) => {
     setKind(String(selected));
@@ -248,7 +352,7 @@ export const AddEventOrderForm: React.FC = () => {
   };
 
   const departmentsOptionsTree = useMemo(() => {
-    if (plan) {
+    if (plan.idEvent) {
       const currentPlan = plans.find((item) => {
         return item.idEventPlan == plan.idEventPlan;
       });
@@ -262,12 +366,17 @@ export const AddEventOrderForm: React.FC = () => {
         return [departments[indexDepartments]];
       }
     }
+    console.log('plan', plan.idEvent, plan);
+
     return departments;
   }, [plan, departments, plans]);
 
-  const onDepartmentSelect = (selected: any) => {
-    console.log(selected);
-    setSelectedDept(selected);
+  const onDepartmentSelect = (selected: any, node: SDeptNode) => {
+    console.log(selected, node);
+    setSelectedDept({
+      idDept: node.idDept,
+      idDeptIss: node.idParent,
+    });
     //setSelectedDept(deps?.find(element=>element.active))
   };
 
@@ -276,16 +385,16 @@ export const AddEventOrderForm: React.FC = () => {
   //   newFiled.push(1);
   //   setField(newFiled);
   // };
-  const onCreateGroupClick = () => {};
+  // const onCreateGroupClick = () => {};
 
-  const onChange = (value: string[], selectedOptions: Option[]) => {
-    console.log(value, selectedOptions);
-  };
+  // const onChange = (value: string[], selectedOptions: Option[]) => {
+  //   console.log(value, selectedOptions);
+  // };
 
-  const loadData = (selectedOptions: Option[]) => {
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.loading = true;
-  };
+  // const loadData = (selectedOptions: Option[]) => {
+  //   const targetOption = selectedOptions[selectedOptions.length - 1];
+  //   targetOption.loading = true;
+  // };
 
   useEffect(() => {
     setLoading(true);
@@ -366,7 +475,7 @@ export const AddEventOrderForm: React.FC = () => {
           ) : null}
 
           {plansOptions.length > 0 ? (
-            <BaseButtonsForm.Item label="Планы" name="idEventsPlans" rules={[{ required: true }]}>
+            <BaseButtonsForm.Item label="Планы" name="idEventsPlan" rules={[{ required: true }]}>
               <Select
                 onSelect={(value) => {
                   const selectedPlan = plans.find((plan) => plan.idEventPlan == value);
@@ -414,7 +523,7 @@ export const AddEventOrderForm: React.FC = () => {
                   type="primary"
                   onClick={() => {
                     getUsers();
-                    setShouwnGroupAdd(true);
+                    setShouwnGroupAdd((prev) => !prev);
                   }}
                 >
                   Добавить группу
@@ -425,6 +534,10 @@ export const AddEventOrderForm: React.FC = () => {
           {shownGroupAdd ? (
             <Card>
               <Spinner spinning={usersLoading}>
+                <BaseButtonsForm.Item label="Название группы" name={groupName}>
+                  <Input />
+                </BaseButtonsForm.Item>
+
                 {/* <BaseButtonsForm
                   name="groupAdd"
                   isFieldsChanged={isFieldsChanged}
@@ -437,20 +550,30 @@ export const AddEventOrderForm: React.FC = () => {
                       {fields.map((field) => (
                         <BaseButtonsForm.Item
                           {...field}
-                          label={'Работник:'}
                           key={field.key}
                           //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
                         >
-                          <S.Wrapper>
-                            <Select
-                              options={usersOptions || []}
-                              filterOption={(input, option) =>
-                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                              }
-                              showSearch
-                            />
-                            <S.RemoveBtn onClick={() => remove(field.name)} />
-                          </S.Wrapper>
+                          <Row align="middle">
+                            <Col span={22}>
+                              <BaseButtonsForm.Item
+                                {...field}
+                                label={'Исполнитель:'}
+                                key={field.key}
+                                //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                              >
+                                <Select
+                                  options={usersOptions}
+                                  filterOption={(input, option) =>
+                                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                  }
+                                  showSearch
+                                />
+                              </BaseButtonsForm.Item>
+                            </Col>
+                            <Col offset={1} span={1}>
+                              {fields.length > 1 ? <MinusCircleOutlined onClick={() => remove(field.name)} /> : null}
+                            </Col>
+                          </Row>
                         </BaseButtonsForm.Item>
                       ))}
 
@@ -462,12 +585,17 @@ export const AddEventOrderForm: React.FC = () => {
                     </>
                   )}
                 </BaseButtonsForm.List>
+                {/* <BaseButtonsForm.Item>
+                  <Button type="primary" onClick={() => createGroupEvent} block icon={<PlusOutlined />}>
+                    Сохранить
+                  </Button>
+                </BaseButtonsForm.Item> */}
               </Spinner>
             </Card>
           ) : null}
 
           <BaseButtonsForm.Item label="Сфера мероприятия" name="sphera">
-            <Select>
+            <Select mode="multiple">
               {units.map((unit) => {
                 return (
                   <Option key={unit.idUnit} value={unit.idUnit}>
@@ -490,6 +618,62 @@ export const AddEventOrderForm: React.FC = () => {
               </BaseButtonsForm.Item>
             </Col>
           </Row>
+
+          <BaseButtonsForm.Item label="Статус" name="status">
+            <Select>
+              <Option value="1" label="не спланирована">
+                не спланирована
+              </Option>
+              <Option value="2" label="в работе">
+                в работе
+              </Option>
+              <Option value="3" label="завершена">
+                завершена
+              </Option>
+              <Option value="4" label="просрочена">
+                просрочена
+              </Option>
+            </Select>
+          </BaseButtonsForm.Item>
+
+          <BaseButtonsForm.Item label="Применяемые научно-технические средства" name="technical">
+            <Input />
+          </BaseButtonsForm.Item>
+
+          <Row>
+            <Col span={8} offset={2}>
+              <BaseButtonsForm.Item
+                label="Фактическая дата начала надзорно-профилактического мероприятия"
+                name="dateBeginFact"
+              >
+                <DatePicker format={formatDate} />
+              </BaseButtonsForm.Item>
+            </Col>
+            <Col span={8} offset={2}>
+              <BaseButtonsForm.Item
+                label="Фактическая дата окончания надзорно-профилактического мероприятия"
+                name="dateEndFact"
+              >
+                <DatePicker format={formatDate} />
+              </BaseButtonsForm.Item>
+            </Col>
+          </Row>
+
+          <BaseButtonsForm.Item label="Должность лица, выдавшего предписание на проведение проверки" name="postTitle">
+            <Input />
+          </BaseButtonsForm.Item>
+
+          <BaseButtonsForm.Item label="Ф.И.О лица, выдавшего предписание на проведение проверки" name="fioPostTitle">
+            <Input />
+          </BaseButtonsForm.Item>
+
+          <BaseButtonsForm.Item label="Должность представителя субъекта" name="postAgent">
+            <Input />
+          </BaseButtonsForm.Item>
+
+          <BaseButtonsForm.Item label="Ф.И.О представителя субъекта" name="nameAgent">
+            <Input />
+          </BaseButtonsForm.Item>
 
           <BaseButtonsForm.Item>
             <Button htmlType="submit" type="primary">

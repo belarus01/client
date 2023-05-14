@@ -17,10 +17,10 @@ export interface StrDepartment {
 export interface IDepartment {
   idDept: number | null;
   departament: string;
-  departRod: string;
+  departRod?: string;
   org?: number;
   idParent?: number | null;
-  address: string;
+  address?: string;
   dateRecord?: Date | string;
   active?: number;
   telHead?: string;
