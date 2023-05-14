@@ -229,7 +229,9 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
               onClick={() => {
                 console.log(event.technical);
 
-                navigate(`/planning/events/${event.idEventOrder}`, { state: events.data });
+                navigate(`/planning/events/${event.idEventOrder}`, {
+                  state: [...events.data],
+                });
                 // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
               }}
             >
@@ -280,7 +282,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   }, []);
   const save = (event) => {
     const newEvents = [...events.data];
-    newEvents.unshift(event);
+    newEvents.unshift({ ...event, idEventOrder: 12321231 });
     setEvents({ ...events, data: newEvents });
     toggleModalAdding(false);
   };

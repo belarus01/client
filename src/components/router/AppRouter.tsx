@@ -56,7 +56,7 @@ const EventsPage = React.lazy(() => import('@app/pages/events/EventsPage'));
 const Testpage = React.lazy(() => import('@app/pages/test'));
 const EventsCardPage = React.lazy(() => import('@app/pages/EventCartPage'));
 
-const EventPage = React.lazy(() => import('@app/pages/events/EventPage'));
+const EventPage = React.lazy(() => import('@app/pages/events/CurrentEventPage'));
 export const MAIN_PATH = '/';
 
 const ServerError = withLoading(ServerErrorPage);
@@ -147,7 +147,7 @@ export const AppRouter: React.FC = () => {
             <Route path="calendar" element={<Planning />} />
             <Route path="events" element={<Events />} />
 
-            <Route path="events/:idEventOrder" element={CurrentEvent} />
+            <Route path="events/:idEventOrder" element={<CurrentEvent />} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">
