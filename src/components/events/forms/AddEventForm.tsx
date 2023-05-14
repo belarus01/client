@@ -49,7 +49,10 @@ type TOptions = {
   value: string | number | null;
 };
 
-export const AddEventOrderForm: React.FC = () => {
+interface AddEventOrderForm {
+  submitForm: (event: any) => void;
+}
+export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) => {
   const [unp, setUnp] = useState<string>();
   const [subj, setSubj] = useState<SSubj>();
   const [type, setType] = useState<any>();
@@ -145,6 +148,9 @@ export const AddEventOrderForm: React.FC = () => {
       eventOrder.idEventsPlan = values.idEventsPlan;
     }
     console.log('eventOrder', eventOrder);
+    console.log('save', submitForm);
+    submitForm(eventOrder);
+    // save(eventOrder);
     setLoading(false);
   };
 
@@ -297,30 +303,30 @@ export const AddEventOrderForm: React.FC = () => {
       // проверка если есть или нет
       console.log(subj);
       if (subj?.unp) {
-        // getAllEventPlansByUnpSubj(subj.unp).then((res) => {
-        const res = [
-          {
-            idEventPlan: 1629,
-            idEvent: 64,
-            idDept: 501,
-            numOrder: 145,
-            nameDept:
-              'Департамент по надзору за безопасным ведением работ в промышленности Министерства по чрезвычайным ситуациям Республики Беларусь',
-            monthEvent: 'февраль',
-            halfYaerEvent: 1,
-            dateRecord: '03.04.2023 13:55:08',
-            telUser: '80165627140',
-            status: 'wait',
-            yearPlan: 2023,
-          },
-        ];
-        const optionsPlans = res.map((plan: { idEventPlan: any }) => ({
-          label: plan.idEventPlan,
-          value: plan.idEventPlan,
-        }));
-        setPlans(res);
-        setPlansOptions(optionsPlans);
-        // });
+        getAllEventPlansByUnpSubj(subj.unp).then((res) => {
+          // const res = [
+          //   {
+          //     idEventPlan: 1629,
+          //     idEvent: 64,
+          //     idDept: 501,
+          //     numOrder: 145,
+          //     nameDept:
+          //       'Департамент по надзору за безопасным ведением работ в промышленности Министерства по чрезвычайным ситуациям Республики Беларусь',
+          //     monthEvent: 'февраль',
+          //     halfYaerEvent: 1,
+          //     dateRecord: '03.04.2023 13:55:08',
+          //     telUser: '80165627140',
+          //     status: 'wait',
+          //     yearPlan: 2023,
+          //   },
+          // ];
+          const optionsPlans = res.map((plan: { idEventPlan: any }) => ({
+            label: plan.idEventPlan,
+            value: plan.idEventPlan,
+          }));
+          setPlans(res);
+          setPlansOptions(optionsPlans);
+        });
       }
     } else {
       setPlansOptions([]);
@@ -415,7 +421,8 @@ export const AddEventOrderForm: React.FC = () => {
     getUnitsByTypeUnit(0)
       .then((res) => {
         console.log('units', res);
-        setUnits(res);
+        const unitsCurrents = res.filter((unit) => unit.org == 1);
+        setUnits(unitsCurrents);
       })
       .catch((e) => {
         notificationController.error({ message: 'Произошла ошибка' });
@@ -594,7 +601,7 @@ export const AddEventOrderForm: React.FC = () => {
             </Card>
           ) : null}
 
-          <BaseButtonsForm.Item label="Сфера мероприятия" name="sphera">
+          <BaseButtonsForm.Item label="Сфера мероприятия" name="sphera" rules={[{ required: true }]}>
             <Select mode="multiple">
               {units.map((unit) => {
                 return (
@@ -608,18 +615,18 @@ export const AddEventOrderForm: React.FC = () => {
 
           <Row>
             <Col span={8} offset={2}>
-              <BaseButtonsForm.Item label="Дата начала надзора" name="dateBegin">
+              <BaseButtonsForm.Item label="Дата начала надзора" name="dateBegin" rules={[{ required: true }]}>
                 <DatePicker format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
             <Col span={8} offset={2}>
-              <BaseButtonsForm.Item label="Дата окончания надзора" name="dateEnd">
+              <BaseButtonsForm.Item label="Дата окончания надзора" name="dateEnd" rules={[{ required: true }]}>
                 <DatePicker format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
           </Row>
 
-          <BaseButtonsForm.Item label="Статус" name="status">
+          <BaseButtonsForm.Item label="Статус" name="status" rules={[{ required: true }]}>
             <Select>
               <Option value="1" label="не спланирована">
                 не спланирована

@@ -4,7 +4,7 @@ import { Modal as Alert, Button, Space } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
 import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { useNavigate } from 'react-router-dom';
-import { IEventsSphere, SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
+import { IEventOrder, IEventsSphere, SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
 import { getAllEventsBySubjectId, getAllEventsOrders } from '@app/api/events.api';
 import { AddEventOrderForm } from './forms/AddEventForm';
 
@@ -38,7 +38,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   const getEvents = (idSubj: number) => {
     setEvents({ ...events, loading: true });
     getCurrentEvents(idSubj).then((result) => {
-      console.log(result);
+      console.log(result, 'table');
       setEvents({ data: result, loading: false });
       return result;
     });
@@ -101,10 +101,10 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
     {
       key: '1',
       title: 'Мероприятие',
-      dataIndex: 'idEvent2',
-      render: (idEvent2: SEvents) => {
-        return <p>{idEvent2.event}</p>;
-      },
+      dataIndex: 'idEvent',
+      // render: (idEvent: SEvents) => {
+      //   return <p>{idEvent.event}</p>;
+      // },
     },
     {
       key: '2',
@@ -221,13 +221,15 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
       key: '10',
       title: 'Действия',
       width: '15%',
-      render: (subj: SSubjObj) => {
+      render: (event: IEventOrder) => {
         return (
           <Space>
             <Button
               type="ghost"
               onClick={() => {
-                //navigate('/subject', {state:subj})
+                console.log(event.technical);
+
+                navigate(`/planning/events/${event.idEventOrder}`, { state: events.data });
                 // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
               }}
             >
@@ -276,12 +278,19 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   useEffect(() => {
     getEvents(idSubj as number);
   }, []);
+  const save = (event) => {
+    const newEvents = [...events.data];
+    newEvents.unshift(event);
+    setEvents({ ...events, data: newEvents });
+    toggleModalAdding(false);
+  };
+
   return (
     <>
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <AddEventOrderForm />}
+        FormComponent={(props) => <AddEventOrderForm {...props} />}
         searchFunc={searchCategories}
         selected={selectedAuto}
         setSearchFunc={searchFunc}
@@ -294,6 +303,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
         openAddingForm={modalAdding}
         openEditingForm={modalEditing}
         titleButtonAdd="Добавить новое мероприятие"
+        propsFrom={{ submitForm: save }}
       />
     </>
   );

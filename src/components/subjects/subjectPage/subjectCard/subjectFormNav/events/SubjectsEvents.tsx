@@ -64,7 +64,7 @@ export const SubjectEvents: React.FC = () => {
       title: 'Вид',
       dataIndex: 'idUnit_3',
     },
-    
+
     {
       key: '2',
       title: 'Орган, выдавший предписание',
@@ -83,8 +83,7 @@ export const SubjectEvents: React.FC = () => {
       title: 'Основание назначения мероприятия',
       dataIndex: 'addrDescr',
     },
-   
- 
+
     {
       key: '7',
       title: 'Применяемые научно-технические средства',
