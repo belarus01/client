@@ -7,7 +7,7 @@ import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { notificationController } from '@app/controllers/notificationController';
 import { IGroup, IUnits, SDept, SDeptNode, SSubj, SSubjObj, SUnits, User } from '@app/domain/interfaces';
 import { deptToTreeNode, makeTree } from '@app/utils/utils';
-import { Card, Col, Row, TreeSelect, message } from 'antd';
+import { Card, Col, Row, TreeSelect, message, DatePicker } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Collapse } from 'antd';
 import { getAllObjectsBySubjectId } from '@app/api/objects.api';
@@ -64,13 +64,17 @@ export const AddEventOrderForm: React.FC = () => {
     name: '',
   });
   const [users, setUsers] = useState<User[]>([]);
-  const [usersLoading, setUsersLoading] = useState<boolean>([]);
+  const [usersLoading, setUsersLoading] = useState<boolean>(false);
   const [usersOptions, setUsersOptions] = useState<options[]>([]);
   const [field, setField] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
     // subj?.sSubjObjs.
+    console.log(values);
+  };
+
+  const onFinishField = (values) => {
     console.log(values);
   };
 
@@ -155,7 +159,7 @@ export const AddEventOrderForm: React.FC = () => {
       setUsers(users);
       const options = users.map((user) => ({
         label: `${user.fName} ${user.lName}`,
-        value: user.email,
+        value: user.uid,
       }));
       setUsersOptions(options);
       setUsersLoading(false);
@@ -311,6 +315,8 @@ export const AddEventOrderForm: React.FC = () => {
     getTypesEvents();
     getGroups();
   }, []);
+
+  const formatDate = 'YYYY-MM-DD';
   return (
     <>
       <Spinner spinning={loading}>
@@ -419,66 +425,43 @@ export const AddEventOrderForm: React.FC = () => {
           {shownGroupAdd ? (
             <Card>
               <Spinner spinning={usersLoading}>
-                <BaseButtonsForm
-                  name="dobavit_prov"
+                {/* <BaseButtonsForm
+                  name="groupAdd"
                   isFieldsChanged={isFieldsChanged}
-                  onFinish={onFinish}
+                  onFinish={onFinishField}
                   autoComplete="off"
-                >
-                  <BaseButtonsForm.List name="users">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map((field) => (
-                          <Row key={field.key}>
-                            <BaseButtonsForm.Item
-                              {...field}
-                              name={[field.name, 'last']}
-                              label={'Работник:'}
-                              hasFeedback
-                              //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
-                            >
-                              <S.Wrapper>
-                                <Select
-                                  options={usersOptions}
-                                  filterOption={(input, option) =>
-                                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                  }
-                                  showSearch
-                                />
-                                <S.RemoveBtn onClick={() => remove(field.name)} />
-                              </S.Wrapper>
-                            </BaseButtonsForm.Item>
-                          </Row>
-                        ))}
-
-                        <BaseButtonsForm.Item>
-                          <Button type="primary" onClick={() => add()} block icon={<PlusOutlined />}>
-                            Добавить проверяющего
-                          </Button>
+                > */}
+                <BaseButtonsForm.List name={'users'}>
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map((field) => (
+                        <BaseButtonsForm.Item
+                          {...field}
+                          label={'Работник:'}
+                          key={field.key}
+                          //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                        >
+                          <S.Wrapper>
+                            <Select
+                              options={usersOptions || []}
+                              filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                              }
+                              showSearch
+                            />
+                            <S.RemoveBtn onClick={() => remove(field.name)} />
+                          </S.Wrapper>
                         </BaseButtonsForm.Item>
-                      </>
-                    )}
-                  </BaseButtonsForm.List>
-                  <Button htmlType="submit" type="primary">
-                    Сохранить
-                  </Button>
-                </BaseButtonsForm>
+                      ))}
 
-                {/* {field.map(() => (
-                  <BaseButtonsForm.Item label="group">
-                    <Select
-                      options={usersOptions}
-                      onSelect={(value) => (Input.value = value)}
-                      filterOption={(input, option) =>
-                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                      }
-                      showSearch
-                    />
-                  </BaseButtonsForm.Item>
-                ))} */}
-                {/* <Button onClick={addField} type="primary">
-                  Сохранить
-                </Button> */}
+                      <BaseButtonsForm.Item>
+                        <Button type="primary" onClick={() => add()} block icon={<PlusOutlined />}>
+                          Добавить в группу нового участника
+                        </Button>
+                      </BaseButtonsForm.Item>
+                    </>
+                  )}
+                </BaseButtonsForm.List>
               </Spinner>
             </Card>
           ) : null}
@@ -494,6 +477,20 @@ export const AddEventOrderForm: React.FC = () => {
               })}
             </Select>
           </BaseButtonsForm.Item>
+
+          <Row>
+            <Col span={8} offset={2}>
+              <BaseButtonsForm.Item label="Дата начала надзора" name="dateBegin">
+                <DatePicker format={formatDate} />
+              </BaseButtonsForm.Item>
+            </Col>
+            <Col span={8} offset={2}>
+              <BaseButtonsForm.Item label="Дата окончания надзора" name="dateEnd">
+                <DatePicker format={formatDate} />
+              </BaseButtonsForm.Item>
+            </Col>
+          </Row>
+
           <BaseButtonsForm.Item>
             <Button htmlType="submit" type="primary">
               Сохранить
