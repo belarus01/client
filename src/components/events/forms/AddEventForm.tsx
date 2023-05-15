@@ -29,7 +29,7 @@ import { s } from '@fullcalendar/core/internal-common';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Loading } from '@app/components/common/Loading';
 import { IEventsCategory } from '@app/components/spisok_events/eventsTables/EventsTable';
-import { getAllEventPlansByUnpSubj, getAllEvents } from '@app/api/events.api';
+import { createEventsWithsSphere, getAllEventPlansByUnpSubj, getAllEvents } from '@app/api/events.api';
 import { AddEditUserForm } from '@app/components/users/forms/AddUserForm';
 import { getAllUsers } from '@app/api/users.api';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -50,7 +50,7 @@ type TOptions = {
 };
 
 interface AddEventOrderForm {
-  submitForm: (event: any) => void;
+  submitForm: () => void;
 }
 export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) => {
   const [unp, setUnp] = useState<string>();
@@ -143,15 +143,26 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
       idDeptIss: parseInt(selectedDept.idDeptIss as string),
       idSubj: parseInt(subj?.idSubj as unknown as string),
       idUnit_3: values.idUnit_3,
+      org: 1,
     };
     if (values.idEventsPlan) {
       eventOrder.idEventsPlan = values.idEventsPlan;
     }
+    const eventOrderSheras = values.sphera.map((spher) => ({
+      org: 1,
+      idUnit_0: spher,
+    }));
+    eventOrder.eventOrderSheras = eventOrderSheras;
     console.log('eventOrder', eventOrder);
     console.log('save', submitForm);
-    submitForm(eventOrder);
+
+    // submitForm(eventOrder);
     // save(eventOrder);
-    setLoading(false);
+    createEventsWithsSphere(eventOrder).then((res) => {
+      console.log(res);
+      setLoading(false);
+      submitForm();
+    });
   };
 
   const getTypesEvents = () => {

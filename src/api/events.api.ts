@@ -1,4 +1,4 @@
-import { SEvents, SEventsOrder } from '@app/domain/interfaces';
+import { IEventOrder, SEvents, SEventsOrder } from '@app/domain/interfaces';
 import { httpApi } from './http.api';
 
 export const getAllEvents = () => httpApi.get<SEvents[]>('events/get/all').then(({ data }) => data);
@@ -17,3 +17,12 @@ export const searchEventsOrders = (value: string) => httpApi.get<SEventsOrder>('
 
 export const getAllEventPlansByUnpSubj = (unpSubj: string) =>
   httpApi.get<any>(`events/get/all/eventPlans/by/unpSubj/${unpSubj}`).then(({ data }) => data);
+
+export const createEventsWithsSphere = (event: any) =>
+  httpApi.post<SEvents>('events/create/s', event).then(({ data }) => data);
+
+export const getEventOrderByIdWithRelations = (idEventOrder: string | number) =>
+  httpApi.get<any>(`events/get/eventOrder/with/relations/by/id/${idEventOrder}`).then(({ data }) => data);
+
+export const createQuestions = (idEventOrder: string | number, idForm: number) =>
+  httpApi.post<any>(`events/create/questions/eventOrder/${idEventOrder}/idForm/${idForm}`).then(({ data }) => data);

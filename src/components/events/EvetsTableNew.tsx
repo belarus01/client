@@ -280,11 +280,9 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   useEffect(() => {
     getEvents(idSubj as number);
   }, []);
-  const save = (event) => {
-    const newEvents = [...events.data];
-    newEvents.unshift({ ...event, idEventOrder: 12321231 });
-    setEvents({ ...events, data: newEvents });
+  const save = () => {
     toggleModalAdding(false);
+    getEvents(idSubj as number);
   };
 
   return (

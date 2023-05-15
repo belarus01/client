@@ -817,4 +817,5 @@ export interface IEventOrder {
   postTitle: string;
   status: number;
   technical: string;
+  org: number;
 }
