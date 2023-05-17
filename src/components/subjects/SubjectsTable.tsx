@@ -87,7 +87,6 @@ export const SubjectsTable: React.FC = () => {
 
   const hideAddSubjectModal = () => {
     setOpen(false);
-    updateTable();
   };
 
   const deleteItem = (deletedItem: SSubj) => {
@@ -209,7 +208,7 @@ export const SubjectsTable: React.FC = () => {
         centered
         open={open}
       >
-        <AddSubjectForm onCancel={hideAddSubjectModal} onTableChange={updateTable} />
+        <AddSubjectForm onCancel={hideAddSubjectModal} onTableChange={updateTable} updateTable={updateTable} />
       </Modal>
     </>
   );

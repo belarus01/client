@@ -17,6 +17,7 @@ import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/Ba
 import { Input } from '@app/components/common/inputs/Input/Input';
 import { DatePicker } from '@app/components/common/pickers/DatePicker';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
+import { notificationController } from '@app/controllers/notificationController';
 import { IVesomstvo, SSubj, ateObl } from '@app/domain/interfaces';
 import dayjs from 'dayjs';
 import { Key, useEffect, useState } from 'react';
@@ -25,15 +26,22 @@ interface AddSubjectFormProps {
   onCancel: () => void;
   onTableChange: (pagination: Pagination) => void;
   data?: SSubj;
+  updateTable: () => void;
 }
 
-export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTableChange, data }) => {
+export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTableChange, data, updateTable }) => {
   const onFinish = (values: SSubj) => {
     if (!data) {
-      console.log({ ...values, dateRegOpo: date });
+      console.log('createSubj', { ...values, dateRegOpo: date });
       setLoading(true);
-      // createSubj({ ...values, dateRegOpo: date });
-      onCancel();
+      createSubj({ ...values, dateRegOpo: date })
+        .then(() => {
+          updateTable();
+          onCancel();
+        })
+        .catch(() => {
+          notificationController.error({ message: 'Запрос не завершен' });
+        });
     }
   };
   const [obl, setObl] = useState<React.ReactNode[]>([]);
