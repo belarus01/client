@@ -12,6 +12,7 @@ import { DatePicker, Input, Row } from 'antd';
 import { Modal } from '../../components/common/Modal/Modal.styles';
 import { TextArea } from '@app/components/common/inputs/Input/Input';
 import { generateDoc1 } from '@app/api/doc.api';
+import { Option } from '@app/components/common/selects/Select/Select';
 
 interface EventQuationProps {
   event?: IEventOrder;
@@ -105,7 +106,7 @@ export const EventQuation: React.FC<EventQuationProps> = ({ event, idEventOrder 
               <Select>
                 {forms.map((form) => {
                   return (
-                    <Option key={form.idForm}>
+                    <Option key={form.idForm as number}>
                       <span>{form.nameDoc}</span>
                     </Option>
                   );
