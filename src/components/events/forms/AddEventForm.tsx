@@ -7,6 +7,7 @@ import { Select } from '@app/components/common/selects/Select/Select';
 import { notificationController } from '@app/controllers/notificationController';
 import {
   IEventOrder,
+  IEventsSphere,
   IGroup,
   IUnits,
   SDept,
@@ -50,9 +51,10 @@ type TOptions = {
 };
 
 interface AddEventOrderForm {
-  submitForm: () => void;
+  submitForm?: () => void;
+  getNewEvent: (event: IEventOrder) => void;
 }
-export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) => {
+export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, getNewEvent }) => {
   const [unp, setUnp] = useState<string>();
   const [subj, setSubj] = useState<SSubj>();
   const [type, setType] = useState<any>();
@@ -96,7 +98,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: any & IEventsSphere) => {
     // subj?.sSubjObjs.
     setLoading(true);
     console.log(values);
@@ -133,7 +135,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
       dateEnd: values.dateEnd.format('YYYY-MM-DD'),
       status: values.status,
       technical: values.technical,
-      postTitle: values.postTitle,
+      uidBoss: values.postTitle,
       fioPostTitle: values.fioPostTitle,
       dateBeginFact: values.dateBeginFact ? values.dateBeginFact.format('YYYY-MM-DD') : values.dateBeginFact,
       dateEndFact: values.dateEndFact ? values.dateEndFact.format('YYYY-MM-DD') : values.dateEndFact,
@@ -148,7 +150,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
     if (values.idEventsPlan) {
       eventOrder.idEventsPlan = values.idEventsPlan;
     }
-    const eventOrderSheras = values.sphera.map((spher) => ({
+    const eventOrderSheras: IEventsSphere[] = values.sphera.map((spher: IEventsSphere) => ({
       org: 1,
       idUnit_0: spher,
     }));
@@ -158,10 +160,10 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
 
     // submitForm(eventOrder);
     // save(eventOrder);
-    createEventsWithsSphere(eventOrder).then((res) => {
-      console.log(res);
+    createEventsWithsSphere(eventOrder).then((event) => {
+      console.log(event);
       setLoading(false);
-      submitForm();
+      getNewEvent(event);
     });
   };
 
@@ -603,11 +605,6 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
                     </>
                   )}
                 </BaseButtonsForm.List>
-                {/* <BaseButtonsForm.Item>
-                  <Button type="primary" onClick={() => createGroupEvent} block icon={<PlusOutlined />}>
-                    Сохранить
-                  </Button>
-                </BaseButtonsForm.Item> */}
               </Spinner>
             </Card>
           ) : null}
@@ -698,27 +695,6 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm }) =
               Сохранить
             </Button>
           </BaseButtonsForm.Item>
-
-          {/* <BaseButtonsForm.Item>
-                        <Row gutter={[30, 30]}>
-                            <Col sm={12} md={12} lg={12}>
-                                <BaseButtonsForm.Item
-                                    name="unp"
-                                    label={'УНП субъекта'}
-                                    rules={[{ required: true, message: 'Введите УНП субъекта' }]}
-                                >
-                                    <Input onChange={handleUnpChange} />
-                                </BaseButtonsForm.Item>
-                            </Col>
-                            <Col sm={12} md={12} lg={12}>
-                                <BaseButtonsForm.Item>
-                                    <Button type="primary" style={{ width: 200 }} onClick={(values) => onCreateGroupClick()} >
-                                        Создать группу
-                                    </Button>
-                                </BaseButtonsForm.Item>
-                            </Col>
-                        </Row>
-                    </BaseButtonsForm.Item> */}
         </BaseButtonsForm>
       </Spinner>
     </>

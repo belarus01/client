@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { IEventOrder, IEventsSphere, SDept, SEvents, SEventsOrder, SSubjObj } from '@app/domain/interfaces';
 import { getAllEventsBySubjectId, getAllEventsOrders } from '@app/api/events.api';
 import { AddEventOrderForm } from './forms/AddEventForm';
+import CreateEvent from './CreateEvent';
 
 interface IEventsTable {
   data?: SEventsOrder[];
@@ -290,7 +291,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <AddEventOrderForm {...props} />}
+        FormComponent={(props) => <CreateEvent {...props} />}
         searchFunc={searchCategories}
         selected={selectedAuto}
         setSearchFunc={searchFunc}

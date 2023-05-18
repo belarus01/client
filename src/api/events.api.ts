@@ -19,7 +19,7 @@ export const getAllEventPlansByUnpSubj = (unpSubj: string) =>
   httpApi.get<any>(`events/get/all/eventPlans/by/unpSubj/${unpSubj}`).then(({ data }) => data);
 
 export const createEventsWithsSphere = (event: any) =>
-  httpApi.post<SEvents>('events/create/eventOrder/eventShera', event).then(({ data }) => data);
+  httpApi.post<IEventOrder>('events/create/eventOrder/eventShera', event).then(({ data }) => data);
 
 export const getEventOrderByIdWithRelations = (idEventOrder: string | number) =>
   httpApi.get<any>(`events/get/eventOrder/with/relations/by/id/${idEventOrder}`).then(({ data }) => data);

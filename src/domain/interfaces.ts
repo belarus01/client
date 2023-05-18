@@ -806,16 +806,35 @@ export interface IEventOrder {
   fioPostTitle: string;
   idDept?: number;
   idDeptIss?: number;
-  idEvent: number;
+  idEvent: number | null;
+  idEventOrder?: number | null;
   idEventsPlan?: number;
   idGroup?: number;
-  idSubj: number;
-  idUnit_3: number | string;
-  idUnit_4: number;
+  idSubj: number | null;
+  idUnit_3: number | string | null;
+  idUnit_4: number | null;
   nameAgent: string;
   postAgent: string;
-  postTitle: string;
-  status: number;
-  technical: string;
+  uidBoss: string | number;
+  status?: number | null;
+  technical?: string;
   org: number;
+  eventOrderSheras?: IEventsSphere[];
+}
+
+export interface IDoc {
+  record: string;
+  idForm: number | null;
+  idTypeDoc: number | null;
+  numAppendix: number | null;
+  nameDoc: string;
+  pathTempl: string;
+  nameTempl: string;
+  dateFrom?: Date | string;
+  dateTo?: Date | string;
+  org: number;
+  dateRecord?: Date | string;
+  uid?: string | null | number;
+  active?: number | null;
+  comm: string;
 }
