@@ -54,6 +54,15 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
     [fields],
   );
 
+  const prev = () => {
+    const index = fields.findIndex((field) => field.field1 == field1);
+    if (index !== -1 && index !== 0) {
+      const prevField = fields[index - 1];
+      const prevPunct = prevField.field1;
+      changePuncts(prevPunct);
+    }
+  };
+
   const next = () => {
     const index = fields.findIndex((field) => field.field1 == field1);
     if (index !== -1 && index !== fields.length - 1) {
@@ -190,13 +199,13 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                       background: 'blanchedalmond',
                       border: '2px solid gold',
                       borderRadius: '8px',
-                      marginTop: '-3px',
+                      marginTop: '15px',
                       marginBottom: '10px',
                       marginRight: '20px',
                     }}
                     onClick={() => setShownComm((prev) => !prev)}
                   >
-                    <Text strong>Добавить примечание</Text>
+                    <Text strong>Примечание</Text>
                   </Button>
 
                   <Button
@@ -205,7 +214,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                       background: 'blanchedalmond',
                       border: '2px solid gold',
                       borderRadius: '8px',
-                      marginTop: '-3px',
+                      marginTop: '15px',
                     }}
                   >
                     <Text strong>Добавить фото/видео</Text>
@@ -215,20 +224,37 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
             </Col>
 
             <Col span={22} offset={1} style={{ textAlign: 'left', marginBottom: '30px', fontSize: '15px' }}>
-              <Button
-                style={{
-                  color: 'black',
-                  background: 'blanchedalmond',
-                  border: '2px solid gold',
-                  borderRadius: '8px',
-                  marginTop: '-25px',
-                  marginBottom: '10px',
-                  marginLeft: '0px',
-                }}
-                onClick={next}
-              >
-                <Text strong>Следующий</Text>
-              </Button>
+              <Row>
+                <Button
+                  style={{
+                    color: 'black',
+                    background: 'blanchedalmond',
+                    border: '2px solid gold',
+                    borderRadius: '8px',
+                    marginTop: '-10px',
+                    marginBottom: '10px',
+                    marginLeft: '0px',
+                  }}
+                  onClick={prev}
+                >
+                  <Text strong>Предыдущий</Text>
+                </Button>
+
+                <Button
+                  style={{
+                    color: 'black',
+                    background: 'blanchedalmond',
+                    border: '2px solid gold',
+                    borderRadius: '8px',
+                    marginTop: '-10px',
+                    marginBottom: '10px',
+                    marginLeft: '20px',
+                  }}
+                  onClick={next}
+                >
+                  <Text strong>Следующий</Text>
+                </Button>
+              </Row>
             </Col>
 
             <Row justify={'center'}>

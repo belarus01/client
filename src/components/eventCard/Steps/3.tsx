@@ -266,7 +266,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_vidaci"
         label={'Дата выдачи предписания на проведение проверки (решения на проведение мониторинга)'}
-        //rules={[{ required: true, message: 'Введите дату выдачи предписания на проведение проверки' }]}
+      //rules={[{ required: true, message: 'Введите дату выдачи предписания на проведение проверки' }]}
       >
         {data && (
           <DatePicker defaultValue={moment(data['result1'][0].date_order, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />
@@ -277,7 +277,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         name="dolg_ruc_proverki"
         label={'Должность руководителя проверки '}
         hasFeedback
-        //rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
+      //rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
       >
         <Select
           placeholder={'Должность руководителя проверки '}
@@ -298,7 +298,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fio_ruc_proverki"
         label={'Ф.И.О руководителя проверки'}
-        //rules={[{ required: true, message: 'Введите Ф.И.О руководителя проверки' }]}
+      //rules={[{ required: true, message: 'Введите Ф.И.О руководителя проверки' }]}
       >
         <Input />
       </BaseButtonsForm.Item>
@@ -311,8 +311,8 @@ export const Step3: React.FC<any> = ({ data }) => {
             name="dolg_prov"
             label={'Должность проверяющего '}
             hasFeedback
-            //style={{ marginRight: "8px" }}
-            //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+          //style={{ marginRight: "8px" }}
+          //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
           >
             <Input />
           </BaseButtonsForm.Item>
@@ -323,8 +323,8 @@ export const Step3: React.FC<any> = ({ data }) => {
             name="fio_prov"
             label={'Ф.И.О проверяющего'}
             hasFeedback
-            //style={{ width: 600 }}
-            //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+          //style={{ width: 600 }}
+          //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
           >
             <Input />
           </BaseButtonsForm.Item>
@@ -343,7 +343,7 @@ export const Step3: React.FC<any> = ({ data }) => {
                       name={[field.name, 'first']}
                       label={'Должность проверяющего '}
                       hasFeedback
-                      //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
+                    //rules={[{ required: true, message: 'Введите должность проверяющего ' }]}
                     >
                       <Input />
                     </BaseButtonsForm.Item>
@@ -355,7 +355,7 @@ export const Step3: React.FC<any> = ({ data }) => {
                       name={[field.name, 'last']}
                       label={'Ф.И.О проверяющего'}
                       hasFeedback
-                      //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
+                    //rules={[{ required: true, message: 'Введите Ф.И.О проверяющего' }]}
                     >
                       <S.Wrapper>
                         <Input />
@@ -379,7 +379,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="prov_period"
         label={'Проверяемый период'}
-        //rules={[{ required: true, message: 'Введите проверяемый период' }]}
+      //rules={[{ required: true, message: 'Введите проверяемый период' }]}
       >
         {data && <DatePicker defaultValue={moment(items_period[0])} format={'DD-MM-YYYY'} />}
         {data && <DatePicker defaultValue={moment(items_period[1])} format={'DD-MM-YYYY'} />}
@@ -388,7 +388,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_nachala_meropr"
         label={'Дата начала надзорно-профилактического мероприятия (по предписанию/решению)'}
-        //rules={[{ required: true, message: 'Введите дату начала надзорно-профилактического мероприятия' }]}
+      //rules={[{ required: true, message: 'Введите дату начала надзорно-профилактического мероприятия' }]}
       >
         {data && (
           <DatePicker defaultValue={moment(data['result1'][0].date_begin, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />
@@ -398,7 +398,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_okonchaniya_meropr"
         label={'Дата окончания надзорно-профилактического мероприятия (по предписанию/решению)'}
-        // rules={[{ required: true, message: 'Введите дату окончания надзорно-профилактического мероприятия' }]}
+      // rules={[{ required: true, message: 'Введите дату окончания надзорно-профилактического мероприятия' }]}
       >
         {data && <DatePicker defaultValue={moment(data['result1'][0].date_end, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />}
       </BaseButtonsForm.Item>
@@ -406,17 +406,17 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="per_voprosov"
         label={'Перечень вопросов проверки (мониторинга)'}
-        //rules={[{ required: true, message: 'Введите перечень вопросов проверки' }]}
+      //rules={[{ required: true, message: 'Введите перечень вопросов проверки' }]}
       >
         {data ? <List
-            bordered
-            dataSource={items_voprosi}
-            renderItem={(item: { name_que: string }) => (
-              <List.Item>
-                {item.name_que}
-              </List.Item>
-            )}
-          /> : <p></p>
+          bordered
+          dataSource={items_voprosi}
+          renderItem={(item: { name_que: string }) => (
+            <List.Item>
+              {item.name_que}
+            </List.Item>
+          )}
+        /> : <p></p>
         }
       </BaseButtonsForm.Item>
 
@@ -428,7 +428,7 @@ export const Step3: React.FC<any> = ({ data }) => {
           'Сведения о применении научно-технических средств (не применялись или указать какие средства применялись) '
         }
         hasFeedback
-        //rules={[{ required: true, message: 'Введите сведения о применении научно-технических средств ' }]}
+      //rules={[{ required: true, message: 'Введите сведения о применении научно-технических средств ' }]}
       >
         <Col span={12}>
           <Select placeholder={'Сведения о применении научно-технических средств '}>
@@ -442,7 +442,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fac_date_nacala"
         label={'Фактическая дата начала надзорно-профилактического мероприятия '}
-        //rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
+      //rules={[{ required: true, message: 'Введите фактическую дату начала надзорно-профилактического мероприятия ' }]}
       >
         <DatePicker />
       </BaseButtonsForm.Item>
@@ -450,7 +450,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="fac_date_oconchaniya"
         label={'Фактическая дата окончания надзорно-профилактического мероприятия '}
-        //rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
+      //rules={[{ required: true, message: 'Введите фактическую дату окончания надзорно-профилактического мероприятия ' }]}
       >
         <DatePicker />
       </BaseButtonsForm.Item>
@@ -466,10 +466,11 @@ export const Step3: React.FC<any> = ({ data }) => {
         toggleModalEditing={toggleModalEdding}
         openAddingForm={openAddingForm}
         openEditingForm={openEddingForm}
+        typeButton="primary"
         titleButtonAdd="Добавить новое нарушение"
-        //dataSource={tableData.data}
-        //bordered
-        //scroll={{ x: 800 }}
+      //dataSource={tableData.data}
+      //bordered
+      //scroll={{ x: 800 }}
       />
 
       {/* <Button type="primary" style={{ marginRight: 'auto', marginBottom: '1%' }}>
@@ -510,7 +511,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         <BaseButtonsForm.Item
           name="sved_ob_ustr_narush"
           label={'Сведения о подготовке предписания (рекомендаций) об устранении нарушений (да/нет) '}
-          //rules={[{ required: true, message: 'Введите сведения о подготовке предписания (рекомендаций) об устранении нарушений ' }]}
+        //rules={[{ required: true, message: 'Введите сведения о подготовке предписания (рекомендаций) об устранении нарушений ' }]}
         >
           <Input disabled />
         </BaseButtonsForm.Item>
@@ -519,7 +520,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_predpis"
         label={'Дата предписания (рекомендаций) об устранении нарушений '}
-        //rules={[{ required: true, message: 'Введите дату предписания (рекомендаций) об устранении нарушений ' }]}
+      //rules={[{ required: true, message: 'Введите дату предписания (рекомендаций) об устранении нарушений ' }]}
       >
         <DatePicker disabled />
       </BaseButtonsForm.Item>
@@ -527,7 +528,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_vruch"
         label={'Дата вручения (направления) предписания (рекомендаций) об устранении нарушений '}
-        // rules={[{ required: true, message: 'Введите дату вручения (направления) предписания (рекомендаций) об устранении нарушений ' }]}
+      // rules={[{ required: true, message: 'Введите дату вручения (направления) предписания (рекомендаций) об устранении нарушений ' }]}
       >
         <DatePicker disabled />
       </BaseButtonsForm.Item>
@@ -535,7 +536,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_stop"
         label={'Дата приостановления проведения надзорно-профилактического мероприятия '}
-        //rules={[{ required: true, message: 'Введите дату приостановления проведения надзорно-профилактического мероприятия ' }]}
+      //rules={[{ required: true, message: 'Введите дату приостановления проведения надзорно-профилактического мероприятия ' }]}
       >
         {data && <DatePicker defaultValue={moment(data['result1'][0].date_stop, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />}
       </BaseButtonsForm.Item>
@@ -543,7 +544,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_vozobnovleniya"
         label={'Дата возобновления проведения надзорно-профилактического мероприятия '}
-        // rules={[{ required: true, message: 'Введите дату возобновления проведения надзорно-профилактического мероприятия ' }]}
+      // rules={[{ required: true, message: 'Введите дату возобновления проведения надзорно-профилактического мероприятия ' }]}
       >
         {data && (
           <DatePicker defaultValue={moment(data['result1'][0].date_continue, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />
@@ -564,7 +565,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_prodlenii"
         label={'Дата, до которой продлен срок проведения проверки '}
-        //rules={[{ required: true, message: 'Введите дату, до которой продлен срок проведения проверки ' }]}
+      //rules={[{ required: true, message: 'Введите дату, до которой продлен срок проведения проверки ' }]}
       >
         {data && <DatePicker defaultValue={moment(data['result1'][0].date_to, 'DD-MM-YYYY')} format={'DD-MM-YYYY'} />}
       </BaseButtonsForm.Item>
@@ -604,7 +605,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_itog_doc"
         label={'Дата итогового документа '}
-        //rules={[{ required: true, message: 'Введите дату итогового документа ' }]}
+      //rules={[{ required: true, message: 'Введите дату итогового документа ' }]}
       >
         {data && (
           <DatePicker
@@ -617,7 +618,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_vrucheniya_itog_doc"
         label={'Дата вручения (направления) итогового документа '}
-        //rules={[{ required: true, message: 'Введите дату вручения итогового документа ' }]}
+      //rules={[{ required: true, message: 'Введите дату вручения итогового документа ' }]}
       >
         {data && (
           <DatePicker
@@ -641,7 +642,7 @@ export const Step3: React.FC<any> = ({ data }) => {
       <BaseButtonsForm.Item
         name="date_po_vozrag"
         label={'Дата принятия решения по возражениям по акту проверки '}
-        // rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
+      // rules={[{ required: true, message: 'Введите дату принятия решения по возражениям по акту проверки ' }]}
       >
         <DatePicker disabled />
       </BaseButtonsForm.Item>
@@ -650,7 +651,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         <BaseButtonsForm.Item
           name="reshenie_po_vozrag"
           label={'Принятое решение по возражениям по акту проверки'}
-          //rules={[{ required: true, message: 'Введите принятое решение по возражениям по акту проверки' }]}
+        //rules={[{ required: true, message: 'Введите принятое решение по возражениям по акту проверки' }]}
         >
           <Input disabled />
         </BaseButtonsForm.Item>
