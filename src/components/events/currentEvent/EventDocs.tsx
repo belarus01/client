@@ -14,6 +14,8 @@ import { TextArea } from '@app/components/common/inputs/Input/Input';
 import { generateDoc1 } from '@app/api/doc.api';
 import EventDocItemList, { ListItem } from './EventDocItemList';
 import styled from 'styled-components';
+import EventCreateDocForm from './formGenerate/EventCreateDocForm';
+import { useNavigate } from 'react-router-dom';
 
 interface EventQuationProps {
   event?: IEventOrder | null;
@@ -29,6 +31,27 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
   const [formDis, setFormDis] = useState(true);
   const [shownModalUved, setShownModalUved] = useState(false);
   const [docs, setDocs] = useState<IDoc[]>([]);
+  const [shownModal, setShownModal] = useState(false);
+  const [currentDoc, setCurrentDoc] = useState<IDoc>({
+    idForm: null,
+    idTypeDoc: null,
+    nameDoc: '',
+    org: 1,
+  });
+
+  const toggleModal = (isOpne = false) => {
+    setShownModal(isOpne);
+  };
+
+  const navigate = useNavigate();
+
+  const openDocCreate = (doc: IDoc) => {
+    console.log('EventDocItemList', doc.idTypeDoc);
+    if (doc.idTypeDoc == 300) {
+      navigate(`${doc.idForm}`);
+    }
+    toggleModal(true);
+  };
 
   const getDocs = () => {
     setLoading(true);
@@ -41,6 +64,9 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
     });
   };
 
+  const setCurrentDocForForm = (doc: IDoc) => {
+    setCurrentDoc(doc);
+  };
   // const onFinishCreateDocUved = (values) => {
   //   console.log(values);
 
@@ -95,7 +121,14 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
           <div>Просмотреть документ</div>
         </ListDoc>
         {docs.map((doc) => {
-          return <EventDocItemList key={doc.idForm} doc={doc} />;
+          return (
+            <EventDocItemList
+              openDocCreate={openDocCreate}
+              key={doc.idForm}
+              setCurrentDocForForm={setCurrentDocForForm}
+              doc={doc}
+            />
+          );
         })}
 
         {/* <>
@@ -163,6 +196,11 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
             </BaseButtonsForm.Item>
           </BaseButtonsForm>
         </Modal>*/}
+        {shownModal && (
+          <Modal open={shownModal} onCancel={() => toggleModal()} title="Создание документа" footer={false}>
+            <EventCreateDocForm toggleModal={toggleModal} currentDoc={currentDoc} />
+          </Modal>
+        )}
       </Spinner>
     </>
   );

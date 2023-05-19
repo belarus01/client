@@ -823,18 +823,18 @@ export interface IEventOrder {
 }
 
 export interface IDoc {
-  record: string;
+  record?: string;
   idForm: number | null;
   idTypeDoc: number | null;
-  numAppendix: number | null;
+  numAppendix?: number | null;
   nameDoc: string;
-  pathTempl: string;
-  nameTempl: string;
+  pathTempl?: string;
+  nameTempl?: string;
   dateFrom?: Date | string;
   dateTo?: Date | string;
   org: number;
   dateRecord?: Date | string;
   uid?: string | null | number;
   active?: number | null;
-  comm: string;
+  comm?: string;
 }

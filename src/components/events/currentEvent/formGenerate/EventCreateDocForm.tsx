@@ -4,18 +4,23 @@ import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
 import { Select } from '@app/components/common/selects/Select/Select';
+import { IDoc } from '@app/domain/interfaces';
 import { DatePicker } from 'antd';
-import React, { useState } from 'react';
+import { doc } from 'prettier';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 
 interface EventCreateDocFormProps {
   toggleModal: (isOpen: boolean) => void;
+  currentDoc: IDoc;
 }
-const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal }) => {
+
+const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal, currentDoc }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [shownCreateDoc, setShownCreateDoc] = useState(false);
   const [formDis, setFormDis] = useState(true);
   const [shownModalUved, setShownModalUved] = useState(false);
+  const [currentForm, setCurrentForm] = useState<string | null>(null);
+  const [Component, setComponent] = useState<React.LazyExoticComponent<React.ComponentType<any>> | null>(null);
 
   const { idEventOrder } = useParams();
 
@@ -38,6 +43,31 @@ const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal }) 
     // });
   };
 
+  // switch docs form
+  const switchDoc = (doc: IDoc) => {
+    switch (doc.idTypeDoc) {
+      case 1000:
+        setCurrentForm('Form1');
+        break;
+
+      default:
+        setCurrentForm('Form2');
+        break;
+    }
+  };
+
+  useEffect(() => {
+    console.log(currentDoc);
+    switchDoc(currentDoc);
+  }, [currentDoc]);
+
+  useEffect(() => {
+    console.log(currentForm);
+    if (currentForm) {
+      const CurrentFormComponent = lazy(() => import(`./${currentForm}`));
+      setComponent(CurrentFormComponent);
+    }
+  }, [currentForm]);
   const options = [
     {
       label: 'руки',
@@ -59,6 +89,7 @@ const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal }) 
       value: 1,
     },
   ];
+  const OtherComponent = lazy(() => import('./Form1'));
   return (
     <BaseButtonsForm layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
       <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
@@ -108,6 +139,7 @@ const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal }) 
           Сохранить
         </Button>
       </BaseButtonsForm.Item>
+      <Suspense fallback={<div>Loading...</div>}>{Component ? <Component /> : null}</Suspense>
     </BaseButtonsForm>
   );
 };

@@ -9,6 +9,8 @@ import EventCreateDocForm from './formGenerate/EventCreateDocForm';
 
 interface EventDocItemListProps {
   doc: IDoc;
+  openDocCreate: (doc: IDoc) => void;
+  setCurrentDocForForm: (doc: IDoc) => void;
 }
 
 export const ListItem = styled.div`
@@ -41,36 +43,24 @@ const ListItemName = styled.div`
   }
 `;
 
-const EventDocItemList: React.FC<EventDocItemListProps> = ({ doc }) => {
-  const [shownModal, setShownModal] = useState(false);
-  const toggleModal = (isOpne = false) => {
-    setShownModal(isOpne);
+const EventDocItemList: React.FC<EventDocItemListProps> = ({ doc, openDocCreate, setCurrentDocForForm }) => {
+  const openFormWithDoc = (doc: IDoc) => {
+    setCurrentDocForForm(doc);
+    openDocCreate(doc);
   };
 
-  const navigate = useNavigate();
-
-  const openDocCreate = () => {
-    console.log('EventDocItemList', doc.idTypeDoc);
-    if (doc.idTypeDoc == 300) {
-      navigate(`${doc.idForm}`);
-    }
-    toggleModal(true);
-  };
   return (
     <ListItem>
       <div>{doc.nameDoc || ''}</div>
       <div>{doc.dateFrom || ''}</div>
       <div>{doc.dateTo || ''} </div>
       <div>{doc.record || ''} </div>
-      <ListItemName onClick={openDocCreate}>
+      <ListItemName onClick={() => openFormWithDoc(doc)}>
         <FileAddOutlined />
       </ListItemName>
       <ListItemName>
         <FileDoneOutlined />
       </ListItemName>
-      <Modal open={shownModal} onCancel={() => toggleModal()}>
-        <EventCreateDocForm toggleModal={toggleModal} />
-      </Modal>
     </ListItem>
   );
 };
