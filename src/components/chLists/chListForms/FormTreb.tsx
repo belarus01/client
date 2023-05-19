@@ -1,9 +1,9 @@
 import { Cascader, Col, Row, Typography } from 'antd';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Input, TextArea } from '../common/inputs/Input/Input';
-import { Button } from '../common/buttons/Button/Button';
+import { Input, TextArea } from '../../common/inputs/Input/Input';
+import { Button } from '../../common/buttons/Button/Button';
 import { InfoOutlined } from '@ant-design/icons';
-import { Spinner } from '../common/Spinner/Spinner.styles';
+import { Spinner } from '../../common/Spinner/Spinner.styles';
 
 interface FormTreb {
   // field1: number | string;

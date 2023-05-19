@@ -7,17 +7,39 @@ import { QuestionCircleTwoTone } from '@ant-design/icons';
 import TextArea from 'antd/lib/input/TextArea';
 import { InfoOutlined } from '@ant-design/icons';
 import { color } from 'echarts';
-import FormTreb from './FormTreb';
+import FormTreb from './chListForms/FormTreb';
 import { useEffect, useState } from 'react';
+import FireForm from './chListForms/FormFire';
+import FireTable from './chListTables/TableFire';
+import { SSubj } from '@app/domain/interfaces';
+import { Spinner } from '../common/Spinner/Spinner';
+import { getSubjectByUnp } from '@app/api/subjects.api';
 
 const { Text } = Typography;
 
-const Check_list_1 = () => {
+
+const Check_list_1: React.FC = () => {
+    const [subj, setSubj] = useState<SSubj>({
+        idSubj: null,
+        unp: '',
+    });
+
+    const [loadingUnp, setLoadingUnp] = useState<boolean>(false);
+    const [unp, setUnp] = useState<string>('');
+
     const [loadingFormTreb, setLoadingFormTreb] = useState(false);
     const [fields, setFields] = useState([]);
 
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
         console.log(date, dateString);
+    };
+
+    const fetch = () => {
+        setLoadingUnp(true);
+        getSubjectByUnp(unp).then((res) => {
+            setSubj(res);
+            setLoadingUnp(false);
+        });
     };
 
     const getTrebs = () => {
@@ -230,126 +252,129 @@ const Check_list_1 = () => {
                                         <Text strong>Подтвердить</Text>
                                     </Button>
                                 </Row>
-                                <Row justify={'center'} style={{ marginTop: '20px' }}>
-                                    <Col>
-                                        <Text strong>Сведения о проверяемом субъекте</Text>
-                                    </Col>
-                                </Row>
-                                <Row justify={'center'} style={{ marginTop: '20px' }}>
-                                    <Col span={1}>
-                                        <Text>УНП:</Text>
-                                    </Col>
+                                <Spinner spinning={loadingUnp}>
+                                    <Row justify={'center'} style={{ marginTop: '20px' }}>
+                                        <Col>
+                                            <Text strong>Сведения о проверяемом субъекте</Text>
+                                        </Col>
+                                    </Row>
+                                    <Row justify={'center'} style={{ marginTop: '20px' }}>
+                                        <Col span={1}>
+                                            <Text>УНП:</Text>
+                                        </Col>
 
-                                    <Col span={5}>
-                                        <Input style={{ width: '100%', marginLeft: '15px', marginTop: '-10px' }} />
-                                    </Col>
+                                        <Col span={5}>
+                                            <Input value={unp} onChange={(e) => setUnp(e.target.value)} style={{ width: '100%', marginLeft: '15px', marginTop: '-10px' }} />
+                                        </Col>
 
-                                    <Col span={5} offset={2}>
+                                        <Col span={5} offset={2}>
+                                            <Button
+                                                style={{
+                                                    color: 'black',
+                                                    background: 'blanchedalmond',
+                                                    border: '2px solid gold',
+                                                    borderRadius: '8px',
+                                                    marginTop: '-10px',
+                                                }}
+                                                onClick={fetch}
+                                            >
+                                                <Text style={{ marginTop: '-4px' }}>Заполнить форму</Text>
+                                            </Button>
+                                        </Col>
+
+                                        <Col span={5} offset={2}>
+                                            <Button
+                                                style={{
+                                                    color: 'black',
+                                                    background: 'blanchedalmond',
+                                                    border: '2px solid gold',
+                                                    borderRadius: '8px',
+                                                    marginTop: '-10px',
+                                                }}
+                                            >
+                                                <Text style={{ marginTop: '-4px' }}>Обновить данные</Text>
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Наименование проверяемого субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.subj || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Место нахождения проверяемого субъекта (объекта проверяемого субъекта):</Text>
+
+                                        <Col>
+                                            <Input value={subj.addrYur || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '25px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Место осуществления деятельности:</Text>
+
+                                        <Col>
+                                            <Input value={subj.idVed || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Фамилия, инициалы представителя субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.bossName || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Должность представителя субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.staffBoss || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Контактный телефон представителя субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.bossTel || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Фамилия, инициалы ответственного за обеспечение пожарной безопасности субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.chiefName || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Должность ответственного за обеспечение пожарной безопасности субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.staffChief || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ marginTop: '15px' }}>
+                                        <Text>Контактный телефон ответственного за обеспечение пожарной безопасности субъекта:</Text>
+
+                                        <Col>
+                                            <Input value={subj.chiefTel || ''} style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
+                                        </Col>
+                                    </Row>
+                                    <Row justify={'center'}>
                                         <Button
+                                            type="primary"
                                             style={{
                                                 color: 'black',
                                                 background: 'blanchedalmond',
                                                 border: '2px solid gold',
                                                 borderRadius: '8px',
-                                                marginTop: '-10px',
+                                                marginTop: '10px',
+                                                marginBottom: '20px',
                                             }}
                                         >
-                                            <Text style={{ marginTop: '-4px' }}>Заполнить форму</Text>
+                                            <Text strong>Подтвердить</Text>
                                         </Button>
-                                    </Col>
-
-                                    <Col span={5} offset={2}>
-                                        <Button
-                                            style={{
-                                                color: 'black',
-                                                background: 'blanchedalmond',
-                                                border: '2px solid gold',
-                                                borderRadius: '8px',
-                                                marginTop: '-10px',
-                                            }}
-                                        >
-                                            <Text style={{ marginTop: '-4px' }}>Обновить данные</Text>
-                                        </Button>
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Наименование проверяемого субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Место нахождения проверяемого субъекта (объекта проверяемого субъекта):</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '25px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Место осуществления деятельности:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Фамилия, инициалы представителя субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Должность представителя субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Контактный телефон представителя субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Фамилия, инициалы ответственного за обеспечение пожарной безопасности субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Должность ответственного за обеспечение пожарной безопасности субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row style={{ marginTop: '15px' }}>
-                                    <Text>Контактный телефон ответственного за обеспечение пожарной безопасности субъекта:</Text>
-
-                                    <Col>
-                                        <Input style={{ width: '100%', marginLeft: '10px', marginTop: '-10px' }} />
-                                    </Col>
-                                </Row>
-                                <Row justify={'center'}>
-                                    <Button
-                                        type="primary"
-                                        style={{
-                                            color: 'black',
-                                            background: 'blanchedalmond',
-                                            border: '2px solid gold',
-                                            borderRadius: '8px',
-                                            marginTop: '10px',
-                                            marginBottom: '20px',
-                                        }}
-                                    >
-                                        <Text strong>Подтвердить</Text>
-                                    </Button>
-                                </Row>
+                                    </Row>
+                                </Spinner>
                             </Text>
                         </Col>
                     </Col>
@@ -406,7 +431,9 @@ const Check_list_1 = () => {
                             </Row>
                         </Col>
 
-
+                        <Col push={1} span={22}>
+                            <FireTable />
+                        </Col>
 
                         <Col
                             span={22}

@@ -2,8 +2,8 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import { getAllJobTitles } from '@app/api/dept_job.api';
 import FireForm from '../chListForms/FormFire';
+import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
 
 export interface IFireCategory {
     nameBuild: string;
@@ -28,7 +28,7 @@ const FireTable: React.FC = () => {
 
     const fetch = () => {
         setTableData({ ...tableData, loading: true });
-        getAllJobTitles().then((res) => {
+        getAllFireCardBuildsBySubjId().then((res) => {
             setTableData({ data: res, loading: false });
         });
     };
@@ -45,14 +45,14 @@ const FireTable: React.FC = () => {
         setOpenEddingForm(isOpen);
     };
 
-    const searchCategories = (value: string) => {
-        setSearch(value);
-        console.log(value);
-    };
+    // const searchCategories = (value: string) => {
+    //     setSearch(value);
+    //     console.log(value);
+    // };
 
-    const searchFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value);
-    };
+    // const searchFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setSearch(e.target.value);
+    // };
 
     //   const filtredTable = useMemo<IFireCategory[]>(() => {
     //     return tableData.data.filter((item) => item.job.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
@@ -85,6 +85,7 @@ const FireTable: React.FC = () => {
             key: 2,
             title: ' Функциональное назначение',
             dataIndex: 'type',
+            render: (_, { idUnit_2 }) => <span>{idUnit_2.type}</span>
         },
         {
             key: 3,
@@ -135,9 +136,9 @@ const FireTable: React.FC = () => {
                 // onRow={onRow}
                 search={search}
                 FormComponent={(props) => <FireForm data={props.data} close={toggleModal} />}
-                searchFunc={searchCategories}
+                //searchFunc={searchCategories}
                 selected={selected}
-                setSearchFunc={searchFunc}
+                //setSearchFunc={searchFunc}
                 dataTable={{ data: table, loading: tableData.loading }}
                 columns={columns}
                 titleMoadlEditing={'Редактирование'}

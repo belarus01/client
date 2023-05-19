@@ -277,7 +277,7 @@ export const Step3: React.FC<any> = ({ data }) => {
         name="dolg_ruc_proverki"
         label={'Должность руководителя проверки '}
         hasFeedback
-      //rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
+        rules={[{ required: true, message: 'Введите должность руководителя проверки ' }]}
       >
         <Select
           placeholder={'Должность руководителя проверки '}
