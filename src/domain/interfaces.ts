@@ -1,11 +1,10 @@
-
 export interface User {
   uid: number;
   user: string;
   lName: string;
   fName: string;
   sName: string;
-  idDept: number;
+  idDept: number | null;
   idDeptUnits: number;
   idDeptJob: number;
   userRole: number;
@@ -17,6 +16,7 @@ export interface User {
   lastLogin: Date;
   loginAttempts: number;
   objRights: number;
+  fio: string;
 
   //sChlistTnpas: SChlistTnpa[];
   sSubjObjs: SSubjObj[];
@@ -192,6 +192,8 @@ export interface GeolocationData {
 }
 
 export interface SSubj {
+  staffChief?: string;
+  bossTel?: string;
   idSubj: number | null;
   numOpo?: string | null;
   subj?: string | null;
@@ -335,16 +337,17 @@ export interface Group {
 }
 
 export interface UserGroup {
-  idUserGroup: number;
-  idGroup: number;
-  uid: number;
+  idUserGroup: number | null;
+  idGroup: number | null;
+  uid: number | null;
   active: number | null;
-  dateRecord: Date;
+  dateRecord?: Date;
   dateBegin: Date | null;
   dateEnd: Date | null;
   typeUser: number | null;
-  idGroup2: Group;
-  u: User;
+  idGroup2?: Group;
+  u?: User;
+  uidGr2?: User;
 }
 
 export interface SEventsDef {
