@@ -6,9 +6,22 @@ import { useLocation, useParams } from 'react-router-dom';
 import { EventDocs } from '../../components/events/currentEvent/EventDocs';
 import { Spinner } from '../../components/common/Spinner/Spinner.styles';
 import { getEventOrderByIdWithRelations } from '@app/api/events.api';
+import { IEventOrder } from '@app/domain/interfaces';
 
 const CurrentEventPage: React.FC = () => {
-  const [currentEventOreder, setCurrentEventOreder] = useState(null);
+  const [currentEventOreder, setCurrentEventOreder] = useState<IEventOrder>({
+    idEvent: null,
+    idSubj: null,
+    idUnit_3: null,
+    idUnit_4: null,
+    org: 1,
+    nameAgent: '',
+    postAgent: '',
+    uidBoss: null,
+    fioPostTitle: '',
+    dateBegin: '',
+    dateEnd: '',
+  });
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { idEventOrder } = useParams();
@@ -17,7 +30,9 @@ const CurrentEventPage: React.FC = () => {
     setLoading(true);
     getEventOrderByIdWithRelations(idEvent).then((event) => {
       setLoading(false);
-      setCurrentEventOreder(event);
+      console.log(event);
+
+      setCurrentEventOreder(event[0]);
     });
   };
 

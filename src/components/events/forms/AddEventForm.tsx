@@ -38,6 +38,7 @@ import * as S from '../../eventCard/eventCard.styles';
 import { Option } from '@app/components/common/selects/Select/Select';
 import { IDepartment } from '@app/components/departments/tables/DepatmentsTable';
 import { createGroup, getAllGroups } from '@app/api/groups.api';
+import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
 
 // interface Option extends DefaultOptionType {
 //   children?: Option[];
@@ -135,7 +136,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
       dateEnd: values.dateEnd.format('YYYY-MM-DD'),
       status: values.status,
       technical: values.technical,
-      uidBoss: values.postTitle,
+      uidBoss: values.uidBoss,
       fioPostTitle: values.fioPostTitle,
       dateBeginFact: values.dateBeginFact ? values.dateBeginFact.format('YYYY-MM-DD') : values.dateBeginFact,
       dateEndFact: values.dateEndFact ? values.dateEndFact.format('YYYY-MM-DD') : values.dateEndFact,
@@ -154,7 +155,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
       org: 1,
       idUnit_0: spher,
     }));
-    eventOrder.eventOrderSheras = eventOrderSheras;
+    eventOrder.eventOrderSpheras = eventOrderSheras;
     console.log('eventOrder', eventOrder);
     console.log('save', submitForm);
 
@@ -398,22 +399,6 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
     });
     //setSelectedDept(deps?.find(element=>element.active))
   };
-
-  // const addField = () => {
-  //   const newFiled = [...field];
-  //   newFiled.push(1);
-  //   setField(newFiled);
-  // };
-  // const onCreateGroupClick = () => {};
-
-  // const onChange = (value: string[], selectedOptions: Option[]) => {
-  //   console.log(value, selectedOptions);
-  // };
-
-  // const loadData = (selectedOptions: Option[]) => {
-  //   const targetOption = selectedOptions[selectedOptions.length - 1];
-  //   targetOption.loading = true;
-  // };
 
   useEffect(() => {
     setLoading(true);
@@ -674,13 +659,10 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
             </Col>
           </Row>
 
-          <BaseButtonsForm.Item label="Должность лица, выдавшего предписание на проведение проверки" name="postTitle">
-            <Input />
-          </BaseButtonsForm.Item>
-
-          <BaseButtonsForm.Item label="Ф.И.О лица, выдавшего предписание на проведение проверки" name="fioPostTitle">
-            <Input />
-          </BaseButtonsForm.Item>
+          <UsersSelectWithPostAndTel
+            labelPost="Должность лица, выдавшего предписание на проведение проверки"
+            labelUser="Ф.И.О лица, выдавшего предписание на проведение проверки"
+          />
 
           <BaseButtonsForm.Item label="Должность представителя субъекта" name="postAgent">
             <Input />

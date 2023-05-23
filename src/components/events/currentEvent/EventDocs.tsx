@@ -18,7 +18,7 @@ import EventCreateDocForm from './formGenerate/EventCreateDocForm';
 import { useNavigate } from 'react-router-dom';
 
 interface EventQuationProps {
-  event?: IEventOrder | null;
+  event: IEventOrder;
 }
 
 const ListDoc = styled(ListItem)`
@@ -198,7 +198,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
         </Modal>*/}
         {shownModal && (
           <Modal open={shownModal} onCancel={() => toggleModal()} title="Создание документа" footer={false}>
-            <EventCreateDocForm toggleModal={toggleModal} currentDoc={currentDoc} />
+            <EventCreateDocForm event={event} toggleModal={toggleModal} currentDoc={currentDoc} />
           </Modal>
         )}
       </Spinner>

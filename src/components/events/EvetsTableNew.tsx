@@ -231,7 +231,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
                 console.log(event.technical);
 
                 navigate(`/planning/events/${event.idEventOrder}`, {
-                  state: [...events.data],
+                  state: event,
                 });
                 // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
               }}

@@ -19,6 +19,8 @@ export const ListItem = styled.div`
   margin-bottom: 20px;
   position: relative;
   align-items: center;
+  line-height: 14px;
+  min-width: 550px;
   height: 60px;
   justify-items: center;
   ::after {

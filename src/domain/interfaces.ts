@@ -16,6 +16,7 @@ export interface User {
   lastLogin: Date;
   loginAttempts: number;
   objRights: number;
+  fio?: string;
 
   //sChlistTnpas: SChlistTnpa[];
   sSubjObjs: SSubjObj[];
@@ -360,7 +361,8 @@ export interface UserGroup {
   dateEnd: Date | null;
   typeUser: number | null;
   idGroup2: Group;
-  u: User;
+  u?: User;
+  uidGr2?: User;
 }
 
 export interface SEventsDef {
@@ -815,11 +817,11 @@ export interface IEventOrder {
   idUnit_4: number | null;
   nameAgent: string;
   postAgent: string;
-  uidBoss: string | number;
+  uidBoss: string | number | null;
   status?: number | null;
   technical?: string;
   org: number;
-  eventOrderSheras?: IEventsSphere[];
+  eventOrderSpheras?: IEventsSphere[];
 }
 
 export interface IDoc {

@@ -11,9 +11,14 @@ import { ReactI18NextChild } from 'react-i18next';
 interface AddQuastionsFormEventProps {
   newEvent: IEventOrder;
   submitEventCreate: () => void;
+  params: {
+    ideventOrder: number;
+    org: number;
+    numAppendix: number[];
+  };
 }
 
-const AddQuastionsFormEvent: React.FC<AddQuastionsFormEventProps> = ({ newEvent, submitEventCreate }) => {
+const AddQuastionsFormEvent: React.FC<AddQuastionsFormEventProps> = ({ params, newEvent, submitEventCreate }) => {
   const [forms, setForms] = useState<any>([]);
   const [idFormCurrent, setIdFormCurrent] = useState(null);
   const [loading, setLoading] = useState<boolean>(false);
