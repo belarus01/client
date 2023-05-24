@@ -4,26 +4,19 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
 import FireForm from '../chListForms/FormFire';
 import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
+import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 
-export interface IFireCategory {
-  nameBuild: string;
-  space: string;
-  type: string;
-  idUnit_2?: string;
-  idList: number | null;
-}
 const FireTable: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: IFireCategory[]; loading: boolean }>({
+  const [tableData, setTableData] = useState<{ data: IFireCardBuild[]; loading: boolean }>({
     data: [],
     loading: false,
   });
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
-  const [selected, setSelected] = useState<IFireCategory>({
-    nameBuild: '',
-    space: '',
-    type: '',
-    idUnit_2: '',
+  const [selected, setSelected] = useState<IFireCardBuild>({
+    nameBuild: null,
+    idSubjObj: null,
+    idUnit_3: { idUnit: null },
     idList: null,
   });
   const [search, setSearch] = useState('');
@@ -47,22 +40,7 @@ const FireTable: React.FC = () => {
     setOpenEddingForm(isOpen);
   };
 
-  // const searchCategories = (value: string) => {
-  //     setSearch(value);
-  //     console.log(value);
-  // };
-
-  // const searchFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setSearch(e.target.value);
-  // };
-
-  //   const filtredTable = useMemo<IFireCategory[]>(() => {
-  //     return tableData.data.filter((item) => item.job.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
-  //   }, [search, tableData]);
-
-  // No BE
-
-  const deleteCategory = (category: IFireCategory) => {
+  const deleteCategory = (category: IFireCardBuild) => {
     const newData = tableData.data.filter((item) => item.idList !== category.idList);
     setTableData({ ...tableData, data: newData });
   };
@@ -73,7 +51,7 @@ const FireTable: React.FC = () => {
     fetch();
   };
 
-  const table = useMemo<IFireCategory[]>(() => {
+  const table = useMemo<IFireCardBuild[]>(() => {
     return tableData.data;
   }, [tableData]);
 
@@ -87,18 +65,18 @@ const FireTable: React.FC = () => {
       key: 2,
       title: ' Функциональное назначение',
       dataIndex: 'type',
-      render: (_, { idUnit_2 }) => <span>{idUnit_2.type}</span>,
+      render: (_: unknown, { idUnit_3 }: { idUnit_3: SUnits }) => <span>{idUnit_3.type}</span>,
     },
     {
       key: 3,
       title: 'Площадь, кв.м',
-      dataIndex: 'space',
+      dataIndex: 'area',
     },
     {
       key: 4,
       title: 'Действия',
       align: 'center',
-      render: (itemSelected: IFireCategory) => {
+      render: (itemSelected: IFireCardBuild) => {
         function onDeleteDep() {
           Alert.confirm({
             title: 'Вы действительно хотите удалить?',

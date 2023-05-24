@@ -576,18 +576,18 @@ export interface MemorySizeResponse {
 }
 
 export interface SUnits {
-  idUnit: number;
-  idParent: number | null;
-  typeUnit: number | null;
-  num: string | null;
-  type: string | null;
-  typeSub: string | null;
-  name: string | null;
-  dateRecord: Date | null;
-  active: number;
-  org: number;
-  uid: number | null;
-  comm: string | null;
+  idUnit: number | null;
+  idParent?: number | null;
+  typeUnit?: number | null;
+  num?: string | null;
+  type?: string | null;
+  typeSub?: string | null;
+  name?: string | null;
+  dateRecord?: Date | null;
+  active?: number;
+  org?: number;
+  uid?: number | null;
+  comm?: string | null;
   //sPooSubjPbs: SPooSubjPb[];
   //sQuestions: SQuestion[];
 }
@@ -706,8 +706,8 @@ export interface IFireCardBuild {
   nameBuild: string | null;
   idUnit_6?: number | null;
   addr?: string | null;
-  numStaff?: number | null;
-  numPerson?: number | null;
+  numStaff?: string | number | null;
+  numPerson?: string | number | null;
   levelBuild?: string | null;
   space?: string | number | null;
   area?: string | number | null;
@@ -723,6 +723,14 @@ export interface IFireCardBuild {
   dateRecord?: Date | string | null;
   active?: 0 | 1;
   info?: string;
+  idUnit_2?: SUnits;
+  idUnit_41?: number | null;
+  name?: string | null;
+  idUnit_3?: SUnits;
+  idParent?: SUnits;
+  type?: SUnits;
+  idUnit?: SUnits;
+  idUnit_17?: SUnits;
 }
 
 export interface ISopbList {
