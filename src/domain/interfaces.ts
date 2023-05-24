@@ -821,7 +821,29 @@ export interface IEventOrder {
   status?: number | null;
   technical?: string;
   org: number;
-  eventOrderSpheras?: IEventsSphere[];
+  eventOrderSheras?: IEventsSphere[];
+  questions?: IQuestion[];
+}
+
+export interface IQuestion {
+  idForm: number;
+  idTypeDoc?: number;
+  numAppendix?: number;
+  nameDoc: string;
+  pathTempl?: null | string;
+  nameTempl?: null | string;
+  dateFrom?: null | string | Date;
+  dateTo?: null | string | Date;
+  org: number;
+  dateRecord?: string | null | Date;
+  uid?: null | number | string;
+  active?: number;
+  comm?: null | string | number;
+}
+
+export interface IQuestionForEvent {
+  checkLists: IQuestion[];
+  questionsAdditional: IQuestion[];
 }
 
 export interface IDoc {

@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useEffect, useMemo, useState } from 'react';
-import { Modal as Alert, Button, Space } from 'antd';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Modal as Alert, Button, Space, message, notification } from 'antd';
 import TheTable from '@app/components/tables/TheTable';
 import { deletePogSubjAutoById, getPogAuto } from '@app/api/pog.api';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   const [modalAdding, setModalAddding] = useState(false);
   const [modalEditing, setModalEditing] = useState(false);
   const [search, setSearch] = useState('');
+  const closeble = useRef(false);
 
   const getCurrentEvents = (idSubj: number) => {
     if (idSubj) {
@@ -63,6 +64,13 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   };
 
   const toggleModalAdding = (isOpen = true) => {
+    if (!isOpen) {
+      if (closeble.current) {
+        setModalAddding(isOpen);
+      }
+      notification.error({ message: 'Вы не закончили создание мероприятия ' });
+      return;
+    }
     setModalAddding(isOpen);
   };
 
@@ -286,6 +294,10 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
     getEvents(idSubj as number);
   };
 
+  const canIClose = (isCloseble = false) => {
+    closeble.current = isCloseble;
+  };
+
   return (
     <>
       <TheTable
@@ -304,7 +316,7 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
         openAddingForm={modalAdding}
         openEditingForm={modalEditing}
         titleButtonAdd="Добавить новое мероприятие"
-        propsFrom={{ submitForm: save }}
+        propsFrom={{ submitForm: save, canIClose: canIClose }}
       />
     </>
   );

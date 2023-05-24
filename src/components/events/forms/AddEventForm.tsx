@@ -9,6 +9,7 @@ import {
   IEventOrder,
   IEventsSphere,
   IGroup,
+  IQuestionForEvent,
   IUnits,
   SDept,
   SDeptNode,
@@ -53,9 +54,9 @@ type TOptions = {
 
 interface AddEventOrderForm {
   submitForm?: () => void;
-  getNewEvent: (event: IEventOrder) => void;
+  getNewEventWithsQues: (event: { event: IEventOrder; questions: IQuestionForEvent }) => void;
 }
-export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, getNewEvent }) => {
+export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, getNewEventWithsQues }) => {
   const [unp, setUnp] = useState<string>();
   const [subj, setSubj] = useState<SSubj>();
   const [type, setType] = useState<any>();
@@ -155,16 +156,16 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
       org: 1,
       idUnit_0: spher,
     }));
-    eventOrder.eventOrderSpheras = eventOrderSheras;
+    eventOrder.eventOrderSheras = eventOrderSheras;
     console.log('eventOrder', eventOrder);
     console.log('save', submitForm);
 
     // submitForm(eventOrder);
     // save(eventOrder);
-    createEventsWithsSphere(eventOrder).then((event) => {
-      console.log(event);
+    createEventsWithsSphere(eventOrder).then((eventWithsQues) => {
+      console.log(eventWithsQues);
       setLoading(false);
-      getNewEvent(event);
+      getNewEventWithsQues(eventWithsQues);
     });
   };
 
