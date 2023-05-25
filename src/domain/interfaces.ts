@@ -862,3 +862,32 @@ export interface IDoc {
   active?: number | null;
   comm?: string;
 }
+
+export interface IDefection {
+  idDef: number | string;
+  idTnpa: number;
+  numReg: number;
+  nameDef: string;
+  recomend: string;
+  shortTnpa: string;
+  typeDoc: string;
+  chapterTnpa: string;
+  headTnpa: number | string;
+  articleTnpa: number | string;
+  punctTnpa: number | string;
+  subpunctTnpa: number | string;
+  partTnpa: number | string;
+  paragrTnpa: number | string;
+  preambleTnpa: number | string;
+  chList: string;
+  numQuestion: number | string;
+  rulePunct: string;
+  org: number;
+  idForm: number | string;
+  typeDef: number | string;
+  dateRecord: Date | string;
+  dateBegin: number | string | null;
+  dateEnd: number | string | null;
+  active: number | null;
+  uid: number | string | null;
+}
