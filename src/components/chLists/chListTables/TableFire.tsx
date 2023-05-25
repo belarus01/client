@@ -6,11 +6,12 @@ import FireForm from '../chListForms/FormFire';
 import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 
-const FireTable: React.FC = () => {
-  const [tableData, setTableData] = useState<{ data: IFireCardBuild[]; loading: boolean }>({
-    data: [],
-    loading: false,
-  });
+interface FireTableProps {
+  data: { data: IFireCardBuild[]; loading: boolean };
+  update: () => void;
+}
+
+const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
   const [selected, setSelected] = useState<IFireCardBuild>({
@@ -21,17 +22,6 @@ const FireTable: React.FC = () => {
   });
   const [search, setSearch] = useState('');
 
-  const fetch = () => {
-    setTableData({ ...tableData, loading: true });
-    getAllFireCardBuildsBySubjId().then((res) => {
-      setTableData({ data: res, loading: false });
-    });
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
-
   const toggleModalAdding = (isOpen = true) => {
     setOpenAddingForm(isOpen);
   };
@@ -41,19 +31,15 @@ const FireTable: React.FC = () => {
   };
 
   const deleteCategory = (category: IFireCardBuild) => {
-    const newData = tableData.data.filter((item) => item.idList !== category.idList);
-    setTableData({ ...tableData, data: newData });
+    // const newData = tableData.data.filter((item) => item.idList !== category.idList);
+    // setTableData({ ...tableData, data: newData });
   };
 
   const toggleModal = () => {
     setOpenAddingForm(false);
     setOpenEddingForm(false);
-    fetch();
+    update();
   };
-
-  const table = useMemo<IFireCardBuild[]>(() => {
-    return tableData.data;
-  }, [tableData]);
 
   const columns = [
     {
@@ -119,7 +105,7 @@ const FireTable: React.FC = () => {
         //searchFunc={searchCategories}
         selected={selected}
         //setSearchFunc={searchFunc}
-        dataTable={{ data: table, loading: tableData.loading }}
+        dataTable={data}
         columns={columns}
         titleMoadlEditing={'Редактирование'}
         titleModalAdding={'Создание'}

@@ -6,17 +6,23 @@ import { Button } from 'antd';
 import FormTreb from './chListForms/FormTreb';
 import { useEffect, useState } from 'react';
 import FireTable from './chListTables/TableFire';
-import { SSubj } from '@app/domain/interfaces';
+import { IFireCardBuild, SSubj } from '@app/domain/interfaces';
 import { Spinner } from '../common/Spinner/Spinner';
 import { getSubjectByUnp } from '@app/api/subjects.api';
 import FormFIO from './chListForms/FormFIO';
+import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
+import FormSumsBildings from './chListForms/FormSumsBildings';
 
 const { Text } = Typography;
 
-const Check_list_1: React.FC = () => {
+const Check_list_1: React.FC<IFireCardBuild> = () => {
   const [subj, setSubj] = useState<SSubj>({
     idSubj: null,
     unp: '',
+  });
+  const [subjBuilds, setSubjBuilds] = useState<{ data: IFireCardBuild[]; loading: boolean }>({
+    data: [],
+    loading: false,
   });
 
   const [loadingUnp, setLoadingUnp] = useState<boolean>(false);
@@ -100,11 +106,20 @@ const Check_list_1: React.FC = () => {
     });
   };
 
+  const getSubjBuilds = () => {
+    setSubjBuilds({ ...subjBuilds, loading: true });
+    getAllFireCardBuildsBySubjId().then((res) => {
+      setSubjBuilds({ data: res, loading: false });
+    });
+  };
+
   useEffect(() => {
+    getSubjBuilds();
     getTrebs().then((res) => {
       setFields(res);
       setLoadingFormTreb(false);
     });
+    //getSumPersonal();
   }, []);
 
   return (
@@ -153,18 +168,6 @@ const Check_list_1: React.FC = () => {
                   <Text>Дата направления</Text>
 
                   <Col>
-                    {/* <Cascader placeholder="выбор из списка" style={{ width: 170, marginLeft: "-15px" }}
-                                            options={[
-                                                {
-                                                    value: '12.11.2022',
-                                                    label: '12.11.2022',
-                                                },
-                                                {
-                                                    value: '05.11.2022',
-                                                    label: '05.11.2022',
-                                                },
-                                            ]}
-                                        /> */}
                     <DatePicker onChange={onChange} style={{ marginLeft: '15px', marginTop: '-10px' }} />
                   </Col>
                 </Row>
@@ -379,50 +382,13 @@ const Check_list_1: React.FC = () => {
             </Col>
 
             <Col span={20} offset={2} style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'left' }}>
-              <Row>
-                <Text style={{ fontSize: '17px' }}>Численность работников (персонала):</Text>
-
-                <Col>
-                  <Input
-                    placeholder="заполняется вручную"
-                    style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }}
-                  />
-                </Col>
-
-                <Text style={{ fontSize: '17px', marginLeft: '15px' }}>чел.</Text>
-              </Row>
-
-              <Row style={{ marginTop: '20px' }}>
-                <Text style={{ fontSize: '17px' }}>Расчетное количество посетителей:</Text>
-
-                <Col>
-                  <Input
-                    placeholder="заполняется вручную"
-                    style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }}
-                  />
-                </Col>
-
-                <Text style={{ fontSize: '17px', marginLeft: '15px' }}>чел.</Text>
-              </Row>
-
-              <Row style={{ marginTop: '20px' }}>
-                <Text style={{ fontSize: '17px' }}>Площадь территории:</Text>
-
-                <Col>
-                  <Input
-                    placeholder="заполняется вручную"
-                    style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }}
-                  />
-                </Col>
-
-                <Text style={{ fontSize: '17px', marginLeft: '15px' }}>
-                  м<sup>2</sup>.
-                </Text>
-              </Row>
+              <Spinner spinning={subjBuilds.loading}>
+                <FormSumsBildings data={subjBuilds.data} />
+              </Spinner>
             </Col>
 
             <Col push={1} span={22}>
-              <FireTable />
+              <FireTable data={subjBuilds} update={getSubjBuilds} />
             </Col>
 
             <Row justify={'center'}>

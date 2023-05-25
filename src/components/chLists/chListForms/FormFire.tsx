@@ -107,9 +107,9 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
         initialValues={{
           nameBuild: newCategory.nameBuild,
           area: newCategory.area,
-          type: newCategory.type,
-          name: newCategory.name,
-          category: newCategory.type,
+          type: newCategory.idUnit_3?.idUnit,
+          tip: newCategory.idUnit_2?.idUnit,
+          category: newCategory.idUnit_17?.idUnit,
           numStaff: newCategory.numStaff,
           numPerson: newCategory.numPerson,
         }}
@@ -131,7 +131,11 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Площадь, кв.м" name="area">
-          <Input onChange={(e) => setNewCategory({ ...newCategory, area: (newCategory.area = e.target.value) })} />
+          <Input
+            type="number"
+            defaultValue={newCategory.area || ''}
+            onChange={(e) => setNewCategory({ ...newCategory, area: (newCategory.area = e.target.value) })}
+          />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Тип" name="tip">
           <Select
@@ -150,12 +154,14 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Численность работников (персонала)" name="numStaff">
           <Input
+            type="number"
             defaultValue={newCategory.numStaff || ''}
             onChange={(e) => setNewCategory({ ...newCategory, numStaff: (newCategory.numStaff = e.target.value) })}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Расчетное количество посетителей" name="numPerson">
           <Input
+            type="number"
             defaultValue={newCategory.numPerson || ''}
             onChange={(e) => setNewCategory({ ...newCategory, numPerson: (newCategory.numPerson = e.target.value) })}
           />
