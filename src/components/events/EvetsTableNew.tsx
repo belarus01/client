@@ -67,9 +67,10 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
     if (!isOpen) {
       if (closeble.current) {
         setModalAddding(isOpen);
+      } else {
+        notification.error({ message: 'Вы не закончили создание мероприятия ' });
+        return;
       }
-      notification.error({ message: 'Вы не закончили создание мероприятия ' });
-      return;
     }
     setModalAddding(isOpen);
   };

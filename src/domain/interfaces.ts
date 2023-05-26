@@ -842,7 +842,7 @@ export interface IQuestion {
 }
 
 export interface IQuestionForEvent {
-  checkLists: IQuestion[];
+  checklists: IQuestion[];
   questionsAdditional: IQuestion[];
 }
 
@@ -890,4 +890,14 @@ export interface IDefection {
   dateEnd: number | string | null;
   active: number | null;
   uid: number | string | null;
+}
+
+export interface IIdQuestionsForDoc {
+  checklists?: number[];
+  questionsAdditional?: number[];
+}
+
+export interface IQuestionsForDoc {
+  checklists: IDefection[];
+  questionsAdditional?: IDefection[];
 }

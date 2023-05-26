@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AddEventOrderForm } from './forms/AddEventForm';
-import { IDefection, IEventOrder, IQuestionForEvent } from '@app/domain/interfaces';
+import { IDefection, IEventOrder, IQuestionForEvent, IQuestionsForDoc } from '@app/domain/interfaces';
 import AddQuastionsFormEvent from './forms/AddQuastionsFormEvent';
 import AddQuestionsInEvent from './forms/AddQuestionsInEvent';
 
@@ -25,7 +25,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({ submitForm, canIClose, ...pro
       org: 0,
     },
     questions: {
-      checkLists: [],
+      checklists: [],
       questionsAdditional: [],
     },
   });
@@ -39,33 +39,52 @@ const CreateEvent: React.FC<CreateEventProps> = ({ submitForm, canIClose, ...pro
     setNewEvent(eventWitsQues);
   };
 
-  const getQuestionsCurrent = (questions: IDefection[]) => {
-    setQuestions(questions);
+  const getQuestionsCurrent = (questions: IQuestionsForDoc) => {
+    getQuestCheckLists(questions.checklists);
+    if (questions.questionsAdditional && questions.questionsAdditional.length > 0) {
+      setQuestions(questions.questionsAdditional);
+    }
   };
 
   const getQuestCheckLists = (questionsChekLists: IDefection[]) => {
     setQuestionsCheckLists(questionsChekLists);
   };
 
+  const finishCreatedQuestsForEvent = (allQuests: number[]) => {
+    console.log(allQuests);
+
+    canIClose(true);
+    // createEventOrderQueDef(newEvent.idEventOrder, allQuests)
+    submitForm();
+  };
+
+  useEffect(() => {
+    console.log(questions, 'questions');
+  }, [questions]);
+
   useEffect(() => {
     canIClose(true);
   }, [canIClose]);
 
   const shownAddEventOrderForm = !newEvent.event.idEventOrder && (
-    <AddEventOrderForm submitForm={submitForm} getNewEventWithsQues={getNewEventWitsQues} {...props} />
+    <AddEventOrderForm getNewEventWithsQues={getNewEventWitsQues} {...props} />
   );
   const shownAddQuestionsForm = newEvent.event.idEventOrder && questions.length == 0 && (
     <AddQuastionsFormEvent
-      getQuestCheckLists={getQuestCheckLists}
       getQuestionsCurrent={getQuestionsCurrent}
       canIClose={canIClose}
       submitEventCreate={submitForm}
       newEvent={newEvent}
+      finishCreate={finishCreatedQuestsForEvent}
     />
   );
 
-  const shownQuestionsSelect = questions.length > 0 && (
-    <AddQuestionsInEvent questionsCheckLists={questionsCheckLists} data={questions} />
+  const shownQuestionsSelect = questions && questions.length > 0 && (
+    <AddQuestionsInEvent
+      finishCreate={finishCreatedQuestsForEvent}
+      questionsCheckLists={questionsCheckLists}
+      data={questions}
+    />
   );
   return (
     <>

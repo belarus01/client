@@ -8,6 +8,7 @@ import { Button } from '@app/components/common/buttons/Button/Button';
 export interface AddQuestionsInEvent {
   data: IDefection[];
   questionsCheckLists: IDefection[];
+  finishCreate: (allQuestsForEvent: number[]) => void;
 }
 
 const columns = [
@@ -18,7 +19,7 @@ const columns = [
   },
 ];
 
-const AddQuestionsInEvent: React.FC<AddQuestionsInEvent> = ({ data, questionsCheckLists }) => {
+const AddQuestionsInEvent: React.FC<AddQuestionsInEvent> = ({ data, questionsCheckLists, finishCreate }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<IDefection[]>([]);
 
@@ -36,6 +37,10 @@ const AddQuestionsInEvent: React.FC<AddQuestionsInEvent> = ({ data, questionsChe
 
   const createEventOrderWithThemeAndDefections = () => {
     console.log(selectedRows, questionsCheckLists);
+    finishCreate([
+      ...(questionsCheckLists.map((ques) => ques.idDef) as number[]),
+      ...(selectedRows.map((ques) => ques.idDef) as number[]),
+    ]);
     // createEventOrderQueDef(selectedRows);
   };
 
