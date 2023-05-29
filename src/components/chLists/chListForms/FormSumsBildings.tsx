@@ -1,3 +1,4 @@
+import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IFireCardBuild } from '@app/domain/interfaces';
 import { Col, Input, Row, Typography } from 'antd';
 import React, { useMemo } from 'react';
@@ -47,37 +48,40 @@ const FormSumsBildings: React.FC<FormSumsBildingsProps> = ({ data }) => {
   }, [data]);
   return (
     <>
-      <>
+      <BaseButtonsForm isFieldsChanged={false}>
         <Row>
           <Text style={{ fontSize: '17px' }}>Численность работников (персонала):</Text>
-
           <Col>
-            <Input value={numStaff} style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }} />
+            <BaseButtonsForm.Item>
+              <Input value={numStaff} style={{ width: 190, marginLeft: '15px', marginTop: '-15px' }} />
+            </BaseButtonsForm.Item>
           </Col>
 
           <Text style={{ fontSize: '17px', marginLeft: '15px' }}>чел.</Text>
         </Row>
-        <Row style={{ marginTop: '20px' }}>
+        <Row>
           <Text style={{ fontSize: '17px' }}>Расчетное количество посетителей:</Text>
-
           <Col>
-            <Input value={numPerson} style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }} />
+            <BaseButtonsForm.Item>
+              <Input value={numPerson} style={{ width: 190, marginLeft: '15px', marginTop: '-15px' }} />
+            </BaseButtonsForm.Item>
           </Col>
 
           <Text style={{ fontSize: '17px', marginLeft: '15px' }}>чел.</Text>
         </Row>
-        <Row style={{ marginTop: '20px' }}>
+        <Row>
           <Text style={{ fontSize: '17px' }}>Площадь территории:</Text>
-
           <Col>
-            <Input value={area} style={{ width: 190, marginLeft: '15px', marginTop: '-10px' }} />
+            <BaseButtonsForm.Item>
+              <Input value={area} style={{ width: 190, marginLeft: '15px', marginTop: '-15px' }} />
+            </BaseButtonsForm.Item>
           </Col>
 
           <Text style={{ fontSize: '17px', marginLeft: '15px' }}>
             м<sup>2</sup>.
           </Text>
         </Row>
-      </>
+      </BaseButtonsForm>
     </>
   );
 };

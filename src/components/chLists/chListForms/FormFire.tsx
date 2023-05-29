@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Select } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
+import { IFireCardBuild } from '@app/domain/interfaces';
 import {
   getAllUnitBuildigAndNaruzhCategs,
   getAllUnitBuildingTypes,
@@ -37,7 +37,6 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
         label: clas.type as string,
         value: clas.idUnit as number,
       }));
-
       setOptionsFunctionalClasses(optionsFiltred);
       setLoadingFunctionalClasses(false);
     });
