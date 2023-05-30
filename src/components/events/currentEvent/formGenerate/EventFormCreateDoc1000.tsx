@@ -7,7 +7,7 @@ import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { TextArea } from '@app/components/common/inputs/Input/Input';
 import { Select } from '@app/components/common/selects/Select/Select';
-import { IEventOrder, UserGroup } from '@app/domain/interfaces';
+import { IEventOrder, IFormReport, UserGroup } from '@app/domain/interfaces';
 import { DatePicker, Input } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -74,28 +74,32 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
     setBossPost(currentBoss?.uidGr2?.idDeptJob2.job as string);
   };
 
-  const onFinishCreateDocUved = (values: object) => {
+  const onFinishCreateDocUved = (values: IFormReport) => {
     console.log(values);
 
+    if (values.dateDoc) {
+      values.dateDoc = new Date(values.dateDoc).toLocaleDateString();
+    }
     const field = {
       ...values,
       idForm: 1000,
       idEventOrder: idEventOrder,
       org: 1,
-      dateDoc: new Date(values.dateDoc).toLocaleDateString(),
+      dateDoc: values.dateDoc,
     };
 
     console.log(field);
 
     createDoc(field).then(() => {
-      getFormReportMaxIdList().then((idList) => {
-        generateDoc1({
-          id_list: idList,
-          id_event_order: idEventOrder,
-          unp: '100297103',
-          // unp: unp
+      if (idEventOrder) {
+        getFormReportMaxIdList(1000, idEventOrder).then(({ idList }) => {
+          generateDoc1({
+            id_list: idList,
+            id_event_order: idEventOrder,
+            unp: unp, //'100297103',
+          });
         });
-      });
+      }
     });
   };
 
@@ -195,7 +199,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
 
         <BaseButtonsForm.Item>
           <Button htmlType="submit" type="primary">
-            Сохранить
+            Создать документ в формате Word
           </Button>
         </BaseButtonsForm.Item>
       </BaseButtonsForm>

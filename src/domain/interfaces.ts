@@ -901,3 +901,24 @@ export interface IQuestionsForDoc {
   checklists: IDefection[];
   questionsAdditional?: IDefection[];
 }
+
+export interface IFormReport {
+  idForm?: number;
+  idEventOrder?: number | string;
+  idEventOrderObj?: number;
+  pathTemp?: string;
+  numDoc?: string;
+  dateDoc?: Date | string;
+  addrRecord?: string;
+  org?: number;
+  //active?: number;
+  comm?: string;
+  otherInfo?: string;
+  receiver?: string;
+  dateRec?: Date | string;
+  flRec?: number;
+  flBook?: number;
+  numBook?: string;
+  dateBook?: Date;
+  uidBoss?: number;
+}
