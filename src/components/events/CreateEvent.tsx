@@ -3,6 +3,8 @@ import { AddEventOrderForm } from './forms/AddEventForm';
 import { IDefection, IEventOrder, IQuestionForEvent, IQuestionsForDoc } from '@app/domain/interfaces';
 import AddQuastionsFormEvent from './forms/AddQuastionsFormEvent';
 import AddQuestionsInEvent from './forms/AddQuestionsInEvent';
+import { createEventOrderQueDef } from '@app/api/events.api';
+import { notification } from 'antd';
 
 interface CreateEventProps {
   submitForm: () => void;
@@ -54,7 +56,13 @@ const CreateEvent: React.FC<CreateEventProps> = ({ submitForm, canIClose, ...pro
     console.log(allQuests);
 
     canIClose(true);
-    // createEventOrderQueDef(newEvent.idEventOrder, allQuests)
+    if (newEvent.event.idEventOrder) {
+      createEventOrderQueDef(newEvent.event.idEventOrder, allQuests).catch((e) => {
+        notification.error({ message: 'Упс... Что-то пошло не так' });
+        console.log(e);
+      });
+    }
+
     submitForm();
   };
 

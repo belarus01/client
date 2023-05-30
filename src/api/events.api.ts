@@ -28,3 +28,6 @@ export const getEventOrderByIdWithRelations = (idEventOrder: string | number) =>
 
 export const createQuestions = (idEventOrder: string | number, idForm: number) =>
   httpApi.post<any>(`events/create/questions/eventOrder/${idEventOrder}/idForm/${idForm}`).then(({ data }) => data);
+
+export const createEventOrderQueDef = (idEventOrder: string | number, idDefs: number[]) =>
+  httpApi.post<any>(`events/create/eventOrderQueDef/idEventOrder/${idEventOrder}`, idDefs).then(({ data }) => data);
