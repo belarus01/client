@@ -60,18 +60,6 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
               </Text>
             </Col>
 
-            <Row>
-              <Col span={8} offset={6}>
-                <Text strong style={{ fontSize: '17px', textAlign: 'center' }}>
-                  КОНТРОЛЬНЫЙ СПИСОК ВОПРОСОВ (ЧЕК-ЛИСТ) №
-                </Text>
-              </Col>
-              <Col>
-                <Input style={{ marginTop: '-15px', width: '100%' }} />
-              </Col>
-            </Row>
-            <br />
-
             <Col span={20} offset={2} style={{ textAlign: 'left' }}>
               <FormFIO />
               <Row justify={'center'}>

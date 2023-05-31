@@ -69,6 +69,19 @@ const FormFIO: React.FC = () => {
   return (
     <>
       <BaseButtonsForm isFieldsChanged={false} onFinish={onFinish}>
+        <Row>
+          <Col span={9} offset={6}>
+            <Text strong style={{ fontSize: '17px', textAlign: 'center' }}>
+              КОНТРОЛЬНЫЙ СПИСОК ВОПРОСОВ (ЧЕК-ЛИСТ) №
+            </Text>
+          </Col>
+          <Col span={4} offset={1}>
+            <BaseButtonsForm.Item name="num">
+              <Input style={{ marginTop: '-15px', width: '100%' }} />
+            </BaseButtonsForm.Item>
+          </Col>
+        </Row>
+        <br />
         <Spinner spinning={users.loading}>
           <Text style={{ fontSize: '17px' }}>
             в сфере государственного пожарного надзора, надзора за соблюдением законодательства при осуществлении
@@ -109,15 +122,15 @@ const FormFIO: React.FC = () => {
                   style={{ marginLeft: '15px', marginTop: '-10px' }}
                   options={[
                     {
-                      value: '65',
+                      value: '83',
                       label: 'внеплановой проверки',
                     },
                     {
-                      value: 'выборочной проверки',
+                      value: '81',
                       label: 'выборочной проверки',
                     },
                     {
-                      value: 'для использования при планировании проверок',
+                      value: '83',
                       label: 'для использования при планировании проверок',
                     },
                   ]}
