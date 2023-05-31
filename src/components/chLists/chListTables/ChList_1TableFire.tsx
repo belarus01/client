@@ -2,8 +2,7 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import FireForm from '../chListForms/FormFire';
-import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
+import FireForm from '../chListForms/ChList_1FormFire';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 
 interface FireTableProps {
@@ -113,6 +112,7 @@ const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
         toggleModalEditing={toggleModalEdding}
         openAddingForm={openAddingForm}
         openEditingForm={openEddingForm}
+        titleButtonAdd="Добавить новое сооружение"
       />
     </>
   );

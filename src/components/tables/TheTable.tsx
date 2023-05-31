@@ -72,6 +72,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           </Col>
         )}
       </Row>
+      <br />
       <Table
         columns={columns}
         dataSource={dataTable.data}

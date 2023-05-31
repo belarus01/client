@@ -1,4 +1,4 @@
-import FormFIO from '@app/components/chLists/chListForms/FormFIO';
+import FormFIO from '@app/components/chLists/chListForms/ChList_1FormFIO';
 import { UserGroup } from '@app/domain/interfaces';
 import { httpApi } from './http.api';
 
