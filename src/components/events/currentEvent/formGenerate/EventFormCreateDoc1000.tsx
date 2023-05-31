@@ -5,18 +5,18 @@ import { getSubjById } from '@app/api/subjects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { TextArea } from '@app/components/common/inputs/Input/Input';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { IEventOrder, IFormReport, UserGroup } from '@app/domain/interfaces';
-import { DatePicker, Input } from 'antd';
+import { DatePicker, Input, notification, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-interface EventFormCreateDoc1000Props {
+export interface EventFormCreateDoc {
   event: IEventOrder;
+  toggleModal: (isOpen: boolean) => void;
 }
 
-const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }) => {
+const EventFormCreateDoc1000: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
   const [boss, setBoss] = useState<{
     label: string;
     value: string | number | null;
@@ -28,6 +28,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
   const [bossPost, setBossPost] = useState('');
   const [loadingBosses, setLoadingBosses] = useState<boolean>(false);
   const [unp, setUnp] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { idEventOrder } = useParams();
 
@@ -76,6 +77,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
 
   const onFinishCreateDocUved = (values: IFormReport) => {
     console.log(values);
+    setLoading(true);
 
     if (values.dateDoc) {
       values.dateDoc = new Date(values.dateDoc).toLocaleDateString();
@@ -89,7 +91,6 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
     };
 
     console.log(field);
-
     createDoc(field).then(() => {
       if (idEventOrder) {
         getFormReportMaxIdList(1000, idEventOrder).then(({ idList }) => {
@@ -97,6 +98,11 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
             id_list: idList,
             id_event_order: idEventOrder,
             unp: unp, //'100297103',
+          }).then(() => {
+            setLoading(false);
+            if (toggleModal) {
+              toggleModal(false);
+            }
           });
         });
       }
@@ -137,7 +143,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc1000Props> = ({ event }
   }, [event]);
 
   return (
-    <Spinner spinning={loadingBosses}>
+    <Spinner spinning={loadingBosses || loading}>
       <BaseButtonsForm layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
         <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
           <Input />

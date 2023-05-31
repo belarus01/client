@@ -11,6 +11,7 @@ interface UsersSelectWithPostAndTelProps {
   labelUser?: string;
   labelPost?: string;
   labelTel?: string;
+  nameUid?: string;
 }
 
 const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
@@ -20,6 +21,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   labelUser,
   labelPost,
   labelTel,
+  nameUid,
 }) => {
   const [boss, setBoss] = useState<{
     label: string;
@@ -87,7 +89,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   }, [getBoss, uidBoss]);
   return (
     <>
-      <BaseButtonsForm.Item name="uidBoss" label={labelUser || 'ФИО'}>
+      <BaseButtonsForm.Item name={nameUid || 'uidBoss'} label={labelUser || 'ФИО'}>
         <Select loading={loadingBosses} options={optionsBosses} onChange={changePost} value={boss} />
       </BaseButtonsForm.Item>
       {shownPost && (

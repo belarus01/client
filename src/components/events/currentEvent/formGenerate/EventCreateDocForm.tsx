@@ -48,7 +48,11 @@ const EventCreateDocForm: React.FC<EventCreateDocFormProps> = ({ toggleModal, cu
       setComponent(CurrentFormComponent);
     }
   }, [currentDoc]);
-  return <Suspense fallback={<div>Loading...</div>}>{Component ? <Component event={event} /> : null}</Suspense>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {Component ? <Component event={event} toggleModal={toggleModal} /> : null}
+    </Suspense>
+  );
 };
 
 export default EventCreateDocForm;
