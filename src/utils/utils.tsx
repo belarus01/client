@@ -139,30 +139,29 @@ export const msToH = (ms: number): number => Math.floor(ms / 3600000);
 
 export const hToMS = (h: number): number => h * 3600000;
 
-export const makeTree = (nodes:SDeptNode[]) :SDeptNode[] =>{
-  let tree:SDeptNode[] = [];
-  for(let i = 0; i < nodes.length; i++) {
-      if(nodes[i].idParent){
-          let parent = nodes.filter(node=>node.idDept === nodes[i].idParent).pop();
-          parent?.children.push(nodes[i]);
-      }
-      else{
-          tree.push(nodes[i]);
-      }
+export const makeTree = (nodes: SDeptNode[]): SDeptNode[] => {
+  const tree: SDeptNode[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].idParent) {
+      const parent = nodes.filter((node) => node.idDept === nodes[i].idParent).pop();
+      parent?.children.push(nodes[i]);
+    } else {
+      tree.push(nodes[i]);
+    }
   }
   return tree;
-}
+};
 
-export const deptToTreeNode = (dept: SDept): SDeptNode =>{
+export const deptToTreeNode = (dept: SDept): SDeptNode => {
   return {
-      idDept: dept.idDept,
-      departament: dept.departament,
-      org: dept.org,
-      idParent: dept.idParent,
-      uid: dept.uid,
-      children: []
+    idDept: dept.idDept,
+    departament: dept.departament,
+    org: dept.org,
+    idParent: dept.idParent,
+    uid: dept.uid,
+    children: [],
   };
-}
+};
 
 export const getCurrencyPrice = (
   price: number | string,

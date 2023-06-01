@@ -8,6 +8,7 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useMounted } from '@app/hooks/useMounted';
 import { Space } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
+import { EventsTable } from '@app/components/events/EvetsTableNew';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -48,11 +49,22 @@ export const SubjectEvents: React.FC = () => {
     {
       key: '1',
       title: 'Мероприятие',
-      dataIndex: 'idEvent2',
+      dataIndex: 'idEvent',
       render: (idEvent2: SEvents) => {
         return <p>{idEvent2.event}</p>;
       },
     },
+    {
+      key: '2',
+      title: 'Тип',
+      dataIndex: 'idUnit_4',
+    },
+    {
+      key: '3',
+      title: 'Вид',
+      dataIndex: 'idUnit_3',
+    },
+
     {
       key: '2',
       title: 'Орган, выдавший предписание',
@@ -71,16 +83,7 @@ export const SubjectEvents: React.FC = () => {
       title: 'Основание назначения мероприятия',
       dataIndex: 'addrDescr',
     },
-    {
-      key: '5',
-      title: 'Вид',
-      dataIndex: 'idUnit_3',
-    },
-    {
-      key: '6',
-      title: 'Тип',
-      dataIndex: 'idUnit_4',
-    },
+
     {
       key: '7',
       title: 'Применяемые научно-технические средства',
@@ -127,7 +130,8 @@ export const SubjectEvents: React.FC = () => {
   ];
   return (
     <>
-      <Button onClick={handleAddClick}>Добавить мероприятие</Button>
+      <EventsTable />
+      {/* <Button onClick={handleAddClick}>Добавить мероприятие</Button>
       <Table
         dataSource={tableData.data}
         pagination={tableData.pagination}
@@ -135,7 +139,7 @@ export const SubjectEvents: React.FC = () => {
         scroll={{ x: 800 }}
         columns={columns}
         bordered
-      />
+      /> */}
     </>
   );
 };

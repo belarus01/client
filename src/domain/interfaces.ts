@@ -4,7 +4,7 @@ export interface User {
   lName: string;
   fName: string;
   sName: string;
-  idDept: number;
+  idDept: number | null;
   idDeptUnits: number;
   idDeptJob: number;
   userRole: number;
@@ -16,6 +16,7 @@ export interface User {
   lastLogin: Date;
   loginAttempts: number;
   objRights: number;
+  fio?: string;
 
   //sChlistTnpas: SChlistTnpa[];
   sSubjObjs: SSubjObj[];
@@ -191,6 +192,8 @@ export interface GeolocationData {
 }
 
 export interface SSubj {
+  staffChief?: string;
+  bossTel?: string;
   idSubj: number | null;
   numOpo?: string | null;
   subj?: string | null;
@@ -262,7 +265,7 @@ export interface SSoato {
 
 export interface SEvents {
   idEvent: number;
-  event: string | null;
+  event: string;
   numEvent: number | null;
   org: number | null;
   dateBegin: Date | null;
@@ -275,56 +278,67 @@ export interface SEvents {
 }
 
 export interface SEventsOrder {
-  idEventOrder: number;
+  idEventOrder: number | null;
   idEvent: number | null;
   idSubj: number | null;
-  idDeptIss: number | null;
-  idDept: number | null;
-  idGroup: number | null;
-  numOrder: string | null;
-  nameOrder: string | null;
-  reasonOrder: string | null;
-  idUnit_3: number | null;
-  idUnit_4: number | null;
-  sphera: number | null;
-  technical: string | null;
-  idUnit: number | null;
+  idDeptIss?: number | null;
+  idDept?: number | null;
+  idGroup?: number | null;
+  numOrder?: string | null;
+  nameOrder?: string | null;
+  reasonOrder?: string | null;
+  idUnit_3?: number | null;
+  idUnit_4?: number | null;
+  sphera?: number | null;
+  technical?: string | null;
+  idUnit?: number | null;
   org: number | null;
-  dateBegin: Date | null;
-  dateEnd: Date | null;
-  dateRecord: Date | null;
-  active: number;
-  status: string | null;
-  comm: string | null;
-  uid: number | null;
-  postTitle: string | null;
-  fioPostTitle: string | null;
-  dateOrder: Date | null;
-  periodCheckFrom: Date | null;
-  periodCheckTo: Date | null;
-  dateBeginFact: Date | null;
-  dateEndFact: Date | null;
-  dateStop: Date | null;
-  dateContinue: Date | null;
-  dateTo: Date | null;
-  postAgent: string | null;
-  nameAgent: string | null;
-  otherInfo: string | null;
-  idEventPlan: number | null;
-  idDept2: SDept;
-  idDeptIss2: SDept;
-  idEvent2: SEvents;
-  idGroup2: Group;
-  idSubj2: SSubj;
+  dateBegin?: Date | null;
+  dateEnd?: Date | null;
+  dateRecord?: Date | null;
+  active?: number;
+  status?: string | null;
+  comm?: string | null;
+  uid?: number | null;
+  postTitle?: string | null;
+  fioPostTitle?: string | null;
+  dateOrder?: Date | null;
+  periodCheckFrom?: Date | null;
+  periodCheckTo?: Date | null;
+  dateBeginFact?: Date | null;
+  dateEndFact?: Date | null;
+  dateStop?: Date | null;
+  dateContinue?: Date | null;
+  dateTo?: Date | null;
+  postAgent?: string | null;
+  nameAgent?: string | null;
+  otherInfo?: string | null;
+  idEventPlan?: number | null;
+  idDept2?: SDept;
+  idDeptIss2?: SDept;
+  idEvent2?: SEvents;
+  idGroup2?: Group;
+  idSubj2?: SSubj;
 
-  sEventsOrderAdmBans: SEventsOrderAdmBan[];
-  sEventsOrderAdmForces: SEventsOrderAdmForce[];
-  sEventsOrderData: SEventsOrderData[];
-  sEventsOrderDefs: SEventsOrderDef[];
-  sEventsOrderDefMtxes: SEventsOrderDefMtx[];
-  sEventsOrderObjs: SEventsOrderObj[];
-  sEventsPrivates: SEventsPrivate[];
-  notifications: Notification[];
+  spheries?: IEventsSphere[];
+  sEventsOrderAdmBans?: SEventsOrderAdmBan[];
+  sEventsOrderAdmForces?: SEventsOrderAdmForce[];
+  sEventsOrderData?: SEventsOrderData[];
+  sEventsOrderDefs?: SEventsOrderDef[];
+  sEventsOrderDefMtxes?: SEventsOrderDefMtx[];
+  sEventsOrderObjs?: SEventsOrderObj[];
+  sEventsPrivates?: SEventsPrivate[];
+  notifications?: Notification[];
+}
+
+export interface IEventsSphere {
+  idList: number | null;
+  idEventOrder: number;
+  org: number | null;
+  idUnits_4: number | null;
+  name?: string;
+  dateRecord?: Date | string;
+  uid?: string | number;
 }
 
 export interface Group {
@@ -340,16 +354,17 @@ export interface Group {
 }
 
 export interface UserGroup {
-  idUserGroup: number;
-  idGroup: number;
-  uid: number;
+  idUserGroup: number | null;
+  idGroup: number | null;
+  uid: number | null;
   active: number | null;
-  dateRecord: Date;
+  dateRecord?: Date;
   dateBegin: Date | null;
   dateEnd: Date | null;
   typeUser: number | null;
   idGroup2: Group;
-  u: User;
+  u?: User;
+  uidGr2?: User;
 }
 
 export interface SEventsDef {
@@ -507,28 +522,28 @@ export interface SEventsOrderQue {
 }
 
 export interface SEventsPlan {
-  idEventPlan: number;
+  idEventPlan?: number;
   idEvent: number | null;
   idSubj: number | null;
-  idDept: number | null;
-  numOrder: string | null;
-  unpDept: string | null;
-  nameDept: string | null;
-  idUnit_3: string | null;
-  idUnit_4: string | null;
-  org: number | null;
-  monthEvent: string | null;
-  halfyearEvent: number | null;
-  dateRecord: Date | null;
-  active: number;
-  status: string | null;
-  uid: number | null;
-  idObl: number | null;
-  unpSubj: string | null;
-  nameSubj: string | null;
-  telUser: string | null;
-  yearPlan: number | null;
-  idDept2: SDept;
+  idDept?: number | null;
+  numOrder?: string | null;
+  unpDept?: string | null;
+  nameDept?: string | null;
+  idUnit_3?: string | null;
+  idUnit_4?: string | null;
+  org?: number | null;
+  monthEvent?: string | null;
+  halfyearEvent?: number | null;
+  dateRecord?: Date | null;
+  active?: number;
+  status?: string | null;
+  uid?: number | null;
+  idObl?: number | null;
+  unpSubj?: string | null;
+  nameSubj?: string | null;
+  telUser?: string | null;
+  yearPlan?: number | null;
+  idDept2?: SDept;
 }
 
 export interface SEventsPrivate {
@@ -578,18 +593,18 @@ export interface MemorySizeResponse {
 }
 
 export interface SUnits {
-  idUnit: number;
-  idParent: number | null;
-  typeUnit: number | null;
-  num: string | null;
-  type: string | null;
-  typeSub: string | null;
-  name: string | null;
-  dateRecord: Date | null;
-  active: number;
-  org: number;
-  uid: number | null;
-  comm: string | null;
+  idUnit: number | null;
+  idParent?: number | null;
+  typeUnit?: number | null;
+  num?: string | null;
+  type?: string | null;
+  typeSub?: string | null;
+  name?: string | null;
+  dateRecord?: Date | null;
+  active?: number;
+  org?: number;
+  uid?: number | null;
+  comm?: string | null;
   //sPooSubjPbs: SPooSubjPb[];
   //sQuestions: SQuestion[];
 }
@@ -708,8 +723,8 @@ export interface IFireCardBuild {
   nameBuild: string | null;
   idUnit_6?: number | null;
   addr?: string | null;
-  numStaff?: number | null;
-  numPerson?: number | null;
+  numStaff?: string | number | null;
+  numPerson?: string | number | null;
   levelBuild?: string | null;
   space?: string | number | null;
   area?: string | number | null;
@@ -725,6 +740,14 @@ export interface IFireCardBuild {
   dateRecord?: Date | string | null;
   active?: 0 | 1;
   info?: string;
+  idUnit_2?: SUnits;
+  idUnit_41?: number | null;
+  name?: string | null;
+  idUnit_3?: SUnits;
+  idParent?: SUnits;
+  type?: SUnits;
+  idUnit?: SUnits;
+  idUnit_17?: SUnits;
 }
 
 export interface ISopbList {
@@ -775,4 +798,137 @@ export interface IOked {
   dateRecord: Date | string;
   active: 0 | 1;
   uid: string | number;
+}
+
+export interface IGroup {
+  idGroup?: null | number;
+  org?: number | null;
+  idDept?: number | null;
+  name: string;
+  dateRecord?: Date | string;
+  uid?: string | number | null;
+  users?: any[];
+}
+
+export interface IEventOrder {
+  dateBegin: Date | string;
+  dateBeginFact?: Date | string;
+  dateEnd: Date | string;
+  dateEndFact?: Date | string;
+  fioPostTitle: string;
+  idDept?: number;
+  idDeptIss?: number;
+  idEvent: number | null;
+  idEventOrder?: number | null;
+  idEventsPlan?: number;
+  idGroup?: number;
+  idSubj: number | null;
+  idUnit_3: number | string | null;
+  idUnit_4: number | null;
+  nameAgent: string;
+  postAgent: string;
+  uidBoss: string | number | null;
+  status?: number | null;
+  technical?: string;
+  org: number;
+  eventOrderSheras?: IEventsSphere[];
+  questions?: IQuestion[];
+}
+
+export interface IQuestion {
+  idForm: number;
+  idTypeDoc?: number;
+  numAppendix?: number;
+  nameDoc: string;
+  pathTempl?: null | string;
+  nameTempl?: null | string;
+  dateFrom?: null | string | Date;
+  dateTo?: null | string | Date;
+  org: number;
+  dateRecord?: string | null | Date;
+  uid?: null | number | string;
+  active?: number;
+  comm?: null | string | number;
+}
+
+export interface IQuestionForEvent {
+  checklists: IQuestion[];
+  questionsAdditional: IQuestion[];
+}
+
+export interface IDoc {
+  record?: string;
+  idForm: number | null;
+  idTypeDoc: number | null;
+  numAppendix?: number | null;
+  nameDoc: string;
+  pathTempl?: string;
+  nameTempl?: string;
+  dateFrom?: Date | string;
+  dateTo?: Date | string;
+  org: number;
+  dateRecord?: Date | string;
+  uid?: string | null | number;
+  active?: number | null;
+  comm?: string;
+}
+
+export interface IDefection {
+  idDef: number | string;
+  idTnpa: number;
+  numReg: number;
+  nameDef: string;
+  recomend: string;
+  shortTnpa: string;
+  typeDoc: string;
+  chapterTnpa: string;
+  headTnpa: number | string;
+  articleTnpa: number | string;
+  punctTnpa: number | string;
+  subpunctTnpa: number | string;
+  partTnpa: number | string;
+  paragrTnpa: number | string;
+  preambleTnpa: number | string;
+  chList: string;
+  numQuestion: number | string;
+  rulePunct: string;
+  org: number;
+  idForm: number | string;
+  typeDef: number | string;
+  dateRecord: Date | string;
+  dateBegin: number | string | null;
+  dateEnd: number | string | null;
+  active: number | null;
+  uid: number | string | null;
+}
+
+export interface IIdQuestionsForDoc {
+  checklists?: number[];
+  questionsAdditional?: number[];
+}
+
+export interface IQuestionsForDoc {
+  checklists: IDefection[];
+  questionsAdditional?: IDefection[];
+}
+
+export interface IFormReport {
+  idForm?: number;
+  idEventOrder?: number | string;
+  idEventOrderObj?: number;
+  pathTemp?: string;
+  numDoc?: string;
+  dateDoc?: Date | string;
+  addrRecord?: string;
+  org?: number;
+  //active?: number;
+  comm?: string;
+  otherInfo?: string;
+  receiver?: string;
+  dateRec?: Date | string;
+  flRec?: number;
+  flBook?: number;
+  numBook?: string;
+  dateBook?: Date;
+  uidBoss?: number;
 }
