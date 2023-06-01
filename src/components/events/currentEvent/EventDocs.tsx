@@ -1,4 +1,4 @@
-import { createDoc, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
+import { createFormReport, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IDoc, IEventOrder } from '@app/domain/interfaces';
 import React, { useEffect, useState } from 'react';
@@ -48,7 +48,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
   const openDocCreate = (doc: IDoc) => {
     console.log('EventDocItemList', doc.idTypeDoc);
     if (doc.idTypeDoc == 300) {
-      navigate(`${doc.idForm}`);
+      navigate(`${event.idSubj}`);
     }
     toggleModal(true);
   };

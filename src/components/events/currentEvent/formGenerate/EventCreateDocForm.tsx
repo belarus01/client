@@ -1,5 +1,5 @@
 import { generateDoc1 } from '@app/api/doc.api';
-import { createDoc, getFormReportMaxIdList } from '@app/api/form.api';
+import { createFormReport, getFormReportMaxIdList } from '@app/api/form.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, TextArea } from '@app/components/common/inputs/Input/Input';

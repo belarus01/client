@@ -5,6 +5,7 @@ import { Spinner } from '../../common/Spinner/Spinner.styles';
 import { getAllRucsAndDolzhnLicas } from '@app/api/group.api';
 import { UserGroup } from '@app/domain/interfaces';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
+import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
 
 interface FormFIO {
   fio: string;
@@ -24,10 +25,21 @@ const FormFIO: React.FC = () => {
     idUserGroup: null,
     idGroup: null,
     uid: null,
-    active: null,
+    active: 1,
     dateBegin: null,
     dateEnd: null,
     typeUser: null,
+    idGroup2: {
+      idGroup: 0,
+      org: null,
+      name: null,
+      idDept: null,
+      active: null,
+      dateRecord: null,
+      uid: null,
+      sEventsOrders: [],
+      userGroups: [],
+    },
   });
 
   const usersOptions = useMemo(() => {
@@ -49,11 +61,14 @@ const FormFIO: React.FC = () => {
     }
   };
 
+  const saveInfo = (values) => {
+    //
+  };
+
   const fetch = () => {
     setUsers({ ...users, loading: true });
     getAllRucsAndDolzhnLicas().then((res) => {
       console.log(res);
-
       setUsers({ data: res, loading: false });
     });
   };
@@ -122,7 +137,7 @@ const FormFIO: React.FC = () => {
                   style={{ marginLeft: '15px', marginTop: '-10px' }}
                   options={[
                     {
-                      value: '83',
+                      value: '82',
                       label: 'внеплановой проверки',
                     },
                     {
@@ -143,7 +158,11 @@ const FormFIO: React.FC = () => {
           </Row>
 
           <Row style={{ marginTop: '15px' }}>
-            <Text>Фамилия, инициалы:</Text>
+            <Col span={10}>
+              <UsersSelectWithPostAndTel />
+            </Col>
+
+            {/* <Text>Фамилия, инициалы:</Text>
             <Col>
               <BaseButtonsForm.Item name="uidBoss">
                 <Select
@@ -177,7 +196,7 @@ const FormFIO: React.FC = () => {
                   style={{ width: '100%', marginLeft: '15px', marginTop: '-10px' }}
                 />
               </BaseButtonsForm.Item>
-            </Col>
+            </Col> */}
           </Row>
 
           <Row justify={'center'}>

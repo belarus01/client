@@ -1,5 +1,5 @@
 import { generateDoc1 } from '@app/api/doc.api';
-import { createDoc, getFormReportMaxIdList } from '@app/api/form.api';
+import { createFormReport, getFormReportMaxIdList } from '@app/api/form.api';
 import { getAllRucsAndDolzhnLicas } from '@app/api/groups.api';
 import { getSubjById } from '@app/api/subjects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
@@ -91,7 +91,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     };
 
     console.log(field);
-    createDoc(field).then(() => {
+    createFormReport(field).then(() => {
       if (idEventOrder) {
         getFormReportMaxIdList(1000, idEventOrder).then(({ idList }) => {
           generateDoc1({
