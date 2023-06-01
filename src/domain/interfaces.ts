@@ -192,8 +192,6 @@ export interface GeolocationData {
 }
 
 export interface SSubj {
-  staffChief?: string;
-  bossTel?: string;
   idSubj: number | null;
   numOpo?: string | null;
   subj?: string | null;
@@ -931,4 +929,6 @@ export interface IFormReport {
   numBook?: string;
   dateBook?: Date;
   uidBoss?: number;
+  dateFrom?: Date | string | null;
+  dateTo?: Date | string | null;
 }

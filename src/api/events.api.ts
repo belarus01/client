@@ -6,7 +6,6 @@ export const getAllEvents = () => httpApi.get<SEvents[]>('events/get/all').then(
 export const getAllEventsBySubjectId = (idSubj: number) =>
   httpApi.get<SEventsOrder[]>('events/get/all/subjId=' + 1460).then(({ data }) => data);
 
-
 export const addEvent = (event: SEvents) => httpApi.post<SEvents>('events/create', event).then(({ data }) => data);
 
 export const getAllEventsOrders = () =>
@@ -25,7 +24,7 @@ export const createEventsWithsSphere = (event: any) =>
     .then(({ data }) => data);
 
 export const getEventOrderByIdWithRelations = (idEventOrder: string | number) =>
-  httpApi.get<any>(`events/get/eventOrder/with/relations/by/id/${idEventOrder}`).then(({ data }) => data);
+  httpApi.get<IEventOrder[]>(`events/get/eventOrder/with/relations/by/id/${idEventOrder}`).then(({ data }) => data);
 
 export const createQuestions = (idEventOrder: string | number, idForm: number) =>
   httpApi.post<any>(`events/create/questions/eventOrder/${idEventOrder}/idForm/${idForm}`).then(({ data }) => data);

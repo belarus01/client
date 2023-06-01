@@ -48,7 +48,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
   const openDocCreate = (doc: IDoc) => {
     console.log('EventDocItemList', doc.idTypeDoc);
     if (doc.idTypeDoc == 300) {
-      navigate(`${event.idSubj}`);
+      navigate(`${event.idSubj}/${doc.idForm}`);
     }
     toggleModal(true);
   };

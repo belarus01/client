@@ -17,6 +17,9 @@ export const getFormReportMaxIdList = (idForm: number | string, idEventOrder: nu
 export const getAllFormDocsByOrg = (org: number) =>
   httpApi.get<any>(`${BASE_URL}/get/all/docs/by/org/${org}`).then(({ data }) => data);
 
+export const getFormReportById = (idList: number | string) =>
+  httpApi.get<IFormReport>(`${BASE_URL}/get/formReport/id/${idList}`).then(({ data }) => data);
+
 export const initGenerateDocGetIdList = (
   fields: IFormReport,
   idEventOrder: number | string,

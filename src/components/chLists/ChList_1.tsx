@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import FireTable from './chListTables/ChList_1TableFire';
 import { IFireCardBuild } from '@app/domain/interfaces';
 import { Spinner } from '../common/Spinner/Spinner';
-import FormFIO from './chListForms/ChList_1FormFIO';
+import FormFIO from './chListForms/CheklistFormFIO';
 import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
 import FormSumsBildings from './chListForms/ChList_1FormSumsBildings';
 import './chList.css';
 import { getAllDefectionNamesByIdEventOrder } from '@app/api/events.api';
 import FormUNP from './chListForms/ChList_1FormUNP';
+import ChecklistFormFIO from './chListForms/CheklistFormFIO';
 
 const { Text } = Typography;
 
@@ -61,7 +62,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
             </Col>
 
             <Col span={20} offset={2} style={{ textAlign: 'left' }}>
-              <FormFIO />
+              <ChecklistFormFIO />
               <Row justify={'center'}>
                 <Text style={{ marginTop: '20px' }} strong>
                   Сведения о проверяемом субъекте
