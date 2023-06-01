@@ -6,7 +6,7 @@ const BASE_URL = 'form';
 export const getAllFormQuestionsByOrg = (org: number) =>
   httpApi.get<any>(`${BASE_URL}/get/all/questions/by/org/${org}`).then(({ data }) => data);
 
-export const createDoc = (fields: IFormReport) =>
+export const createFormReport = (fields: IFormReport) =>
   httpApi.post<any>(`${BASE_URL}/create/formReport`, fields).then(({ data }) => data);
 
 export const getFormReportMaxIdList = (idForm: number | string, idEventOrder: number | string) =>
@@ -22,5 +22,5 @@ export const initGenerateDocGetIdList = (
   idEventOrder: number | string,
   idForm: number | string,
 ) => {
-  return createDoc(fields).then(() => getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => idList));
+  return createFormReport(fields).then(() => getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => idList));
 };

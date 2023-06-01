@@ -1,4 +1,4 @@
-import { createDoc, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
+import { createFormReport, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IDoc, IEventOrder } from '@app/domain/interfaces';
 import React, { useEffect, useState } from 'react';

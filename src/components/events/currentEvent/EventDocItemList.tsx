@@ -5,7 +5,7 @@ import { FileAddOutlined, FileDoneOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Modal } from '../../common/Modal/Modal.styles';
 import { useNavigate } from 'react-router-dom';
-import EventCreateDocForm from './formGenerate/EventCreateDocForm';
+import EventcreateFormReportForm from './formGenerate/EventcreateFormReportForm';
 
 interface EventDocItemListProps {
   doc: IDoc;
