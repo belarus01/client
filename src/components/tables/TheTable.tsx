@@ -26,6 +26,7 @@ interface ITheTableProps {
   onRow?: undefined | ((recod?: any, rowIndex?: number | undefined) => object);
   pagination?: false | TablePaginationConfig;
   propsFrom?: any;
+  typeButton?: 'link' | 'text' | 'default' | 'ghost' | 'primary' | 'dashed';
 }
 
 export const TheTable: React.FC<ITheTableProps> = ({
@@ -46,6 +47,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
   pagination,
   titleButtonAdd,
   propsFrom,
+  typeButton,
 }) => {
   return (
     <>
@@ -64,10 +66,13 @@ export const TheTable: React.FC<ITheTableProps> = ({
         )}
         {toggleModalAdding && (
           <Col sm={24} md={6} lg={6}>
-            <Button onClick={() => toggleModalAdding(true)}>{titleButtonAdd || 'Добавить новую категорию'}</Button>
+            <Button type={typeButton || 'default'} onClick={() => toggleModalAdding(true)}>
+              {titleButtonAdd || 'Добавить новую категорию'}
+            </Button>
           </Col>
         )}
       </Row>
+      <br />
       <Table
         columns={columns}
         dataSource={dataTable.data}
