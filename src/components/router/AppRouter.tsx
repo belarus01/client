@@ -153,6 +153,7 @@ export const AppRouter: React.FC = () => {
             <Route path="events" element={<Events />} />
 
             <Route path="events/:idEventOrder" element={<CurrentEvent />} />
+            <Route path="events/:idEventOrder/:unp" element={<ChList_1Page />} />
             {/* <Route path="groups" element={< />} /> */}
           </Route>
           <Route path="admin">

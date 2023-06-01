@@ -326,76 +326,76 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
   //     },
   //   ],
   // },
-  // {
-  //   title: 'Документы',
-  //   key: 'documents',
-  //   icon: <BookOutlined />,
-  //   children: [
-  //     {
-  //       title: 'Чек-лист 1',
-  //       key: 'defections',
-  //       url: '/documents/chlist1',
-  //     },
-  //     {
-  //       //чек-лист 2
-  //       title: 'ТР ЕАЭС 043/2017',
-  //       key: 'chlist2',
-  //       url: '/documents/chlist2',
-  //     },
-  //     {
-  //       //чек-лист 3
-  //       title: 'Чек-лист ОПО',
-  //       key: 'chlist3',
-  //       url: '/documents/chlist3',
-  //     },
-  //     {
-  //       //чек-лист 4
-  //       title: 'Чек-лист перевозки',
-  //       key: 'chlist4',
-  //       url: '/documents/chlist4',
-  //     },
-  //     {
-  //       //чек-лист 5
-  //       title: 'Чек-лист пиротехника',
-  //       key: 'chlist5',
-  //       url: '/documents/chlist5',
-  //     },
-  //     {
-  //       //чек-лист 6
-  //       title: 'Чек-лист аттракционы',
-  //       key: 'chlist6',
-  //       url: '/documents/chlist6',
-  //     },
-  //     {
-  //       //чек-лист 7
-  //       title: 'Чек-лист лифты',
-  //       key: 'chlist7',
-  //       url: '/documents/chlist7',
-  //     },
-  //     {
-  //       //чек-лист 8
-  //       title: 'Чек-лист взрывоопасные среды',
-  //       key: 'chlist8',
-  //       url: '/documents/chlist8',
-  //     },
-  //     {
-  //       //чек-лист 9
-  //       title: 'Чек-лист аппараты на газообразном топливе',
-  //       key: 'chlist9',
-  //       url: '/documents/chlist9',
-  //     },
-  //     {
-  //       //чек-лист 10
-  //       title: 'Чек-лист взрывчатые вещества и изделия на их основе',
-  //       key: 'chlist10',
-  //       url: '/documents/chlist10',
-  //     },
-  //     {
-  //       //чек-лист 11
-  //       title: 'Чек-лист оборудование под избыточным давлением',
-  //       key: 'chlist11',
-  //       url: '/documents/chlist11',
-  //     },
-  // ],
-  // },
+  {
+    title: 'Документы',
+    key: 'documents',
+    icon: <BookOutlined />,
+    children: [
+      {
+        title: 'Чек-лист 1',
+        key: 'defections',
+        url: '/documents/chlist1',
+      },
+      //     {
+      //       //чек-лист 2
+      //       title: 'ТР ЕАЭС 043/2017',
+      //       key: 'chlist2',
+      //       url: '/documents/chlist2',
+      //     },
+      //     {
+      //       //чек-лист 3
+      //       title: 'Чек-лист ОПО',
+      //       key: 'chlist3',
+      //       url: '/documents/chlist3',
+      //     },
+      //     {
+      //       //чек-лист 4
+      //       title: 'Чек-лист перевозки',
+      //       key: 'chlist4',
+      //       url: '/documents/chlist4',
+      //     },
+      //     {
+      //       //чек-лист 5
+      //       title: 'Чек-лист пиротехника',
+      //       key: 'chlist5',
+      //       url: '/documents/chlist5',
+      //     },
+      //     {
+      //       //чек-лист 6
+      //       title: 'Чек-лист аттракционы',
+      //       key: 'chlist6',
+      //       url: '/documents/chlist6',
+      //     },
+      //     {
+      //       //чек-лист 7
+      //       title: 'Чек-лист лифты',
+      //       key: 'chlist7',
+      //       url: '/documents/chlist7',
+      //     },
+      //     {
+      //       //чек-лист 8
+      //       title: 'Чек-лист взрывоопасные среды',
+      //       key: 'chlist8',
+      //       url: '/documents/chlist8',
+      //     },
+      //     {
+      //       //чек-лист 9
+      //       title: 'Чек-лист аппараты на газообразном топливе',
+      //       key: 'chlist9',
+      //       url: '/documents/chlist9',
+      //     },
+      //     {
+      //       //чек-лист 10
+      //       title: 'Чек-лист взрывчатые вещества и изделия на их основе',
+      //       key: 'chlist10',
+      //       url: '/documents/chlist10',
+      //     },
+      //     {
+      //       //чек-лист 11
+      //       title: 'Чек-лист оборудование под избыточным давлением',
+      //       key: 'chlist11',
+      //       url: '/documents/chlist11',
+      //     },
+    ],
+  },
 ];
