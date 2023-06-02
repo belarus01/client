@@ -4,15 +4,18 @@ import ruRu from 'antd/es/locale/ru_RU';
 import FormTreb from './chListForms/ChList_1FormTreb';
 import { useEffect, useState } from 'react';
 import FireTable from './chListTables/ChList_1TableFire';
-import { IFireCardBuild } from '@app/domain/interfaces';
+import { IFireCardBuild, SSubj } from '@app/domain/interfaces';
 import { Spinner } from '../common/Spinner/Spinner';
 import FormFIO from './chListForms/CheklistFormFIO';
 import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
 import FormSumsBildings from './chListForms/ChList_1FormSumsBildings';
 import './chList.css';
 import { getAllDefectionNamesByIdEventOrder } from '@app/api/events.api';
-import FormUNP from './chListForms/ChList_1FormUNP';
+import FormUNP from './chListForms/CheklistFormSubj';
 import ChecklistFormFIO from './chListForms/CheklistFormFIO';
+import { useParams } from 'react-router-dom';
+import { getSubjById } from '@app/api/subjects.api';
+import CheklistFormSubj from './chListForms/CheklistFormSubj';
 
 const { Text } = Typography;
 
@@ -25,9 +28,21 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
   const [loadingFormTreb, setLoadingFormTreb] = useState(false);
   const [fields, setFields] = useState([]);
 
-  // const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-  //   console.log(date, dateString);
-  // };
+  const [subj, setSubj] = useState<SSubj>({
+    idSubj: null,
+    unp: null,
+  });
+
+  const { idSubj } = useParams();
+
+  const getUnp = () => {
+    if (idSubj) {
+      console.log(idSubj);
+      getSubjById(idSubj).then((subj) => {
+        setSubj(subj);
+      });
+    }
+  };
 
   const getTrebs = () => {
     setLoadingFormTreb(true);
@@ -47,6 +62,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
   useEffect(() => {
     getSubjBuilds();
     getTrebs();
+    getUnp();
   }, []);
 
   return (
@@ -69,7 +85,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
                 </Text>
               </Row>
 
-              <FormUNP data={[]} />
+              <CheklistFormSubj subj={subj} />
             </Col>
           </Col>
         </Row>

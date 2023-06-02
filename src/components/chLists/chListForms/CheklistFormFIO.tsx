@@ -1,16 +1,15 @@
-import { Button, Cascader, Col, DatePicker, Row, Select, Typography } from 'antd';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Col, DatePicker, Row, Select, Typography } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Input } from '../../common/inputs/Input/Input';
 import { Spinner } from '../../common/Spinner/Spinner.styles';
-import { getAllRucsAndDolzhnLicas } from '@app/api/group.api';
-import { IFormReport, UserGroup } from '@app/domain/interfaces';
+import { IFormReport } from '@app/domain/interfaces';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
 import { useParams } from 'react-router-dom';
-import { createFormReport, getFormReportById, getFormReportMaxIdList } from '@app/api/form.api';
+import { createFormReport, getFormReportById, getFormReportMaxIdList, updateFormReport } from '@app/api/form.api';
 import { getEventOrderByIdWithRelations } from '@app/api/events.api';
-import dayjs, { Dayjs } from 'dayjs';
 import moment from 'moment';
+import { notificationController } from '@app/controllers/notificationController';
 
 const { Text } = Typography;
 
@@ -18,7 +17,7 @@ const ChecklistFormFIO: React.FC = () => {
   const [dataForm, setDataForm] = useState<IFormReport>({});
   const [loading, setLoading] = useState(false);
   const [typeEvent, setTypeEvent] = useState<{
-    value: any;
+    value: unknown;
     label: string;
   }>({
     label: '',
@@ -26,12 +25,15 @@ const ChecklistFormFIO: React.FC = () => {
   });
   const [loadingType, setLoadingType] = useState(false);
 
-  const { idEventOrder, idSubj, idForm } = useParams();
+  const { idEventOrder, idForm } = useParams();
 
   const getData = useCallback(() => {
     setLoading(true);
     if (idEventOrder && idForm) {
       getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => {
+        if (!idList) {
+          return;
+        }
         getFormReportById(idList).then((data) => {
           console.log(data, 'data');
 
@@ -41,6 +43,21 @@ const ChecklistFormFIO: React.FC = () => {
       });
     }
   }, [idEventOrder, idForm]);
+
+  const updateForm = (forms: IFormReport) => {
+    setLoading(true);
+    if (idEventOrder && idForm) {
+      getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => {
+        if (!idList) {
+          return;
+        }
+        updateFormReport(idList, forms).then(() => {
+          setLoading(false);
+          notificationController.success({ message: 'Данные обновлены' });
+        });
+      });
+    }
+  };
 
   const getTypeEvent = useCallback(() => {
     setLoadingType(true);
@@ -76,23 +93,26 @@ const ChecklistFormFIO: React.FC = () => {
   }, [idEventOrder]);
 
   const onFinish = (values: IFormReport) => {
+    if (dataForm.idList) {
+      values = { ...dataForm, ...values };
+    }
     console.log(values);
     if (values.dateRec) {
-      values.dateRec = (values.dateRec as unknown as Dayjs).format('YYYY-MM-DD');
+      values.dateRec = moment(values.dateRec || today).format('YYYY.MM.DD');
     }
     if (values.dateFrom) {
-      values.dateFrom = (values.dateFrom as unknown as Dayjs).format('YYYY-MM-DD');
+      values.dateFrom = moment(values.dateFrom || today).format('YYYY.MM.DD');
     }
     if (values.dateTo) {
-      values.dateTo = (values.dateTo as unknown as Dayjs).format('YYYY-MM-DD');
+      values.dateTo = moment(values.dateTo || today).format('YYYY.MM.DD');
     }
 
     if (dataForm) {
-      console.log('update');
-      //updateFormReport();
+      console.log('update', values);
+      updateForm(values);
     }
 
-    //createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder });
+    createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 });
   };
 
   useEffect(() => {
@@ -102,8 +122,6 @@ const ChecklistFormFIO: React.FC = () => {
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
   const dateFormat = 'DD-MM-YYYY';
-
-  const { numDoc, dateFrom, dateTo, dateRec } = dataForm;
 
   return (
     <>
@@ -117,7 +135,11 @@ const ChecklistFormFIO: React.FC = () => {
             </Col>
             <Col span={4} offset={1}>
               <BaseButtonsForm.Item name="numDoc">
-                <Input defaultValue={numDoc} style={{ marginTop: '-15px', width: '100%' }} key={numDoc} />
+                <Input
+                  defaultValue={dataForm.numDoc}
+                  style={{ marginTop: '-15px', width: '100%' }}
+                  key={`${dataForm.numDoc}`}
+                />
               </BaseButtonsForm.Item>
             </Col>
           </Row>
@@ -131,8 +153,9 @@ const ChecklistFormFIO: React.FC = () => {
               <Col>
                 <BaseButtonsForm.Item name="dateFrom">
                   <DatePicker
-                    defaultValue={moment(dataForm.dateFrom || today, dateFormat)}
+                    defaultValue={moment(dataForm.dateFrom || today)}
                     format={dateFormat}
+                    key={`${dataForm.dateFrom}`}
                     style={{ marginLeft: '12px', marginTop: '-10px' }}
                   />
                 </BaseButtonsForm.Item>
@@ -143,7 +166,12 @@ const ChecklistFormFIO: React.FC = () => {
 
               <Col>
                 <BaseButtonsForm.Item name="dateTo">
-                  <DatePicker value={dateTo} style={{ marginLeft: '15px', marginTop: '-10px' }} key={`${dateTo}`} />
+                  <DatePicker
+                    defaultValue={moment(dataForm.dateTo)}
+                    format={dateFormat}
+                    key={`${dataForm.dateTo}`}
+                    style={{ marginLeft: '15px', marginTop: '-10px' }}
+                  />
                 </BaseButtonsForm.Item>
               </Col>
             </Row>
@@ -152,7 +180,12 @@ const ChecklistFormFIO: React.FC = () => {
 
               <Col>
                 <BaseButtonsForm.Item name="dateRec">
-                  <DatePicker value={dateRec} style={{ marginLeft: '15px', marginTop: '-10px' }} key={`${dateRec}`} />
+                  <DatePicker
+                    defaultValue={moment(dataForm.dateRec || today)}
+                    format={dateFormat}
+                    key={`${dataForm.dateRec}`}
+                    style={{ marginLeft: '15px', marginTop: '-10px' }}
+                  />
                 </BaseButtonsForm.Item>
               </Col>
             </Row>
@@ -161,7 +194,7 @@ const ChecklistFormFIO: React.FC = () => {
             <Text>Контрольный список вопросов (чек-лист) заполняется в ходе</Text>
             <Col span={8} offset={1}>
               <BaseButtonsForm.Item>
-                <Select value={typeEvent} disabled style={{ marginTop: '-10px' }} />
+                <Select value={typeEvent} disabled />
               </BaseButtonsForm.Item>
             </Col>
           </Row>
@@ -173,42 +206,6 @@ const ChecklistFormFIO: React.FC = () => {
             <Col span={10}>
               <UsersSelectWithPostAndTel uidBoss={dataForm.uidBoss} />
             </Col>
-
-            {/* <Text>Фамилия, инициалы:</Text>
-            <Col>
-              <BaseButtonsForm.Item name="uidBoss">
-                <Select
-                  placeholder="выбор из списка"
-                  style={{ width: '100%', marginLeft: '15px', marginTop: '-10px' }}
-                  options={usersOptions}
-                  onChange={changeUser}
-                />
-              </BaseButtonsForm.Item>
-            </Col>
-          </Row>
-
-          <Row>
-            <Text>Должность:</Text>
-            <Col>
-              <BaseButtonsForm.Item>
-                <Input
-                  value={selectedUser?.uidGr2?.idDeptJob2?.job || ''}
-                  style={{ width: '200%', marginLeft: '15px', marginTop: '-10px' }}
-                />
-              </BaseButtonsForm.Item>
-            </Col>
-          </Row>
-
-          <Row>
-            <Text>Контактный телефон:</Text>
-            <Col>
-              <BaseButtonsForm.Item>
-                <Input
-                  value={selectedUser?.uidGr2?.tel || ''}
-                  style={{ width: '100%', marginLeft: '15px', marginTop: '-10px' }}
-                />
-              </BaseButtonsForm.Item>
-            </Col> */}
           </Row>
 
           <Row justify={'center'}>
@@ -216,6 +213,7 @@ const ChecklistFormFIO: React.FC = () => {
               <Button
                 htmlType="submit"
                 type="primary"
+                loading={loading}
                 style={{
                   color: 'black',
                   background: 'blanchedalmond',

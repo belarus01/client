@@ -911,6 +911,7 @@ export interface IQuestionsForDoc {
 }
 
 export interface IFormReport {
+  idList?: number | null;
   idForm?: number;
   idEventOrder?: number | string;
   idEventOrderObj?: number;

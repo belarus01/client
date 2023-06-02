@@ -27,3 +27,6 @@ export const initGenerateDocGetIdList = (
 ) => {
   return createFormReport(fields).then(() => getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => idList));
 };
+
+export const updateFormReport = (idList: number | string, dto: IFormReport) =>
+  httpApi.put<IFormReport>(`${BASE_URL}/update/formReport/${idList}`, { ...dto }).then(({ data }) => data);

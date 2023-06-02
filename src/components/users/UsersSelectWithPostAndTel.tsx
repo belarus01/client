@@ -23,35 +23,11 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   labelTel,
   nameUid,
 }) => {
-  const [boss, setBoss] = useState<{
-    label: string;
-    value: string | number | null;
-  }>({
-    label: '',
-    value: '',
-  });
+  const [boss, setBoss] = useState<string | number | null>('');
   const [bosses, setBosses] = useState<UserGroup[]>([]);
   const [bossPost, setBossPost] = useState('');
   const [bossTell, setBossTell] = useState('');
   const [loadingBosses, setLoadingBosses] = useState<boolean>(false);
-
-  const getBoss = useCallback(
-    (uidBoss: number | string) => () => {
-      const bossCurrent = bosses.find((boss) => {
-        return boss.idUserGroup == uidBoss;
-      });
-      if (bossCurrent) {
-        const boss = {
-          label: bossCurrent.uidGr2?.fio || '',
-          value: bossCurrent.uidGr2?.uid || null,
-        };
-        setBoss(boss);
-        setBossPost(bossCurrent?.uidGr2?.idDeptJob2?.job || '');
-        setBossTell(bossCurrent?.uidGr2?.tel || '');
-      }
-    },
-    [bosses],
-  );
 
   const getAllBoss = () => {
     setLoadingBosses(true);
@@ -84,13 +60,32 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   }, []);
   useEffect(() => {
     if (uidBoss) {
-      getBoss(uidBoss);
+      const bossCurrent = bosses.find((boss) => {
+        return boss.idUserGroup == uidBoss;
+      });
+      if (bossCurrent) {
+        // const boss = {
+        //   label: bossCurrent.uidGr2?.fio || '',
+        //   value: bossCurrent.uidGr2?.uid || null,
+        // };
+        console.log(bossCurrent.idUserGroup);
+
+        setBoss(bossCurrent.uidGr2?.uid || null);
+        setBossPost(bossCurrent?.uidGr2?.idDeptJob2?.job || '');
+        setBossTell(bossCurrent?.uidGr2?.tel || '');
+      }
     }
-  }, [getBoss, uidBoss]);
+  }, [boss, bosses, uidBoss]);
   return (
     <>
       <BaseButtonsForm.Item name={nameUid || 'uidBoss'} label={labelUser || 'ФИО'}>
-        <Select loading={loadingBosses} options={optionsBosses} onChange={changePost} value={boss} />
+        <Select
+          defaultValue={boss}
+          loading={loadingBosses}
+          options={optionsBosses}
+          onChange={changePost}
+          key={`${boss}`}
+        />
       </BaseButtonsForm.Item>
       {shownPost && (
         <BaseButtonsForm.Item label={labelPost || 'Должжность'}>
