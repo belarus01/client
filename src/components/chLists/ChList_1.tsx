@@ -3,7 +3,7 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import FormTreb from './chListForms/ChList_1FormTreb';
 import { useEffect, useState } from 'react';
-import FireTable from './chListTables/ChList_1TableFire';
+import FireTable from './chListTables/ChecklistFireTable';
 import { IFireCardBuild, SSubj } from '@app/domain/interfaces';
 import { Spinner } from '../common/Spinner/Spinner';
 import FormFIO from './chListForms/CheklistFormFIO';
@@ -54,9 +54,13 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
 
   const getSubjBuilds = () => {
     setSubjBuilds({ ...subjBuilds, loading: true });
-    getAllFireCardBuildsBySubjId().then((res) => {
-      setSubjBuilds({ data: res, loading: false });
-    });
+    if (idSubj) {
+      getAllFireCardBuildsBySubjId(idSubj).then((res) => {
+        console.log(res, 'sadfasd');
+
+        setSubjBuilds({ data: res, loading: false });
+      });
+    }
   };
 
   useEffect(() => {

@@ -746,6 +746,7 @@ export interface IFireCardBuild {
   type?: SUnits;
   idUnit?: SUnits;
   idUnit_17?: SUnits;
+  [key: string]: any;
 }
 
 export interface ISopbList {

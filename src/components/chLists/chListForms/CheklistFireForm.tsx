@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Input, Select } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { IFireCardBuild } from '@app/domain/interfaces';
+import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 import {
   getAllUnitBuildigAndNaruzhCategs,
   getAllUnitBuildingTypes,
   getAllUnitFunctionalClasses,
 } from '@app/api/units.api';
+import { createFire, updateFireCardBuild } from '@app/api/fire.api';
+import { notificationController } from '@app/controllers/notificationController';
+import { useParams } from 'react-router-dom';
 
-export interface FireFormProps {
+export interface CheklistFireFormProps {
   data?: IFireCardBuild;
   close?: () => void;
 }
 
-const FireForm: React.FC<FireFormProps> = ({ data }) => {
+const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
   const [newCategory, setNewCategory] = useState<IFireCardBuild>({
     nameBuild: null,
     idSubjObj: null,
@@ -27,6 +30,19 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
       value: number;
     }[]
   >([]);
+  const [loading, setLoading] = useState(false);
+  const formRef = useRef(null);
+  const [functionalsClass, setFunctionalsClass] = useState<SUnits[]>([]);
+  const [shownClasses, setShownClasses] = useState(true);
+
+  const changeFunctionales = (value: number) => {
+    console.log(value);
+    if (value >= 2340) {
+      setShownClasses(false);
+    } else {
+      setShownClasses(true);
+    }
+  };
 
   const [loadingFunctionalClasses, setLoadingFunctionalClasses] = useState(false);
 
@@ -38,6 +54,7 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
         value: clas.idUnit as number,
       }));
       setOptionsFunctionalClasses(optionsFiltred);
+      setFunctionalsClass(options);
       setLoadingFunctionalClasses(false);
     });
   };
@@ -50,6 +67,17 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
   >([]);
 
   const [loadingTipClasses, setLoadingTipClasses] = useState(false);
+
+  const [shownN, setShown] = useState(false);
+
+  const changeType = (value: number) => {
+    console.log(value);
+    if (value == 4002) {
+      setShown(true);
+    } else {
+      setShown(false);
+    }
+  };
 
   const getTipClasses = () => {
     setLoadingTipClasses(true);
@@ -70,11 +98,22 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
     }[]
   >([]);
 
+  const optionsClasses = useMemo(() => {
+    return optionsCategorylClasses.filter((category) => {
+      if (shownN) {
+        return category.value >= 2441;
+      }
+      return category.value < 2441;
+    });
+  }, [optionsCategorylClasses, shownN]);
+
   const [loadingCategoryClasses, setLoadingCategoryClasses] = useState(false);
 
   const getCategoryClasses = () => {
     setLoadingCategoryClasses(true);
     getAllUnitBuildigAndNaruzhCategs().then((category) => {
+      console.log(category);
+
       const optionsFiltred = category.map((clas) => ({
         label: clas.type as string,
         value: clas.idUnit as number,
@@ -85,14 +124,36 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
     });
   };
 
-  const submit = () => {
-    // post, body newCategory
-    console.log('submit');
-  };
+  const { idSubj } = useParams();
 
-  const onFinish = (values: unknown) => {
+  const onFinish = (values: IFireCardBuild) => {
     console.log(values);
-    console.log(data);
+
+    setLoading(true);
+    if (data) {
+      if (data.idList) {
+        Object.keys(values).forEach((item) => {
+          if (values[item]?.value) {
+            values[item] = values[item].value;
+          }
+        });
+        updateFireCardBuild(data.idList, values).then(() => {
+          setLoading(false);
+          if (close) {
+            close();
+          }
+          notificationController.success({ message: 'Данные обновлены' });
+        });
+      }
+    } else {
+      createFire({ ...values, idSubj: Number(idSubj) }).then(() => {
+        setLoading(false);
+        if (close) {
+          close();
+        }
+        notificationController.success({ message: 'Запись создана' });
+      });
+    }
   };
 
   useEffect(() => {
@@ -100,21 +161,30 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
     getTipClasses();
     getCategoryClasses();
   }, []);
+
   return (
     <>
       <BaseButtonsForm
+        ref={formRef}
         initialValues={{
           nameBuild: newCategory.nameBuild,
           area: newCategory.area,
-          type: newCategory.idUnit_3?.idUnit,
-          tip: newCategory.idUnit_2?.idUnit,
-          category: newCategory.idUnit_17?.idUnit,
+          idUnit_41: {
+            label: newCategory.idUnit_2?.name,
+            value: newCategory.idUnit_2?.idUnit,
+          },
+          idUnit_6: {
+            label: newCategory.idUnit_3?.type,
+            value: newCategory.idUnit_3?.idUnit,
+          },
+          idUnit_17_37: { label: newCategory.idUnit_17?.type, value: newCategory.idUnit_17?.idUnit },
           numStaff: newCategory.numStaff,
           numPerson: newCategory.numPerson,
         }}
         layout="vertical"
         isFieldsChanged={false}
         onFinish={onFinish}
+        loading={loading}
       >
         <BaseButtonsForm.Item label="Наименование сооружения" name="nameBuild">
           <Input
@@ -122,11 +192,12 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
             onChange={(e) => setNewCategory({ ...newCategory, nameBuild: (newCategory.nameBuild = e.target.value) })}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Функциональное назначение" name="type">
+        <BaseButtonsForm.Item label="Функциональное назначение" name="idUnit_6">
           <Select
             loading={loadingFunctionalClasses}
-            defaultValue={newCategory.idUnit_3?.type || ''}
+            defaultValue={(newCategory.idUnit_3?.type as unknown as number) || null}
             options={optionsFunctionalClasses}
+            onChange={changeFunctionales}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Площадь, кв.м" name="area">
@@ -136,19 +207,20 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
             onChange={(e) => setNewCategory({ ...newCategory, area: (newCategory.area = e.target.value) })}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Тип" name="tip">
+        <BaseButtonsForm.Item label="Тип" name="idUnit_41">
           <Select
             loading={loadingTipClasses}
-            defaultValue={newCategory.idUnit_2?.name || ''}
+            defaultValue={(newCategory.idUnit_2?.name as unknown as number) || null}
             options={optionsTipClasses}
+            onChange={changeType}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Категория" name="category">
+        <BaseButtonsForm.Item label="Категория" name="idUnit_17_37">
           <Select
-            disabled
+            disabled={shownClasses}
             loading={loadingCategoryClasses}
             defaultValue={newCategory.idUnit_17?.type || ''}
-            options={optionsCategorylClasses}
+            options={optionsClasses}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Численность работников (персонала)" name="numStaff">
@@ -166,7 +238,7 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item>
-          <Button style={{ marginTop: '10px' }} htmlType="submit" type="primary">
+          <Button loading={loading} style={{ marginTop: '10px' }} htmlType="submit" type="primary">
             Сохранить
           </Button>
         </BaseButtonsForm.Item>
@@ -175,4 +247,4 @@ const FireForm: React.FC<FireFormProps> = ({ data }) => {
   );
 };
 
-export default FireForm;
+export default CheklistFireForm;
