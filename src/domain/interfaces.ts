@@ -835,7 +835,7 @@ export interface IEventOrder {
 }
 
 export interface IQuestion {
-  idForm: number;
+  idForm: number | null;
   idTypeDoc?: number;
   numAppendix?: number;
   nameDoc: string;
@@ -848,6 +848,7 @@ export interface IQuestion {
   uid?: null | number | string;
   active?: number;
   comm?: null | string | number;
+  idDef2?: any;
 }
 
 export interface IQuestionForEvent {
@@ -933,4 +934,28 @@ export interface IFormReport {
   uidBoss?: number;
   dateFrom?: Date | string | null;
   dateTo?: Date | string | null;
+}
+
+export interface IEventOrderQueDef {
+  idList?: number | string | null;
+  idEventOrder?: number | string | null;
+  idDef: number | null;
+  idObj?: number | null;
+  idSubObj?: number | string | null;
+  numReg?: string | number;
+  flOk?: any;
+  dateRecord?: string | Date;
+  active?: string | number;
+  uid?: number | string;
+  dateFix?: Date | string | null;
+  dateInform?: Date | string | null;
+  dateCheckFix?: Date | string | null;
+  transferData?: Date | string;
+  idFormReport?: number | null | string;
+  idListCh?: number | string | null;
+  chlFlYes?: any;
+  chlNumIndex?: number | null;
+  chlComm?: string;
+  chlRec?: string;
+  idDef2?: any;
 }

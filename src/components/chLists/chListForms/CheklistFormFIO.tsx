@@ -32,6 +32,7 @@ const ChecklistFormFIO: React.FC = () => {
     if (idEventOrder && idForm) {
       getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => {
         if (!idList) {
+          setLoading(false);
           return;
         }
         getFormReportById(idList).then((data) => {
@@ -112,7 +113,12 @@ const ChecklistFormFIO: React.FC = () => {
       updateForm(values);
     }
 
-    createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 });
+    createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 }).then(
+      () => {
+        setLoading(false);
+        notificationController.success({ message: 'Данные обновлены' });
+      },
+    );
   };
 
   useEffect(() => {

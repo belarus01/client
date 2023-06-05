@@ -16,6 +16,10 @@ import ChecklistFormFIO from './chListForms/CheklistFormFIO';
 import { useParams } from 'react-router-dom';
 import { getSubjById } from '@app/api/subjects.api';
 import CheklistFormSubj from './chListForms/CheklistFormSubj';
+import { Button } from '../common/buttons/Button/Button';
+import { generateCheckList1 } from '@app/api/doc.api';
+import { getFormReportMaxIdList, initGenerateDocGetIdList } from '@app/api/form.api';
+import { notificationController } from '@app/controllers/notificationController';
 
 const { Text } = Typography;
 
@@ -26,14 +30,15 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
   });
 
   const [loadingFormTreb, setLoadingFormTreb] = useState(false);
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState<any[]>([]);
+  const [loadingGenerate, setLoadingGenerate] = useState(false);
 
   const [subj, setSubj] = useState<SSubj>({
     idSubj: null,
     unp: null,
   });
 
-  const { idSubj } = useParams();
+  const { idSubj, idEventOrder, idForm } = useParams();
 
   const getUnp = () => {
     if (idSubj) {
@@ -44,12 +49,32 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
     }
   };
 
+  const createCheckList = () => {
+    if (idForm && idEventOrder) {
+      setLoadingGenerate(true);
+      getFormReportMaxIdList(idForm, idEventOrder).then(({ idList }) => {
+        if (!idList) {
+          notificationController.info({ message: 'Внесите информацию о чеклисте ' });
+        }
+        generateCheckList1({
+          id_event_order: idEventOrder,
+          unp: subj.unp,
+          id_list: idList,
+        }).then(() => {
+          setLoadingGenerate(false);
+        });
+      });
+    }
+  };
+
   const getTrebs = () => {
     setLoadingFormTreb(true);
-    getAllDefectionNamesByIdEventOrder().then((treb) => {
-      setFields(treb);
-      setLoadingFormTreb(false);
-    });
+    if (idEventOrder) {
+      getAllDefectionNamesByIdEventOrder(idEventOrder).then((treb) => {
+        setFields(treb);
+        setLoadingFormTreb(false);
+      });
+    }
   };
 
   const getSubjBuilds = () => {
@@ -72,49 +97,67 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
   return (
     <>
       <ConfigProvider locale={ruRu}>
-        <Row>
-          <Col span={24} style={{ textAlign: 'center', background: 'linen' }}>
-            <Col style={{ marginTop: '20px', marginBottom: '20px' }}>
-              <Text strong style={{ fontSize: '17px' }}>
-                МИНИСТЕРСВО ПО ЧРЕЗВЫЧАЙНЫМ СИТУАЦИЯМ <br /> РЕСПУБЛИКИ БЕЛАРУСЬ
-                <br /> Органы государственного пожарного надзора
-              </Text>
-            </Col>
-
-            <Col span={20} offset={2} style={{ textAlign: 'left' }}>
-              <ChecklistFormFIO />
-              <Row justify={'center'}>
-                <Text style={{ marginTop: '20px' }} strong>
-                  Сведения о проверяемом субъекте
+        <Spinner spinning={loadingGenerate}>
+          <Row>
+            <Col span={24} style={{ textAlign: 'center', background: 'linen' }}>
+              <Col style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <Text strong style={{ fontSize: '17px' }}>
+                  МИНИСТЕРСВО ПО ЧРЕЗВЫЧАЙНЫМ СИТУАЦИЯМ <br /> РЕСПУБЛИКИ БЕЛАРУСЬ
+                  <br /> Органы государственного пожарного надзора
                 </Text>
-              </Row>
+              </Col>
 
-              <CheklistFormSubj subj={subj} />
+              <Col span={20} offset={2} style={{ textAlign: 'left' }}>
+                <ChecklistFormFIO />
+                <Row justify={'center'}>
+                  <Text style={{ marginTop: '20px' }} strong>
+                    Сведения о проверяемом субъекте
+                  </Text>
+                </Row>
+
+                <CheklistFormSubj subj={subj} />
+              </Col>
             </Col>
-          </Col>
-        </Row>
+          </Row>
 
-        <Row>
-          <Col span={24} style={{ textAlign: 'center', background: 'linen' }}>
-            <Col style={{ marginTop: '20px', marginBottom: '20px' }}>
-              <Text strong style={{ fontSize: '17px' }}>
-                ХАРАКТЕРИСТИКИ ПРОВЕРЯЕМОГО СУБЪЕКТА
-              </Text>
+          <Row>
+            <Col span={24} style={{ textAlign: 'center', background: 'linen' }}>
+              <Col style={{ marginTop: '20px', marginBottom: '20px' }}>
+                <Text strong style={{ fontSize: '17px' }}>
+                  ХАРАКТЕРИСТИКИ ПРОВЕРЯЕМОГО СУБЪЕКТА
+                </Text>
+              </Col>
+
+              <Col span={20} offset={2} style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'left' }}>
+                <Spinner spinning={subjBuilds.loading}>
+                  <FormSumsBildings data={subjBuilds.data} />
+                </Spinner>
+              </Col>
+
+              <Col push={1} span={22}>
+                <FireTable data={subjBuilds} update={getSubjBuilds} />
+              </Col>
             </Col>
+          </Row>
 
-            <Col span={20} offset={2} style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'left' }}>
-              <Spinner spinning={subjBuilds.loading}>
-                <FormSumsBildings data={subjBuilds.data} />
-              </Spinner>
-            </Col>
-
-            <Col push={1} span={22}>
-              <FireTable data={subjBuilds} update={getSubjBuilds} />
-            </Col>
-          </Col>
-        </Row>
-
-        <FormTreb loading={loadingFormTreb} fields={fields} />
+          <FormTreb loading={loadingFormTreb} fields={fields} />
+          <Row justify={'center'}>
+            <Button
+              type="primary"
+              style={{
+                color: 'black',
+                background: 'blanchedalmond',
+                border: '2px solid gold',
+                borderRadius: '8px',
+                marginBottom: '20px',
+                marginTop: '-10px',
+              }}
+              onClick={createCheckList}
+            >
+              <Text strong>Завершить</Text>
+            </Button>
+          </Row>
+        </Spinner>
       </ConfigProvider>
     </>
   );
