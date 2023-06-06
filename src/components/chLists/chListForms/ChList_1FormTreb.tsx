@@ -1,4 +1,4 @@
-import { Cascader, Col, DatePicker, Row, Select, Typography } from 'antd';
+import { Cascader, Col, DatePicker, Row, Select, Typography, UploadProps } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Input, TextArea } from '../../common/inputs/Input/Input';
 import { Button } from '../../common/buttons/Button/Button';
@@ -9,6 +9,8 @@ import moment, { Moment } from 'moment';
 import dayjs from 'dayjs';
 import { updateEventOrderQueDef } from '@app/api/events.api';
 import { notificationController } from '@app/controllers/notificationController';
+import { Upload } from '@app/components/common/Upload/Upload';
+import { UploadOutlined } from '@ant-design/icons';
 
 interface FormTreb {
   loading: boolean;
@@ -16,6 +18,37 @@ interface FormTreb {
 }
 
 const { Text } = Typography;
+
+const props: UploadProps = {
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  onChange({ file, fileList }) {
+    if (file.status !== 'uploading') {
+      console.log(file, fileList);
+    }
+  },
+  defaultFileList: [
+    {
+      uid: '1',
+      name: 'xxx.png',
+      status: 'uploading',
+      url: 'http://www.baidu.com/xxx.png',
+      percent: 33,
+    },
+    {
+      uid: '2',
+      name: 'yyy.png',
+      status: 'done',
+      url: 'http://www.baidu.com/yyy.png',
+    },
+    {
+      uid: '3',
+      name: 'zzz.png',
+      status: 'error',
+      response: 'Server Error 500', // custom error message to show
+      url: 'http://www.baidu.com/zzz.png',
+    },
+  ],
+};
 
 const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
   const [numPunct, setNumPunct] = useState('');
@@ -324,7 +357,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                     <Col style={{ textAlign: 'center' }} span={4}></Col>
                   </Row>
 
-                  <Row style={{ justifyContent: 'space-between' }}>
+                  <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name={'dateFix'}>
                         <DatePicker format={dateFormat} style={{ marginTop: '5px' }} />
@@ -347,7 +380,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                       <BaseButtonsForm.Item name="flOk">
                         <Select
                           placeholder="Исправлено"
-                          style={{ textAlign: 'center' }}
+                          style={{ textAlign: 'center', marginTop: '5px' }}
                           options={[
                             {
                               value: '0',
@@ -369,17 +402,9 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
 
                   <Row style={{ justifyContent: 'space-between' }}>
                     <BaseButtonsForm.Item>
-                      <Button
-                        style={{
-                          color: 'black',
-                          background: 'blanchedalmond',
-                          border: '2px solid gold',
-                          borderRadius: '8px',
-                          marginTop: '0px',
-                        }}
-                      >
-                        <Text strong>Добавить фото/видео</Text>
-                      </Button>
+                      <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Добавить фото/видео</Button>
+                      </Upload>
                     </BaseButtonsForm.Item>
 
                     <BaseButtonsForm.Item>

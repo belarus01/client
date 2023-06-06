@@ -9,7 +9,6 @@ import { Spinner } from '../common/Spinner/Spinner';
 import FormFIO from './chListForms/CheklistFormFIO';
 import { getAllFireCardBuildsBySubjId } from '@app/api/fire.api';
 import FormSumsBildings from './chListForms/ChList_1FormSumsBildings';
-import './chList.css';
 import { getAllDefectionNamesByIdEventOrder } from '@app/api/events.api';
 import FormUNP from './chListForms/CheklistFormSubj';
 import ChecklistFormFIO from './chListForms/CheklistFormFIO';
@@ -141,7 +140,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
           </Row>
 
           <FormTreb loading={loadingFormTreb} fields={fields} />
-          <Row justify={'center'}>
+          <Row justify={'center'} style={{ background: 'linen' }}>
             <Button
               type="primary"
               style={{
