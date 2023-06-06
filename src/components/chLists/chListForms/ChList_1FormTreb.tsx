@@ -8,6 +8,7 @@ import { IEventOrderQueDef } from '@app/domain/interfaces';
 import moment, { Moment } from 'moment';
 import dayjs from 'dayjs';
 import { updateEventOrderQueDef } from '@app/api/events.api';
+import { notificationController } from '@app/controllers/notificationController';
 
 interface FormTreb {
   loading: boolean;
@@ -164,6 +165,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
     if (currentField.idList) {
       updateEventOrderQueDef(currentField.idList, finalyValues).then(() => {
         setLoadingForm(false);
+        notificationController.success({ message: 'Данные внесены успешно!' });
       });
     }
   };
