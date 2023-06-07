@@ -361,19 +361,31 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                   <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name={'dateFix'}>
-                        <DatePicker format={dateFormat} style={{ marginTop: '5px' }} />
+                        <DatePicker
+                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          format={dateFormat}
+                          style={{ marginTop: '5px' }}
+                        />
                       </BaseButtonsForm.Item>
                     </Col>
 
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name="dateInform">
-                        <DatePicker format={dateFormat} style={{ marginTop: '5px' }} />
+                        <DatePicker
+                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          format={dateFormat}
+                          style={{ marginTop: '5px' }}
+                        />
                       </BaseButtonsForm.Item>
                     </Col>
 
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name="dateCheckFix">
-                        <DatePicker format={dateFormat} style={{ marginTop: '5px' }} />
+                        <DatePicker
+                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          format={dateFormat}
+                          style={{ marginTop: '5px' }}
+                        />
                       </BaseButtonsForm.Item>
                     </Col>
 
