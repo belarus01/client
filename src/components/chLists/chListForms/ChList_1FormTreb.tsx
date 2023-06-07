@@ -11,6 +11,7 @@ import { updateEventOrderQueDef } from '@app/api/events.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { Upload } from '@app/components/common/Upload/Upload';
 import { UploadOutlined } from '@ant-design/icons';
+import CheklistUpload from '../CheklistUpload/CheklistUpload';
 
 interface FormTreb {
   loading: boolean;
@@ -19,36 +20,36 @@ interface FormTreb {
 
 const { Text } = Typography;
 
-const props: UploadProps = {
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange({ file, fileList }) {
-    if (file.status !== 'uploading') {
-      console.log(file, fileList);
-    }
-  },
-  defaultFileList: [
-    {
-      uid: '1',
-      name: 'xxx.png',
-      status: 'uploading',
-      url: 'http://www.baidu.com/xxx.png',
-      percent: 33,
-    },
-    {
-      uid: '2',
-      name: 'yyy.png',
-      status: 'done',
-      url: 'http://www.baidu.com/yyy.png',
-    },
-    {
-      uid: '3',
-      name: 'zzz.png',
-      status: 'error',
-      response: 'Server Error 500', // custom error message to show
-      url: 'http://www.baidu.com/zzz.png',
-    },
-  ],
-};
+// const props: UploadProps = {
+//   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+//   onChange({ file, fileList }) {
+//     if (file.status !== 'uploading') {
+//       console.log(file, fileList);
+//     }
+//   },
+//   defaultFileList: [
+//     {
+//       uid: '1',
+//       name: 'xxx.png',
+//       status: 'uploading',
+//       url: 'http://www.baidu.com/xxx.png',
+//       percent: 33,
+//     },
+//     {
+//       uid: '2',
+//       name: 'yyy.png',
+//       status: 'done',
+//       url: 'http://www.baidu.com/yyy.png',
+//     },
+//     {
+//       uid: '3',
+//       name: 'zzz.png',
+//       status: 'error',
+//       response: 'Server Error 500', // custom error message to show
+//       url: 'http://www.baidu.com/zzz.png',
+//     },
+//   ],
+// };
 
 const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
   const [numPunct, setNumPunct] = useState('');
@@ -401,12 +402,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                   </Row>
 
                   <Row style={{ justifyContent: 'space-between' }}>
-                    <BaseButtonsForm.Item>
-                      <Upload {...props}>
-                        <Button icon={<UploadOutlined />}>Добавить фото/видео</Button>
-                      </Upload>
-                    </BaseButtonsForm.Item>
-
+                    <CheklistUpload />
                     <BaseButtonsForm.Item>
                       <Button
                         htmlType="submit"
