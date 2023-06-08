@@ -10,6 +10,7 @@ import {
 import { createFire, updateFireCardBuild } from '@app/api/fire.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { useParams } from 'react-router-dom';
+import { validatorCustom } from '@app/utils/validator';
 
 export interface CheklistFireFormProps {
   data?: IFireCardBuild;
@@ -32,7 +33,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
   >([]);
   const [loading, setLoading] = useState(false);
   const formRef = useRef(null);
-  const [functionalsClass, setFunctionalsClass] = useState<SUnits[]>([]);
+  const [, setFunctionalsClass] = useState<SUnits[]>([]);
   const [shownClasses, setShownClasses] = useState(true);
 
   const changeFunctionales = (value: number) => {
@@ -200,7 +201,11 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
             onChange={changeFunctionales}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Площадь, кв.м" name="area">
+        <BaseButtonsForm.Item
+          label="Площадь, кв.м"
+          name="area"
+          rules={[{ validator: validatorCustom.cannotBeLessThanZero }]}
+        >
           <Input
             type="number"
             defaultValue={newCategory.area || ''}
@@ -223,14 +228,22 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
             options={optionsClasses}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Численность работников (персонала)" name="numStaff">
+        <BaseButtonsForm.Item
+          label="Численность работников (персонала)"
+          name="numStaff"
+          rules={[{ validator: validatorCustom.cannotBeLessThanZero }]}
+        >
           <Input
             type="number"
             defaultValue={newCategory.numStaff || ''}
             onChange={(e) => setNewCategory({ ...newCategory, numStaff: (newCategory.numStaff = e.target.value) })}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Расчетное количество посетителей" name="numPerson">
+        <BaseButtonsForm.Item
+          label="Расчетное количество посетителей"
+          name="numPerson"
+          rules={[{ validator: validatorCustom.cannotBeLessThanZero }]}
+        >
           <Input
             type="number"
             defaultValue={newCategory.numPerson || ''}

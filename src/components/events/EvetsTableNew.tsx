@@ -11,7 +11,7 @@ import CreateEvent from './CreateEvent';
 
 interface IEventsTable {
   data?: SEventsOrder[];
-  idSubj?: number;
+  idSubj?: number | string;
 }
 
 export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
@@ -290,6 +290,13 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
   useEffect(() => {
     getEvents(idSubj as number);
   }, []);
+
+  useEffect(() => {
+    console.log(idSubj);
+
+    getEvents(idSubj as number);
+  }, [idSubj]);
+
   const save = () => {
     toggleModalAdding(false);
     getEvents(idSubj as number);

@@ -108,17 +108,17 @@ const ChecklistFormFIO: React.FC = () => {
       values.dateTo = moment(values.dateTo || today).format('YYYY.MM.DD');
     }
 
-    if (dataForm) {
-      console.log('update', values);
-      updateForm(values);
-    }
+    // if (dataForm) {
+    //   console.log('update', values);
+    //   updateForm(values);
+    // }
 
-    createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 }).then(
-      () => {
-        setLoading(false);
-        notificationController.success({ message: 'Данные обновлены' });
-      },
-    );
+    // createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 }).then(
+    //   () => {
+    //     setLoading(false);
+    //     notificationController.success({ message: 'Данные обновлены' });
+    //   },
+    // );
   };
 
   useEffect(() => {

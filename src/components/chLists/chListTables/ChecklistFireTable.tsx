@@ -2,7 +2,7 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import FireForm from '../chListForms/CheklistFireForm';
+import CheklistFireForm from '../chListForms/CheklistFireForm';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 import { deleteFireCardBuildById } from '@app/api/fire.api';
 import { notificationController } from '@app/controllers/notificationController';
@@ -106,7 +106,7 @@ const ChecklistFireTable: React.FC<FireTableProps> = ({ data, update }) => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <FireForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <CheklistFireForm data={props.data} close={toggleModal} />}
         //searchFunc={searchCategories}
         selected={selected}
         //setSearchFunc={searchFunc}

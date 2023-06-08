@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BaseButtonsForm } from '../common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, Select } from 'antd';
 import { UserGroup } from '@app/domain/interfaces';
@@ -41,7 +41,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   const changePost = (value: unknown) => {
     const currentBoss = bosses.find((boss) => {
       // why in users isn`t uid in uidGr2
-      return boss.idUserGroup == value;
+      return boss.uidGr2?.uid == value;
     });
     setBossPost(currentBoss?.uidGr2?.idDeptJob2.job as string);
     setBossTell(currentBoss?.uidGr2?.tel as string);
@@ -50,7 +50,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   const optionsBosses = useMemo(() => {
     return bosses.map((boss) => ({
       label: boss?.uidGr2?.fio,
-      value: boss.idUserGroup,
+      value: boss.uidGr2?.uid,
     }));
   }, [bosses]);
 

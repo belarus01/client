@@ -52,6 +52,8 @@ type TOptions = {
   value: string | number | null;
 };
 
+const getPlaceDropDownForDatePiker = (): HTMLElement => document.querySelector('.ant-modal-body') || document.body;
+
 interface AddEventOrderForm {
   submitForm?: () => void;
   getNewEventWithsQues: (event: { event: IEventOrder; questions: IQuestionForEvent }) => void;
@@ -523,7 +525,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
                 />
               </BaseButtonsForm.Item>
             </Col>
-            <Col sm={4} md={4} lg={4}>
+            {/* <Col sm={4} md={4} lg={4}>
               <BaseButtonsForm.Item label=" ">
                 <Button
                   type="primary"
@@ -535,7 +537,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
                   Добавить группу
                 </Button>
               </BaseButtonsForm.Item>
-            </Col>
+            </Col> */}
           </Row>
           {shownGroupAdd ? (
             <Card>
@@ -610,12 +612,12 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
           <Row>
             <Col span={8} offset={2}>
               <BaseButtonsForm.Item label="Дата начала надзора" name="dateBegin" rules={[{ required: true }]}>
-                <DatePicker format={formatDate} />
+                <DatePicker getPopupContainer={getPlaceDropDownForDatePiker} format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
             <Col span={8} offset={2}>
               <BaseButtonsForm.Item label="Дата окончания надзора" name="dateEnd" rules={[{ required: true }]}>
-                <DatePicker format={formatDate} />
+                <DatePicker getPopupContainer={getPlaceDropDownForDatePiker} format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
           </Row>
@@ -647,7 +649,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
                 label="Фактическая дата начала надзорно-профилактического мероприятия"
                 name="dateBeginFact"
               >
-                <DatePicker format={formatDate} />
+                <DatePicker getPopupContainer={getPlaceDropDownForDatePiker} format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
             <Col span={8} offset={2}>
@@ -655,7 +657,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
                 label="Фактическая дата окончания надзорно-профилактического мероприятия"
                 name="dateEndFact"
               >
-                <DatePicker format={formatDate} />
+                <DatePicker getPopupContainer={getPlaceDropDownForDatePiker} format={formatDate} />
               </BaseButtonsForm.Item>
             </Col>
           </Row>

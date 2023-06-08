@@ -20,37 +20,6 @@ interface FormTreb {
 
 const { Text } = Typography;
 
-// const props: UploadProps = {
-//   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-//   onChange({ file, fileList }) {
-//     if (file.status !== 'uploading') {
-//       console.log(file, fileList);
-//     }
-//   },
-//   defaultFileList: [
-//     {
-//       uid: '1',
-//       name: 'xxx.png',
-//       status: 'uploading',
-//       url: 'http://www.baidu.com/xxx.png',
-//       percent: 33,
-//     },
-//     {
-//       uid: '2',
-//       name: 'yyy.png',
-//       status: 'done',
-//       url: 'http://www.baidu.com/yyy.png',
-//     },
-//     {
-//       uid: '3',
-//       name: 'zzz.png',
-//       status: 'error',
-//       response: 'Server Error 500', // custom error message to show
-//       url: 'http://www.baidu.com/zzz.png',
-//     },
-//   ],
-// };
-
 const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
   const [numPunct, setNumPunct] = useState('');
   const [rulePunct, setRulePunct] = useState('');
@@ -236,20 +205,55 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
               </Col>
 
               <Col offset={2} style={{ marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}>
-                <Row>
-                  <Text style={{ fontSize: '17px' }}>Выбор пункта:</Text>
+                <Row justify="space-between" align="middle">
+                  <Col>
+                    <Row align="middle">
+                      <div style={{ fontSize: '17px' }}>Выбор пункта:</div>
 
-                  <BaseButtonsForm.Item>
-                    <Select
-                      placeholder="1.1"
-                      style={{ marginLeft: '20px', marginTop: '-10px' }}
-                      options={puncts}
-                      value={currentNumQuestion}
-                      onChange={(value) => changePuncts(value)}
-                      key={`${currentNumQuestion}`}
-                      defaultValue={currentNumQuestion}
-                    />
-                  </BaseButtonsForm.Item>
+                      <BaseButtonsForm.Item>
+                        <Select
+                          style={{ margin: '16px' }}
+                          placeholder="1.1"
+                          options={puncts}
+                          value={currentNumQuestion}
+                          onChange={(value) => changePuncts(value)}
+                          key={`${currentNumQuestion}`}
+                          defaultValue={currentNumQuestion}
+                        />
+                      </BaseButtonsForm.Item>
+                    </Row>
+                  </Col>
+                  <Col span={8}>
+                    <Row align="middle" justify="center">
+                      <BaseButtonsForm.Item>
+                        <Button
+                          style={{
+                            color: 'black',
+                            background: 'blanchedalmond',
+                            border: '2px solid gold',
+                            borderRadius: '8px',
+                            marginRight: '20px',
+                          }}
+                          onClick={prev}
+                        >
+                          <Text strong>Предыдущий</Text>
+                        </Button>
+                      </BaseButtonsForm.Item>
+                      <BaseButtonsForm.Item>
+                        <Button
+                          style={{
+                            color: 'black',
+                            background: 'blanchedalmond',
+                            border: '2px solid gold',
+                            borderRadius: '8px',
+                          }}
+                          onClick={next}
+                        >
+                          <Text strong>Следующий</Text>
+                        </Button>
+                      </BaseButtonsForm.Item>
+                    </Row>
+                  </Col>
                 </Row>
               </Col>
 
@@ -433,42 +437,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                 </Col>
               </Col>
 
-              <Col span={22} offset={1} style={{ textAlign: 'left', marginBottom: '30px', fontSize: '15px' }}>
-                <Row>
-                  <BaseButtonsForm.Item>
-                    <Button
-                      style={{
-                        color: 'black',
-                        background: 'blanchedalmond',
-                        border: '2px solid gold',
-                        borderRadius: '8px',
-                        marginTop: '-10px',
-                        marginBottom: '10px',
-                        marginLeft: '0px',
-                      }}
-                      onClick={prev}
-                    >
-                      <Text strong>Предыдущий</Text>
-                    </Button>
-                  </BaseButtonsForm.Item>
-                  <BaseButtonsForm.Item>
-                    <Button
-                      style={{
-                        color: 'black',
-                        background: 'blanchedalmond',
-                        border: '2px solid gold',
-                        borderRadius: '8px',
-                        marginTop: '-10px',
-                        marginBottom: '10px',
-                        marginLeft: '20px',
-                      }}
-                      onClick={next}
-                    >
-                      <Text strong>Следующий</Text>
-                    </Button>
-                  </BaseButtonsForm.Item>
-                </Row>
-              </Col>
+              <Col span={22} offset={1} style={{ textAlign: 'left', marginBottom: '30px', fontSize: '15px' }}></Col>
             </Col>
           </Row>
         </Spinner>

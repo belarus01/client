@@ -19,6 +19,7 @@ import { DatePicker } from '@app/components/common/pickers/DatePicker';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { notificationController } from '@app/controllers/notificationController';
 import { IVesomstvo, SSubj, ateObl } from '@app/domain/interfaces';
+import { validatorCustom } from '@app/utils/validator';
 import dayjs from 'dayjs';
 import { Key, useEffect, useState } from 'react';
 
@@ -28,6 +29,8 @@ interface AddSubjectFormProps {
   data?: SSubj;
   updateTable: () => void;
 }
+
+const getPlaceDropDown = (): HTMLElement => document.querySelector('.ant-modal-body') || document.body;
 
 export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTableChange, data, updateTable }) => {
   const onFinish = (values: SSubj) => {
@@ -164,7 +167,7 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
   return (
     <>
       <BaseButtonsForm layout="vertical" onFinish={onFinish} isFieldsChanged={false}>
-        <BaseButtonsForm.Item label="УНП" name="unp">
+        <BaseButtonsForm.Item label="УНП" name="unp" rules={[{ validator: validatorCustom.unp }]}>
           <Input defaultValue={data?.unp || ''} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Наименование субъекта промышленной беезопасности" name="subj">
@@ -187,6 +190,7 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Дата регистрации ОПО" name="dateRegOpo">
           <DatePicker
+            getPopupContainer={getPlaceDropDown}
             onChange={(e) => {
               console.log(e?.format('DD.MM.YYYY'));
               setDate(e?.format('DD.MM.YYYY') as string);
