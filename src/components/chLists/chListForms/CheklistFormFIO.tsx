@@ -108,17 +108,17 @@ const ChecklistFormFIO: React.FC = () => {
       values.dateTo = moment(values.dateTo || today).format('YYYY.MM.DD');
     }
 
-    // if (dataForm) {
-    //   console.log('update', values);
-    //   updateForm(values);
-    // }
+    if (dataForm) {
+      console.log('update', values);
+      updateForm(values);
+    }
 
-    // createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 }).then(
-    //   () => {
-    //     setLoading(false);
-    //     notificationController.success({ message: 'Данные обновлены' });
-    //   },
-    // );
+    createFormReport({ ...values, idForm: idForm as unknown as number, idEventOrder: idEventOrder, org: 1 }).then(
+      () => {
+        setLoading(false);
+        notificationController.success({ message: 'Данные обновлены' });
+      },
+    );
   };
 
   useEffect(() => {
@@ -160,6 +160,7 @@ const ChecklistFormFIO: React.FC = () => {
                 <BaseButtonsForm.Item name="dateFrom">
                   <DatePicker
                     defaultValue={moment(dataForm.dateFrom || today)}
+                    getPopupContainer={() => document.querySelector('.ant-card-body') as HTMLElement}
                     format={dateFormat}
                     key={`${dataForm.dateFrom}`}
                     style={{ marginLeft: '12px', marginTop: '-10px' }}
@@ -173,7 +174,8 @@ const ChecklistFormFIO: React.FC = () => {
               <Col>
                 <BaseButtonsForm.Item name="dateTo">
                   <DatePicker
-                    defaultValue={moment(dataForm.dateTo)}
+                    defaultValue={moment(dataForm.dateTo) || today}
+                    getPopupContainer={() => document.querySelector('.ant-card-body') as HTMLElement}
                     format={dateFormat}
                     key={`${dataForm.dateTo}`}
                     style={{ marginLeft: '15px', marginTop: '-10px' }}
@@ -188,6 +190,7 @@ const ChecklistFormFIO: React.FC = () => {
                 <BaseButtonsForm.Item name="dateRec">
                   <DatePicker
                     defaultValue={moment(dataForm.dateRec || today)}
+                    getPopupContainer={() => document.querySelector('.ant-card-body') as HTMLElement}
                     format={dateFormat}
                     key={`${dataForm.dateRec}`}
                     style={{ marginLeft: '15px', marginTop: '-10px' }}
@@ -229,7 +232,7 @@ const ChecklistFormFIO: React.FC = () => {
                   marginBottom: '10px',
                 }}
               >
-                <Text strong>Подтвердить</Text>
+                <Text strong>Сохранить изменения</Text>
               </Button>
             </BaseButtonsForm.Item>
           </Row>

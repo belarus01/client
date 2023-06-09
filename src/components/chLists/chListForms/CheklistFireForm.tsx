@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Button, Input, Select } from 'antd';
+import { Button, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
 import {
@@ -11,6 +11,7 @@ import { createFire, updateFireCardBuild } from '@app/api/fire.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { useParams } from 'react-router-dom';
 import { validatorCustom } from '@app/utils/validator';
+import { Select } from '@app/components/common/selects/Select/Select';
 
 export interface CheklistFireFormProps {
   data?: IFireCardBuild;
@@ -198,7 +199,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
             loading={loadingFunctionalClasses}
             defaultValue={(newCategory.idUnit_3?.type as unknown as number) || null}
             options={optionsFunctionalClasses}
-            onChange={changeFunctionales}
+            onSelect={(value) => changeFunctionales(value as number)}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item
@@ -217,7 +218,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
             loading={loadingTipClasses}
             defaultValue={(newCategory.idUnit_2?.name as unknown as number) || null}
             options={optionsTipClasses}
-            onChange={changeType}
+            onSelect={(value) => changeType(value as number)}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Категория" name="idUnit_17_37">

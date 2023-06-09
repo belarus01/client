@@ -1,4 +1,4 @@
-import { Cascader, Col, DatePicker, Row, Select, Typography, UploadProps } from 'antd';
+import { Cascader, Col, DatePicker, Row, Typography, UploadProps } from 'antd';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Input, TextArea } from '../../common/inputs/Input/Input';
 import { Button } from '../../common/buttons/Button/Button';
@@ -12,15 +12,17 @@ import { notificationController } from '@app/controllers/notificationController'
 import { Upload } from '@app/components/common/Upload/Upload';
 import { UploadOutlined } from '@ant-design/icons';
 import CheklistUpload from '../CheklistUpload/CheklistUpload';
+import { Select } from '@app/components/common/selects/Select/Select';
 
 interface FormTreb {
   loading: boolean;
   fields: any[];
+  updateFields: () => Promise<void>;
 }
 
 const { Text } = Typography;
 
-const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
+const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
   const [numPunct, setNumPunct] = useState('');
   const [rulePunct, setRulePunct] = useState('');
   const [shortTnpa, setShortTnpa] = useState('');
@@ -28,6 +30,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
   const [currentField, setCurrentField] = useState<IEventOrderQueDef>({
     idDef: null,
   });
+  const [chlComm, setChlComm] = useState('');
   const [shownComm, setShownComm] = useState(false);
 
   const [loadingForm, setLoadingForm] = useState(false);
@@ -56,8 +59,6 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
   };
 
   const initialValuesChlOk = (value: number) => {
-    console.log(value, 'ASDFADSFASDFFADADFAADFFADADFD');
-
     switch (value) {
       case 0:
         return {
@@ -82,8 +83,10 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
 
   const changeCurrentNumQuestion = (field: IEventOrderQueDef) => {
     setCurrentField({ ...field });
-    const flOk = initialValuesFlOk(field.flOk);
-    const chlFlYes = initialValuesChlOk(field.chlFlYes);
+    const flOk = initialValuesFlOk(parseFloat(field.flOk));
+    const chlFlYes = initialValuesChlOk(parseFloat(field.chlFlYes));
+    console.log(flOk, chlFlYes, field);
+
     form.setFieldsValue({
       dateFix: field.dateFix ? moment(field.dateFix) : null,
       dateInform: field.dateInform ? moment(field.dateInform) : null,
@@ -129,9 +132,12 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
       const index = fields.findIndex((field) => field.idDef2?.numQuestion == value);
       if (index != -1) {
         const currentField = fields[index];
+        console.log(currentField.chlComm);
+
         changeCurrentNumQuestion(currentField);
         setRulePunct(currentField.idDef2?.rulePunct);
         setShortTnpa(currentField.idDef2?.shortTnpa);
+        setChlComm(currentField.chlComm);
       }
     },
     [fields],
@@ -164,9 +170,15 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
       dateInform: values.dateInform ? (values.dateInform as unknown as Moment).format('YYYY.MM.DD') : null,
       flOk: values.flOk?.value ? values.flOk?.value : values.flOk,
       chlFlYes: values.chlFlYes?.value ? values.chlFlYes?.value : values.chlFlYes,
+      chlComm: chlComm,
     };
     if (currentField.idList) {
       updateEventOrderQueDef(currentField.idList, finalyValues).then(() => {
+        updateFields().then(() => {
+          changePuncts(currentNumQuestion[0]);
+          changeCurrentNumQuestion(finalyValues);
+          setChlComm(chlComm);
+        });
         setLoadingForm(false);
         notificationController.success({ message: 'Данные внесены успешно!' });
       });
@@ -329,7 +341,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                   </Row>
 
                   <BaseButtonsForm.Item name="chlComm">
-                    {shownComm ? <TextArea onChange={(e) => form.setFieldValue('chlComm', e.target.value)} /> : null}
+                    {shownComm ? <TextArea value={chlComm} onChange={(e) => setChlComm(e.target.value)} /> : null}
                     <Button
                       style={{
                         color: 'black',
@@ -366,7 +378,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name={'dateFix'}>
                         <DatePicker
-                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          getPopupContainer={(triger) => triger}
                           format={dateFormat}
                           style={{ marginTop: '5px' }}
                         />
@@ -376,7 +388,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name="dateInform">
                         <DatePicker
-                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          getPopupContainer={(triger) => triger}
                           format={dateFormat}
                           style={{ marginTop: '5px' }}
                         />
@@ -386,7 +398,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name="dateCheckFix">
                         <DatePicker
-                          getPopupContainer={() => document.querySelector('.ant-card-body') || document.body}
+                          getPopupContainer={(triger) => triger}
                           format={dateFormat}
                           style={{ marginTop: '5px' }}
                         />
@@ -430,7 +442,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields }) => {
                         }}
                         loading={loadingForm}
                       >
-                        <Text strong>Подтвердить</Text>
+                        <Text strong>Сохранить изменения</Text>
                       </Button>
                     </BaseButtonsForm.Item>
                   </Row>

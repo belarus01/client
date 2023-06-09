@@ -9,8 +9,6 @@ const validatorUnp = async (_: any, names: string) => {
 const cannotBeLessThanZero = async (_: any, names: string) => {
   if (parseInt(names) < 0) {
     return Promise.reject(new Error('не может быть меньше 0 '));
-  } else if (!/^\d+$/.test(names)) {
-    return Promise.reject(new Error('Только числа '));
   }
 };
 

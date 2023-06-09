@@ -33,10 +33,12 @@ const ChecklistFireTable: React.FC<FireTableProps> = ({ data, update }) => {
 
   const deleteCategory = (fireCardBuild: IFireCardBuild) => {
     if (fireCardBuild.idList) {
+      console.log();
+
       deleteFireCardBuildById(fireCardBuild.idList).then(() => {
+        update();
         notificationController.success({ message: 'Успешно удалено' });
       });
-      update();
     }
   };
 

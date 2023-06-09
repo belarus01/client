@@ -69,11 +69,12 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
   const getTrebs = () => {
     setLoadingFormTreb(true);
     if (idEventOrder) {
-      getAllDefectionNamesByIdEventOrder(idEventOrder).then((treb) => {
+      return getAllDefectionNamesByIdEventOrder(idEventOrder).then((treb) => {
         setFields(treb);
         setLoadingFormTreb(false);
       });
     }
+    return new Promise<void>((resolve) => resolve());
   };
 
   const getSubjBuilds = () => {
@@ -85,6 +86,10 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
         setSubjBuilds({ data: res, loading: false });
       });
     }
+  };
+
+  const updateFields = () => {
+    return getTrebs();
   };
 
   useEffect(() => {
@@ -139,7 +144,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
             </Col>
           </Row>
 
-          <FormTreb loading={loadingFormTreb} fields={fields} />
+          <FormTreb loading={loadingFormTreb} fields={fields} updateFields={updateFields} />
           <Row justify={'center'} style={{ background: 'linen' }}>
             <Button
               type="primary"
@@ -153,7 +158,7 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
               }}
               onClick={createCheckList}
             >
-              <Text strong>Завершить</Text>
+              <Text strong>Завершить заполнение и создать документ</Text>
             </Button>
           </Row>
         </Spinner>

@@ -80,6 +80,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
     <>
       <BaseButtonsForm.Item name={nameUid || 'uidBoss'} label={labelUser || 'ФИО'}>
         <Select
+          getPopupContainer={(trigger) => trigger}
           defaultValue={boss}
           loading={loadingBosses}
           options={optionsBosses}
