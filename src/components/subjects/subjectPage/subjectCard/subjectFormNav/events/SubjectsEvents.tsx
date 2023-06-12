@@ -45,92 +45,10 @@ export const SubjectEvents: React.FC = () => {
 
   const handleAddClick = () => {};
 
-  const columns = [
-    {
-      key: '1',
-      title: 'Мероприятие',
-      dataIndex: 'idEvent',
-      render: (idEvent2: SEvents) => {
-        return <p>{idEvent2.event}</p>;
-      },
-    },
-    {
-      key: '2',
-      title: 'Тип',
-      dataIndex: 'idUnit_4',
-    },
-    {
-      key: '3',
-      title: 'Вид',
-      dataIndex: 'idUnit_3',
-    },
-
-    {
-      key: '2',
-      title: 'Орган, выдавший предписание',
-      dataIndex: 'idDeptIss',
-    },
-    {
-      key: '3',
-      title: 'Орган, проводящий проверку',
-      dataIndex: 'idDept2',
-      render: (idDept2: SDept) => {
-        return <p>{idDept2 !== null ? idDept2.departament : ''}</p>;
-      },
-    },
-    {
-      key: '4',
-      title: 'Основание назначения мероприятия',
-      dataIndex: 'addrDescr',
-    },
-
-    {
-      key: '7',
-      title: 'Применяемые научно-технические средства',
-      dataIndex: 'technical',
-    },
-    {
-      key: '8',
-      title: 'Дата начала',
-      dataIndex: 'dateBegin',
-      render: (date: Date) => {
-        const newDate = new Date(date);
-        return <p>{newDate.toLocaleDateString()}</p>;
-      },
-    },
-    {
-      key: '9',
-      title: 'Дата окончания',
-      dataIndex: 'dateEnd',
-      render: (date: Date) => {
-        const newDate = new Date(date);
-        return <p>{newDate.toLocaleDateString()}</p>;
-      },
-    },
-    {
-      key: '10',
-      title: 'Действия',
-      width: '15%',
-      render: (subj: SSubjObj) => {
-        return (
-          <Space>
-            <Button
-              type="ghost"
-              onClick={() => {
-                //navigate('/subject', {state:subj})
-                // notificationController.info({ message: t('tables.inviteMessage', { name: record.name }) });
-              }}
-            >
-              {'Открыть'}
-            </Button>
-          </Space>
-        );
-      },
-    },
-  ];
+  const idSubj = subj?.idSubj ? subj.idSubj : '';
   return (
     <>
-      <EventsTable />
+      <EventsTable idSubj={idSubj} />
       {/* <Button onClick={handleAddClick}>Добавить мероприятие</Button>
       <Table
         dataSource={tableData.data}

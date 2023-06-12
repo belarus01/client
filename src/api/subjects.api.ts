@@ -26,3 +26,6 @@ export const getAllSubjSortAndPage = (params: object) =>
 
 export const deleteSubjById = (idSubj: number | string) =>
   httpApi.put<ITableSort>(`${BASE_URL}/delete/${idSubj}`).then(({ data }) => data);
+
+export const updateSubj = (idSubj: number | string, subj: SSubj) =>
+  httpApi.put<ITableSort>(`${BASE_URL}/update/${idSubj}`, { ...subj }).then(({ data }) => data);

@@ -2,15 +2,17 @@ import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
-import FireForm from '../chListForms/ChList_1FormFire';
+import CheklistFireForm from '../chListForms/CheklistFireForm';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
+import { deleteFireCardBuildById } from '@app/api/fire.api';
+import { notificationController } from '@app/controllers/notificationController';
 
 interface FireTableProps {
   data: { data: IFireCardBuild[]; loading: boolean };
   update: () => void;
 }
 
-const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
+const ChecklistFireTable: React.FC<FireTableProps> = ({ data, update }) => {
   const [openAddingForm, setOpenAddingForm] = useState(false);
   const [openEddingForm, setOpenEddingForm] = useState(false);
   const [selected, setSelected] = useState<IFireCardBuild>({
@@ -29,9 +31,15 @@ const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
     setOpenEddingForm(isOpen);
   };
 
-  const deleteCategory = (category: IFireCardBuild) => {
-    // const newData = tableData.data.filter((item) => item.idList !== category.idList);
-    // setTableData({ ...tableData, data: newData });
+  const deleteCategory = (fireCardBuild: IFireCardBuild) => {
+    if (fireCardBuild.idList) {
+      console.log();
+
+      deleteFireCardBuildById(fireCardBuild.idList).then(() => {
+        update();
+        notificationController.success({ message: 'Успешно удалено' });
+      });
+    }
   };
 
   const toggleModal = () => {
@@ -50,7 +58,7 @@ const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
       key: 2,
       title: ' Функциональное назначение',
       dataIndex: 'type',
-      render: (_: unknown, { idUnit_3 }: { idUnit_3: SUnits }) => <span>{idUnit_3.type}</span>,
+      render: (_: unknown, { idUnit_3 }: { idUnit_3: SUnits }) => <span>{idUnit_3?.type}</span>,
     },
     {
       key: 3,
@@ -100,7 +108,7 @@ const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
       <TheTable
         // onRow={onRow}
         search={search}
-        FormComponent={(props) => <FireForm data={props.data} close={toggleModal} />}
+        FormComponent={(props) => <CheklistFireForm data={props.data} close={toggleModal} />}
         //searchFunc={searchCategories}
         selected={selected}
         //setSearchFunc={searchFunc}
@@ -118,4 +126,4 @@ const FireTable: React.FC<FireTableProps> = ({ data, update }) => {
   );
 };
 
-export default FireTable;
+export default ChecklistFireTable;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BaseButtonsForm } from '../common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, Select } from 'antd';
 import { UserGroup } from '@app/domain/interfaces';
@@ -23,35 +23,11 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   labelTel,
   nameUid,
 }) => {
-  const [boss, setBoss] = useState<{
-    label: string;
-    value: string | number | null;
-  }>({
-    label: '',
-    value: '',
-  });
+  const [boss, setBoss] = useState<string | number | null>('');
   const [bosses, setBosses] = useState<UserGroup[]>([]);
   const [bossPost, setBossPost] = useState('');
   const [bossTell, setBossTell] = useState('');
   const [loadingBosses, setLoadingBosses] = useState<boolean>(false);
-
-  const getBoss = useCallback(
-    (uidBoss: number | string) => () => {
-      const bossCurrent = bosses.find((boss) => {
-        return boss.idUserGroup == uidBoss;
-      });
-      if (bossCurrent) {
-        const boss = {
-          label: bossCurrent.uidGr2?.fio || '',
-          value: bossCurrent.uidGr2?.uid || null,
-        };
-        setBoss(boss);
-        setBossPost(bossCurrent?.uidGr2?.idDeptJob2?.job || '');
-        setBossTell(bossCurrent?.uidGr2?.tel || '');
-      }
-    },
-    [bosses],
-  );
 
   const getAllBoss = () => {
     setLoadingBosses(true);
@@ -65,7 +41,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   const changePost = (value: unknown) => {
     const currentBoss = bosses.find((boss) => {
       // why in users isn`t uid in uidGr2
-      return boss.idUserGroup == value;
+      return boss.uidGr2?.uid == value;
     });
     setBossPost(currentBoss?.uidGr2?.idDeptJob2.job as string);
     setBossTell(currentBoss?.uidGr2?.tel as string);
@@ -74,7 +50,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   const optionsBosses = useMemo(() => {
     return bosses.map((boss) => ({
       label: boss?.uidGr2?.fio,
-      value: boss.idUserGroup,
+      value: boss.uidGr2?.uid,
     }));
   }, [bosses]);
 
@@ -84,13 +60,33 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
   }, []);
   useEffect(() => {
     if (uidBoss) {
-      getBoss(uidBoss);
+      const bossCurrent = bosses.find((boss) => {
+        return boss.idUserGroup == uidBoss;
+      });
+      if (bossCurrent) {
+        // const boss = {
+        //   label: bossCurrent.uidGr2?.fio || '',
+        //   value: bossCurrent.uidGr2?.uid || null,
+        // };
+        console.log(bossCurrent.idUserGroup);
+
+        setBoss(bossCurrent.uidGr2?.uid || null);
+        setBossPost(bossCurrent?.uidGr2?.idDeptJob2?.job || '');
+        setBossTell(bossCurrent?.uidGr2?.tel || '');
+      }
     }
-  }, [getBoss, uidBoss]);
+  }, [boss, bosses, uidBoss]);
   return (
     <>
       <BaseButtonsForm.Item name={nameUid || 'uidBoss'} label={labelUser || 'ФИО'}>
-        <Select loading={loadingBosses} options={optionsBosses} onChange={changePost} value={boss} />
+        <Select
+          getPopupContainer={(trigger) => trigger}
+          defaultValue={boss}
+          loading={loadingBosses}
+          options={optionsBosses}
+          onChange={changePost}
+          key={`${boss}`}
+        />
       </BaseButtonsForm.Item>
       {shownPost && (
         <BaseButtonsForm.Item label={labelPost || 'Должжность'}>

@@ -23,7 +23,7 @@ export const BaseForm: BaseFormInterface<BaseFormProps> = ({ onFinishFailed, lay
 
   const onFinishFailedDefault = (error: ValidateErrorEntity<unknown>) => {
     notificationController.error({
-      message: t('common.error'),
+      message: t('Ошибка'),
       description: error.errorFields[0].errors,
     });
   };

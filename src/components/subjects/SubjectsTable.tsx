@@ -92,15 +92,17 @@ export const SubjectsTable: React.FC = () => {
   const deleteItem = (deletedItem: SSubj) => {
     console.log(deletedItem);
     if (deletedItem.idSubj) {
-      console.log('delete');
-
+      console.log('delete', deletedItem.idSubj);
+      deleteSubjById(deletedItem.idSubj)
+        .then(() => {
+          notificationController.success({ message: 'Субъект успешно удален' });
+          updateTable();
+        })
+        .catch((e) => {
+          notificationController.error({ message: 'Ошибка', description: `Субъект не был удален, ${e}` });
+        });
       // deleteSubjById(deletedItem.idSubj);
-      const index = tableData.data.findIndex((item) => item.idSubj === deletedItem.idSubj);
-      const newData = [...tableData.data];
-      newData.splice(index, 1);
-      setTableData({ ...tableData, data: newData });
     }
-    // updateTable();
   };
 
   // const handleDeleteRow = (rowId: number) => {
