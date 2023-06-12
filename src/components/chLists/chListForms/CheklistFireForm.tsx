@@ -89,6 +89,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
       setShown(true);
     } else {
       setShown(false);
+      resetField();
     }
   };
 
