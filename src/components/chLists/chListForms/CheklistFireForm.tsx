@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
@@ -33,16 +33,28 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
     }[]
   >([]);
   const [loading, setLoading] = useState(false);
-  const formRef = useRef(null);
+
   const [, setFunctionalsClass] = useState<SUnits[]>([]);
   const [shownClasses, setShownClasses] = useState(true);
 
+  const [form] = BaseButtonsForm.useForm();
+
+  const resetField = () => {
+    const obj = newCategory.idUnit_17;
+    if (obj) {
+      obj.type = null;
+      obj.idUnit = null;
+    }
+    setNewCategory({ ...newCategory, idUnit_17_37: null, idUnit_17: obj });
+    form.setFieldValue('idUnit_17_37', null);
+  };
+
   const changeFunctionales = (value: number) => {
-    console.log(value);
     if (value >= 2340) {
       setShownClasses(false);
     } else {
       setShownClasses(true);
+      resetField();
     }
   };
 
@@ -73,7 +85,6 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
   const [shownN, setShown] = useState(false);
 
   const changeType = (value: number) => {
-    console.log(value);
     if (value == 4002) {
       setShown(true);
     } else {
@@ -114,8 +125,6 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
   const getCategoryClasses = () => {
     setLoadingCategoryClasses(true);
     getAllUnitBuildigAndNaruzhCategs().then((category) => {
-      console.log(category);
-
       const optionsFiltred = category.map((clas) => ({
         label: clas.type as string,
         value: clas.idUnit as number,
@@ -129,8 +138,6 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
   const { idSubj } = useParams();
 
   const onFinish = (values: IFireCardBuild) => {
-    console.log(values);
-
     setLoading(true);
     if (data) {
       if (data.idList) {
@@ -164,10 +171,16 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
     getCategoryClasses();
   }, []);
 
+  useEffect(() => {
+    if (data && data.idUnit_6) {
+      changeFunctionales(data.idUnit_6);
+    }
+  }, [data]);
+
   return (
-    <>
+    <div>
       <BaseButtonsForm
-        ref={formRef}
+        form={form}
         initialValues={{
           nameBuild: newCategory.nameBuild,
           area: newCategory.area,
@@ -225,7 +238,8 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
           <Select
             disabled={shownClasses}
             loading={loadingCategoryClasses}
-            defaultValue={newCategory.idUnit_17?.type || ''}
+            value={newCategory.idUnit_17?.type || ''}
+            key={`${newCategory.idUnit_17?.type}`}
             options={optionsClasses}
           />
         </BaseButtonsForm.Item>
@@ -257,7 +271,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
           </Button>
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
-    </>
+    </div>
   );
 };
 

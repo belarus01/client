@@ -133,6 +133,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
       if (index != -1) {
         const currentField = fields[index];
         console.log(currentField.chlComm);
+        console.log(currentField.idDef2?.numQuestion, 'currentField.idDef2?.numQuestion');
 
         changeCurrentNumQuestion(currentField);
         setRulePunct(currentField.idDef2?.rulePunct);
@@ -178,6 +179,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
           changePuncts(currentNumQuestion[0]);
           changeCurrentNumQuestion(finalyValues);
           setChlComm(chlComm);
+          setCurrentNumQuestion([currentField.idDef2?.numQuestion]);
         });
         setLoadingForm(false);
         notificationController.success({ message: 'Данные внесены успешно!' });
