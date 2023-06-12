@@ -3,6 +3,9 @@ import { Button, DatePicker, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
 import moment from 'moment';
+import { Upload } from '@app/components/common/Upload/Upload';
+import { UploadOutlined } from '@ant-design/icons';
+import TnpaUpload from './../tnpaUpload/TnpaUpload';
 
 export interface TnpaFormProps {
   data?: ITnpaCategory;
@@ -18,9 +21,9 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
     ...data,
   });
 
-  const submit = () => {
+  const submit = (values: any) => {
     // post, body newCategory
-    console.log('submit');
+    console.log('submit', values);
   };
 
   const dateFormat = 'YYYY-MM-DD';
@@ -32,27 +35,22 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
       <BaseButtonsForm
         layout="vertical"
         isFieldsChanged={false}
+        onFinish={submit}
         initialValues={{
-          ['dateDoc']: moment(newCategory.dateDoc || today, dateFormat),
+          numDoc: newCategory.numDoc,
+          dateDoc: moment(newCategory.dateDoc || today, dateFormat),
+          addr: newCategory.addr,
+          name: newCategory.name,
         }}
       >
-        <BaseButtonsForm.Item label="Название" name="name">
-          <Input
-            defaultValue={newCategory.name}
-            onChange={(e) => setNewCategory({ ...newCategory, name: (newCategory.name = e.target.value) })}
-          />
+        <BaseButtonsForm.Item label="Название" name="name" rules={[{ required: true }]}>
+          <Input onChange={(e) => setNewCategory({ ...newCategory, name: (newCategory.name = e.target.value) })} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Адрес" name="addr">
-          <Input
-            defaultValue={newCategory.addr}
-            onChange={(e) => setNewCategory({ ...newCategory, addr: (newCategory.addr = e.target.value) })}
-          />
+          <Input onChange={(e) => setNewCategory({ ...newCategory, addr: (newCategory.addr = e.target.value) })} />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Номер документа" name="numDoc">
-          <Input
-            defaultValue={newCategory.numDoc}
-            onChange={(e) => setNewCategory({ ...newCategory, numDoc: (newCategory.numDoc = e.target.value) })}
-          />
+        <BaseButtonsForm.Item label="Номер документа" name="numDoc" rules={[{ required: true }]}>
+          <Input onChange={(e) => setNewCategory({ ...newCategory, numDoc: (newCategory.numDoc = e.target.value) })} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Дата документа" name="dateDoc">
           <DatePicker
@@ -60,16 +58,15 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
             onChange={(value) => setNewCategory({ ...newCategory, dateDoc: value?.format(dateFormat) })}
           />
         </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item>
+          <TnpaUpload />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item>
+          <Button htmlType="submit" style={{ marginTop: '10px' }} type="primary">
+            Сохранить
+          </Button>
+        </BaseButtonsForm.Item>
       </BaseButtonsForm>
-      <Button
-        style={{ marginTop: '10px' }}
-        onClick={() => {
-          submit();
-        }}
-        type="primary"
-      >
-        Сохранить
-      </Button>
     </>
   );
 };

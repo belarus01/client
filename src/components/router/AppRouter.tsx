@@ -192,7 +192,7 @@ export const AppRouter: React.FC = () => {
             <Route path="vedomstva" element={<VedomstvaPage />} />
           </Route>
           <Route path="tnpa">
-            {/* <Route path='tnpanpa' element={}/> */}
+            {/* <Route path="tnpanpa" element={} /> */}
             {/* <Route path='defections' element={}/> */}
           </Route>
           <Route path="journals">

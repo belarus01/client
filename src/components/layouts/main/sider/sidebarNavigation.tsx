@@ -172,11 +172,11 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
       //   key: 'oked',
       //   url: '/handbooks/events',
       // },
-      // {
-      //   title: 'Перечень НПА и ТНПА',
-      //   key: 'tnpanpa',
-      //   url: '/handbooks/tnpanpa',
-      // },
+      {
+        title: 'Перечень НПА и ТНПА',
+        key: 'tnpanpa',
+        url: '/handbooks/tnpanpa',
+      },
       // {
       //   title: 'Виды структурных элементов НПА',
       //   key: 'tnpastrelem',

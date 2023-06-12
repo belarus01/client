@@ -80,7 +80,7 @@ const TnpaTable: React.FC = () => {
     },
     {
       key: 2,
-      title: 'Адрес',
+      title: 'URI документа',
       dataIndex: 'addr',
     },
     {
