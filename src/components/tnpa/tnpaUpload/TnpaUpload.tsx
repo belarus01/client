@@ -3,23 +3,23 @@ import { uploadFiles } from '@app/api/file.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Upload, message } from 'antd';
-import React, { useState } from 'react';
-
+import React, { forwardRef, useState } from 'react';
 interface CheklistUploadProps {
   titleButton?: string;
+  ref: React.ForwardedRef<any | null>;
 }
 
-interface CustomRequestOptions {
-  onSuccess: (response?: any) => void;
-  onError: (error?: any) => void;
-  file: any;
-  onProgress: (progress?: any) => void;
-}
+// interface CustomRequestOptions {
+//   onSuccess: (response?: any) => void;
+//   onError: (error?: any) => void;
+//   file: any;
+//   onProgress: (progress?: any) => void;
+// }
 
-const TnpaUpload: React.FC<CheklistUploadProps> = ({ titleButton }) => {
+const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(({ titleButton, children }, ref) => {
   const [fileList, setFileList] = useState([]);
 
-  const handleUpload = async (options: CustomRequestOptions) => {
+  const handleUpload = async (options: any) => {
     const { onSuccess, onError, file, onProgress } = options;
     console.log(file);
 
@@ -46,22 +46,27 @@ const TnpaUpload: React.FC<CheklistUploadProps> = ({ titleButton }) => {
     }
   };
 
-  const handleRemove = (file: { uid: any }) => {
-    const updatedList = fileList.filter((item) => item.uid !== file.uid);
-    setFileList(updatedList);
-  };
+  // const handleRemove = (file: { uid: any }) => {
+  //   const updatedList = fileList.filter((item) => item.uid !== file.uid);
+  //   setFileList(updatedList);
+  // };
 
-  const handleFileChange = ({ fileList }) => {
-    setFileList(fileList);
-  };
+  // const handleFileChange = ({ fileList }) => {
+  //   setFileList(fileList);
+  // };
 
   return (
     <BaseButtonsForm.Item>
-      <Upload multiple customRequest={handleUpload} onRemove={handleRemove}>
-        <Button icon={<UploadOutlined />}>{titleButton || 'Добавить документ'}</Button>
+      <Upload
+        ref={ref}
+        multiple
+        customRequest={handleUpload}
+        // onRemove={handleRemove}
+      >
+        {children ? children : <Button icon={<UploadOutlined />}>{titleButton || 'Добавить документ'}</Button>}
       </Upload>
     </BaseButtonsForm.Item>
   );
-};
+});
 
 export default TnpaUpload;

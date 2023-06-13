@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, DatePicker, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Upload } from '@app/components/common/Upload/Upload';
 import { UploadOutlined } from '@ant-design/icons';
 import TnpaUpload from './../tnpaUpload/TnpaUpload';
+import { notificationController } from '@app/controllers/notificationController';
 
 export interface TnpaFormProps {
   data?: ITnpaCategory;
@@ -26,9 +27,20 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
     console.log('submit', values);
   };
 
+  const onFinishFailed = () => {
+    notificationController.error({ message: 'Неверно введены данные ' });
+  };
+
   const dateFormat = 'YYYY-MM-DD';
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
+  const upload = useRef(null);
+
+  useEffect(() => {
+    console.log(upload.current, 'upload.current');
+    if (upload.current) {
+    }
+  }, [upload]);
 
   return (
     <>
@@ -36,6 +48,7 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
         layout="vertical"
         isFieldsChanged={false}
         onFinish={submit}
+        onFinishFailed={onFinishFailed}
         initialValues={{
           numDoc: newCategory.numDoc,
           dateDoc: moment(newCategory.dateDoc || today, dateFormat),
@@ -58,12 +71,10 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data }) => {
             onChange={(value) => setNewCategory({ ...newCategory, dateDoc: value?.format(dateFormat) })}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item>
-          <TnpaUpload />
-        </BaseButtonsForm.Item>
+        <TnpaUpload ref={upload} />
         <BaseButtonsForm.Item>
           <Button htmlType="submit" style={{ marginTop: '10px' }} type="primary">
-            Сохранить
+            Загрузить и сохранить документ
           </Button>
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
