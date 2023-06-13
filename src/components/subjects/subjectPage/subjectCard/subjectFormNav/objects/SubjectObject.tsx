@@ -10,6 +10,7 @@ import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserSwitchOutlined } from '@ant-design/icons';
+import SubjectObjectForm from './formsObject/SubjectObjectForm';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -28,12 +29,15 @@ export const SubjectObjects: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);
   // need add user from store after auth
   const [user, setUser] = useState({
-    org: 0,
+    org: 1,
   });
   const [, setSubj] = useState<SSubj>({
     idSubj: null,
     unp: '',
   });
+
+  const [openAddingForm, setOpenAddingForm] = useState<boolean>(false);
+  const [openEditingForm, setOpenEditingForm] = useState<boolean>(false);
   const { state } = useLocation();
 
   useEffect(() => {
@@ -73,6 +77,14 @@ export const SubjectObjects: React.FC = () => {
   const data = useMemo(() => {
     return tableData.data.filter((item) => item.org === user.org);
   }, [tableData.data, user.org]);
+
+  const toggleModalAdd = (isOpen = false) => {
+    setOpenAddingForm(isOpen);
+  };
+
+  const toggleModalEd = (isOpen = false) => {
+    setOpenEditingForm(isOpen);
+  };
 
   const columns = useMemo(() => {
     const columns = [
@@ -143,7 +155,34 @@ export const SubjectObjects: React.FC = () => {
 
   return (
     <>
-      <TheTable columns={columns} dataTable={{ data: data, loading: tableData.loading }} pagination={false} />
+      <div style={{ marginTop: '20px' }}>
+        <TheTable
+          columns={columns}
+          dataTable={{ data: data, loading: tableData.loading }}
+          toggleModalEditing={toggleModalEd}
+          toggleModalAdding={toggleModalAdd}
+          openAddingForm={openAddingForm}
+          openEditingForm={openEditingForm}
+          pagination={false}
+          FormComponent={(props) => <SubjectObjectForm {...props} />}
+          // search={search}
+          // FormComponent={(props) => <CreateEvent {...props} />}
+          // searchFunc={searchCategories}
+          // selected={selectedAuto}
+          // setSearchFunc={searchFunc}
+          // dataTable={{ data: events.data, loading: events.loading }}
+          // columns={columns}
+          // titleMoadlEditing={'Редактирование'}
+          // titleModalAdding={'Создание'}
+          // toggleModalAdding={toggleModalAdding}
+          // toggleModalEditing={toggleModalEditing}
+          // openAddingForm={modalAdding}
+          // openEditingForm={modalEditing}
+          // titleButtonAdd="Добавить новое мероприятие"
+          // propsFrom={{ submitForm: save, canIClose: canIClose }}
+        />
+      </div>
+
       <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );
