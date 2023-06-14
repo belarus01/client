@@ -31,7 +31,7 @@ export const SubjectObjects: React.FC = () => {
   const [user, setUser] = useState({
     org: 1,
   });
-  const [, setSubj] = useState<SSubj>({
+  const [subj, setSubj] = useState<SSubj>({
     idSubj: null,
     unp: '',
   });
@@ -61,7 +61,7 @@ export const SubjectObjects: React.FC = () => {
     setTableData((tableData) => ({ ...tableData, loading: true }));
 
     if (idSubj)
-      getAllObjectsBySubjectId(1460).then((res) => {
+      getAllObjectsBySubjectId(idSubj).then((res) => {
         console.log(res);
 
         if (isMounted.current) {
@@ -179,7 +179,7 @@ export const SubjectObjects: React.FC = () => {
           // openAddingForm={modalAdding}
           // openEditingForm={modalEditing}
           // titleButtonAdd="Добавить новое мероприятие"
-          // propsFrom={{ submitForm: save, canIClose: canIClose }}
+          propsFrom={{ subj: subj }}
         />
       </div>
 
