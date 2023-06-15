@@ -1,4 +1,6 @@
+import { IAteReestr } from '@app/components/ate/ateTable/AteReestrTable';
 import { httpApi } from './http.api';
+import { IAteStreet } from '@app/components/ate/ateTable/AteStreetTable';
 
 export const getObl = () => httpApi.get<any[]>('ate/get/all/obls').then(({ data }) => data);
 
@@ -24,3 +26,9 @@ export const getOblById = (idObl: string) => httpApi.get<any[]>('ate/get/obl/' +
 
 export const getStreetById = (idStreet: string) =>
   httpApi.get<any[]>('ate/get/street/' + idStreet).then(({ data }) => data);
+
+export const getAllReestrsBySoatoCode = (soatoCode: number) =>
+  httpApi.get<IAteReestr[]>('ate/get/all/reestrs/BySoatoCode/' + soatoCode).then(({ data }) => data);
+
+export const getAllStreetsByReestrId = (idReestr: number) =>
+  httpApi.get<IAteStreet[]>('ate/get/streets/idReestr/' + idReestr).then(({ data }) => data);

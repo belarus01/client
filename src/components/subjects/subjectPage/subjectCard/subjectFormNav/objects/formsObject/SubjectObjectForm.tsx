@@ -2,12 +2,16 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BaseButtonsForm } from '../../../../../../common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
 import { Button } from 'components/common/buttons/Button/Button';
-import { SSoato, SSubjObj, SSubjObjSpecif } from '@app/domain/interfaces';
+import { IUnits, SSoato, SSubjObj, SSubjObjSpecif, SUnits } from '@app/domain/interfaces';
 import SubjectObjectSpecifForm from './SubjectObjectSpecifForm';
 import { DatePicker } from '@app/components/common/pickers/DatePicker';
 import { getSubjById } from '@app/api/subjects.api';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { getAllSoato } from '@app/api/soato.api';
+import { getUnitsByTypeUnit } from '@app/api/units.api';
+import { getAllReestrsBySoatoCode, getAllStreetsByReestrId } from '@app/api/ate.api';
+import { IAteReestr } from '@app/components/ate/ateTable/AteReestrTable';
+import { IAteStreet } from '@app/components/ate/ateTable/AteStreetTable';
 
 interface ISubjectObjectFormProps {
   objData?: SSubjObj;
@@ -16,12 +20,24 @@ interface ISubjectObjectFormProps {
   idSubj: string;
 }
 
+enum types {
+  typeDanger = 1,
+}
+
+interface IOption {
+  label: string;
+  value: any;
+}
+
 const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpecif, subj, idSubj }) => {
   const [user, setUser] = useState({
     org: 1,
   });
   const [unp, setUnp] = useState('');
   const [soatos, setSoatos] = useState<SSoato[]>([]);
+  const [typesDanger, setTypesDanger] = useState<IUnits[]>([]);
+  const [reestrs, setReestrs] = useState<IAteReestr[]>([]);
+  const [streets, setStreets] = useState<IAteStreet[]>([]);
 
   const [form] = BaseButtonsForm.useForm();
   const buttonSubmit = useRef<HTMLButtonElement>(null);
@@ -39,21 +55,61 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
     }
   };
 
+  // addr soato reestr and other
+
+  // reestr
+
+  const getReestrs = (soatoCode: number) => {
+    getAllReestrsBySoatoCode(soatoCode).then((reestrs) => {
+      setReestrs(reestrs);
+    });
+  };
+
+  const reestrsOptions = useMemo(() => {
+    if (reestrs) {
+      return reestrs.map((reestr) => {
+        return {
+          label: reestr.nameReestr,
+          value: reestr.idReestr,
+        };
+      });
+    }
+  }, [reestrs]);
+
+  const changeReestr = (value: any) => {
+    getStreet(value);
+  };
+
+  // street
+
+  const getStreet = (idReestr: number) => {
+    getAllStreetsByReestrId(idReestr).then((streets) => {
+      setStreets(streets);
+    });
+  };
+
+  const streetOptions = useMemo(() => {
+    if (streets.length > 0) {
+      return streets.map((street) => ({
+        label: street.nameRus,
+        value: street.idStreet,
+      }));
+    }
+  }, [streets]);
+
+  // Soato
+
   const getSoato = () => {
     getAllSoato().then((soatosFetched) => {
       setSoatos(soatosFetched);
     });
   };
 
-  const setInitialValuesSubjObj = () => {
-    console.log(subj);
-  };
-
   const soatoOptions = useMemo(() => {
     if (soatos.length > 0) {
       return soatos.map((soato) => {
         return {
-          label: `${soato.soato}, ${soato.name}`,
+          label: `${soato.soato}, ${soato.name}, ${soato.sovet}`,
           value: soato.soato,
         };
       });
@@ -61,9 +117,35 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
     return [];
   }, [soatos]);
 
+  const changeSoato = (value: any) => {
+    getReestrs(value);
+  };
+
+  const getTypesDanger = () => {
+    getUnitsByTypeUnit(types.typeDanger).then((types) => {
+      setTypesDanger(types);
+    });
+  };
+
+  const setInitialValuesSubjObj = () => {
+    console.log(subj);
+  };
+
+  const typesDangerOptions = useMemo(() => {
+    if (typesDanger.length > 0) {
+      return typesDanger.map((type) => {
+        return {
+          label: type.name,
+          value: type.idUnit,
+        };
+      });
+    }
+  }, [typesDanger]);
+
   useEffect(() => {
     getUnp();
     getSoato();
+    getTypesDanger();
   }, []);
 
   // ONFINISH Func
@@ -111,10 +193,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Тип опасности" name="idTypeDanger">
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Примечание" name="note">
-          <TextArea />
+          <Select options={typesDangerOptions} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item
           label="Место нахождения oбъекта проверяемого субъекта (промышленной безопасности)"
@@ -130,6 +209,24 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
             showSearch
             optionFilterProp="children"
             options={soatoOptions}
+            onChange={changeSoato}
+            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="reestr" name="idReestr">
+          <Select
+            showSearch
+            optionFilterProp="children"
+            options={reestrsOptions}
+            onChange={changeReestr}
+            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="street" name="idStreet">
+          <Select
+            showSearch
+            optionFilterProp="children"
+            options={streetOptions}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
           />
         </BaseButtonsForm.Item>
@@ -153,6 +250,9 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Инициалы, фамилия руководителя объекта" name="numReg">
           <Input />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="Примечание" name="note">
+          <TextArea />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item style={hiddenButton}>
           {showSpecif ? (
