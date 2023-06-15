@@ -12,6 +12,7 @@ import { getUnitsByTypeUnit } from '@app/api/units.api';
 import { getAllReestrsBySoatoCode, getAllStreetsByReestrId } from '@app/api/ate.api';
 import { IAteReestr } from '@app/components/ate/ateTable/AteReestrTable';
 import { IAteStreet } from '@app/components/ate/ateTable/AteStreetTable';
+import AddresForm from '@app/components/subjects/forms/AddresForm';
 
 interface ISubjectObjectFormProps {
   objData?: SSubjObj;
@@ -195,6 +196,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         <BaseButtonsForm.Item label="Тип опасности" name="idTypeDanger">
           <Select options={typesDangerOptions} />
         </BaseButtonsForm.Item>
+        <AddresForm hiddenReestr={true} data={{ obl: 'sdafd' }} />
         <BaseButtonsForm.Item
           label="Место нахождения oбъекта проверяемого субъекта (промышленной безопасности)"
           name="addrObj"
