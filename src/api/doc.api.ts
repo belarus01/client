@@ -56,3 +56,9 @@ export const generateCheckList1 = (dto: any) =>
     .post<any>('doc-generation/gen1_ch', { ...dto }, { ...headers })
     .then((response) => downLoadWordDocGenerated(response, `Чек-лист1`))
     .catch((error) => initError(error));
+
+export const generatePredpisanie = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen3', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Предписание на проведение проверки №`))
+    .catch((error) => initError(error));
