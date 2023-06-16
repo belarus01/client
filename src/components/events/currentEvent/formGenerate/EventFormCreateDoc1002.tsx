@@ -5,22 +5,48 @@ import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { TextArea } from '@app/components/common/inputs/Input/Input';
-import { IFormReport } from '@app/domain/interfaces';
+import { IEventOrder, IFormReport } from '@app/domain/interfaces';
 import { DatePicker, Input, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EventFormCreateDoc } from './EventFormCreateDoc1000';
 import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
 import moment from 'moment';
+import { getEventOrderByIdEventOrder, updateEventOrder } from '@app/api/events.api';
 
 const EventFormCreateDoc1002: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [unp, setUnp] = useState('');
+  const [currentEvent, setCurrentEvent] = useState<IEventOrder>({
+    idEvent: null,
+    idSubj: null,
+    idUnit_3: null,
+    idUnit_4: null,
+    dateBegin: '',
+    dateEnd: '',
+    fioPostTitle: '',
+    nameAgent: '',
+    postAgent: '',
+    uidBoss: null,
+    org: 1,
+  });
 
   const { idEventOrder } = useParams();
 
+  const [form] = BaseButtonsForm.useForm();
+  const [eventForm] = BaseButtonsForm.useForm();
+
   const getUnp = (idSubj: string) => {
     getSubjById(idSubj).then((subj) => setUnp(subj.unp as string));
+  };
+
+  const getEvent = (idEventOrder: string | number) => {
+    getEventOrderByIdEventOrder(idEventOrder).then((event) => {
+      console.log(event);
+      setCurrentEvent(event);
+      eventForm.setFieldsValue(event);
+      setLoading(false);
+    });
   };
 
   const onFinishCreateDocUved = (values: IFormReport) => {
@@ -39,18 +65,25 @@ const EventFormCreateDoc1002: React.FC<EventFormCreateDoc> = ({ event, toggleMod
 
     console.log(field);
     if (idEventOrder) {
-      initGenerateDocGetIdList(field, idEventOrder, 1002).then((idList) => {
-        console.log(idList);
-        generatePredpisanie({
-          id_list: idList,
-          id_event_order: idEventOrder,
-          unp,
-        }).then(() => {
-          setLoading(false);
-          toggleModal(false);
+      initGenerateDocGetIdList(field, idEventOrder, 1001).then((idList) => {
+        const newEventForm = { ...eventForm.getFieldsValue() };
+        updateEventOrder(idEventOrder, newEventForm).then(() => {
+          generatePredpisanie({
+            id_list: idList,
+            id_event_order: idEventOrder,
+            unp,
+          }).then(() => {
+            setLoading(false);
+            toggleModal(false);
+          });
         });
       });
     }
+  };
+
+  const onFinishEvent = (values: IEventOrder) => {
+    setCurrentEvent((prev) => ({ ...prev, ...values }));
+    onFinishCreateDocUved(form.getFieldsValue());
   };
 
   useEffect(() => {
@@ -60,55 +93,37 @@ const EventFormCreateDoc1002: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     }
   }, [event]);
 
+  useEffect(() => {
+    if (idEventOrder) {
+      setLoading(true);
+      getEvent(idEventOrder);
+    }
+  }, [idEventOrder]);
+
   return (
     <Spinner spinning={loading}>
-      <BaseButtonsForm layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
+      <BaseButtonsForm form={form} layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
         <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
           <DatePicker />
         </BaseButtonsForm.Item>
-        {/* <BaseButtonsForm.Item name="addrRecord" label={'Место составления документа'} rules={[{ required: true }]}>
-          <Input />
-        </BaseButtonsForm.Item> */}
-        {/* <BaseButtonsForm.Item name="dolj" label={'Должность'}>
-          <Select
-            options={[
-              {
-                value: 'Главный государственный инспектор',
-                label: 'Главный государственный инспектор',
-              },
-              {
-                value: 'Государственный инспектор',
-                label: 'Государственный инспектор',
-              },
-            ]}
-          />
-        </BaseButtonsForm.Item>*/}
-
-        <UsersSelectWithPostAndTel nameUid="uid" shownTel={false} />
-        <BaseButtonsForm.Item name={'region'} label={'Область, город, район'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'nameAgent'} label={'ФИО представителя субъекта'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'PostAgent'} label={'Должжность представителя субъекта'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'TelAgent'} label={'Телефон представителя субъекта'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'Technical'} label={'Наименования научно-технических средств'}>
-          <Input />
-        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'otherInfo'} label={'Иные сведения'}>
           <TextArea />
         </BaseButtonsForm.Item>
-        {/* <BaseButtonsForm.Item name={'comm'} label={'Комментарии'}>
-          <TextArea />
-        </BaseButtonsForm.Item> */}
+      </BaseButtonsForm>
+
+      <BaseButtonsForm form={eventForm} isFieldsChanged={false} onFinish={onFinishEvent}>
+        <BaseButtonsForm.Item name={'nameAgent'} label={'ФИО представителя субъекта'}>
+          <Input />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'postAgent'} label={'Должжность представителя субъекта'}>
+          <Input />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'technical'} label={'Наименования научно-технических средств'}>
+          <Input />
+        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item>
           <Button htmlType="submit" type="primary">
             Создать документ в формате Word

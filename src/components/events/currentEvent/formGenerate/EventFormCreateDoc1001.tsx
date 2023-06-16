@@ -66,7 +66,8 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     console.log(field);
     if (idEventOrder) {
       initGenerateDocGetIdList(field, idEventOrder, 1001).then((idList) => {
-        updateEventOrder(idEventOrder, currentEvent).then(() => {
+        const newEventForm = { ...eventForm.getFieldsValue() };
+        updateEventOrder(idEventOrder, newEventForm).then(() => {
           generateCertificateOfRefusalOfAdmission({
             id_list: idList,
             id_event_order: idEventOrder,
