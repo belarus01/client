@@ -56,72 +56,6 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
     }
   };
 
-  // addr soato reestr and other
-
-  // reestr
-
-  const getReestrs = (soatoCode: number) => {
-    getAllReestrsBySoatoCode(soatoCode).then((reestrs) => {
-      setReestrs(reestrs);
-    });
-  };
-
-  const reestrsOptions = useMemo(() => {
-    if (reestrs) {
-      return reestrs.map((reestr) => {
-        return {
-          label: reestr.nameReestr,
-          value: reestr.idReestr,
-        };
-      });
-    }
-  }, [reestrs]);
-
-  const changeReestr = (value: any) => {
-    getStreet(value);
-  };
-
-  // street
-
-  const getStreet = (idReestr: number) => {
-    getAllStreetsByReestrId(idReestr).then((streets) => {
-      setStreets(streets);
-    });
-  };
-
-  const streetOptions = useMemo(() => {
-    if (streets.length > 0) {
-      return streets.map((street) => ({
-        label: street.nameRus,
-        value: street.idStreet,
-      }));
-    }
-  }, [streets]);
-
-  // Soato
-
-  const getSoato = () => {
-    getAllSoato().then((soatosFetched) => {
-      setSoatos(soatosFetched);
-    });
-  };
-
-  const soatoOptions = useMemo(() => {
-    if (soatos.length > 0) {
-      return soatos.map((soato) => {
-        return {
-          label: `${soato.soato}, ${soato.name}, ${soato.sovet}`,
-          value: soato.soato,
-        };
-      });
-    }
-    return [];
-  }, [soatos]);
-
-  const changeSoato = (value: any) => {
-    getReestrs(value);
-  };
-
   const getTypesDanger = () => {
     getUnitsByTypeUnit(types.typeDanger).then((types) => {
       setTypesDanger(types);
@@ -143,10 +77,16 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
     }
   }, [typesDanger]);
 
+  const setInitialValues = () => {
+    if (objData) {
+      form.setFieldsValue(objData);
+    }
+  };
+
   useEffect(() => {
     getUnp();
-    getSoato();
     getTypesDanger();
+    setInitialValues();
   }, []);
 
   // ONFINISH Func
@@ -193,10 +133,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         <BaseButtonsForm.Item label="Наименование объекта" name="nameObj">
           <Input />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Тип опасности" name="idTypeDanger">
-          <Select options={typesDangerOptions} />
-        </BaseButtonsForm.Item>
-        <AddresForm hiddenReestr={true} data={{ obl: 'sdafd' }} />
+        <AddresForm formInstance={form} />
         <BaseButtonsForm.Item
           label="Место нахождения oбъекта проверяемого субъекта (промышленной безопасности)"
           name="addrObj"
@@ -205,32 +142,6 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Место осуществления деятельности (уточнение)" name="addrDescr">
           <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Местонахождения  объекта" name="soatoCode">
-          <Select
-            showSearch
-            optionFilterProp="children"
-            options={soatoOptions}
-            onChange={changeSoato}
-            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="reestr" name="idReestr">
-          <Select
-            showSearch
-            optionFilterProp="children"
-            options={reestrsOptions}
-            onChange={changeReestr}
-            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="street" name="idStreet">
-          <Select
-            showSearch
-            optionFilterProp="children"
-            options={streetOptions}
-            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-          />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Местонахождения  объекта" name="idStreet">
           <Input />
@@ -244,14 +155,17 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         <BaseButtonsForm.Item label="Инициалы, фамилия руководителя объекта" name="telBoss">
           <Input />
         </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="Инициалы, фамилия руководителя объекта" name="numReg">
+          <Input />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="Тип опасности" name="idTypeDanger">
+          <Select options={typesDangerOptions} />
+        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Номер ОПО" name="numOpo">
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Дата регистрации ОПО" name="dateRegOpo">
           <DatePicker />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Инициалы, фамилия руководителя объекта" name="numReg">
-          <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Примечание" name="note">
           <TextArea />

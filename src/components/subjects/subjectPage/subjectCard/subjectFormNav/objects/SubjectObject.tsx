@@ -179,7 +179,15 @@ export const SubjectObjects: React.FC = () => {
           // openAddingForm={modalAdding}
           // openEditingForm={modalEditing}
           // titleButtonAdd="Добавить новое мероприятие"
-          propsFrom={{ subj: subj }}
+          propsFrom={{
+            subj: subj,
+            objData: {
+              idObl: 1,
+              idRayon: 104,
+              // idReestr: 13,
+              // idStreet: '91021',
+            },
+          }}
         />
       </div>
 
