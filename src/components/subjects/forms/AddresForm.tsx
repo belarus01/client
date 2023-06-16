@@ -194,23 +194,49 @@ const AddresForm: React.FC<AddresFormProps> = ({
     },
     [formInstance, nameAddr, street],
   );
-  const setNumBuild = useCallback(() => {
-    //const streetInstans = formInstance.getFieldValue(nameStreet || '');
+  // const setNum = useCallback(
+  //   (event) => {
+  //     //const streetInstans = formInstance.getFieldValue(nameStreet || '');
+  //     console.log(event.target.value);
 
-    const numbuildStr = formInstance.getFieldValue(nameNumBuild || '');
-    const str = numbuildStr == '' && numbuildStr ? '' : `дом №${numbuildStr}, `;
-    const currentStr = formInstance.getFieldValue(nameAddr || '');
-    const newStr = currentStr
-      ?.split(',')
-      .filter((item: string) => {
-        if (item.includes('дом')) {
-          return false;
-        }
-        return true;
-      })
-      .join(',');
-    formInstance.setFieldValue(nameAddr || '', newStr + str);
-  }, [formInstance, nameAddr, nameNumBuild]);
+  //     const numbuildStr = event.target.value;
+  //     const str = numbuildStr == '' && numbuildStr ? '' : `дом №${numbuildStr}, `;
+  //     const currentStr = formInstance.getFieldValue(nameAddr || '');
+  //     const newStr = currentStr
+  //       ?.split(',')
+  //       .filter((item: string) => {
+  //         if (item.includes('дом')) {
+  //           return false;
+  //         }
+  //         return true;
+  //       })
+  //       .join(',');
+  //     formInstance.setFieldValue(nameAddr || '', newStr + str);
+  //   },
+  //   [formInstance, nameAddr],
+  // );
+
+  const setNum = useCallback(
+    (event, value) => {
+      //const streetInstans = formInstance.getFieldValue(nameStreet || '');
+      console.log(event.target.value);
+
+      const numbuildStr = event.target.value;
+      const str = numbuildStr == '' && numbuildStr ? '' : `${value}${numbuildStr}, `;
+      const currentStr = formInstance.getFieldValue(nameAddr || '');
+      const newStr = currentStr
+        ?.split(',')
+        .filter((item: string) => {
+          if (item.includes(value)) {
+            return false;
+          }
+          return true;
+        })
+        .join(',');
+      formInstance.setFieldValue(nameAddr || '', newStr + str);
+    },
+    [formInstance, nameAddr],
+  );
 
   useEffect(() => {
     setAdrrObl();
@@ -265,10 +291,10 @@ const AddresForm: React.FC<AddresFormProps> = ({
       {!hiddenAddr ? (
         <>
           <BaseButtonsForm.Item label={labelNumBuild} name={nameNumBuild}>
-            <Input onBeforeInput={setNumBuild} />
+            <Input onChange={(e) => setNum(e, 'дом №')} />
           </BaseButtonsForm.Item>
           <BaseButtonsForm.Item label={labelNumOffice} name={nameNumOffice}>
-            <Input />
+            <Input onChange={(e) => setNum(e, 'помещение №')} />
           </BaseButtonsForm.Item>
           <BaseButtonsForm.Item label={labelAdrr} name={nameAddr}>
             <TextArea />
