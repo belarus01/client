@@ -72,9 +72,9 @@ const AddresForm: React.FC<AddresFormProps> = ({
     setState(children);
   };
 
-  // const resetField = (fieldName: string) => {
-  //   formInstance.setFieldValue(fieldName, '');
-  // };
+  const resetField = (fieldName: string) => {
+    formInstance.setFieldValue(fieldName, '');
+  };
 
   const handleOblSelect = (selected: any) => {
     setLoading(true);
@@ -84,9 +84,11 @@ const AddresForm: React.FC<AddresFormProps> = ({
       return;
     }
     setOblRayon(false);
+    // if (!formInstance.getFieldValue(nameRayon || '')) {
     // resetField(nameRayon || '');
     // resetField(nameReestr || '');
     // resetField(nameStreet || '');
+    // }
     getRayonsByOblId(selected).then((res) => {
       setOptions(setRayon, res, 'idRayon', 'nameRayon');
       setLoading(false);
@@ -95,8 +97,10 @@ const AddresForm: React.FC<AddresFormProps> = ({
 
   const handleRayonSelect = (selected: any) => {
     setLoading(true);
+    // if (formInstance.getFieldValue(nameReestr || '')) {
     // resetField(nameReestr || '');
     // resetField(nameStreet || '');
+    // }
     getCitiesByRayonId(selected).then((res) => {
       setOptions(setCity, res, 'idReestr', 'nameReestr');
       setLoading(false);
@@ -105,7 +109,10 @@ const AddresForm: React.FC<AddresFormProps> = ({
 
   const handleCitySelect = (selected: any) => {
     setLoading(true);
+    // if (formInstance.getFieldValue(nameStreet || '')) {
     // resetField(nameStreet || '');
+    // }
+
     getStreetsByCityId(selected).then((res) => {
       setOptions(setStreet, res, 'idStreet', 'nameRus');
       setLoading(false);
@@ -263,13 +270,30 @@ const AddresForm: React.FC<AddresFormProps> = ({
   return (
     <>
       <BaseButtonsForm.Item label={labelObl} name={nameObl}>
-        <Select onSelect={handleOblSelect} loading={loading} disabled={loading}>
+        <Select
+          onSelect={handleOblSelect}
+          onChange={() => {
+            resetField(nameRayon || '');
+            resetField(nameReestr || '');
+            resetField(nameStreet || '');
+          }}
+          loading={loading}
+          disabled={loading}
+        >
           {obl}
         </Select>
       </BaseButtonsForm.Item>
       {!oblRayon && hiddenRayons ? (
         <BaseButtonsForm.Item label={labelRayon} name={nameRayon}>
-          <Select onSelect={handleRayonSelect} loading={loading} disabled={loading}>
+          <Select
+            onSelect={handleRayonSelect}
+            onChange={() => {
+              resetField(nameReestr || '');
+              resetField(nameStreet || '');
+            }}
+            loading={loading}
+            disabled={loading}
+          >
             {rayon}
           </Select>
         </BaseButtonsForm.Item>
