@@ -135,7 +135,7 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
 
-      <BaseButtonsForm form={eventForm} isFieldsChanged={false} onFinish={onFinishEvent}>
+      <BaseButtonsForm form={eventForm} layout="horizontal" isFieldsChanged={false} onFinish={onFinishEvent}>
         <BaseButtonsForm.Item name={'nameAgent'} label={'ФИО представителя субъекта'}>
           <Input />
         </BaseButtonsForm.Item>

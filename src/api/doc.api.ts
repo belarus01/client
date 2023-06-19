@@ -62,3 +62,9 @@ export const generatePredpisanie = (dto: any) =>
     .post<any>('doc-generation/gen3', { ...dto }, { ...headers })
     .then((response) => downLoadWordDocGenerated(response, `Предписание на проведение проверки №`))
     .catch((error) => initError(error));
+
+export const generateActProverki = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen6', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Акт проверки №`))
+    .catch((error) => initError(error));
