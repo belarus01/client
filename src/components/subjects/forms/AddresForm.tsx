@@ -1,5 +1,5 @@
 import { getCitiesByRayonId, getObl, getRayonsByOblId, getStreetsByCityId } from '@app/api/ate.api';
-import React, { Key, ReactElement, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Key, ReactElement, useCallback, useEffect, useState } from 'react';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { FormInstance } from 'antd';
@@ -84,11 +84,6 @@ const AddresForm: React.FC<AddresFormProps> = ({
       return;
     }
     setOblRayon(false);
-    // if (!formInstance.getFieldValue(nameRayon || '')) {
-    // resetField(nameRayon || '');
-    // resetField(nameReestr || '');
-    // resetField(nameStreet || '');
-    // }
     getRayonsByOblId(selected).then((res) => {
       setOptions(setRayon, res, 'idRayon', 'nameRayon');
       setLoading(false);
@@ -97,10 +92,6 @@ const AddresForm: React.FC<AddresFormProps> = ({
 
   const handleRayonSelect = (selected: any) => {
     setLoading(true);
-    // if (formInstance.getFieldValue(nameReestr || '')) {
-    // resetField(nameReestr || '');
-    // resetField(nameStreet || '');
-    // }
     getCitiesByRayonId(selected).then((res) => {
       setOptions(setCity, res, 'idReestr', 'nameReestr');
       setLoading(false);
@@ -109,9 +100,6 @@ const AddresForm: React.FC<AddresFormProps> = ({
 
   const handleCitySelect = (selected: any) => {
     setLoading(true);
-    // if (formInstance.getFieldValue(nameStreet || '')) {
-    // resetField(nameStreet || '');
-    // }
 
     getStreetsByCityId(selected).then((res) => {
       setOptions(setStreet, res, 'idStreet', 'nameRus');
@@ -149,120 +137,38 @@ const AddresForm: React.FC<AddresFormProps> = ({
         );
       }
       setObl(childrenObl);
-
       getInitialValues();
       setLoading(false);
       return res;
     });
   }, []);
 
-  const setAdrrObl = useCallback(() => {
-    const oblInstans = formInstance.getFieldValue(nameObl || '');
-    const obj = obl.find((oblCurrnet) => {
-      return oblCurrnet?.props?.value == oblInstans;
+  const setAddr = (nameField: string, fields: ReactElement[], index: number, callback: (string: string) => string) => {
+    const instans = formInstance.getFieldValue(nameField || '');
+    const obj = fields.find((current) => {
+      return current?.props?.value == instans;
     });
-    const oblStr = obj?.props?.children;
-    const str = `${oblStr} область, `;
-    formInstance.setFieldValue(nameAddr || '', str);
-  }, [formInstance, nameAddr, nameObl, obl]);
-
-  const setAdrrRayon = useCallback(() => {
-    const rayonInstans = formInstance.getFieldValue(nameRayon || '');
-    const obj = rayon.find((rayonCurrnet) => {
-      return rayonCurrnet?.props?.value == rayonInstans;
-    });
-    const rayonStr = obj?.props?.children || '';
-    const str = rayonStr == '' ? '' : `${rayonStr} район, `;
+    const strInstance = obj?.props?.children;
+    const str = callback(strInstance);
     const currentStr = formInstance.getFieldValue(nameAddr || '');
-    formInstance.setFieldValue(nameAddr || '', currentStr + str);
-  }, [formInstance, nameAddr, nameRayon, rayon]);
-
-  const setAdrrReestr = useCallback(() => {
-    const reestrInstans = formInstance.getFieldValue(nameReestr || '');
-    const obj = city.find((reestrCurrnet) => {
-      return reestrCurrnet?.props?.value == reestrInstans;
-    });
-    const reestrStr = obj?.props?.children || '';
-    const str = reestrStr == '' ? '' : `город ${reestrStr}, `;
-    const currentStr = formInstance.getFieldValue(nameAddr || '');
-    formInstance.setFieldValue(nameAddr || '', currentStr + str);
-  }, [city, formInstance, nameAddr, nameReestr]);
-
-  const setAdrrStreet = useCallback(
-    (streetInstans) => {
-      //const streetInstans = formInstance.getFieldValue(nameStreet || '');
-      const obj = street.find((StreetCurrnet) => {
-        return StreetCurrnet?.props?.value == streetInstans;
-      });
-      const streetStr = obj?.props?.children || '';
-      const str = streetStr == '' ? '' : `${streetStr} улица `;
-      const currentStr = formInstance.getFieldValue(nameAddr || '');
-      formInstance.setFieldValue(nameAddr || '', currentStr + str);
-    },
-    [formInstance, nameAddr, street],
-  );
-  // const setNum = useCallback(
-  //   (event) => {
-  //     //const streetInstans = formInstance.getFieldValue(nameStreet || '');
-  //     console.log(event.target.value);
-
-  //     const numbuildStr = event.target.value;
-  //     const str = numbuildStr == '' && numbuildStr ? '' : `дом №${numbuildStr}, `;
-  //     const currentStr = formInstance.getFieldValue(nameAddr || '');
-  //     const newStr = currentStr
-  //       ?.split(',')
-  //       .filter((item: string) => {
-  //         if (item.includes('дом')) {
-  //           return false;
-  //         }
-  //         return true;
-  //       })
-  //       .join(',');
-  //     formInstance.setFieldValue(nameAddr || '', newStr + str);
-  //   },
-  //   [formInstance, nameAddr],
-  // );
+    const arrayCurrentStr = currentStr ? currentStr.split(', ') : [];
+    arrayCurrentStr.length = index + 1;
+    arrayCurrentStr.splice(index, 1, str);
+    formInstance.setFieldValue(nameAddr || '', arrayCurrentStr.join(', '));
+  };
 
   const setNum = useCallback(
-    (event, value) => {
-      //const streetInstans = formInstance.getFieldValue(nameStreet || '');
-      console.log(event.target.value);
-
+    (event, value, index) => {
       const numbuildStr = event.target.value;
-      const str = numbuildStr == '' && numbuildStr ? '' : `${value}${numbuildStr}, `;
-      const currentStr = formInstance.getFieldValue(nameAddr || '');
-      const newStr = currentStr
-        ?.split(',')
-        .filter((item: string) => {
-          if (item.includes(value)) {
-            return false;
-          }
-          return true;
-        })
-        .join(',');
-      formInstance.setFieldValue(nameAddr || '', newStr + str);
+      const str = numbuildStr == '' && numbuildStr ? '' : `${value}${numbuildStr}`;
+      const currentStr = formInstance.getFieldValue(nameAddr || '').split(', ');
+      currentStr.length = index + 1;
+      currentStr.splice(index, 1, str);
+      const newStr = currentStr.join(', ');
+      formInstance.setFieldValue(nameAddr || '', newStr);
     },
     [formInstance, nameAddr],
   );
-
-  useEffect(() => {
-    setAdrrObl();
-    setAdrrRayon();
-    setAdrrReestr();
-    // setAdrrStreet();
-  }, [
-    formInstance,
-    nameAddr,
-    nameObl,
-    obl,
-    rayon,
-    city,
-    street,
-    setAdrrRayon,
-    setAdrrStreet,
-    setAdrrObl,
-    setAdrrReestr,
-  ]);
 
   const hiddenRayons = !hiddenRayon;
   const hiddenReestrs = hiddenRayons && !hiddenReestr;
@@ -271,11 +177,15 @@ const AddresForm: React.FC<AddresFormProps> = ({
     <>
       <BaseButtonsForm.Item label={labelObl} name={nameObl}>
         <Select
+          getPopupContainer={(trigger) => trigger}
           onSelect={handleOblSelect}
           onChange={() => {
             resetField(nameRayon || '');
             resetField(nameReestr || '');
             resetField(nameStreet || '');
+            resetField(nameNumBuild || '');
+            resetField(nameNumOffice || '');
+            setAddr(nameObl || '', obl, 0, (str) => `${str} область`);
           }}
           loading={loading}
           disabled={loading}
@@ -286,10 +196,14 @@ const AddresForm: React.FC<AddresFormProps> = ({
       {!oblRayon && hiddenRayons ? (
         <BaseButtonsForm.Item label={labelRayon} name={nameRayon}>
           <Select
+            getPopupContainer={(trigger) => trigger}
             onSelect={handleRayonSelect}
             onChange={() => {
               resetField(nameReestr || '');
               resetField(nameStreet || '');
+              resetField(nameNumBuild || '');
+              resetField(nameNumOffice || '');
+              setAddr(nameRayon || '', rayon, 1, (str) => `${str} район`);
             }}
             loading={loading}
             disabled={loading}
@@ -300,14 +214,33 @@ const AddresForm: React.FC<AddresFormProps> = ({
       ) : null}
       {hiddenReestrs ? (
         <BaseButtonsForm.Item label={labelReestr} name={nameReestr}>
-          <Select onSelect={handleCitySelect} loading={loading} disabled={loading}>
+          <Select
+            getPopupContainer={(trigger) => trigger}
+            onSelect={handleCitySelect}
+            onChange={() => {
+              resetField(nameStreet || '');
+              resetField(nameNumBuild || '');
+              resetField(nameNumOffice || '');
+              setAddr(nameReestr || '', city, 2, (str) => `город ${str}`);
+            }}
+            loading={loading}
+            disabled={loading}
+          >
             {city}
           </Select>
         </BaseButtonsForm.Item>
       ) : null}
       {hiddenStreets ? (
         <BaseButtonsForm.Item label={labelStreet} name={nameStreet}>
-          <Select onSelect={setAdrrStreet} disabled={loading}>
+          <Select
+            getPopupContainer={(trigger) => trigger}
+            onChange={() => {
+              resetField(nameNumBuild || '');
+              resetField(nameNumOffice || '');
+            }}
+            onSelect={() => setAddr(nameStreet || '', street, 3, (str) => `улица ${str}`)}
+            disabled={loading}
+          >
             {street}
           </Select>
         </BaseButtonsForm.Item>
@@ -315,10 +248,10 @@ const AddresForm: React.FC<AddresFormProps> = ({
       {!hiddenAddr ? (
         <>
           <BaseButtonsForm.Item label={labelNumBuild} name={nameNumBuild}>
-            <Input onChange={(e) => setNum(e, 'дом №')} />
+            <Input onChange={(e) => setNum(e, 'дом №', street.length == 0 ? 3 : 4)} />
           </BaseButtonsForm.Item>
           <BaseButtonsForm.Item label={labelNumOffice} name={nameNumOffice}>
-            <Input onChange={(e) => setNum(e, 'помещение №')} />
+            <Input onChange={(e) => setNum(e, 'помещение №', street.length == 0 ? 4 : 5)} />
           </BaseButtonsForm.Item>
           <BaseButtonsForm.Item label={labelAdrr} name={nameAddr}>
             <TextArea />

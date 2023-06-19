@@ -1,15 +1,15 @@
-import { getAllObjectsBySubjectId } from '@app/api/objects.api';
+import { getAllObjectWithSpecifBySubjectId, getAllObjectsBySubjectId } from '@app/api/objects.api';
 import { Pagination } from '@app/api/users.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import TheTable from '@app/components/tables/TheTable';
-import { SSubj, SSubjObj } from '@app/domain/interfaces';
+import { SSubj, SSubjObj, SSubjObjSpecif } from '@app/domain/interfaces';
 import { useMounted } from '@app/hooks/useMounted';
-import { Space } from 'antd';
+import { Space, Modal as Alert } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UserSwitchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import SubjectObjectForm from './formsObject/SubjectObjectForm';
 
 const initialPagination: Pagination = {
@@ -38,12 +38,17 @@ export const SubjectObjects: React.FC = () => {
 
   const [openAddingForm, setOpenAddingForm] = useState<boolean>(false);
   const [openEditingForm, setOpenEditingForm] = useState<boolean>(false);
+  const [selectedObj, setSelectedObj] = useState({});
   const { state } = useLocation();
 
   useEffect(() => {
     setSubj(state);
   }, [state]);
-  const [tableData, setTableData] = useState<{ data: SSubjObj[]; pagination: Pagination; loading: boolean }>({
+  const [tableData, setTableData] = useState<{
+    data: (SSubjObj & SSubjObjSpecif)[];
+    pagination: Pagination;
+    loading: boolean;
+  }>({
     data: [],
     pagination: initialPagination,
     loading: false,
@@ -61,7 +66,7 @@ export const SubjectObjects: React.FC = () => {
     setTableData((tableData) => ({ ...tableData, loading: true }));
 
     if (idSubj)
-      getAllObjectsBySubjectId(idSubj).then((res) => {
+      getAllObjectWithSpecifBySubjectId(idSubj).then((res) => {
         console.log(res);
 
         if (isMounted.current) {
@@ -75,6 +80,8 @@ export const SubjectObjects: React.FC = () => {
   }, [fetch]);
 
   const data = useMemo(() => {
+    console.log(tableData.data);
+
     return tableData.data.filter((item) => item.org === user.org);
   }, [tableData.data, user.org]);
 
@@ -84,7 +91,12 @@ export const SubjectObjects: React.FC = () => {
 
   const toggleModalEd = (isOpen = false) => {
     setOpenEditingForm(isOpen);
+    if (!isOpen) {
+      setSelectedObj({});
+    }
   };
+
+  const deleteItem = (obj: SSubjObj) => {};
 
   const columns = useMemo(() => {
     const columns = [
@@ -104,11 +116,6 @@ export const SubjectObjects: React.FC = () => {
         dataIndex: 'addrObj',
       },
       {
-        key: '4',
-        title: 'Место осуществления деятельности',
-        dataIndex: 'addrDescr',
-      },
-      {
         key: '5',
         title: 'Ответственное лицо',
         dataIndex: 'fioFireman',
@@ -117,7 +124,51 @@ export const SubjectObjects: React.FC = () => {
         key: '4',
         title: 'Действия',
         width: '15%',
+        //   render: (itemSelected: IPogAuto) => {
+        //     function onDeleteDep() {
+        //       Alert.confirm({
+        //         title: 'Вы действительно хотите удалить?',
+        //         okText: 'Удалить',
+        //         cancelText: 'Отмена',
+        //         closable: true,
+        //         onCancel: () => false,
+        //         onOk: () => {
+        //           deleteItem(itemSelected);
+        //         },
+        //       });
+        //     }
+
+        //     return (
+        //       <>
+        //         <EditOutlined
+        //           onClick={() => {
+        //             setSelectedAuto(itemSelected);
+        //             toggleModalEditing(true);
+        //           }}
+        //         />
+        //         <DeleteOutlined
+        //           onClick={() => {
+        //             onDeleteDep();
+        //           }}
+        //           style={{ color: 'red', marginLeft: 12 }}
+        //         />
+        //       </>
+        //     );
+        //   },
+        // },
         render: (obj: SSubjObj) => {
+          function onDeleteDep() {
+            Alert.confirm({
+              title: 'Вы действительно хотите удалить?',
+              okText: 'Удалить',
+              cancelText: 'Отмена',
+              closable: true,
+              onCancel: () => false,
+              onOk: () => {
+                deleteItem(obj);
+              },
+            });
+          }
           return (
             <Space>
               <Button
@@ -135,6 +186,20 @@ export const SubjectObjects: React.FC = () => {
               >
                 Открыть
               </Button>
+              <EditOutlined
+                onClick={() => {
+                  setSelectedObj(obj);
+                  console.log(obj);
+
+                  toggleModalEd(true);
+                }}
+              />
+              <DeleteOutlined
+                onClick={() => {
+                  onDeleteDep();
+                }}
+                style={{ color: 'red', marginLeft: 12 }}
+              />
             </Space>
           );
         },
@@ -153,6 +218,16 @@ export const SubjectObjects: React.FC = () => {
     return columns;
   }, [navigate, state, user.org]);
 
+  const update = () => {
+    fetch();
+  };
+
+  const closeModal = () => {
+    toggleModalAdd(false);
+    toggleModalEd(false);
+    update();
+  };
+
   return (
     <>
       <div style={{ marginTop: '20px' }}>
@@ -165,6 +240,7 @@ export const SubjectObjects: React.FC = () => {
           openEditingForm={openEditingForm}
           pagination={false}
           FormComponent={(props) => <SubjectObjectForm {...props} />}
+          titleButtonAdd="Создать новый объект"
           // search={search}
           // FormComponent={(props) => <CreateEvent {...props} />}
           // searchFunc={searchCategories}
@@ -181,12 +257,8 @@ export const SubjectObjects: React.FC = () => {
           // titleButtonAdd="Добавить новое мероприятие"
           propsFrom={{
             subj: subj,
-            objData: {
-              idObl: 1,
-              idRayon: 104,
-              // idReestr: 13,
-              // idStreet: '91021',
-            },
+            close: closeModal,
+            objData: selectedObj,
           }}
         />
       </div>
