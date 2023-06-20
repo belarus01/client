@@ -31,7 +31,6 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(subj, 'subj');
     if (subj) {
       setLoadingUnp(false);
       setSubjRefactor((prev) => ({

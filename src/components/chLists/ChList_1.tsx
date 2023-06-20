@@ -126,20 +126,19 @@ const Check_list_1: React.FC<IFireCardBuild> = () => {
 
           <Row>
             <Col span={24} style={{ textAlign: 'center', background: 'linen' }}>
+              <Col push={1} span={22}>
+                <FireTable data={subjBuilds} update={getSubjBuilds} />
+              </Col>
+
               <Col style={{ marginTop: '20px', marginBottom: '20px' }}>
                 <Text strong style={{ fontSize: '17px' }}>
                   ХАРАКТЕРИСТИКИ ПРОВЕРЯЕМОГО СУБЪЕКТА
                 </Text>
               </Col>
-
               <Col span={20} offset={2} style={{ marginTop: '10px', marginBottom: '20px', textAlign: 'left' }}>
                 <Spinner spinning={subjBuilds.loading}>
                   <FormSumsBildings data={subjBuilds.data} />
                 </Spinner>
-              </Col>
-
-              <Col push={1} span={22}>
-                <FireTable data={subjBuilds} update={getSubjBuilds} />
               </Col>
             </Col>
           </Row>

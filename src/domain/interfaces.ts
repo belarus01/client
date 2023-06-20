@@ -174,6 +174,8 @@ export interface SSubjObj {
   u?: User;
   opo?: null | string | number;
   idSubj2?: SSubj;
+  dateRegOpo?: string | Date | null;
+  objSpecif?: SSubjObjSpecif;
 }
 
 export interface GeolocationDTO {
@@ -615,8 +617,8 @@ export interface SSubjObjSpecif {
   idUnit_17: number | null;
   idUnit_41: number | null;
   area: number | null;
-  dateReg: Date | null;
-  dateAnnul: Date | null;
+  dateReg: Date | string | null;
+  dateAnnul: Date | null | string;
   nameAgent: string | null;
   jobAgent: string | null;
   telAgent: string | null;

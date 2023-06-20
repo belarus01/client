@@ -516,7 +516,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
 
           <Row>
             <Col sm={16} md={16} lg={16}>
-              <BaseButtonsForm.Item label="Грпуппы" name="group">
+              <BaseButtonsForm.Item label="Группы" name="group">
                 <Select
                   loading={groupLoading}
                   options={groupOptions}

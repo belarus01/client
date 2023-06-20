@@ -15,7 +15,7 @@ export const getAllSubjects = () => httpApi.get<SSubj[]>(`${BASE_URL}/get/all`).
 export const getSubjectByUnp = (unp: string) =>
   httpApi.get<SSubj>(`${BASE_URL}/get/unp/${unp}`).then(({ data }) => data);
 
-export const getSubjById = (idSubj: string) =>
+export const getSubjById = (idSubj: string | number) =>
   httpApi.get<SSubj>(`${BASE_URL}/get/id/${idSubj}`).then(({ data }) => data);
 
 export const createSubj = (subj: SSubj) =>

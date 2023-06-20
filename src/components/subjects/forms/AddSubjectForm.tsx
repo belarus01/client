@@ -47,6 +47,9 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
         });
     }
   };
+  const [user, setUser] = useState({
+    org: 1,
+  });
   const [obl, setObl] = useState<React.ReactNode[]>([]);
   const [rayon, setRayon] = useState<React.ReactNode[]>([]);
   const [city, setCity] = useState<React.ReactNode[]>([]);
@@ -188,17 +191,19 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
             {okeds}
           </Select>
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Дата регистрации ОПО" name="dateRegOpo">
-          <DatePicker
-            getPopupContainer={getPlaceDropDown}
-            onChange={(e) => {
-              console.log(e?.format('DD.MM.YYYY'));
-              setDate(e?.format('DD.MM.YYYY') as string);
-            }}
-            defaultValue={dayjs(data?.dateRegOpo || today, dateFormToday)}
-            format={'DD.MM.YYYY'}
-          />
-        </BaseButtonsForm.Item>
+        {user.org == 1 ? null : (
+          <BaseButtonsForm.Item label="Дата регистрации ОПО" name="dateRegOpo">
+            <DatePicker
+              getPopupContainer={getPlaceDropDown}
+              onChange={(e) => {
+                console.log(e?.format('DD.MM.YYYY'));
+                setDate(e?.format('DD.MM.YYYY') as string);
+              }}
+              defaultValue={dayjs(data?.dateRegOpo || today, dateFormToday)}
+              format={'DD.MM.YYYY'}
+            />
+          </BaseButtonsForm.Item>
+        )}
         <BaseButtonsForm.Item label="Ф.И.О руководителя субъекта" name="bossName">
           <Input defaultValue={data?.bossName || ''} />
         </BaseButtonsForm.Item>
@@ -218,10 +223,42 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
           <Input defaultValue={data?.chiefTel || ''} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Состояние плательщика" name="statusUnp">
-          <Input defaultValue={data?.statusUnp || ''} />
+          <Select
+            options={[
+              {
+                label: 'Действующий',
+                value: '1',
+              },
+              {
+                label: 'В стадии ликвидации',
+                value: 'M',
+              },
+              {
+                label: 'ИП',
+                value: 'Z',
+              },
+            ]}
+            defaultValue={data?.statusUnp || ''}
+          />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Тип плательщика" name="typeSubj">
-          <Input defaultValue={data?.typeSubj || ''} />
+          <Select
+            options={[
+              {
+                label: 'Юридический',
+                value: '0',
+              },
+              {
+                label: 'Физический',
+                value: '1',
+              },
+              {
+                label: 'ИП',
+                value: '2',
+              },
+            ]}
+            defaultValue={data?.typeSubj || ''}
+          />
         </BaseButtonsForm.Item>
 
         <BaseButtonsForm.Item label="Реквизиты текущего (расчетного) и иных счетов" name="bankRekv">
