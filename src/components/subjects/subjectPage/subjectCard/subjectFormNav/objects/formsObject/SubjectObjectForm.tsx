@@ -129,9 +129,14 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         };
 
         if (objData && objData.idObj) {
-          const forUpdate: SSubjObj = {
-            ...objData,
-            ...resultSubjObj,
+          const forUpdate: {
+            obj: SSubjObj;
+            objSpecif: SSubjObjSpecif;
+          } = {
+            obj: {
+              ...objData,
+              ...resultSubjObj,
+            },
             objSpecif: resultSpecif,
           };
           updateObjectAndSpecifByObjId(objData.idObj, forUpdate);
