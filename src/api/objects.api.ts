@@ -23,7 +23,24 @@ export const getAllObjectWithSpecifBySubjectId = (idSubj: number | string) =>
     .get<(SSubjObj & SSubjObjSpecif)[]>(`object/get/all/objectWithSpecifBySubjId/idSubj/${idSubj}`)
     .then(({ data }) => data);
 
-export const updateObjectAndSpecifByObjId = (idObj: number | string, obj: SSubjObj) =>
+export const updateObjectAndSpecifByObjId = (
+  idObj: number | string,
+  obj: {
+    obj: SSubjObj;
+    objSpecif?: SSubjObjSpecif;
+  },
+) =>
   httpApi
     .put<(SSubjObj & SSubjObjSpecif)[]>(`object/update/by/idObj/objectSpecif/${idObj}`, obj)
+    .then(({ data }) => data);
+
+export const deleteOjectWithObjSpecifIfExistsBySubjId = (
+  idObj: number | string,
+  obj: {
+    obj: SSubjObj;
+    objSpecif?: SSubjObjSpecif;
+  },
+) =>
+  httpApi
+    .put<(SSubjObj & SSubjObjSpecif)[]>(`object/delete/by/idObj/with/objectSpecif/${idObj}`, obj)
     .then(({ data }) => data);

@@ -1,4 +1,8 @@
-import { getAllObjectWithSpecifBySubjectId, getAllObjectsBySubjectId } from '@app/api/objects.api';
+import {
+  deleteOjectWithObjSpecifIfExistsBySubjId,
+  getAllObjectWithSpecifBySubjectId,
+  getAllObjectsBySubjectId,
+} from '@app/api/objects.api';
 import { Pagination } from '@app/api/users.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import TheTable from '@app/components/tables/TheTable';
@@ -11,6 +15,7 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import SubjectObjectForm from './formsObject/SubjectObjectForm';
+import { notificationController } from '@app/controllers/notificationController';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -96,7 +101,20 @@ export const SubjectObjects: React.FC = () => {
     }
   };
 
-  const deleteItem = (obj: SSubjObj) => {};
+  const deleteItem = (obj: SSubjObj) => {
+    const deletedObj = {
+      obj: {
+        ...obj,
+      },
+      objSpecif: obj.objSpecif,
+    };
+    if (obj.idObj) {
+      deleteOjectWithObjSpecifIfExistsBySubjId(obj.idObj, deletedObj).then(() => {
+        notificationController.success({ message: 'Объект удален!' });
+        update();
+      });
+    }
+  };
 
   const columns = useMemo(() => {
     const columns = [
@@ -223,6 +241,8 @@ export const SubjectObjects: React.FC = () => {
   };
 
   const closeModal = () => {
+    console.log('закртыь');
+
     toggleModalAdd(false);
     toggleModalEd(false);
     update();

@@ -33,14 +33,16 @@ const ChecklistFireTable: React.FC<FireTableProps> = ({ data, update }) => {
 
   const deleteCategory = (fireCardBuild: IFireCardBuild) => {
     if (fireCardBuild.idList) {
-      console.log();
-
       deleteFireCardBuildById(fireCardBuild.idList).then(() => {
         update();
         notificationController.success({ message: 'Успешно удалено' });
       });
     }
   };
+
+  useEffect(() => {
+    console.log(data, '11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  }, [data]);
 
   const toggleModal = () => {
     setOpenAddingForm(false);
@@ -49,6 +51,11 @@ const ChecklistFireTable: React.FC<FireTableProps> = ({ data, update }) => {
   };
 
   const columns = [
+    {
+      key: 0,
+      title: 'Наименование объекта',
+      dataIndex: ['idSubjObj2', 'nameObj'],
+    },
     {
       key: 1,
       title: 'Наименование сооружения',

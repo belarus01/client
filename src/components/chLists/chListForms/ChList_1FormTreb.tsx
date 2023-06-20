@@ -42,6 +42,11 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
           value: '0',
           label: 'Исправлено',
         };
+      case 0:
+        return {
+          value: '1',
+          label: 'Не исправлено',
+        };
       case 2:
         return {
           value: '2',
@@ -92,12 +97,13 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
       dateInform: field.dateInform ? moment(field.dateInform) : null,
       dateCheckFix: field.dateCheckFix ? moment(field.dateCheckFix) : null,
       chlComm: field.chlComm,
-      flOk: flOk
-        ? flOk
-        : {
-            value: '0',
-            label: 'Исправлено',
-          },
+      flOk:
+        flOk?.value == '0' || flOk
+          ? flOk
+          : {
+              value: '1',
+              label: 'Не исправленно',
+            },
       chlFlYes: chlFlYes
         ? chlFlYes
         : {
@@ -163,12 +169,15 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
   };
 
   const onFinish = (values: IEventOrderQueDef) => {
+    console.log(currentField.idList, 'kanfjklnakjdnfkasndkfjansdjkfansdjfas');
+
     setLoadingForm(true);
     const finalyValues: IEventOrderQueDef = {
+      idList: currentField.idList,
       ...values,
-      dateFix: values.dateFix ? (values.dateFix as unknown as Moment).format('YYYY.MM.DD') : null,
-      dateCheckFix: values.dateCheckFix ? (values.dateCheckFix as unknown as Moment).format('YYYY.MM.DD') : null,
-      dateInform: values.dateInform ? (values.dateInform as unknown as Moment).format('YYYY.MM.DD') : null,
+      dateFix: values.dateFix ? moment(values.dateFix).format('YYYY.MM.DD') : null,
+      dateCheckFix: values.dateCheckFix ? moment(values.dateCheckFix).format('YYYY.MM.DD') : null,
+      dateInform: values.dateInform ? moment(values.dateInform).format('YYYY.MM.DD') : null,
       flOk: values.flOk?.value ? values.flOk?.value : values.flOk,
       chlFlYes: values.chlFlYes?.value ? values.chlFlYes?.value : values.chlFlYes,
       chlComm: chlComm,
@@ -238,7 +247,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                     </Row>
                   </Col>
                   <Col span={8}>
-                    <Row align="middle" justify="center">
+                    <Row align="middle" justify="center" style={{ gap: '20px' }}>
                       <BaseButtonsForm.Item>
                         <Button
                           style={{
@@ -246,7 +255,6 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                             background: 'blanchedalmond',
                             border: '2px solid gold',
                             borderRadius: '8px',
-                            marginRight: '20px',
                           }}
                           onClick={prev}
                         >
@@ -294,27 +302,6 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                             readOnly
                           />
                         </BaseButtonsForm.Item>
-
-                        <BaseButtonsForm.Item name="chlFlYes" style={{ width: '150px' }}>
-                          <Select
-                            placeholder="Выберете значение"
-                            style={{ textAlign: 'center', width: '150%' }}
-                            options={[
-                              {
-                                value: '0',
-                                label: 'Да',
-                              },
-                              {
-                                value: '1',
-                                label: 'Нет',
-                              },
-                              {
-                                value: '2',
-                                label: 'Не требуется',
-                              },
-                            ]}
-                          />
-                        </BaseButtonsForm.Item>
                       </Row>
                     </Col>
                   </Row>
@@ -359,6 +346,37 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                       <Text strong>Примечание</Text>
                     </Button>
                   </BaseButtonsForm.Item>
+                  <Row
+                    style={{
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      alignContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Text>Решение по требованию</Text>
+
+                    <BaseButtonsForm.Item name="chlFlYes" style={{ width: '150px' }}>
+                      <Select
+                        placeholder="Выберете значение"
+                        style={{ textAlign: 'center', width: '150%' }}
+                        options={[
+                          {
+                            value: '0',
+                            label: 'Да',
+                          },
+                          {
+                            value: '1',
+                            label: 'Нет',
+                          },
+                          {
+                            value: '2',
+                            label: 'Не требуется',
+                          },
+                        ]}
+                      />
+                    </BaseButtonsForm.Item>
+                  </Row>
 
                   <Row style={{ justifyContent: 'space-between', lineHeight: '17px' }}>
                     <Col style={{ textAlign: 'center' }} span={4}>
@@ -414,9 +432,14 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                           style={{ textAlign: 'center', marginTop: '5px' }}
                           options={[
                             {
+                              value: '1',
+                              label: 'Не исправленно',
+                            },
+                            {
                               value: '0',
                               label: 'Исправлено',
                             },
+
                             {
                               value: '2',
                               label: 'Частично',

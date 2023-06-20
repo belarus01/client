@@ -174,7 +174,7 @@ export interface SSubjObj {
   u?: User;
   opo?: null | string | number;
   idSubj2?: SSubj;
-  dateRegOpo: string | Date | null;
+  dateRegOpo?: string | Date | null;
   objSpecif?: SSubjObjSpecif;
 }
 

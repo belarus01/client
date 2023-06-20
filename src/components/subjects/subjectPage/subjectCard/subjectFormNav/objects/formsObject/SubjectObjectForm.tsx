@@ -4,7 +4,6 @@ import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
 import { Button } from 'components/common/buttons/Button/Button';
 import { IUnits, SSubjObj, SSubjObjSpecif } from '@app/domain/interfaces';
 import SubjectObjectSpecifForm from './SubjectObjectSpecifForm';
-import { DatePicker } from '@app/components/common/pickers/DatePicker';
 import { getSubjById } from '@app/api/subjects.api';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { getUnitsByTypeUnit } from '@app/api/units.api';
@@ -12,6 +11,7 @@ import AddresForm from '@app/components/subjects/forms/AddresForm';
 import { createObject, createObjectWithObjSpecif, updateObjectAndSpecifByObjId } from '@app/api/objects.api';
 import { notificationController } from '@app/controllers/notificationController';
 import moment from 'moment';
+import { DatePicker } from 'antd';
 
 interface ISubjectObjectFormProps {
   objData?: SSubjObj;
@@ -25,9 +25,9 @@ enum types {
   typeDanger = 1,
 }
 
-const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpecif, subj, idSubj }) => {
+const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpecif, subj, idSubj, close }) => {
   const [user, setUser] = useState({
-    org: 1,
+    org: 0,
   });
   const [unp, setUnp] = useState('');
   const [typesDanger, setTypesDanger] = useState<IUnits[]>([]);
@@ -66,6 +66,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
 
   const setInitialValues = () => {
     if (objData) {
+      objData.dateRegOpo = moment(objData.dateRegOpo) as unknown as Date;
       form.setFieldsValue(objData);
     }
   };
@@ -94,12 +95,24 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
 
     if (user.org == 0) {
       if (objData && objData.idObj) {
-        updateObjectAndSpecifByObjId(objData.idObj, ouputResultSubjObj);
+        updateObjectAndSpecifByObjId(objData.idObj, { obj: ouputResultSubjObj })
+          .then(() => {
+            notificationController.success({ message: 'Объект Успешно обнавлен' });
+            if (close) {
+              close();
+            }
+          })
+          .catch((e) => {
+            notificationController.error({ message: 'Ошибка', description: 'Действие не было успешно завершено' });
+          });
         return;
       }
       createObject(ouputResultSubjObj)
         .then(() => {
           notificationController.success({ message: 'Объект усепшно создан' });
+          if (close) {
+            close();
+          }
         })
         .catch(() => {
           notificationController.error({ message: 'Ошибка', description: 'Объект не был создан!' });
@@ -136,15 +149,27 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
             obj: {
               ...objData,
               ...resultSubjObj,
-            },
+            } as SSubjObj,
             objSpecif: resultSpecif,
           };
-          updateObjectAndSpecifByObjId(objData.idObj, forUpdate);
+          updateObjectAndSpecifByObjId(objData.idObj, forUpdate)
+            .then(() => {
+              notificationController.success({ message: 'Объект Успешно обнавлен' });
+              if (close) {
+                close();
+              }
+            })
+            .catch((e) => {
+              notificationController.error({ message: 'Ошибка', description: 'Действие не было успешно завершено' });
+            });
           return;
         }
         createObjectWithObjSpecif(outpudObj)
           .then(() => {
             notificationController.success({ message: 'Объект усепшно создан' });
+            if (close) {
+              close();
+            }
           })
           .catch(() => {
             notificationController.error({ message: 'Ошибка', description: 'Объект не был создан!' });

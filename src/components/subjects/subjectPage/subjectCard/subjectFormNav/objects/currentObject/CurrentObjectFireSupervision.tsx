@@ -8,9 +8,13 @@ import GroopedTables from './GroopedTables';
 import { Space } from '@app/components/common/inputs/SearchInput/SearchInput.styles';
 import { Button } from '@app/components/common/buttons/Button/Button.styles';
 
-const CurrentObjectFireSupervision: React.FC = () => {
+interface CurrentObjectFireSupervisionProps {
+  idObjProps?: number | string;
+}
+
+const CurrentObjectFireSupervision: React.FC<CurrentObjectFireSupervisionProps> = ({ idObjProps }) => {
   const [user, setUser] = useState({
-    org: 0,
+    org: 1,
   });
 
   const [, setObj] = useState<SSubjObj>({
@@ -40,9 +44,9 @@ const CurrentObjectFireSupervision: React.FC = () => {
   // 130 id obj
   const fetch = useCallback(() => {
     setLoading(true);
-    if (idObj) {
-      const promiseObj: Promise<SSubjObj> = getObjById(133);
-      const promiseBuilds: Promise<IFireCardBuild[]> = getAllFireCardBuildsBySubjObjId(133);
+    if (idObj && idObjProps) {
+      const promiseObj: Promise<SSubjObj> = getObjById(idObj || idObjProps);
+      const promiseBuilds: Promise<IFireCardBuild[]> = getAllFireCardBuildsBySubjObjId(idObj || idObjProps);
       const promiseSpecifs: Promise<ISubjObjSpecif[]> = getAllObjSpecifs();
       Promise.all([promiseObj, promiseBuilds, promiseSpecifs]).then((res) => {
         console.log(res);
