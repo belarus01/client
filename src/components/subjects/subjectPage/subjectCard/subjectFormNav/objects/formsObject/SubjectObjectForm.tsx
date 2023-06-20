@@ -202,7 +202,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
         <BaseButtonsForm.Item label="Наименование объекта" name="nameObj">
           <Input />
         </BaseButtonsForm.Item>
-        <AddresForm formInstance={form} />
+        <AddresForm showCategs={true} labelCategs="Категории" formInstance={form} />
         <BaseButtonsForm.Item label="Инициалы, фамилия руководителя объекта" name="fioBoss">
           <Input />
         </BaseButtonsForm.Item>

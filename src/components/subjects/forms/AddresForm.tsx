@@ -1,9 +1,11 @@
-import { getCitiesByRayonId, getObl, getRayonsByOblId, getStreetsByCityId } from '@app/api/ate.api';
-import React, { Key, ReactElement, useCallback, useEffect, useState } from 'react';
+import { getAllCategs, getCitiesByRayonId, getObl, getRayonsByOblId, getStreetsByCityId } from '@app/api/ate.api';
+import React, { Key, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { Select, Option } from '@app/components/common/selects/Select/Select';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { FormInstance } from 'antd';
 import { Input, TextArea } from '@app/components/common/inputs/Input/Input';
+import { IAteCategory } from '@app/components/ate/ateTable/AteCategoriesTable';
+import { IAteReestr } from '@app/components/ate/ateTable/AteReestrTable';
 
 interface AddresFormProps {
   labelObl?: string;
@@ -25,7 +27,12 @@ interface AddresFormProps {
   nameNumBuild?: string;
   nameNumOffice?: string;
   formInstance: FormInstance;
+  showCategs?: boolean;
+  labelCategs?: string | undefined;
+  nameCategs?: string | undefined;
 }
+
+const ONLY_CITY = [102, 103, 111, 112, 113, 121, 122, 123, 212, 213, 221, 222, 223, 231, 232, 233, 234, 235, 239];
 
 const AddresForm: React.FC<AddresFormProps> = ({
   labelObl,
@@ -47,6 +54,9 @@ const AddresForm: React.FC<AddresFormProps> = ({
   labelNumOffice,
   nameNumBuild,
   nameNumOffice,
+  showCategs,
+  labelCategs,
+  nameCategs,
 }) => {
   const [obl, setObl] = useState<ReactElement[]>([]);
   const [rayon, setRayon] = useState<ReactElement[]>([]);
@@ -54,6 +64,8 @@ const AddresForm: React.FC<AddresFormProps> = ({
   const [street, setStreet] = useState<ReactElement[]>([]);
   const [loading, setLoading] = useState(false);
   const [oblRayon, setOblRayon] = useState(false);
+  const [categories, setCategories] = useState<IAteCategory[]>([]);
+  const [selectedCateg, setSelectedCateg] = useState<number[]>([]);
 
   const setOptions = <T extends object>(
     setState: (value: ReactElement[]) => void,
@@ -72,8 +84,25 @@ const AddresForm: React.FC<AddresFormProps> = ({
     setState(children);
   };
 
+  const categoriseOptions = useMemo(() => {
+    if (categories.length > 0) {
+      return categories.map((category) => {
+        return {
+          label: category.nameCateg,
+          value: category.idCateg,
+        };
+      });
+    }
+    return categories;
+  }, [categories]);
+
   const resetField = (fieldName: string) => {
     formInstance.setFieldValue(fieldName, '');
+  };
+
+  const setFilter = (reestrs: IAteReestr[]) => {
+    const currentSelected = selectedCateg.length > 0 ? selectedCateg : ONLY_CITY;
+    return reestrs.filter((reestr) => currentSelected.includes(reestr.idCateg as number));
   };
 
   const handleOblSelect = (selected: any) => {
@@ -93,9 +122,14 @@ const AddresForm: React.FC<AddresFormProps> = ({
   const handleRayonSelect = (selected: any) => {
     setLoading(true);
     getCitiesByRayonId(selected).then((res) => {
-      setOptions(setCity, res, 'idReestr', 'nameReestr');
+      const filtred = setFilter(res);
+      setOptions(setCity, filtred, 'idReestr', 'nameReestr');
       setLoading(false);
     });
+  };
+
+  const handleCateg = (selected: number[]) => {
+    setSelectedCateg(selected);
   };
 
   const handleCitySelect = (selected: any) => {
@@ -138,7 +172,11 @@ const AddresForm: React.FC<AddresFormProps> = ({
       }
       setObl(childrenObl);
       getInitialValues();
-      setLoading(false);
+      getAllCategs().then((res) => {
+        setCategories(res);
+        setLoading(false);
+      });
+
       return res;
     });
   }, []);
@@ -212,6 +250,19 @@ const AddresForm: React.FC<AddresFormProps> = ({
           </Select>
         </BaseButtonsForm.Item>
       ) : null}
+      {showCategs ? (
+        <BaseButtonsForm.Item label={labelCategs} name={nameCategs}>
+          <Select
+            getPopupContainer={(trigger) => trigger}
+            options={categoriseOptions}
+            onChange={handleCateg}
+            allowClear
+            loading={loading}
+            disabled={loading}
+            mode="multiple"
+          ></Select>
+        </BaseButtonsForm.Item>
+      ) : null}
       {hiddenReestrs ? (
         <BaseButtonsForm.Item label={labelReestr} name={nameReestr}>
           <Select
@@ -283,4 +334,7 @@ AddresForm.defaultProps = {
   labelNumOffice: 'Номер помещения',
   nameNumBuild: 'numBuild',
   nameNumOffice: 'numOffice',
+  showCategs: false,
+  labelCategs: undefined,
+  nameCategs: undefined,
 };
