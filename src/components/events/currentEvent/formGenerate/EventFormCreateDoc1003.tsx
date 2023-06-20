@@ -35,6 +35,16 @@ const EventFormCreateDoc1003: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   const [form] = BaseButtonsForm.useForm();
   const [eventForm] = BaseButtonsForm.useForm();
 
+  const [shownFIO, setShownFIO] = useState(true);
+
+  const changeFunctionales = (value: string) => {
+    if (value == '0') {
+      setShownFIO(false);
+    } else {
+      setShownFIO(true);
+    }
+  };
+
   const getUnp = (idSubj: string) => {
     getSubjById(idSubj).then((subj) => setUnp(subj.unp as string));
   };
@@ -122,12 +132,12 @@ const EventFormCreateDoc1003: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Select
             options={[
               {
-                value: '0',
-                label: 'Не представлена',
-              },
-              {
                 value: '1',
                 label: 'Представлена',
+              },
+              {
+                value: '0',
+                label: 'Не представлена',
               },
             ]}
           />
@@ -140,6 +150,7 @@ const EventFormCreateDoc1003: React.FC<EventFormCreateDoc> = ({ event, toggleMod
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'flRec'} label={'Способ отправки'}>
           <Select
+            onSelect={(value) => changeFunctionales(value as string)}
             options={[
               {
                 value: '0',
@@ -157,7 +168,7 @@ const EventFormCreateDoc1003: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'receiver'} label={'Фамилия получателя'}>
-          <Input />
+          <Input disabled={shownFIO} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'dateRec'} label={'Дата отправки'}>
           <DatePicker />
