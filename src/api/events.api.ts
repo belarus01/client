@@ -37,3 +37,9 @@ export const createEventOrderQueDef = (idEventOrder: string | number, idDefs: nu
 
 export const updateEventOrderQueDef = (idList: number | string, values: IEventOrderQueDef) =>
   httpApi.put(`events/update/eventOrderQueDef/${idList}`, { ...values }).then(({ data }) => data);
+
+export const updateEventOrder = (idEventOrder: number | string, values: IEventOrder) =>
+  httpApi.put(`events/update/eventOrder/${idEventOrder}`, { ...values }).then(({ data }) => data);
+
+export const getEventOrderByIdEventOrder = (idEventOrder: number | string) =>
+  httpApi.get<IEventOrder>('events/get/eventOrder/idEventOrder/' + idEventOrder).then(({ data }) => data);

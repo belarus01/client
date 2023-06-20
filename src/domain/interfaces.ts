@@ -932,7 +932,7 @@ export interface IFormReport {
   flRec?: number;
   flBook?: number;
   numBook?: string;
-  dateBook?: Date;
+  dateBook?: Date | string;
   uidBoss?: number;
   dateFrom?: Date | string | null;
   dateTo?: Date | string | null;
