@@ -1,6 +1,5 @@
-import { generateCertificateOfRefusalOfAdmission } from '@app/api/doc.api';
+import { generateActProverki } from '@app/api/doc.api';
 import { initGenerateDocGetIdList } from '@app/api/form.api';
-import { getEventOrderByIdEventOrder, getEventOrderByIdWithRelations, updateEventOrder } from '@app/api/events.api';
 import { getSubjById } from '@app/api/subjects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Button } from '@app/components/common/buttons/Button/Button';
@@ -11,13 +10,13 @@ import { DatePicker, Input, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EventFormCreateDoc } from './EventFormCreateDoc1000';
-import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
 import moment from 'moment';
+import { getEventOrderByIdEventOrder } from '@app/api/events.api';
 
-const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
+const EventFormCreateDoc1003: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [unp, setUnp] = useState('');
-  const [currentEvent, setCurrentEvent] = useState<IEventOrder>({
+  const [, setCurrentEvent] = useState<IEventOrder>({
     idEvent: null,
     idSubj: null,
     idUnit_3: null,
@@ -36,6 +35,16 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   const [form] = BaseButtonsForm.useForm();
   const [eventForm] = BaseButtonsForm.useForm();
 
+  const [shownFIO, setShownFIO] = useState(true);
+
+  const changeFunctionales = (value: string) => {
+    if (value == '0') {
+      setShownFIO(false);
+    } else {
+      setShownFIO(true);
+    }
+  };
+
   const getUnp = (idSubj: string) => {
     getSubjById(idSubj).then((subj) => setUnp(subj.unp as string));
   };
@@ -49,41 +58,41 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     });
   };
 
-  const onFinishCreateDocUved = (values: IFormReport & IEventOrder) => {
+  const onFinishCreateDocUved = (values: IFormReport) => {
     console.log(values);
     setLoading(true);
     if (values.dateDoc) {
       values.dateDoc = moment(values.dateDoc).format('YYYY-MM-DD');
     }
+    if (values.dateRec) {
+      values.dateRec = moment(values.dateRec).format('YYYY-MM-DD');
+    }
+    if (values.dateBook) {
+      values.dateBook = moment(values.dateBook).format('YYYY-MM-DD');
+    }
     const field = {
       ...values,
-      idForm: 1001,
+      idForm: 1003,
       idEventOrder: idEventOrder,
       org: 1,
       dateDoc: values.dateDoc,
+      dateRec: values.dateRec,
+      dateBook: values.dateBook,
     };
 
     console.log(field);
     if (idEventOrder) {
-      initGenerateDocGetIdList(field, idEventOrder, 1001).then((idList) => {
-        const newEventForm = { ...eventForm.getFieldsValue() };
-        updateEventOrder(idEventOrder, newEventForm).then(() => {
-          generateCertificateOfRefusalOfAdmission({
-            id_list: idList,
-            id_event_order: idEventOrder,
-            unp,
-          }).then(() => {
-            setLoading(false);
-            toggleModal(false);
-          });
+      initGenerateDocGetIdList(field, idEventOrder, 1003).then((idList) => {
+        generateActProverki({
+          id_list: idList,
+          id_event_order: idEventOrder,
+          unp,
+        }).then(() => {
+          setLoading(false);
+          toggleModal(false);
         });
       });
     }
-  };
-
-  const onFinishEvent = (values: IEventOrder) => {
-    setCurrentEvent((prev) => ({ ...prev, ...values }));
-    onFinishCreateDocUved(form.getFieldsValue());
   };
 
   useEffect(() => {
@@ -103,44 +112,66 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   return (
     <Spinner spinning={loading}>
       <BaseButtonsForm form={form} layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
+        <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
+          <Input />
+        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
           <DatePicker />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="addrRecord" label={'Место составления документа'} rules={[{ required: true }]}>
           <Input />
         </BaseButtonsForm.Item>
-        {/* <BaseButtonsForm.Item name="dolj" label={'Должность'}>
-          <Select
-            options={[
-              {
-                value: 'Главный государственный инспектор',
-                label: 'Главный государственный инспектор',
-              },
-              {
-                value: 'Государственный инспектор',
-                label: 'Государственный инспектор',
-              },
-            ]}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'region'} label={'Область, город, район'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <UsersSelectWithPostAndTel nameUid="uid" shownTel={false} shownPost={false} />*/}
         <BaseButtonsForm.Item name={'otherInfo'} label={'Иные сведения'}>
           <TextArea />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'comm'} label={'Комментарии'}>
           <TextArea />
         </BaseButtonsForm.Item>
-      </BaseButtonsForm>
 
-      <BaseButtonsForm form={eventForm} layout="horizontal" isFieldsChanged={false} onFinish={onFinishEvent}>
-        <BaseButtonsForm.Item name={'nameAgent'} label={'ФИО представителя субъекта'}>
+        <BaseButtonsForm.Item name={'flBook'} label={'Книга учета проверок'}>
+          <Select
+            options={[
+              {
+                value: '1',
+                label: 'Представлена',
+              },
+              {
+                value: '0',
+                label: 'Не представлена',
+              },
+            ]}
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'dateBook'} label={'Дата регистрации проверки'}>
+          <DatePicker />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'numBook'} label={'Номер регистрации'}>
           <Input />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'postAgent'} label={'Должжность представителя субъекта'}>
-          <Input />
+        <BaseButtonsForm.Item name={'flRec'} label={'Способ отправки'}>
+          <Select
+            onSelect={(value) => changeFunctionales(value as string)}
+            options={[
+              {
+                value: '0',
+                label: 'В руки',
+              },
+              {
+                value: '1',
+                label: 'Почтой',
+              },
+              {
+                value: '2',
+                label: 'Факсом',
+              },
+            ]}
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'receiver'} label={'Фамилия получателя'}>
+          <Input disabled={shownFIO} />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item name={'dateRec'} label={'Дата отправки'}>
+          <DatePicker />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item>
           <Button htmlType="submit" type="primary">
@@ -152,4 +183,4 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   );
 };
 
-export default EventFormCreateDoc1001;
+export default EventFormCreateDoc1003;
