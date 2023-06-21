@@ -11,7 +11,15 @@ interface PaymentModalProps {
 
 export const AddNewCardModal: React.FC<PaymentModalProps> = ({ isModalOpen, closeModal, onCardAdd }) => {
   return (
-    <Modal destroyOnClose size="small" open={isModalOpen} onCancel={closeModal} footer={null} closable={false}>
+    <Modal
+      maskClosable={false}
+      destroyOnClose
+      size="small"
+      open={isModalOpen}
+      onCancel={closeModal}
+      footer={null}
+      closable={false}
+    >
       <PaymentForm closeModal={closeModal} onFormFinish={onCardAdd} />
     </Modal>
   );

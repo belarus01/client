@@ -194,9 +194,11 @@ export interface GeolocationData {
 }
 
 export interface SSubj {
-  idSubj: number | null;
+  idSubj: number | string | null;
   numOpo?: string | null;
   subj?: string | null;
+  subj1?: string | null;
+
   unp: string | null;
   addrYur?: string | null;
   dateRecord?: Date | null;

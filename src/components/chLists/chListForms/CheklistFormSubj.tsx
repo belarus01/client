@@ -46,7 +46,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
       updateSubj(subjRefactor.idSubj, subjRefactor)
         .then(() => {
           setLoading(false);
-          notificationController.success({ message: 'Субъект Обнавлен' });
+          notificationController.success({ message: 'Субъект Обновлен' });
         })
         .catch((e) => {
           notificationController.error({ message: e, description: 'К сожалению действие не завершенно' });

@@ -10,6 +10,8 @@ export const getRayonsByOblId = (id: string) =>
 export const getRayonsByRayonId = (id: string) => httpApi.get<any[]>('ate/get/rayon/' + id).then(({ data }) => data);
 export const getCitiesByRayonId = (id: string) =>
   httpApi.get<any[]>('ate/get/reestrs/id_rayon/' + id).then(({ data }) => data);
+export const getCitiesByOblIdForMinsk = (id: string) =>
+  httpApi.get<any[]>('ate/get/reestrs/in_obl/forMinsk/' + id).then(({ data }) => data);
 
 export const getStreetsByCityId = (id: string) =>
   httpApi.get<any[]>('ate/get/streets/id_city/' + id).then(({ data }) => data);

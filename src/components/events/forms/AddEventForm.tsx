@@ -40,6 +40,7 @@ import { Option } from '@app/components/common/selects/Select/Select';
 import { IDepartment } from '@app/components/departments/tables/DepatmentsTable';
 import { createGroup, getAllGroups } from '@app/api/groups.api';
 import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
+import { Stars } from './Stars.styles';
 
 // interface Option extends DefaultOptionType {
 //   children?: Option[];
@@ -465,7 +466,10 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
               <p>Адрес юридический - {subj?.addrYur}</p>
             </BaseButtonsForm.Item>
           ) : null}
-
+          <Row>
+            <Stars /> <span style={{ color: 'red' }}>Поле обязательное к заполнению</span>
+          </Row>
+          <br />
           <BaseButtonsForm.Item label="Мероприятия" name="idEvent" rules={[{ required: true }]}>
             <Select
               options={eventOptions}

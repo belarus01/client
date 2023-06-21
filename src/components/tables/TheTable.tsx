@@ -85,9 +85,9 @@ export const TheTable: React.FC<ITheTableProps> = ({
       {toggleModalAdding && openAddingForm && (
         <Modal
           closable
+          maskClosable={false}
           footer={null}
           onCancel={() => toggleModalAdding(false)}
-          destroyOnClose
           title={titleModalAdding}
           centered
           open={openAddingForm}
@@ -98,9 +98,9 @@ export const TheTable: React.FC<ITheTableProps> = ({
       {toggleModalEditing && openEditingForm && (
         <Modal
           closable
+          maskClosable={false}
           footer={null}
           onCancel={() => toggleModalEditing(false)}
-          destroyOnClose
           title={titleMoadlEditing}
           centered
           open={openEditingForm}

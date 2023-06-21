@@ -53,7 +53,7 @@ export const SubjectsTable: React.FC = () => {
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      getAllSubjSortAndPage({ ...pagination, order: '1', field: 'unp' }).then((res) => {
+      getAllSubjSortAndPage({ ...pagination, order: '1', field: 'idSubj' }).then((res) => {
         if (isMounted.current) {
           setTableData({
             data: res.result,
@@ -202,6 +202,7 @@ export const SubjectsTable: React.FC = () => {
         bordered
       />
       <Modal
+        maskClosable={false}
         closable
         footer={null}
         onCancel={hideAddSubjectModal}
