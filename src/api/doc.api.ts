@@ -42,19 +42,19 @@ const headers: AxiosRequestConfig = {
 export const generateDoc1 = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen1', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Уведомление№${dto.numDoc || ''}`))
+    .then((response) => downLoadWordDocGenerated(response, `Уведомление на проверку №${dto.numDoc || ''}`))
     .catch((error) => initError(error));
 
 export const generateCertificateOfRefusalOfAdmission = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen5', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Акт№${dto.numDoc || ''}`))
+    .then((response) => downLoadWordDocGenerated(response, `Акт об отказе в допуске №${dto.numDoc || ''}`))
     .catch((error) => initError(error));
 
 export const generateCheckList1 = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen1_ch', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Чек-лист1`))
+    .then((response) => downLoadWordDocGenerated(response, `Чек-лист 1`))
     .catch((error) => initError(error));
 
 export const generatePredpisanie = (dto: any) =>
@@ -67,4 +67,16 @@ export const generateActProverki = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen6', { ...dto }, { ...headers })
     .then((response) => downLoadWordDocGenerated(response, `Акт проверки №`))
+    .catch((error) => initError(error));
+
+export const generateSpravkaProverki = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen7', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Справка проверки №`))
+    .catch((error) => initError(error));
+
+export const generatePredpisObUstrNarush = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen9', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Предписание об устранении нарушений №`))
     .catch((error) => initError(error));
