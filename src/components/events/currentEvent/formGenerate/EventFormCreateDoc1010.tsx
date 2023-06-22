@@ -136,7 +136,7 @@ const EventFormCreateDoc1010: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Input disabled={shownFIO} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'dateRec'} label={'Дата отправки'}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
 

@@ -106,7 +106,7 @@ const EventFormCreateDoc1002: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'otherInfo'} label={'Иные сведения'}>
           <TextArea />

@@ -116,7 +116,7 @@ const EventFormCreateDoc1004: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="addrRecord" label={'Место составления документа'} rules={[{ required: true }]}>
           <Input />
@@ -143,7 +143,7 @@ const EventFormCreateDoc1004: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'dateBook'} label={'Дата регистрации проверки'}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'numBook'} label={'Номер регистрации'}>
           <Input />
@@ -171,7 +171,7 @@ const EventFormCreateDoc1004: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Input disabled={shownFIO} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'dateRec'} label={'Дата отправки'}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item>
           <Button htmlType="submit" type="primary">

@@ -117,7 +117,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
 
   const filterdDoc = useMemo(() => {
     if (docs.length > 0) {
-      return docs.filter((doc) => doc.idForm && doc?.idForm < 1013 && doc.idForm != 312);
+      return docs.filter((doc) => doc.idForm && doc?.idForm < 1013 && doc.idForm != 312 && doc.idForm != 1006);
     }
     return [];
   }, [docs]);
@@ -133,7 +133,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
           <div>Дата начала действия документа об оценке соответствия</div>
           {/* <div>Дата окончания действия документа об оценке соответствия </div> */}
           <div>Дата изменения записи </div>
-          <div>Создать документ</div>
+          <div>Создать/Редактировать документ</div>
           {/* <div>Просмотреть документ</div> */}
         </ListDoc>
         {filterdDoc.map((doc) => {

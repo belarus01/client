@@ -104,7 +104,7 @@ const EventFormCreateDoc1001: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     <Spinner spinning={loading}>
       <BaseButtonsForm form={form} layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="addrRecord" label={'Место составления документа'} rules={[{ required: true }]}>
           <Input />

@@ -91,7 +91,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
           </Button>
         </Col> */}
 
-          <Col span={5} offset={2}>
+          {/* <Col span={5} offset={2}>
             <Button
               style={{
                 color: 'black',
@@ -104,7 +104,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
             >
               <Text>Обновить данные</Text>
             </Button>
-          </Col>
+          </Col> */}
         </Row>
         <Row style={{ marginTop: '15px' }}>
           <Col>
@@ -265,6 +265,20 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
               value={subjRefactor.chiefTel || ''}
             />
           </Col>
+        </Row>
+        <Row justify={'center'}>
+          <Button
+            style={{
+              color: 'black',
+              background: 'blanchedalmond',
+              border: '2px solid gold',
+              borderRadius: '8px',
+            }}
+            loading={loading}
+            onClick={update}
+          >
+            <Text>Обновить данные</Text>
+          </Button>
         </Row>
       </BaseButtonsForm>
     </Spinner>

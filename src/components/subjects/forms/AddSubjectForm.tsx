@@ -11,9 +11,9 @@ import { notificationController } from '@app/controllers/notificationController'
 import { SSubj } from '@app/domain/interfaces';
 import { validatorCustom } from '@app/utils/validator';
 import dayjs from 'dayjs';
-import { Key, useCallback, useEffect, useState } from 'react';
+import { Key, useCallback, useEffect, useRef, useState } from 'react';
 import AddresForm from './AddresForm';
-import { message } from 'antd';
+import { InputRef, message } from 'antd';
 
 interface AddSubjectFormProps {
   onCancel: () => void;
@@ -101,6 +101,9 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
     getAllOked().then((okeds) => {
       setOptions(setOkeds, okeds, 'idOked', 'nameOked');
     });
+    if (unpInput.current) {
+      unpInput.current.focus();
+    }
   }, []);
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
@@ -108,12 +111,12 @@ export const AddSubjectForm: React.FC<AddSubjectFormProps> = ({ onCancel, onTabl
 
   const [form] = BaseButtonsForm.useForm();
   const validateNumReg = validatorCustom.maxLength(15);
-
+  const unpInput = useRef<InputRef>(null);
   return (
     <>
       <BaseButtonsForm loading={loading} form={form} layout="vertical" onFinish={onFinish} isFieldsChanged={false}>
         <BaseButtonsForm.Item label="УНП" name="unp" rules={[{ validator: validatorCustom.unp }]}>
-          <Input defaultValue={data?.unp || ''} />
+          <Input ref={unpInput} defaultValue={data?.unp || ''} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Наименование субъекта промышленной беезопасности" name="subj">
           <Input defaultValue={data?.subj || ''} />
