@@ -89,7 +89,7 @@ const UsersSelectWithPostAndTel: React.FC<UsersSelectWithPostAndTelProps> = ({
         />
       </BaseButtonsForm.Item>
       {shownPost && (
-        <BaseButtonsForm.Item label={labelPost || 'Должжность'}>
+        <BaseButtonsForm.Item label={labelPost || 'Должность'}>
           <Input value={bossPost} disabled readOnly />
         </BaseButtonsForm.Item>
       )}

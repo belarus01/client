@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Col, Row, Table, TablePaginationConfig } from 'antd';
 import { SearchInput } from '../common/inputs/SearchInput/SearchInput';
 import { Modal } from '@app/components/common/Modal/Modal';
+import Stars from '../common/Stars';
 
 interface ITheTableData {
   data: object[];
@@ -92,6 +93,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openAddingForm}
         >
+          <Stars />
           {Component && <Component {...propsFrom} />}
         </Modal>
       )}
@@ -105,6 +107,7 @@ export const TheTable: React.FC<ITheTableProps> = ({
           centered
           open={openEditingForm}
         >
+          <Stars />
           {Component && <Component data={selected} {...propsFrom} />}
         </Modal>
       )}

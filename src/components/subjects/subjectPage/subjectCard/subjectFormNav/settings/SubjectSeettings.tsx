@@ -13,6 +13,7 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 import { setSubj } from '@app/store/slices/subjSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 
 export interface SubjectSettingsProps {
   subject: SSubj;
@@ -22,15 +23,17 @@ export const SubjectSettings: React.FC<SubjectSettingsProps> = ({ subject }) => 
   const user = useAppSelector((state) => state.user.user);
 
   const [subj, setSubj] = useState<SSubj>({} as SSubj);
+  const [loading, setLoading] = useState(false);
 
   const { idSubj } = useParams();
 
   const getSubj = useCallback(() => {
     console.log(idSubj);
-
+    setLoading(true);
     if (idSubj) {
       getSubjById(idSubj).then((res) => {
         setSubj(res);
+        setLoading(false);
       });
     }
   }, [idSubj]);
@@ -40,16 +43,18 @@ export const SubjectSettings: React.FC<SubjectSettingsProps> = ({ subject }) => 
 
   return (
     <Card>
-      <AddSubjectForm
-        data={subj}
-        onCancel={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-        onTableChange={function (pagination: Pagination): void {
-          throw new Error('Function not implemented.');
-        }}
-        updateTable={getSubj}
-      />
+      <Spinner spinning={loading}>
+        <AddSubjectForm
+          data={subj}
+          onCancel={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+          onTableChange={function (pagination: Pagination): void {
+            throw new Error('Function not implemented.');
+          }}
+          updateTable={getSubj}
+        />
+      </Spinner>
     </Card>
   );
 };

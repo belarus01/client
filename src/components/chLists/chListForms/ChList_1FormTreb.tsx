@@ -13,6 +13,7 @@ import { Upload } from '@app/components/common/Upload/Upload';
 import { UploadOutlined } from '@ant-design/icons';
 import CheklistUpload from '../CheklistUpload/CheklistUpload';
 import { Select } from '@app/components/common/selects/Select/Select';
+import { useParams } from 'react-router-dom';
 
 interface FormTreb {
   loading: boolean;
@@ -32,6 +33,8 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
   });
   const [chlComm, setChlComm] = useState('');
   const [shownComm, setShownComm] = useState(false);
+
+  const { idEventOrder } = useParams();
 
   const [loadingForm, setLoadingForm] = useState(false);
 
@@ -455,7 +458,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                   </Row>
 
                   <Row style={{ justifyContent: 'space-between' }}>
-                    <CheklistUpload />
+                    <CheklistUpload idList={currentField.idList as string} idEventOrder={idEventOrder as string} />
                     <BaseButtonsForm.Item>
                       <Button
                         htmlType="submit"

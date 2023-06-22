@@ -7,9 +7,11 @@ import React, { useState } from 'react';
 
 interface CheklistUploadProps {
   titleButton?: string;
+  idEventOrder: string | number;
+  idList: string | number;
 }
 
-const CheklistUpload: React.FC<CheklistUploadProps> = ({ titleButton }) => {
+const CheklistUpload: React.FC<CheklistUploadProps> = ({ titleButton, idEventOrder, idList }) => {
   const [fileList, setFileList] = useState([]);
 
   const handleUpload = async (options: {
@@ -23,7 +25,7 @@ const CheklistUpload: React.FC<CheklistUploadProps> = ({ titleButton }) => {
 
     const formData = new FormData();
 
-    formData.append('mediafile', file);
+    formData.append('image', file);
 
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -34,7 +36,7 @@ const CheklistUpload: React.FC<CheklistUploadProps> = ({ titleButton }) => {
       },
     };
     try {
-      const { data } = await uploadFiles(formData, config);
+      const { data } = await uploadFiles(formData, idList, idEventOrder, config);
 
       onSuccess();
 

@@ -109,6 +109,14 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
 
   const columns = [
     {
+      key: '0',
+      title: 'Субъект',
+      dataIndex: ['idSubj2', 'subj'],
+      // render: (idEvent: SEvents) => {
+      //   return <p>{idEvent.event}</p>;
+      // },
+    },
+    {
       key: '1',
       title: 'Мероприятие',
       dataIndex: ['idEvent2', 'event'],
@@ -138,21 +146,24 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
       render: (record: { idUnit: IEventsSphere }[]) => {
         console.log(record);
 
-        return record.map((sphere, index) => {
-          if (index == 0) {
-            return (
-              <>
-                <span>{sphere?.idUnit.name}</span>
-              </>
-            );
-          } else {
-            return (
-              <>
-                <span>,{sphere?.idUnit.name}</span>
-              </>
-            );
-          }
-        });
+        if (record && record.length > 0) {
+          return record.map((sphere, index) => {
+            if (index == 0) {
+              return (
+                <>
+                  <span>{sphere?.idUnit.name}</span>
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <span>,{sphere?.idUnit.name}</span>
+                </>
+              );
+            }
+          });
+        }
+        return '';
       },
     },
     {
@@ -200,22 +211,6 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
       key: '7',
       title: 'Применяемые научно-технические средства',
       dataIndex: 'technical',
-    },
-    {
-      key: '8',
-      title: 'Сфера контроля',
-      dataIndex: 'spheries',
-      // render: (record: IEventsSphere[]) => {
-      //   console.log(record);
-
-      //   return record.map((sphere) => {
-      //     return (
-      //       <>
-      //         <span>{sphere?.name}</span>
-      //       </>
-      //     );
-      //   });
-      // },
     },
     {
       key: '9',

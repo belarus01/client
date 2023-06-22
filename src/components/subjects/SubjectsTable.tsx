@@ -20,7 +20,7 @@ import { useAppSelector } from '@app/hooks/reduxHooks';
 
 const initialPagination: Pagination = {
   current: 1,
-  pageSize: 15,
+  pageSize: 10,
 };
 
 export const SubjectsTable: React.FC = () => {
@@ -53,15 +53,14 @@ export const SubjectsTable: React.FC = () => {
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      getAllSubjSortAndPage({ ...pagination, order: '1', field: 'idSubj' }).then((res) => {
+      getAllSubjSortAndPage({ ...pagination, sortBy: 'unp', sortDirection: 'ASC' }).then((res) => {
         if (isMounted.current) {
           setTableData({
-            data: res.result,
+            data: res.data,
             pagination: { ...pagination, total: res.total },
             loading: false,
           });
         }
-        console.log(res);
       });
     },
     [isMounted],
@@ -172,7 +171,6 @@ export const SubjectsTable: React.FC = () => {
             <DeleteOutlined
               onClick={() => {
                 onDeleteDep();
-                console.log(subj);
               }}
               style={{ color: 'red', marginLeft: 12 }}
             />

@@ -1,6 +1,7 @@
+import { Row } from 'antd';
 import styled from 'styled-components';
 
-export const Stars = styled.span`
+export const StarsStyled = styled.span`
   width: 5px;
   height: 5px;
   margin-right: 10px;
@@ -14,3 +15,13 @@ export const Stars = styled.span`
     content: '*';
   }
 `;
+
+const Stars = () => {
+  return (
+    <Row>
+      <StarsStyled /> <span style={{ color: 'red' }}>Поле обязательное к заполнению</span>
+    </Row>
+  );
+};
+
+export default Stars;
