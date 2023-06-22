@@ -27,7 +27,7 @@ enum types {
 
 const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpecif, subj, idSubj, close }) => {
   const [user, setUser] = useState({
-    org: 0,
+    org: 1,
   });
   const [unp, setUnp] = useState('');
   const [typesDanger, setTypesDanger] = useState<IUnits[]>([]);
@@ -97,7 +97,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
       if (objData && objData.idObj) {
         updateObjectAndSpecifByObjId(objData.idObj, { obj: ouputResultSubjObj })
           .then(() => {
-            notificationController.success({ message: 'Объект Успешно обнавлен' });
+            notificationController.success({ message: 'Объект Успешно обновлен' });
             if (close) {
               close();
             }
@@ -154,7 +154,7 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
           };
           updateObjectAndSpecifByObjId(objData.idObj, forUpdate)
             .then(() => {
-              notificationController.success({ message: 'Объект Успешно обнавлен' });
+              notificationController.success({ message: 'Объект Успешно обновлен' });
               if (close) {
                 close();
               }
@@ -189,15 +189,6 @@ const SubjectObjectForm: React.FC<ISubjectObjectFormProps> = ({ objData, objSpec
 
   return (
     <>
-      <button
-        onClick={() =>
-          setUser((prev) => ({
-            org: prev.org == 1 ? 0 : 1,
-          }))
-        }
-      >
-        change
-      </button>
       <BaseButtonsForm form={form} isFieldsChanged={false} onFinish={onFinishSubjObj}>
         <BaseButtonsForm.Item label="Наименование объекта" name="nameObj">
           <Input />

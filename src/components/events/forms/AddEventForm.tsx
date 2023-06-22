@@ -40,6 +40,7 @@ import { Option } from '@app/components/common/selects/Select/Select';
 import { IDepartment } from '@app/components/departments/tables/DepatmentsTable';
 import { createGroup, getAllGroups } from '@app/api/groups.api';
 import UsersSelectWithPostAndTel from '@app/components/users/UsersSelectWithPostAndTel';
+import Stars from '../../common/Stars';
 
 // interface Option extends DefaultOptionType {
 //   children?: Option[];
@@ -292,16 +293,18 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
   const setKindsBeforeSelect = (selected: number) => {
     if (selected == 92 || selected == 91) {
       // mb we need req there
+      console.log(selected);
+
       const currentKinds: IUnits[] = allUnits.filter((unit) => unit.idUnit == 81 || unit.idUnit == 82);
 
       const kinds: TOptions[] = currentKinds.map((type) => ({
         label: type.name,
         value: type.idUnit,
       }));
-      kinds.push({
-        label: 'плановая',
-        value: 'plan',
-      });
+      // kinds.push({
+      //   label: 'плановая',
+      //   value: 'plan',
+      // });
       setKinds(kinds);
     } else {
       setKinds([]);
@@ -315,7 +318,7 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
 
   const chekPlans = (kind: unknown) => {
     // change hardkode string plan
-    if (kind === 'plan') {
+    if (kind === '81') {
       // getplanbyUnp() or id event+id subj
       // проверка если есть или нет
       console.log(subj);
@@ -371,6 +374,8 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
   };
   const onSelectKind = (selected: string | unknown) => {
     setKind(String(selected));
+    console.log(selected);
+
     chekPlans(selected);
   };
 

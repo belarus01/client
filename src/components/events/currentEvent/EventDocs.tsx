@@ -197,7 +197,13 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
           </BaseButtonsForm>
         </Modal>*/}
         {shownModal && (
-          <Modal open={shownModal} onCancel={() => toggleModal()} title="Создание документа" footer={false}>
+          <Modal
+            maskClosable={false}
+            open={shownModal}
+            onCancel={() => toggleModal()}
+            title="Создание документа"
+            footer={false}
+          >
             <EventCreateDocForm event={event} toggleModal={toggleModal} currentDoc={currentDoc} />
           </Modal>
         )}
