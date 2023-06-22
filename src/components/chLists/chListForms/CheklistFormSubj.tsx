@@ -155,6 +155,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
                   idVed: e.target.value,
                 }))
               }
+              readOnly
               style={{ width: '100%', marginLeft: '10px' }}
             />
           </Col>

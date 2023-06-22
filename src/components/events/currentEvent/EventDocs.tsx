@@ -39,8 +39,17 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
     org: 1,
   });
 
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  const setUpdateComplete = () => {
+    setIsUpdated(false);
+  };
+
   const toggleModal = (isOpne = false) => {
     setShownModal(isOpne);
+    if (!isOpne) {
+      setIsUpdated(true);
+    }
   };
 
   const navigate = useNavigate();
@@ -122,10 +131,10 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
         <ListDoc>
           <div>Название документа</div>
           <div>Дата начала действия документа об оценке соответствия</div>
-          <div>Дата окончания действия документа об оценке соответствия </div>
+          {/* <div>Дата окончания действия документа об оценке соответствия </div> */}
           <div>Дата изменения записи </div>
           <div>Создать документ</div>
-          <div>Просмотреть документ</div>
+          {/* <div>Просмотреть документ</div> */}
         </ListDoc>
         {filterdDoc.map((doc) => {
           return (
@@ -134,6 +143,8 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
               key={doc.idForm}
               setCurrentDocForForm={setCurrentDocForForm}
               doc={doc}
+              isUpdated={isUpdated}
+              setUpdateComplete={setUpdateComplete}
             />
           );
         })}

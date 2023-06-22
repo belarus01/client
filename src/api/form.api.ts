@@ -30,3 +30,10 @@ export const initGenerateDocGetIdList = (
 
 export const updateFormReport = (idList: number | string, dto: IFormReport) =>
   httpApi.put<IFormReport>(`${BASE_URL}/update/formReport/${idList}`, { ...dto }).then(({ data }) => data);
+
+export const getAllFormReportDatesByFormIdNEventOrderId = (idForm: number | string, idEventOrder: number | string) =>
+  httpApi
+    .get<{ dateBegin: Date | string; dateEnd: Date | string }>(
+      `${BASE_URL}/get/dateBegin/dateEnd/by/idForm/${idForm}/idEventOrder/${idEventOrder}`,
+    )
+    .then(({ data }) => data);

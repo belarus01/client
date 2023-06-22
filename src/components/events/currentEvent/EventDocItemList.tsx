@@ -4,18 +4,21 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FileAddOutlined, FileDoneOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Modal } from '../../common/Modal/Modal.styles';
-import { useNavigate } from 'react-router-dom';
-import EventcreateFormReportForm from './formGenerate/EventcreateFormReportForm';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAllFormReportDatesByFormIdNEventOrderId } from '@app/api/form.api';
+import moment from 'moment';
 
 interface EventDocItemListProps {
   doc: IDoc;
   openDocCreate: (doc: IDoc) => void;
   setCurrentDocForForm: (doc: IDoc) => void;
+  isUpdated: boolean;
+  setUpdateComplete: () => void;
 }
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 3fr repeat(5, 1fr);
+  grid-template-columns: 3fr repeat(3, 1fr);
   margin-bottom: 20px;
   position: relative;
   align-items: center;
@@ -45,24 +48,54 @@ const ListItemName = styled.div`
   }
 `;
 
-const EventDocItemList: React.FC<EventDocItemListProps> = ({ doc, openDocCreate, setCurrentDocForForm }) => {
+const EventDocItemList: React.FC<EventDocItemListProps> = ({
+  doc,
+  openDocCreate,
+  setCurrentDocForForm,
+  isUpdated,
+  setUpdateComplete,
+}) => {
   const openFormWithDoc = (doc: IDoc) => {
     setCurrentDocForForm(doc);
     openDocCreate(doc);
   };
+  const [dates, setDates] = useState<{ dateBegin?: Date | string; dateEnd?: Date | string }>({});
+  const [loading, setLoading] = useState(false);
+  const { idEventOrder } = useParams();
 
+  const getDates = () => {
+    if (doc.idForm && idEventOrder) {
+      return getAllFormReportDatesByFormIdNEventOrderId(doc.idForm, idEventOrder).then((dates) => {
+        const currentTime = {
+          dateBegin: dates.dateBegin == '' ? '' : moment(dates.dateBegin).format('YYYY-MM-DD'),
+          dateEnd: dates.dateBegin == '' ? '' : moment(dates.dateEnd).format('YYYY-MM-DD'),
+        };
+        setDates(currentTime);
+      });
+    }
+  };
+
+  useEffect(() => {
+    getDates();
+  }, []);
+  useEffect(() => {
+    if (isUpdated) {
+      getDates();
+      setUpdateComplete();
+    }
+  }, [isUpdated]);
   return (
     <ListItem>
       <div>{doc.nameDoc || ''}</div>
-      <div>{doc.dateFrom || ''}</div>
-      <div>{doc.dateTo || ''} </div>
-      <div>{doc.record || ''} </div>
+      <div>{doc.dateFrom || dates.dateBegin || ''}</div>
+      {/* <div>{doc.dateTo || ''} </div> */}
+      <div>{doc.record || dates.dateEnd || ''} </div>
       <ListItemName onClick={() => openFormWithDoc(doc)}>
         <FileAddOutlined />
       </ListItemName>
-      <ListItemName>
+      {/* <ListItemName>
         <FileDoneOutlined />
-      </ListItemName>
+      </ListItemName> */}
     </ListItem>
   );
 };

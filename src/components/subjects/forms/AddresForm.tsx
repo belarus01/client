@@ -74,6 +74,7 @@ const AddresForm: React.FC<AddresFormProps> = ({
   const [categories, setCategories] = useState<IAteCategory[]>([]);
   const [selectedCateg, setSelectedCateg] = useState<number[]>([]);
   const [reestrValue, setReestrValue] = useState<IAteReestr[]>([]);
+  const [oblStr, setOblStr] = useState(true);
 
   const setOptions = <T extends object>(
     setState: (value: ReactElement[]) => void,
@@ -118,8 +119,10 @@ const AddresForm: React.FC<AddresFormProps> = ({
 
   const handleOblSelect = (selected: any) => {
     setLoading(true);
+    setOblStr(true);
     if (selected == 5) {
       setOblRayon(true);
+      setOblStr(false);
       getCitiesByOblIdForMinsk(selected).then((res) => {
         console.log(res);
 
@@ -245,7 +248,7 @@ const AddresForm: React.FC<AddresFormProps> = ({
             resetField(nameStreet || '');
             resetField(nameNumBuild || '');
             resetField(nameNumOffice || '');
-            setAddr(nameObl || '', obl, 0, (str) => `${str} область`);
+            setAddr(nameObl || '', obl, 0, (str) => (!oblStr ? `${str} область` : `Город ${str}`));
           }}
           loading={loading}
           disabled={loading}
