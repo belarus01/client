@@ -1,7 +1,7 @@
 import { createFormReport, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IDoc, IEventOrder } from '@app/domain/interfaces';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Spinner } from '../../common/Spinner/Spinner.styles';
 import { Button } from '../../common/buttons/Button/Button.styles';
 import { Select } from '@app/components/common/selects/Select/Select.styles';
@@ -106,6 +106,13 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
   //   },
   // ];
 
+  const filterdDoc = useMemo(() => {
+    if (docs.length > 0) {
+      return docs.filter((doc) => doc.idForm && doc?.idForm < 1013 && doc.idForm != 312);
+    }
+    return [];
+  }, [docs]);
+
   useEffect(() => {
     getDocs();
   }, []);
@@ -120,7 +127,7 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
           <div>Создать документ</div>
           <div>Просмотреть документ</div>
         </ListDoc>
-        {docs.map((doc) => {
+        {filterdDoc.map((doc) => {
           return (
             <EventDocItemList
               openDocCreate={openDocCreate}

@@ -317,11 +317,13 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
   };
 
   const chekPlans = (kind: unknown) => {
+    console.log(kind, 'kind');
+    console.log(subj);
     // change hardkode string plan
-    if (kind === '81') {
+    if (kind == '81') {
       // getplanbyUnp() or id event+id subj
       // проверка если есть или нет
-      console.log(subj);
+
       if (subj?.unp) {
         getAllEventPlansByUnpSubj(subj.unp).then((res) => {
           // const res = [
@@ -340,6 +342,8 @@ export const AddEventOrderForm: React.FC<AddEventOrderForm> = ({ submitForm, get
           //     yearPlan: 2023,
           //   },
           // ];
+          console.log(res);
+
           const optionsPlans = res.map((plan: { idEventPlan: any }) => ({
             label: plan.idEventPlan,
             value: plan.idEventPlan,
