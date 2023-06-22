@@ -1,4 +1,4 @@
-import { generatePredpisObUstrNarush } from '@app/api/doc.api';
+import { generateRecomendPoUstrNarush } from '@app/api/doc.api';
 import { initGenerateDocGetIdList } from '@app/api/form.api';
 import { getSubjById } from '@app/api/subjects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
@@ -12,7 +12,7 @@ import { EventFormCreateDoc } from './EventFormCreateDoc1000';
 import moment from 'moment';
 import { getEventOrderByIdEventOrder, updateEventOrder } from '@app/api/events.api';
 
-const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
+const EventFormCreateDoc1010: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [unp, setUnp] = useState('');
   const [, setCurrentEvent] = useState<IEventOrder>({
@@ -60,32 +60,25 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   const onFinishCreateDocUved = (values: IFormReport) => {
     console.log(values);
     setLoading(true);
-    if (values.dateDoc) {
-      values.dateDoc = moment(values.dateDoc).format('YYYY-MM-DD');
-    }
     if (values.dateRec) {
       values.dateRec = moment(values.dateRec).format('YYYY-MM-DD');
-    }
-    if (values.dateBook) {
-      values.dateBook = moment(values.dateBook).format('YYYY-MM-DD');
     }
 
     const field = {
       ...values,
-      idForm: 1005,
+      idForm: 1010,
       idEventOrder: idEventOrder,
       org: 1,
-      dateDoc: values.dateDoc,
+
       dateRec: values.dateRec,
-      dateBook: values.dateBook,
     };
 
     console.log(field);
     if (idEventOrder) {
-      initGenerateDocGetIdList(field, idEventOrder, 1005).then((idList) => {
+      initGenerateDocGetIdList(field, idEventOrder, 1010).then((idList) => {
         const newEventForm = { ...eventForm.getFieldsValue() };
         updateEventOrder(idEventOrder, newEventForm).then(() => {
-          generatePredpisObUstrNarush({
+          generateRecomendPoUstrNarush({
             id_list: idList,
             id_event_order: idEventOrder,
             unp,
@@ -120,9 +113,6 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   return (
     <Spinner spinning={loading}>
       <BaseButtonsForm form={form} layout="horizontal" onFinish={onFinishCreateDocUved} isFieldsChanged={false}>
-        <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
-          <Input />
-        </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name={'flRec'} label={'Способ отправки'}>
           <Select
             onSelect={(value) => changeFunctionales(value as string)}
@@ -167,4 +157,4 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   );
 };
 
-export default EventFormCreateDoc1005;
+export default EventFormCreateDoc1010;

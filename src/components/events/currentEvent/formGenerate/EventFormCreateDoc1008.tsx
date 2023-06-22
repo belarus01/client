@@ -1,18 +1,18 @@
-import { generatePredpisObUstrNarush } from '@app/api/doc.api';
+import { generateReshOProvedMonitoringa } from '@app/api/doc.api';
 import { initGenerateDocGetIdList } from '@app/api/form.api';
 import { getSubjById } from '@app/api/subjects.api';
 import { Spinner } from '@app/components/common/Spinner/Spinner.styles';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IEventOrder, IFormReport } from '@app/domain/interfaces';
-import { DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EventFormCreateDoc } from './EventFormCreateDoc1000';
 import moment from 'moment';
 import { getEventOrderByIdEventOrder, updateEventOrder } from '@app/api/events.api';
 
-const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
+const EventFormCreateDoc1008: React.FC<EventFormCreateDoc> = ({ event, toggleModal }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [unp, setUnp] = useState('');
   const [, setCurrentEvent] = useState<IEventOrder>({
@@ -33,16 +33,6 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
 
   const [form] = BaseButtonsForm.useForm();
   const [eventForm] = BaseButtonsForm.useForm();
-
-  const [shownFIO, setShownFIO] = useState(true);
-
-  const changeFunctionales = (value: string) => {
-    if (value == '0') {
-      setShownFIO(false);
-    } else {
-      setShownFIO(true);
-    }
-  };
 
   const getUnp = (idSubj: string) => {
     getSubjById(idSubj).then((subj) => setUnp(subj.unp as string));
@@ -72,7 +62,7 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
 
     const field = {
       ...values,
-      idForm: 1005,
+      idForm: 1008,
       idEventOrder: idEventOrder,
       org: 1,
       dateDoc: values.dateDoc,
@@ -82,10 +72,10 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
 
     console.log(field);
     if (idEventOrder) {
-      initGenerateDocGetIdList(field, idEventOrder, 1005).then((idList) => {
+      initGenerateDocGetIdList(field, idEventOrder, 1008).then((idList) => {
         const newEventForm = { ...eventForm.getFieldsValue() };
         updateEventOrder(idEventOrder, newEventForm).then(() => {
-          generatePredpisObUstrNarush({
+          generateReshOProvedMonitoringa({
             id_list: idList,
             id_event_order: idEventOrder,
             unp,
@@ -123,38 +113,13 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
         <BaseButtonsForm.Item name="numDoc" label={'Номер документа'} rules={[{ required: true }]}>
           <Input />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'flRec'} label={'Способ отправки'}>
-          <Select
-            onSelect={(value) => changeFunctionales(value as string)}
-            options={[
-              {
-                value: '0',
-                label: 'В руки',
-              },
-              {
-                value: '1',
-                label: 'Почтой',
-              },
-              {
-                value: '2',
-                label: 'Факсом',
-              },
-            ]}
-          />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'receiver'} label={'Фамилия получателя'}>
-          <Input disabled={shownFIO} />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'dateRec'} label={'Дата отправки'}>
+        <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
           <DatePicker />
         </BaseButtonsForm.Item>
       </BaseButtonsForm>
 
       <BaseButtonsForm layout="horizontal" form={eventForm} isFieldsChanged={false} onFinish={onFinishEvent}>
         <BaseButtonsForm.Item name={'nameAgent'} label={'ФИО представителя субъекта'}>
-          <Input />
-        </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name={'postAgent'} label={'Должжность представителя субъекта'}>
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item>
@@ -167,4 +132,4 @@ const EventFormCreateDoc1005: React.FC<EventFormCreateDoc> = ({ event, toggleMod
   );
 };
 
-export default EventFormCreateDoc1005;
+export default EventFormCreateDoc1008;
