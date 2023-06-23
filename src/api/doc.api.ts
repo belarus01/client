@@ -122,3 +122,46 @@ export const generatePostanONalojAdminVziskaniya = (dto: any) =>
     .post<any>('doc-generation/gen31', { ...dto }, { ...headers })
     .then((response) => downLoadWordDocGenerated(response, `Постановление о наложении административного взыскания №`))
     .catch((error) => initError(error));
+
+export const generatePostanONalojAdminVziskaniyaPoSovokupnosti = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen34', { ...dto }, { ...headers })
+    .then((response) =>
+      downLoadWordDocGenerated(response, `Постановление о наложении административного взыскания по совокупности №`),
+    )
+    .catch((error) => initError(error));
+
+export const generatePredlojOPriostanDeyatelnSubj = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen43', { ...dto }, { ...headers })
+    .then((response) =>
+      downLoadWordDocGenerated(response, `Предложение о приостановлении деятельности субъекта, оборудования №`),
+    )
+    .catch((error) => initError(error));
+
+export const generateTrebOPriostanovleniiProizvodstva = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen44', { ...dto }, { ...headers })
+    .then((response) =>
+      downLoadWordDocGenerated(response, `Требование о приостановлении производства и реализации товаров №`),
+    )
+    .catch((error) => initError(error));
+
+export const generatePostanONalojAdminVziskaniyaCh3St10_3 = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen49', { ...dto }, { ...headers })
+    .then((response) =>
+      downLoadWordDocGenerated(response, `Постановление о наложении административного взыскания по ч.3 ст. 10.3 №`),
+    )
+    .catch((error) => initError(error));
+
+export const generatePostanObOsvobjdeniiOtAdminOtvetstvenosti = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen50', { ...dto }, { ...headers })
+    .then((response) =>
+      downLoadWordDocGenerated(
+        response,
+        `Постановление об освобождении от административной ответственности с вынесением предупреждения №`,
+      ),
+    )
+    .catch((error) => initError(error));
