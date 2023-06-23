@@ -15,7 +15,12 @@ httpApi.interceptors.request.use((config) => {
 });
 
 httpApi.interceptors.response.use(undefined, (error: AxiosError) => {
-  if (error.response?.status === 401) window.location.href = '/login';
+  console.log(error.response?.status);
+
+  if (error.response?.status === 401) {
+    window.location.href = '/login';
+    return;
+  }
   throw new ApiError<ApiErrorData>(error.response?.data.message || error.message, error.response?.data);
 });
 

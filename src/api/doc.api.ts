@@ -42,17 +42,83 @@ const headers: AxiosRequestConfig = {
 export const generateDoc1 = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen1', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Уведомление№${dto.numDoc || ''}`))
+    .then((response) => downLoadWordDocGenerated(response, `Уведомление на проверку №${dto.numDoc || ''}`))
     .catch((error) => initError(error));
 
 export const generateCertificateOfRefusalOfAdmission = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen5', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Акт№${dto.numDoc || ''}`))
+    .then((response) => downLoadWordDocGenerated(response, `Акт об отказе в допуске №${dto.numDoc || ''}`))
     .catch((error) => initError(error));
 
 export const generateCheckList1 = (dto: any) =>
   httpApi
     .post<any>('doc-generation/gen1_ch', { ...dto }, { ...headers })
-    .then((response) => downLoadWordDocGenerated(response, `Чек-лист1`))
+    .then((response) => downLoadWordDocGenerated(response, `Чек-лист 1`))
+    .catch((error) => initError(error));
+
+export const generatePredpisanie = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen3', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Предписание на проведение проверки №`))
+    .catch((error) => initError(error));
+
+export const generateActProverki = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen6', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Акт проверки №`))
+    .catch((error) => initError(error));
+
+export const generateSpravkaProverki = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen7', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Справка проверки №`))
+    .catch((error) => initError(error));
+
+export const generatePredpisObUstrNarush = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen9', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Предписание об устранении нарушений №`))
+    .catch((error) => initError(error));
+
+export const generatePerechObosobPodraz = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/genj_13', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Перечень обособленных подразделений №`))
+    .catch((error) => initError(error));
+
+export const generatePojTechKarta = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen14', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Пожарно-техническая карта Субъекта (Объекта) №`))
+    .catch((error) => initError(error));
+
+export const generateReshOProvedMonitoringa = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen15', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Решение о проведении мониторинга №`))
+    .catch((error) => initError(error));
+
+export const generateUvedOProvedMonitoringa = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen17', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Уведомление о проведении мониторинга №`))
+    .catch((error) => initError(error));
+
+export const generateRecomendPoUstrNarush = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen18', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Рекомендации по устранению выявленных нарушений №`))
+    .catch((error) => initError(error));
+
+export const generateProtocolObAdminNarush = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen20', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Протокол об Административном нарушении №`))
+    .catch((error) => initError(error));
+
+export const generatePostanONalojAdminVziskaniya = (dto: any) =>
+  httpApi
+    .post<any>('doc-generation/gen31', { ...dto }, { ...headers })
+    .then((response) => downLoadWordDocGenerated(response, `Постановление о наложении административного взыскания №`))
     .catch((error) => initError(error));

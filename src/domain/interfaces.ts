@@ -174,6 +174,8 @@ export interface SSubjObj {
   u?: User;
   opo?: null | string | number;
   idSubj2?: SSubj;
+  dateRegOpo?: string | Date | null;
+  objSpecif?: SSubjObjSpecif;
 }
 
 export interface GeolocationDTO {
@@ -192,9 +194,11 @@ export interface GeolocationData {
 }
 
 export interface SSubj {
-  idSubj: number | null;
+  idSubj: number | string | null;
   numOpo?: string | null;
   subj?: string | null;
+  subj1?: string | null;
+
   unp: string | null;
   addrYur?: string | null;
   dateRecord?: Date | null;
@@ -615,8 +619,8 @@ export interface SSubjObjSpecif {
   idUnit_17: number | null;
   idUnit_41: number | null;
   area: number | null;
-  dateReg: Date | null;
-  dateAnnul: Date | null;
+  dateReg: Date | string | null;
+  dateAnnul: Date | null | string;
   nameAgent: string | null;
   jobAgent: string | null;
   telAgent: string | null;
@@ -930,7 +934,7 @@ export interface IFormReport {
   flRec?: number;
   flBook?: number;
   numBook?: string;
-  dateBook?: Date;
+  dateBook?: Date | string;
   uidBoss?: number;
   dateFrom?: Date | string | null;
   dateTo?: Date | string | null;

@@ -15,14 +15,18 @@ export const getAllSubjects = () => httpApi.get<SSubj[]>(`${BASE_URL}/get/all`).
 export const getSubjectByUnp = (unp: string) =>
   httpApi.get<SSubj>(`${BASE_URL}/get/unp/${unp}`).then(({ data }) => data);
 
-export const getSubjById = (idSubj: string) =>
+export const getSubjById = (idSubj: string | number) =>
   httpApi.get<SSubj>(`${BASE_URL}/get/id/${idSubj}`).then(({ data }) => data);
 
 export const createSubj = (subj: SSubj) =>
   httpApi.post<SSubj>(`${BASE_URL}/create`, { ...subj }).then(({ data }) => data);
 
 export const getAllSubjSortAndPage = (params: object) =>
-  httpApi.get<ITableSort>(`${BASE_URL}/get/all/sorted/by/page`, { params }).then(({ data }) => data);
+  httpApi
+    .get<{ data: SSubj[]; limit: string; page: string; total: number }>(`${BASE_URL}/get/all/sorted/n/paged`, {
+      params,
+    })
+    .then(({ data }) => data);
 
 export const deleteSubjById = (idSubj: number | string) =>
   httpApi.put<ITableSort>(`${BASE_URL}/delete/${idSubj}`).then(({ data }) => data);

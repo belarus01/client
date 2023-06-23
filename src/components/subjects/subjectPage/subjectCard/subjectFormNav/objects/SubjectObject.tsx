@@ -1,15 +1,21 @@
-import { getAllObjectsBySubjectId } from '@app/api/objects.api';
+import {
+  deleteOjectWithObjSpecifIfExistsBySubjId,
+  getAllObjectWithSpecifBySubjectId,
+  getAllObjectsBySubjectId,
+} from '@app/api/objects.api';
 import { Pagination } from '@app/api/users.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import TheTable from '@app/components/tables/TheTable';
-import { SSubj, SSubjObj } from '@app/domain/interfaces';
+import { SSubj, SSubjObj, SSubjObjSpecif } from '@app/domain/interfaces';
 import { useMounted } from '@app/hooks/useMounted';
-import { Space } from 'antd';
+import { Space, Modal as Alert } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UserSwitchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import SubjectObjectForm from './formsObject/SubjectObjectForm';
+import { notificationController } from '@app/controllers/notificationController';
 
 const initialPagination: Pagination = {
   current: 1,
@@ -28,18 +34,26 @@ export const SubjectObjects: React.FC = () => {
   // const user = useAppSelector((state) => state.user.user);
   // need add user from store after auth
   const [user, setUser] = useState({
-    org: 0,
+    org: 1,
   });
-  const [, setSubj] = useState<SSubj>({
+  const [subj, setSubj] = useState<SSubj>({
     idSubj: null,
     unp: '',
   });
+
+  const [openAddingForm, setOpenAddingForm] = useState<boolean>(false);
+  const [openEditingForm, setOpenEditingForm] = useState<boolean>(false);
+  const [selectedObj, setSelectedObj] = useState({});
   const { state } = useLocation();
 
   useEffect(() => {
     setSubj(state);
   }, [state]);
-  const [tableData, setTableData] = useState<{ data: SSubjObj[]; pagination: Pagination; loading: boolean }>({
+  const [tableData, setTableData] = useState<{
+    data: (SSubjObj & SSubjObjSpecif)[];
+    pagination: Pagination;
+    loading: boolean;
+  }>({
     data: [],
     pagination: initialPagination,
     loading: false,
@@ -57,7 +71,7 @@ export const SubjectObjects: React.FC = () => {
     setTableData((tableData) => ({ ...tableData, loading: true }));
 
     if (idSubj)
-      getAllObjectsBySubjectId(1460).then((res) => {
+      getAllObjectWithSpecifBySubjectId(idSubj).then((res) => {
         console.log(res);
 
         if (isMounted.current) {
@@ -71,8 +85,36 @@ export const SubjectObjects: React.FC = () => {
   }, [fetch]);
 
   const data = useMemo(() => {
+    console.log(tableData.data);
+
     return tableData.data.filter((item) => item.org === user.org);
   }, [tableData.data, user.org]);
+
+  const toggleModalAdd = (isOpen = false) => {
+    setOpenAddingForm(isOpen);
+  };
+
+  const toggleModalEd = (isOpen = false) => {
+    setOpenEditingForm(isOpen);
+    if (!isOpen) {
+      setSelectedObj({});
+    }
+  };
+
+  const deleteItem = (obj: SSubjObj) => {
+    const deletedObj = {
+      obj: {
+        ...obj,
+      },
+      objSpecif: obj.objSpecif,
+    };
+    if (obj.idObj) {
+      deleteOjectWithObjSpecifIfExistsBySubjId(obj.idObj, deletedObj).then(() => {
+        notificationController.success({ message: 'Объект удален!' });
+        update();
+      });
+    }
+  };
 
   const columns = useMemo(() => {
     const columns = [
@@ -92,11 +134,6 @@ export const SubjectObjects: React.FC = () => {
         dataIndex: 'addrObj',
       },
       {
-        key: '4',
-        title: 'Место осуществления деятельности',
-        dataIndex: 'addrDescr',
-      },
-      {
         key: '5',
         title: 'Ответственное лицо',
         dataIndex: 'fioFireman',
@@ -105,7 +142,51 @@ export const SubjectObjects: React.FC = () => {
         key: '4',
         title: 'Действия',
         width: '15%',
+        //   render: (itemSelected: IPogAuto) => {
+        //     function onDeleteDep() {
+        //       Alert.confirm({
+        //         title: 'Вы действительно хотите удалить?',
+        //         okText: 'Удалить',
+        //         cancelText: 'Отмена',
+        //         closable: true,
+        //         onCancel: () => false,
+        //         onOk: () => {
+        //           deleteItem(itemSelected);
+        //         },
+        //       });
+        //     }
+
+        //     return (
+        //       <>
+        //         <EditOutlined
+        //           onClick={() => {
+        //             setSelectedAuto(itemSelected);
+        //             toggleModalEditing(true);
+        //           }}
+        //         />
+        //         <DeleteOutlined
+        //           onClick={() => {
+        //             onDeleteDep();
+        //           }}
+        //           style={{ color: 'red', marginLeft: 12 }}
+        //         />
+        //       </>
+        //     );
+        //   },
+        // },
         render: (obj: SSubjObj) => {
+          function onDeleteDep() {
+            Alert.confirm({
+              title: 'Вы действительно хотите удалить?',
+              okText: 'Удалить',
+              cancelText: 'Отмена',
+              closable: true,
+              onCancel: () => false,
+              onOk: () => {
+                deleteItem(obj);
+              },
+            });
+          }
           return (
             <Space>
               <Button
@@ -123,6 +204,20 @@ export const SubjectObjects: React.FC = () => {
               >
                 Открыть
               </Button>
+              <EditOutlined
+                onClick={() => {
+                  setSelectedObj(obj);
+                  console.log(obj);
+
+                  toggleModalEd(true);
+                }}
+              />
+              <DeleteOutlined
+                onClick={() => {
+                  onDeleteDep();
+                }}
+                style={{ color: 'red', marginLeft: 12 }}
+              />
             </Space>
           );
         },
@@ -141,9 +236,53 @@ export const SubjectObjects: React.FC = () => {
     return columns;
   }, [navigate, state, user.org]);
 
+  const update = () => {
+    fetch();
+  };
+
+  const closeModal = () => {
+    console.log('закртыь');
+
+    toggleModalAdd(false);
+    toggleModalEd(false);
+    update();
+  };
+
   return (
     <>
-      <TheTable columns={columns} dataTable={{ data: data, loading: tableData.loading }} pagination={false} />
+      <div style={{ marginTop: '20px' }}>
+        <TheTable
+          columns={columns}
+          dataTable={{ data: data, loading: tableData.loading }}
+          toggleModalEditing={toggleModalEd}
+          toggleModalAdding={toggleModalAdd}
+          openAddingForm={openAddingForm}
+          openEditingForm={openEditingForm}
+          pagination={false}
+          FormComponent={(props) => <SubjectObjectForm {...props} />}
+          titleButtonAdd="Создать новый объект"
+          // search={search}
+          // FormComponent={(props) => <CreateEvent {...props} />}
+          // searchFunc={searchCategories}
+          // selected={selectedAuto}
+          // setSearchFunc={searchFunc}
+          // dataTable={{ data: events.data, loading: events.loading }}
+          // columns={columns}
+          // titleMoadlEditing={'Редактирование'}
+          // titleModalAdding={'Создание'}
+          // toggleModalAdding={toggleModalAdding}
+          // toggleModalEditing={toggleModalEditing}
+          // openAddingForm={modalAdding}
+          // openEditingForm={modalEditing}
+          // titleButtonAdd="Добавить новое мероприятие"
+          propsFrom={{
+            subj: subj,
+            close: closeModal,
+            objData: selectedObj,
+          }}
+        />
+      </div>
+
       <SwichUser onClick={() => setUser({ ...user, org: user.org == 0 ? 1 : 0 })} />
     </>
   );

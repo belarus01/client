@@ -29,7 +29,7 @@ export const SubjectEvents: React.FC = () => {
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
       if (subj)
-        getAllEventsBySubjectId(subj?.idSubj).then((res) => {
+        getAllEventsBySubjectId(subj?.idSubj as number).then((res) => {
           if (isMounted.current) {
             console.log(res);
             setTableData({ data: res, pagination: initialPagination, loading: false });
@@ -43,7 +43,7 @@ export const SubjectEvents: React.FC = () => {
     fetch(initialPagination);
   }, [fetch]);
 
-  const handleAddClick = () => {};
+  // const handleAddClick = () => {};
 
   const idSubj = subj?.idSubj ? subj.idSubj : '';
   return (

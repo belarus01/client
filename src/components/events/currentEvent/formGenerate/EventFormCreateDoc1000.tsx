@@ -10,6 +10,7 @@ import { IEventOrder, IFormReport, UserGroup } from '@app/domain/interfaces';
 import { DatePicker, Input, notification, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 export interface EventFormCreateDoc {
   event: IEventOrder;
@@ -80,7 +81,7 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc> = ({ event, toggleMod
     setLoading(true);
 
     if (values.dateDoc) {
-      values.dateDoc = new Date(values.dateDoc).toLocaleDateString();
+      values.dateDoc = moment(values.dateDoc).format('YYYY-MM-DD');
     }
     const field = {
       ...values,
@@ -149,17 +150,17 @@ const EventFormCreateDoc1000: React.FC<EventFormCreateDoc> = ({ event, toggleMod
           <Input />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="dateDoc" label={'Дата документа'} rules={[{ required: true }]}>
-          <DatePicker />
+          <DatePicker getPopupContainer={(target) => target} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item name="addrRecord" label={'Место составления документа'} rules={[{ required: true }]}>
           <Input />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item name="uidBoss" label={'ФИО'}>
+        {/* <BaseButtonsForm.Item name="uidBoss" label={'ФИО'}>
           <Select options={optionsBosses} onChange={changePost} value={boss} />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label={'Должжность'}>
           <Input value={bossPost} disabled readOnly />
-        </BaseButtonsForm.Item>
+        </BaseButtonsForm.Item> */}
         {/* <BaseButtonsForm.Item name={'nameAegent'} label={'ФИО'}>
           <Input />
         </BaseButtonsForm.Item>

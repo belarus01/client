@@ -36,8 +36,6 @@ const ChecklistFormFIO: React.FC = () => {
           return;
         }
         getFormReportById(idList).then((data) => {
-          console.log(data, 'data');
-
           setDataForm(data);
           setLoading(false);
         });
@@ -64,8 +62,6 @@ const ChecklistFormFIO: React.FC = () => {
     setLoadingType(true);
     if (idEventOrder) {
       getEventOrderByIdWithRelations(idEventOrder).then((data) => {
-        console.log(data);
-
         if (data[0].idUnit_3) {
           switch (data[0].idUnit_3) {
             case '81':
@@ -97,7 +93,7 @@ const ChecklistFormFIO: React.FC = () => {
     if (dataForm.idList) {
       values = { ...dataForm, ...values };
     }
-    console.log(values);
+
     if (values.dateRec) {
       values.dateRec = moment(values.dateRec || today).format('YYYY.MM.DD');
     }
@@ -109,7 +105,6 @@ const ChecklistFormFIO: React.FC = () => {
     }
 
     if (dataForm) {
-      console.log('update', values);
       updateForm(values);
     }
 
@@ -127,7 +122,7 @@ const ChecklistFormFIO: React.FC = () => {
   }, []);
 
   const today = new Date().toLocaleDateString().split('.').reverse().join('-');
-  const dateFormat = 'DD-MM-YYYY';
+  const dateFormat = 'YYYY-MM-DD';
 
   return (
     <>
@@ -152,7 +147,7 @@ const ChecklistFormFIO: React.FC = () => {
           <br />
 
           <Text style={{ fontSize: '17px' }}>
-            в сфере государственного пожарного надзора, надзора за соблюдением законодательства при осуществлении
+            В сфере государственного пожарного надзора, надзора за соблюдением законодательства при осуществлении
             деятельности по обеспечению пожарной безопасности:
             <Row>
               <Text>Дата начала заполнения</Text>
@@ -174,7 +169,7 @@ const ChecklistFormFIO: React.FC = () => {
               <Col>
                 <BaseButtonsForm.Item name="dateTo">
                   <DatePicker
-                    defaultValue={moment(dataForm.dateTo) || today}
+                    defaultValue={moment(dataForm.dateTo || today)}
                     getPopupContainer={() => document.querySelector('.ant-card-body') as HTMLElement}
                     format={dateFormat}
                     key={`${dataForm.dateTo}`}

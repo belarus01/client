@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Input } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { IFireCardBuild, SUnits } from '@app/domain/interfaces';
+import { IFireCardBuild, SSubjObj, SUnits } from '@app/domain/interfaces';
 import {
   getAllUnitBuildigAndNaruzhCategs,
   getAllUnitBuildingTypes,
@@ -12,6 +12,7 @@ import { notificationController } from '@app/controllers/notificationController'
 import { useParams } from 'react-router-dom';
 import { validatorCustom } from '@app/utils/validator';
 import { Select } from '@app/components/common/selects/Select/Select';
+import { getAllObjectWithSpecifBySubjectId } from '@app/api/objects.api';
 
 export interface CheklistFireFormProps {
   data?: IFireCardBuild;
@@ -36,6 +37,8 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
 
   const [, setFunctionalsClass] = useState<SUnits[]>([]);
   const [shownClasses, setShownClasses] = useState(true);
+  const [subjObjs, setSubjObjs] = useState<SSubjObj[]>([]);
+  const [loadingObjs, setLoadingObjs] = useState(false);
 
   const [form] = BaseButtonsForm.useForm();
 
@@ -105,6 +108,28 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
     });
   };
 
+  const getSubjObjsById = () => {
+    setLoadingObjs(true);
+    if (idSubj) {
+      getAllObjectWithSpecifBySubjectId(idSubj).then((subjObjs) => {
+        setSubjObjs(subjObjs.filter((obj) => obj.org == 1));
+        setLoadingObjs(false);
+      });
+    }
+  };
+
+  const subjObjsOptions = useMemo(() => {
+    if (subjObjs.length > 0) {
+      return subjObjs.map((obj) => {
+        return {
+          label: obj.nameObj,
+          value: obj.idObj,
+        };
+      });
+    }
+    return [];
+  }, [subjObjs]);
+
   const [optionsCategorylClasses, setOptionsCategoryClasses] = useState<
     {
       label: string;
@@ -140,6 +165,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
 
   const onFinish = (values: IFireCardBuild) => {
     setLoading(true);
+
     if (data) {
       if (data.idList) {
         Object.keys(values).forEach((item) => {
@@ -170,6 +196,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
     getFunctionalClasses();
     getTipClasses();
     getCategoryClasses();
+    getSubjObjsById();
   }, []);
 
   useEffect(() => {
@@ -183,6 +210,7 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
       <BaseButtonsForm
         form={form}
         initialValues={{
+          idSubjObj: newCategory.idSubjObj,
           nameBuild: newCategory.nameBuild,
           area: newCategory.area,
           idUnit_41: {
@@ -206,6 +234,13 @@ const CheklistFireForm: React.FC<CheklistFireFormProps> = ({ data, close }) => {
           <Input
             defaultValue={newCategory.nameBuild || ''}
             onChange={(e) => setNewCategory({ ...newCategory, nameBuild: (newCategory.nameBuild = e.target.value) })}
+          />
+        </BaseButtonsForm.Item>
+        <BaseButtonsForm.Item label="Объект" name="idSubjObj" rules={[{ required: true }]}>
+          <Select
+            loading={loadingObjs}
+            defaultValue={(newCategory?.idSubjObj as unknown as number) || null}
+            options={subjObjsOptions}
           />
         </BaseButtonsForm.Item>
         <BaseButtonsForm.Item label="Функциональное назначение" name="idUnit_6">

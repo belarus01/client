@@ -25,7 +25,7 @@ export const UsersTable: React.FC = () => {
   const [tableData, setTableData] = useState<{ data: User[]; pagination: Pagination; loading: boolean }>({
     data: [],
     pagination: initialPagination,
-    loading: false
+    loading: false,
   });
   const [open, setOpen] = useState<boolean>(false);
   const [openPassword, setOpenPassword] = useState<boolean>(false);
@@ -50,13 +50,15 @@ export const UsersTable: React.FC = () => {
   const fetch = useCallback(
     (pagination: Pagination) => {
       setTableData((tableData) => ({ ...tableData, loading: true }));
-      getAllUsers().then((res) => {
-        if (isMounted.current) {
-          setTableData({ data: res, pagination: initialPagination, loading: false });
-        }
-      }).catch((e) => {
-        notificationController.error({ message: 'Произошла ошибка при загрузке пользователей' });
-      });
+      getAllUsers()
+        .then((res) => {
+          if (isMounted.current) {
+            setTableData({ data: res, pagination: initialPagination, loading: false });
+          }
+        })
+        .catch((e) => {
+          notificationController.error({ message: 'Произошла ошибка при загрузке пользователей' });
+        });
     },
     [isMounted],
   );
@@ -71,7 +73,7 @@ export const UsersTable: React.FC = () => {
 
   const updateTable = () => {
     fetch(tableData.pagination);
-  }
+  };
 
   const showAddUserModal = () => {
     setOpen(true);
@@ -83,19 +85,19 @@ export const UsersTable: React.FC = () => {
 
   const showUpdatePasswordModal = () => {
     setOpenPassword(true);
-  }
+  };
 
   const hideUpdatePasswordModal = () => {
     setOpenPassword(false);
-  }
+  };
 
   const showEditUserModal = () => {
     setOpenEdit(true);
-  }
+  };
 
   const hideEditUserModal = () => {
     setOpenEdit(false);
-  }
+  };
   // const handleDeleteRow = (rowId: number) => {
   //   setTableData({
   //     ...tableData,
@@ -109,110 +111,102 @@ export const UsersTable: React.FC = () => {
 
   const handleDeleteRow = (user: User) => {
     Modal.confirm({
-      title: "Вы действительно хотите удалить пользователя?",
+      title: 'Вы действительно хотите удалить пользователя?',
       okText: 'Удалить',
       cancelText: 'Отмена',
       onOk: async () => {
-        deleteUser({ uid: user.uid, adminUid: 1 }).then((res) => {
-          notificationController.success({ message: 'Пользователь удален' });
-          handleTableChange(initialPagination);
-        }).catch((e) => {
-          notificationController.error({ message: 'Ошибка при удалении пользователя' });
-        })
-      }
-    }
-    );
-
-  }
+        deleteUser({ uid: user.uid, adminUid: 1 })
+          .then((res) => {
+            notificationController.success({ message: 'Пользователь удален' });
+            handleTableChange(initialPagination);
+          })
+          .catch((e) => {
+            notificationController.error({ message: 'Ошибка при удалении пользователя' });
+          });
+      },
+    });
+  };
 
   const handleSwitchClick = (user: User) => {
     if (user.active === 1) {
       Modal.confirm({
-        title: "Вы действительно хотите заблокировать пользователя?",
+        title: 'Вы действительно хотите заблокировать пользователя?',
         okText: 'Заблокировать',
         cancelText: 'Отмена',
         onOk: async () => {
-
           blockUser({ uid: user.uid, adminUid: 1 }).then((res) => {
             handleTableChange(initialPagination);
           });
-        }
-      }
-      );
-    } else if(user.active === 0){
-      unblockUser({ uid: user.uid, adminUid: 1 }).then((res)=>{
+        },
+      });
+    } else if (user.active === 0) {
+      unblockUser({ uid: user.uid, adminUid: 1 }).then((res) => {
         handleTableChange(initialPagination);
-      })
+      });
     }
-
-  }
+  };
 
   const handleEditClick = (user: User) => {
     setSelectedUser(user);
     showEditUserModal();
-  }
+  };
 
   const handleSearch = (value: string) => {
     setTableData({ ...tableData, loading: true });
-    if (value.length === 0)
-      fetch(tableData.pagination)
+    if (value.length === 0) fetch(tableData.pagination);
     searchUsers(value).then((res) => {
-      setTableData({ ...tableData, data: res, loading: false })
-    })
-  }
+      setTableData({ ...tableData, data: res, loading: false });
+    });
+  };
 
   const columns = [
     {
-      key: "2",
-      title: "Фамилия",
-      dataIndex: "lName",
-      sorter: true
+      key: '2',
+      title: 'Фамилия',
+      dataIndex: 'lName',
+      sorter: true,
     },
     {
-      key: "3",
-      title: "Имя",
-      dataIndex: "fName"
+      key: '3',
+      title: 'Имя',
+      dataIndex: 'fName',
     },
     {
-      key: "4",
-      title: "Отчество",
-      dataIndex: "sName"
+      key: '4',
+      title: 'Отчество',
+      dataIndex: 'sName',
     },
     {
-      key: "5",
-      title: "Должность",
+      key: '5',
+      title: 'Должность',
       width: '10%',
       render: (user: User) => {
-        return (
-          <p>{user.idDeptJob2.job}</p>
-        )
-      }
+        return <p>{user.idDeptJob2.job}</p>;
+      },
     },
     {
-      key: "6",
-      title: "Телефон",
-      dataIndex: "tel"
+      key: '6',
+      title: 'Телефон',
+      dataIndex: 'tel',
     },
     {
-      key: "7",
-      title: "Логин",
-      dataIndex: "user",
+      key: '7',
+      title: 'Логин',
+      dataIndex: 'user',
       width: '10%',
     },
     {
-      key: "8",
-      title: "Статус",
+      key: '8',
+      title: 'Статус',
       width: '5%',
       render: (user: User) => {
         const active = user.active;
-        return (
-          <p>{active === 1 ? 'Активен' : 'Заблокирован'}</p>
-        )
-      }
+        return <p>{active === 1 ? 'Активен' : 'Заблокирован'}</p>;
+      },
     },
     {
-      key: "9",
-      title: "Действия",
+      key: '9',
+      title: 'Действия',
       width: '15%',
       render: (user: User) => {
         return (
@@ -236,25 +230,26 @@ export const UsersTable: React.FC = () => {
               onClick={() => {
                 handleDeleteRow(user);
               }}
-              style={{ color: "red", marginLeft: 12 }}
+              style={{ color: 'red', marginLeft: 12 }}
             />
-            <Switch checked={user.active === 1} onClick={() => { handleSwitchClick(user) }} style={{ marginLeft: 12 }}></Switch>
+            <Switch
+              checked={user.active === 1}
+              onClick={() => {
+                handleSwitchClick(user);
+              }}
+              style={{ marginLeft: 12 }}
+            ></Switch>
           </Space>
-        )
-      }
+        );
+      },
     },
   ];
 
   return (
     <>
       <Row gutter={[30, 30]}>
-        <Col sm={24} md={8} lg={8} >
-          <SearchInput
-            placeholder={'Не менее 6 символов'}
-            enterButton="Поиск"
-            size="middle"
-            onSearch={handleSearch}
-          />
+        <Col sm={24} md={8} lg={8}>
+          <SearchInput placeholder={'Не менее 6 символов'} enterButton="Поиск" size="middle" onSearch={handleSearch} />
         </Col>
         <Col sm={24} md={6} lg={6}>
           <Button onClick={showAddUserModal}>Добавить пользователя</Button>
@@ -270,6 +265,7 @@ export const UsersTable: React.FC = () => {
         bordered
       />
       <Modal
+        maskClosable={false}
         closable
         footer={null}
         destroyOnClose
@@ -281,18 +277,24 @@ export const UsersTable: React.FC = () => {
         <UpdatePasswordForm />
       </Modal>
       <Modal
+        maskClosable={false}
         closable
         footer={null}
         destroyOnClose
         title={'Добавление пользователя'}
         centered
         onCancel={() => hideAddUserModal()}
-        open={open}>
+        open={open}
+      >
         <AddEditUserForm data={selectedUser} onSuccess={hideAddUserModal} />
       </Modal>
 
-      <EditUserForm open={openEdit} onCancel={hideEditUserModal} onTableChange={updateTable} selectedUser={selectedUser} />
+      <EditUserForm
+        open={openEdit}
+        onCancel={hideEditUserModal}
+        onTableChange={updateTable}
+        selectedUser={selectedUser}
+      />
     </>
-
-  )
-}
+  );
+};
