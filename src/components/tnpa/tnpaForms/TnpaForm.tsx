@@ -78,6 +78,7 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
         isFieldsChanged={false}
         onFinish={submit}
         onFinishFailed={onFinishFailed}
+        style={{ textAlign: 'center' }}
       >
         <BaseButtonsForm.Item label="Название" name="name" rules={[{ required: true }]}>
           <Input />
@@ -88,10 +89,13 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
         <BaseButtonsForm.Item label="URI документа" name="addr">
           <Input />
         </BaseButtonsForm.Item>
-
-        <BaseButtonsForm.Item label="Дата документа" wrapperCol={{ span: 24 }} name="dateDoc">
-          <DatePicker getPopupContainer={(target) => target} format={dateFormat} />
-        </BaseButtonsForm.Item>
+        <Row justify={'center'}>
+          <Col>
+            <BaseButtonsForm.Item label="Дата документа" name="dateDoc" labelCol={{ offset: 5 }}>
+              <DatePicker getPopupContainer={(target) => target} format={dateFormat} />
+            </BaseButtonsForm.Item>
+          </Col>
+        </Row>
 
         <Row>
           <Col offset={1}>
@@ -164,9 +168,17 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
             ]}
           />
         </BaseButtonsForm.Item>
-        <BaseButtonsForm.Item label="Документ общего пользования" name="org">
-          <Checkbox></Checkbox>
-        </BaseButtonsForm.Item>
+        <Row>
+          <BaseButtonsForm.Item
+            style={{ textAlign: 'left' }}
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            label="Документ общего пользования"
+            name="org"
+          >
+            <Checkbox />
+          </BaseButtonsForm.Item>
+        </Row>
         <TnpaUpload close={close} ref={upload} onFinish={onFinish} titleButton="Загрузить и сохранить документ" />
       </BaseButtonsForm>
     </>
