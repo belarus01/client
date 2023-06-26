@@ -1,12 +1,20 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { uploadFiles } from '@app/api/file.api';
+import { uploadFiles, uploadTnpa } from '@app/api/file.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
-import { Upload, message } from 'antd';
+import { Upload, message, notification } from 'antd';
 import React, { forwardRef, useState } from 'react';
+import { ITnpaCategory } from '../tnpaTables/TnpaTable';
+import { notificationController } from '@app/controllers/notificationController';
 interface CheklistUploadProps {
   titleButton?: string;
   ref: React.ForwardedRef<any | null>;
+  onFinish: () => {
+    update: boolean;
+    fields: ITnpaCategory;
+  };
+  close?: () => void;
+  update?: () => void;
 }
 
 // interface CustomRequestOptions {
@@ -16,57 +24,80 @@ interface CheklistUploadProps {
 //   onProgress: (progress?: any) => void;
 // }
 
-const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(({ titleButton, children }, ref) => {
-  const [fileList, setFileList] = useState([]);
+const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(
+  ({ titleButton, children, onFinish, close, update }, ref) => {
+    const [fileList, setFileList] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-  const handleUpload = async (options: any) => {
-    const { onSuccess, onError, file, onProgress } = options;
-    console.log(file);
+    const handleUpload = async (options: any) => {
+      const { onSuccess, onError, file, onProgress } = options;
+      console.log(file);
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    formData.append('mediafile', file);
+      formData.append('file', file);
 
-    const config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (event: ProgressEvent) => {
-        console.log(event);
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (event: ProgressEvent) => {
+          console.log(event);
 
-        onProgress({ percent: (event.loaded / event.total) * 100 });
-      },
+          onProgress({ percent: (event.loaded / event.total) * 100 });
+        },
+      };
+
+      const value = onFinish();
+      setLoading(true);
+      try {
+        if (!value.update) {
+          formData.append('tnpa', JSON.stringify(value.fields));
+          const { data } = await uploadTnpa(formData, config);
+
+          onSuccess();
+          if (update && close) {
+            update();
+            close();
+          }
+          setLoading(false);
+          return data;
+        }
+      } catch (err: any) {
+        console.dir(err.options);
+
+        notificationController.error({ message: err.message });
+        onError({ err });
+        setLoading(false);
+        return;
+      }
     };
-    try {
-      const { data } = await uploadFiles(formData, config);
 
-      onSuccess();
+    // const handleRemove = (file: { uid: any }) => {
+    //   const updatedList = fileList.filter((item) => item.uid !== file.uid);
+    //   setFileList(updatedList);
+    // };
 
-      return data;
-    } catch (err) {
-      onError({ err });
-    }
-  };
+    // const handleFileChange = ({ fileList }) => {
+    //   setFileList(fileList);
+    // };
 
-  // const handleRemove = (file: { uid: any }) => {
-  //   const updatedList = fileList.filter((item) => item.uid !== file.uid);
-  //   setFileList(updatedList);
-  // };
-
-  // const handleFileChange = ({ fileList }) => {
-  //   setFileList(fileList);
-  // };
-
-  return (
-    <BaseButtonsForm.Item>
-      <Upload
-        ref={ref}
-        multiple
-        customRequest={handleUpload}
-        // onRemove={handleRemove}
-      >
-        {children ? children : <Button icon={<UploadOutlined />}>{titleButton || 'Добавить документ'}</Button>}
-      </Upload>
-    </BaseButtonsForm.Item>
-  );
-});
+    return (
+      <BaseButtonsForm.Item>
+        <Upload
+          ref={ref}
+          customRequest={handleUpload}
+          // onRemove={handleRemove}
+        >
+          {children ? (
+            children
+          ) : (
+            <Button loading={loading} icon={<UploadOutlined />}>
+              {titleButton || 'Добавить документ'}
+            </Button>
+          )}
+        </Upload>
+      </BaseButtonsForm.Item>
+    );
+  },
+);
 
 export default TnpaUpload;

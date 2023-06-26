@@ -4,11 +4,16 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
 import TnpaForm from '../tnpaForms/TnpaForm';
 import { getAllTnpaLists } from '@app/api/tnpa.api';
+import { Link } from 'react-router-dom';
 
 export interface ITnpaCategory {
   name: string;
   addr: string;
-  numDoc: string;
+  numDoc?: string;
+  type?: string | number;
+  dateBegin?: Date | string;
+  dateEnd?: Date | string;
+  org?: number;
   dateDoc?: Date | string | number | null;
   idList: number | null;
 }
@@ -95,6 +100,29 @@ const TnpaTable: React.FC = () => {
     },
     {
       key: 5,
+      title: 'Дата начала действия документа',
+      dataIndex: 'dateBegin',
+    },
+    {
+      key: 6,
+      title: 'Дата окончания действия документа',
+      dataIndex: 'dateEnd',
+    },
+    {
+      key: 7,
+      title: 'Тип документа',
+      dataIndex: 'dateEnd',
+    },
+    {
+      key: 8,
+      title: 'путь',
+      dataIndex: 'pathDoc',
+      render: (name: string) => {
+        return <a href={name || '#'}>{name}</a>;
+      },
+    },
+    {
+      key: 9,
       title: 'Действия',
       align: 'center',
       render: (itemSelected: ITnpaCategory) => {

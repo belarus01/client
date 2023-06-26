@@ -15,8 +15,11 @@ httpApi.interceptors.request.use((config) => {
 });
 
 httpApi.interceptors.response.use(undefined, (error: AxiosError) => {
-  console.log(error.response?.status);
-
+  console.log(error);
+  // if (error.response?.status === 5000) {
+  //   notificationController.error({ message: error.response.statusText });
+  //   return;
+  // }
   if (error.response?.status === 401) {
     window.location.href = '/login';
     return;
