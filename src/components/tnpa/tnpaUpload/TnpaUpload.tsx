@@ -6,6 +6,7 @@ import { Upload, message, notification } from 'antd';
 import React, { forwardRef, useState } from 'react';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
 import { notificationController } from '@app/controllers/notificationController';
+import { FormInstance } from 'antd/es/form/Form';
 interface CheklistUploadProps {
   titleButton?: string;
   ref: React.ForwardedRef<any | null>;
@@ -15,6 +16,7 @@ interface CheklistUploadProps {
   };
   close?: () => void;
   update?: () => void;
+  formInstance: FormInstance;
 }
 
 // interface CustomRequestOptions {
@@ -25,7 +27,7 @@ interface CheklistUploadProps {
 // }
 
 const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(
-  ({ titleButton, children, onFinish, close, update }, ref) => {
+  ({ titleButton, children, onFinish, close, update, formInstance }, ref) => {
     const [fileList, setFileList] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -45,8 +47,12 @@ const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(
           onProgress({ percent: (event.loaded / event.total) * 100 });
         },
       };
+      const error = await formInstance.validateFields();
+      console.log(error);
 
       const value = onFinish();
+      console.log(value);
+
       setLoading(true);
       try {
         if (!value.update) {
@@ -87,13 +93,13 @@ const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(
           customRequest={handleUpload}
           // onRemove={handleRemove}
         >
-          {children ? (
+          {/* {children ? (
             children
           ) : (
-            <Button loading={loading} icon={<UploadOutlined />}>
+            <Button loading={loading} htmlType="submit" icon={<UploadOutlined />}>
               {titleButton || 'Добавить документ'}
             </Button>
-          )}
+          )} */}
         </Upload>
       </BaseButtonsForm.Item>
     );

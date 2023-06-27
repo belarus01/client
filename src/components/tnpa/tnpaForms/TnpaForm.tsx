@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Col, DatePicker, Input, Row } from 'antd';
+import { Col, DatePicker, Input, Row } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
 import moment from 'moment';
@@ -9,6 +9,8 @@ import TnpaUpload from './../tnpaUpload/TnpaUpload';
 import { notificationController } from '@app/controllers/notificationController';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { Checkbox } from './../../common/Checkbox/Checkbox';
+import { Button } from './../../common/buttons/Button/Button';
+import { UploadType } from 'antd/lib/upload/interface';
 
 export interface TnpaFormProps {
   data?: ITnpaCategory;
@@ -16,16 +18,24 @@ export interface TnpaFormProps {
   update?: () => void;
 }
 
+interface click {
+  onClick: () => void;
+}
+
 const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
   const submit = (values: any) => {
     // post, body newCategory
     console.log('submit', values);
+    console.log(upload.current);
+    // upload.current.onBatchStart()
+    upload.current?.upload.uploader.onClick();
   };
 
   const [form] = BaseButtonsForm.useForm();
 
   const onFinishFailed = () => {
     notificationController.error({ message: 'Неверно введены данные ' });
+    return;
   };
 
   const onFinish = () => {
@@ -44,7 +54,7 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
 
   const dateFormat = 'YYYY-MM-DD';
 
-  const upload = useRef(null);
+  const upload = useRef<{ upload: { uploader: click } }>(null);
 
   const setInitialValues = () => {
     if (data) {
@@ -179,7 +189,18 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
             <Checkbox />
           </BaseButtonsForm.Item>
         </Row>
-        <TnpaUpload close={close} ref={upload} onFinish={onFinish} titleButton="Загрузить и сохранить документ" />
+        <TnpaUpload
+          close={close}
+          formInstance={form}
+          ref={upload}
+          onFinish={onFinish}
+          titleButton="Загрузить и сохранить документ"
+        />
+        <BaseButtonsForm.Item>
+          <Button htmlType="submit" type="primary">
+            <UploadOutlined /> Загрузить и сохранить документ
+          </Button>
+        </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
   );
