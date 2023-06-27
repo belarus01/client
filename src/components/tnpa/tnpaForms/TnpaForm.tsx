@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Col, DatePicker, Input, Row } from 'antd';
+import { Col, DatePicker, Input, Row, Space } from 'antd';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
 import moment from 'moment';
@@ -11,6 +11,7 @@ import { Select } from '@app/components/common/selects/Select/Select';
 import { Checkbox } from './../../common/Checkbox/Checkbox';
 import { Button } from './../../common/buttons/Button/Button';
 import { UploadType } from 'antd/lib/upload/interface';
+import { FieldRow, LabelText } from './TnpaForm.Style';
 
 export interface TnpaFormProps {
   data?: ITnpaCategory;
@@ -23,12 +24,27 @@ interface click {
 }
 
 const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
+  const [org, setOrg] = useState(false);
+  const [user, setUser] = useState({
+    org: 1,
+  });
   const submit = (values: any) => {
+    const finalyValues = {
+      ...values,
+      org: user.org,
+    };
+    console.log(org);
+
+    if (org) {
+      finalyValues.org = 2;
+    }
     // post, body newCategory
-    console.log('submit', values);
+    console.log('submit', finalyValues);
     console.log(upload.current);
+    const aaaa = onFinish();
+    upload.current?.handleUpload(aaaa);
     // upload.current.onBatchStart()
-    upload.current?.upload.uploader.onClick();
+    // upload.current?.upload.uploader.onClick();
   };
 
   const [form] = BaseButtonsForm.useForm();
@@ -38,12 +54,26 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
     return;
   };
 
-  const onFinish = () => {
-    const fields = form.getFieldsValue();
+  const onFinish = (): {
+    update: boolean;
+    fields: ITnpaCategory;
+    idList?: string | number | null;
+  } => {
+    const values = form.getFieldsValue();
+    const fields = {
+      ...values,
+      org: user.org,
+    };
+    console.log(org);
+
+    if (org) {
+      fields.org = 2;
+    }
     if (data) {
       return {
         update: true,
         fields,
+        idList: data.idList,
       };
     }
     return {
@@ -178,17 +208,10 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
             ]}
           />
         </BaseButtonsForm.Item>
-        <Row>
-          <BaseButtonsForm.Item
-            style={{ textAlign: 'left' }}
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            label="Документ общего пользования"
-            name="org"
-          >
-            <Checkbox />
-          </BaseButtonsForm.Item>
-        </Row>
+        <FieldRow>
+          <LabelText htmlFor="org">Документ общего пользования</LabelText>
+          <Checkbox id="org" onChange={(e) => setOrg(e.target.checked)} />
+        </FieldRow>
         <TnpaUpload
           close={close}
           formInstance={form}
@@ -196,11 +219,6 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
           onFinish={onFinish}
           titleButton="Загрузить и сохранить документ"
         />
-        <BaseButtonsForm.Item>
-          <Button htmlType="submit" type="primary">
-            <UploadOutlined /> Загрузить и сохранить документ
-          </Button>
-        </BaseButtonsForm.Item>
       </BaseButtonsForm>
     </>
   );

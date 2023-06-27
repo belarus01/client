@@ -1,18 +1,21 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { uploadFiles, uploadTnpa } from '@app/api/file.api';
+import { uploadAndUpdateTnpa, uploadFiles, uploadTnpa } from '@app/api/file.api';
 import { Button } from '@app/components/common/buttons/Button/Button';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { Upload, message, notification } from 'antd';
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { ITnpaCategory } from '../tnpaTables/TnpaTable';
 import { notificationController } from '@app/controllers/notificationController';
 import { FormInstance } from 'antd/es/form/Form';
+import { RcFile, UploadFile } from 'antd/es/upload/interface';
+import { updateTnpaList } from '@app/api/tnpa.api';
 interface CheklistUploadProps {
   titleButton?: string;
   ref: React.ForwardedRef<any | null>;
   onFinish: () => {
     update: boolean;
     fields: ITnpaCategory;
+    idList?: string | number | null;
   };
   close?: () => void;
   update?: () => void;
@@ -28,80 +31,102 @@ interface CheklistUploadProps {
 
 const TnpaUpload: React.FC<CheklistUploadProps> = forwardRef(
   ({ titleButton, children, onFinish, close, update, formInstance }, ref) => {
-    const [fileList, setFileList] = useState([]);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const handleUpload = async (options: any) => {
-      const { onSuccess, onError, file, onProgress } = options;
-      console.log(file);
-
+    const prepareFileForLoading = (values?: ITnpaCategory) => {
       const formData = new FormData();
 
-      formData.append('file', file);
+      formData.append('file', fileList[0] as RcFile);
+      if (values) {
+        formData.append('tnpa', JSON.stringify(values));
+      }
+      return formData;
+    };
 
-      const config = {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (event: ProgressEvent) => {
-          console.log(event);
-
-          onProgress({ percent: (event.loaded / event.total) * 100 });
-        },
-      };
-      const error = await formInstance.validateFields();
-      console.log(error);
-
-      const value = onFinish();
-      console.log(value);
-
+    const handleUpload = async (values: {
+      update: boolean;
+      fields: ITnpaCategory;
+      idList?: string | number | null;
+    }) => {
       setLoading(true);
-      try {
-        if (!value.update) {
-          formData.append('tnpa', JSON.stringify(value.fields));
-          const { data } = await uploadTnpa(formData, config);
-
-          onSuccess();
-          if (update && close) {
-            update();
-            close();
-          }
-          setLoading(false);
-          return data;
+      if (!values.update) {
+        if (fileList.length == 0) {
+          notificationController.error({ message: 'Ошибка', description: 'Требуется выбрать документ' });
+          return;
         }
-      } catch (err: any) {
-        console.dir(err.options);
-
-        notificationController.error({ message: err.message });
-        onError({ err });
-        setLoading(false);
-        return;
+        const formData = prepareFileForLoading(values.fields);
+        uploadTnpa(formData)
+          .then(() => {
+            setLoading(false);
+            notificationController.success({ message: 'Документ загружен успешно!' });
+            if (close) {
+              close();
+            }
+          })
+          .catch((e) => {
+            notificationController.error({ message: 'Ошибка' });
+          });
+      } else if (values.update) {
+        if (fileList.length == 0) {
+          if (values.idList) {
+            updateTnpaList(values.idList, values.fields)
+              .then(() => {
+                setLoading(false);
+                notificationController.success({ message: 'Документ загружен успешно!' });
+                if (close) {
+                  close();
+                }
+              })
+              .catch((e) => {
+                notificationController.error({ message: 'Ошибка' });
+              });
+          } else {
+            notificationController.error({ message: 'Ошибка', description: 'Нет id документа' });
+          }
+        } else {
+          if (values.idList) {
+            const formData = prepareFileForLoading(values.fields);
+            uploadAndUpdateTnpa(formData, values.idList)
+              .then(() => {
+                setLoading(false);
+                notificationController.success({ message: 'Документ обнавлен успешно!' });
+                if (close) {
+                  close();
+                }
+              })
+              .catch((e) => {
+                notificationController.error({ message: 'Ошибка' });
+              });
+          } else {
+            notificationController.error({ message: 'Ошибка', description: 'Нет id документа' });
+          }
+        }
       }
     };
 
-    // const handleRemove = (file: { uid: any }) => {
-    //   const updatedList = fileList.filter((item) => item.uid !== file.uid);
-    //   setFileList(updatedList);
-    // };
-
-    // const handleFileChange = ({ fileList }) => {
-    //   setFileList(fileList);
-    // };
+    useImperativeHandle(ref, () => ({
+      handleUpload,
+    }));
 
     return (
-      <BaseButtonsForm.Item>
-        <Upload
-          ref={ref}
-          customRequest={handleUpload}
-          // onRemove={handleRemove}
-        >
-          {/* {children ? (
-            children
-          ) : (
-            <Button loading={loading} htmlType="submit" icon={<UploadOutlined />}>
-              {titleButton || 'Добавить документ'}
-            </Button>
-          )} */}
-        </Upload>
-      </BaseButtonsForm.Item>
+      <div ref={ref}>
+        <BaseButtonsForm.Item>
+          <Upload
+            fileList={undefined}
+            beforeUpload={(file) => {
+              setFileList([...fileList, file]);
+              return false;
+            }}
+            maxCount={1}
+          >
+            {children ? children : <Button icon={<UploadOutlined />}>{titleButton || 'Добавить документ'}</Button>}
+          </Upload>
+          <Button type="primary" htmlType="submit" loading={loading} style={{ marginTop: 16 }}>
+            {loading ? 'Загрузка' : 'Сохранить'}
+          </Button>
+        </BaseButtonsForm.Item>
+      </div>
     );
   },
 );

@@ -14,6 +14,7 @@ import { useAppSelector } from './hooks/reduxHooks';
 import { themeObject } from './styles/themes/themeVariables';
 import useGeolocation from 'react-hook-geolocation';
 import { sendGeolocation } from './api/geolocation.api';
+import 'moment/locale/ru';
 
 const App: React.FC = () => {
   const { language } = useLanguage();
