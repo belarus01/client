@@ -1,18 +1,19 @@
 import TheTable from '@app/components/tables/TheTable';
 import React, { useEffect, useMemo, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons';
 import { Modal as Alert } from 'antd';
 import TnpaForm from '../tnpaForms/TnpaForm';
-import { getAllTnpaLists } from '@app/api/tnpa.api';
-import { Link } from 'react-router-dom';
+import { deleteTnpaWithFile, getAllTnpaLists } from '@app/api/tnpa.api';
+import { Button } from '@app/components/common/buttons/Button/Button';
+import { notificationController } from '@app/controllers/notificationController';
 
 export interface ITnpaCategory {
   name: string;
   addr: string;
   numDoc?: string;
   type?: string | number;
-  dateBegin?: Date | string;
-  dateEnd?: Date | string;
+  dateBegin?: Date | string | number | null;
+  dateEnd?: Date | string | number | null;
   org?: number;
   dateDoc?: Date | string | number | null;
   idList: number | null;
@@ -35,6 +36,8 @@ const TnpaTable: React.FC = () => {
   const fetch = () => {
     setTableData({ ...tableData, loading: true });
     getAllTnpaLists().then((res) => {
+      console.log(res);
+
       setTableData({ data: res, loading: false });
     });
   };
@@ -66,9 +69,51 @@ const TnpaTable: React.FC = () => {
 
   // No BE
 
+  const chooseTypeDoc = (type: number) => {
+    console.log(type);
+
+    switch (type) {
+      case 1:
+        return 'Закон';
+
+      case 2:
+        return 'Декрет';
+      case 3:
+        return 'Постановление';
+      case 4:
+        return 'Общие требования';
+      case 5:
+        return 'Договор';
+      case 6:
+        return 'Порядок';
+      case 7:
+        return 'Инструкция ';
+      case 8:
+        return 'Правила';
+      case 9:
+        return 'Положение';
+      case 10:
+        return 'Перечень';
+      case 11:
+        return 'ТР';
+      case 12:
+        return 'ТКП';
+      case 13:
+        return 'СН';
+    }
+  };
+
   const deleteCategory = (category: ITnpaCategory) => {
-    const newData = tableData.data.filter((item) => item.idList !== category.idList);
-    setTableData({ ...tableData, data: newData });
+    if (category.idList) {
+      deleteTnpaWithFile(category.idList)
+        .then(() => {
+          fetch();
+          notificationController.success({ message: 'Файл успешно удален' });
+        })
+        .catch((e) => {
+          notificationController.error({ message: 'Ошибка', description: `${e.message}` });
+        });
+    }
   };
 
   const toggleModal = () => {
@@ -111,14 +156,25 @@ const TnpaTable: React.FC = () => {
     {
       key: 7,
       title: 'Тип документа',
-      dataIndex: 'dateEnd',
+      dataIndex: 'typeDoc',
+      render: (name: number) => {
+        return <span>{chooseTypeDoc(name)}</span>;
+      },
     },
     {
       key: 8,
-      title: 'путь',
+      title: 'Скачать файл',
       dataIndex: 'pathDoc',
-      render: (name: string) => {
-        return <a href={name || '#'}>{name}</a>;
+      render: (path: string) => {
+        return (
+          <a href={path || '#'} target="_blanck">
+            {
+              <Button>
+                Скачать <DownloadOutlined />
+              </Button>
+            }
+          </a>
+        );
       },
     },
     {

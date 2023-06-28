@@ -7,9 +7,3 @@ export const uploadFiles = (formData: FormData, idList: string | number, idEvent
   httpApi
     .post<any>(`${BASE_URL}/upload/multiple/idEventOrder/${idEventOrder}/idList/${idList}`, formData, config)
     .then(({ data }) => data);
-
-export const uploadTnpa = (formData: FormData) =>
-  httpApi.post<any>(`tnpa_file/upload/file`, formData).then(({ data }) => data);
-
-export const uploadAndUpdateTnpa = (formData: FormData, idList: number | string) =>
-  httpApi.put<any>(`tnpa_file/update/file/${idList}`, formData).then(({ data }) => data);
