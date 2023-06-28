@@ -230,6 +230,7 @@ const EventsTable: React.FC = () => {
         bordered
       />
       <Modal
+        maskClosable={false}
         closable
         footer={null}
         onCancel={onCancelAdd}

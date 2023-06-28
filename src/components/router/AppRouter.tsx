@@ -16,6 +16,7 @@ import ServerErrorPage from '../../pages/ServerErrorPage';
 import Error404Page from '@app/pages/Error404Page';
 
 import pogMapSubjPage from '@app/pages/pog/pogMapSubjPage';
+import MainPage from '@app/pages/MainPage/MainPage';
 
 const PersonalInfoPage = React.lazy(() => import('@app/pages/test/PersonalInfoPage'));
 const SecuritySettingsPage = React.lazy(() => import('@app/pages/test/SecuritySettingsPage'));
@@ -220,6 +221,8 @@ export const AppRouter: React.FC = () => {
           <Route path="server-error" element={<ServerError />} />
 
           <Route path="*" element={<Error404 />} />
+
+          <Route path="main" element={<MainPage />} />
 
           <Route path="profile" element={<ProfileLayout />}>
             <Route path="personal-info" element={<PersonalInfo />} />

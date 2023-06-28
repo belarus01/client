@@ -31,7 +31,6 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(subj, 'subj');
     if (subj) {
       setLoadingUnp(false);
       setSubjRefactor((prev) => ({
@@ -47,7 +46,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
       updateSubj(subjRefactor.idSubj, subjRefactor)
         .then(() => {
           setLoading(false);
-          notificationController.success({ message: 'Субъект Обнавлен' });
+          notificationController.success({ message: 'Субъект Обновлен' });
         })
         .catch((e) => {
           notificationController.error({ message: e, description: 'К сожалению действие не завершенно' });
@@ -92,7 +91,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
           </Button>
         </Col> */}
 
-          <Col span={5} offset={2}>
+          {/* <Col span={5} offset={2}>
             <Button
               style={{
                 color: 'black',
@@ -105,7 +104,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
             >
               <Text>Обновить данные</Text>
             </Button>
-          </Col>
+          </Col> */}
         </Row>
         <Row style={{ marginTop: '15px' }}>
           <Col>
@@ -156,6 +155,7 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
                   idVed: e.target.value,
                 }))
               }
+              readOnly
               style={{ width: '100%', marginLeft: '10px' }}
             />
           </Col>
@@ -265,6 +265,20 @@ const CheklistFormSubj: React.FC<FormUNPProps> = ({ subj }) => {
               value={subjRefactor.chiefTel || ''}
             />
           </Col>
+        </Row>
+        <Row justify={'center'}>
+          <Button
+            style={{
+              color: 'black',
+              background: 'blanchedalmond',
+              border: '2px solid gold',
+              borderRadius: '8px',
+            }}
+            loading={loading}
+            onClick={update}
+          >
+            <Text>Обновить данные</Text>
+          </Button>
         </Row>
       </BaseButtonsForm>
     </Spinner>

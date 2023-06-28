@@ -28,6 +28,8 @@ export const LoginForm: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = (values: LoginFormData) => {
+    navigate('/main');
+    return;
     setLoading(true);
     dispatch(doLogin(values))
       .unwrap()

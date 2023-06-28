@@ -109,9 +109,17 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
 
   const columns = [
     {
+      key: '0',
+      title: 'Субъект',
+      dataIndex: ['idSubj2', 'subj'],
+      // render: (idEvent: SEvents) => {
+      //   return <p>{idEvent.event}</p>;
+      // },
+    },
+    {
       key: '1',
       title: 'Мероприятие',
-      dataIndex: 'idEvent',
+      dataIndex: ['idEvent2', 'event'],
       // render: (idEvent: SEvents) => {
       //   return <p>{idEvent.event}</p>;
       // },
@@ -119,33 +127,44 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
     {
       key: '2',
       title: 'Вид',
-      dataIndex: 'idUnit_3',
+      dataIndex: ['idUnit_2', 'name'],
     },
     {
       key: '3',
       title: 'Тип',
-      dataIndex: 'idUnit_4',
+      dataIndex: ['idUnit_5', 'name'],
     },
     {
       key: '4',
       title: 'Орган, выдавший предписание',
-      dataIndex: 'idDeptIss',
+      dataIndex: ['idDept2', 'departament'],
     },
     {
       key: '5',
       title: 'Сфера контроля',
-      dataIndex: 'spheries',
-      // render: (record: IEventsSphere[]) => {
-      //   console.log(record);
+      dataIndex: ['sphers'],
+      render: (record: { idUnit: IEventsSphere }[]) => {
+        console.log(record);
 
-      //   return record.map((sphere) => {
-      //     return (
-      //       <>
-      //         <span>{sphere?.name}</span>
-      //       </>
-      //     );
-      //   });
-      // },
+        if (record && record.length > 0) {
+          return record.map((sphere, index) => {
+            if (index == 0) {
+              return (
+                <>
+                  <span>{sphere?.idUnit.name}</span>
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <span>,{sphere?.idUnit.name}</span>
+                </>
+              );
+            }
+          });
+        }
+        return '';
+      },
     },
     {
       key: '6',
@@ -192,22 +211,6 @@ export const EventsTable: React.FC<IEventsTable> = ({ idSubj }) => {
       key: '7',
       title: 'Применяемые научно-технические средства',
       dataIndex: 'technical',
-    },
-    {
-      key: '8',
-      title: 'Сфера контроля',
-      dataIndex: 'spheries',
-      // render: (record: IEventsSphere[]) => {
-      //   console.log(record);
-
-      //   return record.map((sphere) => {
-      //     return (
-      //       <>
-      //         <span>{sphere?.name}</span>
-      //       </>
-      //     );
-      //   });
-      // },
     },
     {
       key: '9',

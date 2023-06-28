@@ -136,6 +136,7 @@ export const AteStreetTable: React.FC = () => {
       <Table columns={columns} dataSource={filtredTable} loading={tableData.loading} scroll={{ x: 800 }} bordered />
       {openAddingForm && (
         <Modal
+          maskClosable={false}
           closable
           footer={null}
           onCancel={() => toggleModalAdding(false)}
@@ -149,6 +150,7 @@ export const AteStreetTable: React.FC = () => {
       )}
       {openEddingForm && (
         <Modal
+          maskClosable={false}
           closable
           footer={null}
           onCancel={() => toggleModalEdding(false)}

@@ -110,6 +110,7 @@ const AteCategories: React.FC = () => {
       <Table columns={columns} dataSource={filtredTable} loading={tableData.loading} scroll={{ x: 800 }} bordered />
       {openAddingForm && (
         <Modal
+          maskClosable={false}
           closable
           footer={null}
           onCancel={() => toggleModalAdding(false)}
@@ -124,6 +125,7 @@ const AteCategories: React.FC = () => {
       {openEddingForm && (
         <Modal
           closable
+          maskClosable={false}
           footer={null}
           onCancel={() => toggleModalEdding(false)}
           destroyOnClose

@@ -24,7 +24,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({ submitForm, canIClose, ...pro
       nameAgent: '',
       postAgent: '',
       uidBoss: null,
-      org: 0,
+      org: 1,
     },
     questions: {
       checklists: [],

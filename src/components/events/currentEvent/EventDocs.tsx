@@ -1,7 +1,7 @@
 import { createFormReport, getAllFormDocsByOrg, getFormReportMaxIdList } from '@app/api/form.api';
 import { BaseButtonsForm } from '@app/components/common/forms/BaseButtonsForm/BaseButtonsForm';
 import { IDoc, IEventOrder } from '@app/domain/interfaces';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Spinner } from '../../common/Spinner/Spinner.styles';
 import { Button } from '../../common/buttons/Button/Button.styles';
 import { Select } from '@app/components/common/selects/Select/Select.styles';
@@ -39,8 +39,17 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
     org: 1,
   });
 
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  const setUpdateComplete = () => {
+    setIsUpdated(false);
+  };
+
   const toggleModal = (isOpne = false) => {
     setShownModal(isOpne);
+    if (!isOpne) {
+      setIsUpdated(true);
+    }
   };
 
   const navigate = useNavigate();
@@ -106,6 +115,13 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
   //   },
   // ];
 
+  const filterdDoc = useMemo(() => {
+    if (docs.length > 0) {
+      return docs.filter((doc) => doc.idForm && doc?.idForm < 1013 && doc.idForm != 312 && doc.idForm != 1006);
+    }
+    return [];
+  }, [docs]);
+
   useEffect(() => {
     getDocs();
   }, []);
@@ -115,18 +131,20 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
         <ListDoc>
           <div>Название документа</div>
           <div>Дата начала действия документа об оценке соответствия</div>
-          <div>Дата окончания действия документа об оценке соответствия </div>
+          {/* <div>Дата окончания действия документа об оценке соответствия </div> */}
           <div>Дата изменения записи </div>
-          <div>Создать документ</div>
-          <div>Просмотреть документ</div>
+          <div>Создать/Редактировать документ</div>
+          {/* <div>Просмотреть документ</div> */}
         </ListDoc>
-        {docs.map((doc) => {
+        {filterdDoc.map((doc) => {
           return (
             <EventDocItemList
               openDocCreate={openDocCreate}
               key={doc.idForm}
               setCurrentDocForForm={setCurrentDocForForm}
               doc={doc}
+              isUpdated={isUpdated}
+              setUpdateComplete={setUpdateComplete}
             />
           );
         })}
@@ -197,7 +215,13 @@ export const EventDocs: React.FC<EventQuationProps> = ({ event }) => {
           </BaseButtonsForm>
         </Modal>*/}
         {shownModal && (
-          <Modal open={shownModal} onCancel={() => toggleModal()} title="Создание документа" footer={false}>
+          <Modal
+            maskClosable={false}
+            open={shownModal}
+            onCancel={() => toggleModal()}
+            title="Создание документа"
+            footer={false}
+          >
             <EventCreateDocForm event={event} toggleModal={toggleModal} currentDoc={currentDoc} />
           </Modal>
         )}

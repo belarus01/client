@@ -103,6 +103,7 @@ const AteRayonTable: React.FC = () => {
       <Table columns={columns} dataSource={filtredTable} />
       {openAddingForm && (
         <Modal
+          maskClosable={false}
           closable
           footer={null}
           onCancel={() => toggleModalAdding(false)}
@@ -116,6 +117,7 @@ const AteRayonTable: React.FC = () => {
       )}
       {openEddingForm && (
         <Modal
+          maskClosable={false}
           closable
           footer={null}
           onCancel={() => toggleModalEdding(false)}

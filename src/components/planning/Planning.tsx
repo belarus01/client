@@ -231,7 +231,7 @@ export const Planning: React.FC = () => {
         // }}
         events={data}
       />
-      <Modal open={shownEventModal} footer={false} onCancel={() => toggleEventModal(false)}>
+      <Modal maskClosable={false} open={shownEventModal} footer={false} onCancel={() => toggleEventModal(false)}>
         {/* <BaseButtonsForm isFieldsChanged={false}>
           <BaseButtonsForm.Item label="name task">
             <Input />
@@ -239,7 +239,13 @@ export const Planning: React.FC = () => {
         </BaseButtonsForm> */}
         <CreateEvent submitForm={submitForm} canIClose={canIClose} />
       </Modal>
-      <Modal title="Создание" open={shownTaskModal} footer={false} onCancel={() => toggleAddingModalTask(false)}>
+      <Modal
+        maskClosable={false}
+        title="Создание"
+        open={shownTaskModal}
+        footer={false}
+        onCancel={() => toggleAddingModalTask(false)}
+      >
         <div style={{ margin: '20px 0' }}>
           Для создания задачи заполните все поля формы, назначьте исполнителя. Не забудьте установить срок исполнения,
           иначе задача может быть не выполнена вовремя

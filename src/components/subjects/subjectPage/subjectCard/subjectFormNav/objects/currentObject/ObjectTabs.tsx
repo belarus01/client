@@ -23,7 +23,7 @@ const onChange = (key: string) => {
 
 const ObjectTabs: React.FC = () => {
   const [user, setUser] = useState({
-    org: 0,
+    org: 1,
   });
   const items: TabsProps['items'] = useMemo(() => {
     if (user.org == 0) {

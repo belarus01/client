@@ -1,5 +1,5 @@
 import { PageTitle } from '@app/components/common/PageTitle/PageTitle';
-import ObjectTabs from '@app/components/subjects/subjectPage/subjectCard/subjectFormNav/objects/ObjectTabs';
+import ObjectTabs from '@app/components/subjects/subjectPage/subjectCard/subjectFormNav/objects/currentObject/ObjectTabs';
 
 const CurrentObjectPage: React.FC = () => {
   return (
