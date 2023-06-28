@@ -27,7 +27,7 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
   const submit = (values: any) => {
     const finishValues = onFinish(values);
     console.log(finishValues);
-    // upload.current?.handleUpload(finishValues);
+    upload.current?.handleUpload(finishValues);
     // upload.current.onBatchStart()
     // upload.current?.upload.uploader.onClick();
   };
@@ -87,7 +87,11 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
         dateEnd: data.dateEnd ? moment(data.dateEnd) : null,
         dateDoc: data.dateDoc ? moment(data.dateDoc) : null,
       };
+
       form.setFieldsValue(initialValues);
+      if (data.org == 2) {
+        setOrg(true);
+      }
     }
   };
 
@@ -201,7 +205,7 @@ const TnpaForm: React.FC<TnpaFormProps> = ({ data, close, update }) => {
         </BaseButtonsForm.Item>
         <FieldRow>
           <LabelText htmlFor="org">Документ общего пользования</LabelText>
-          <Checkbox id="org" onChange={(e) => setOrg(e.target.checked)} />
+          <Checkbox checked={org} id="org" onChange={(e) => setOrg(e.target.checked)} />
         </FieldRow>
         <TnpaUpload close={close} formInstance={form} ref={upload} titleButton="Загрузить и сохранить документ" />
       </BaseButtonsForm>
