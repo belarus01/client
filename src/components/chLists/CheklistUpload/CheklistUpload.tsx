@@ -59,7 +59,7 @@ const CheklistUpload: React.FC<CheklistUploadProps> = ({ titleButton, idEventOrd
     <BaseButtonsForm.Item>
       {/* <Upload {...props}> */}
       <Upload multiple customRequest={handleUpload} onRemove={handleRemove}>
-        <Button icon={<UploadOutlined />}>{titleButton || 'Добавить фото/видео'}</Button>
+        <Button icon={<UploadOutlined />}>{titleButton || 'Добавить файл'}</Button>
       </Upload>
     </BaseButtonsForm.Item>
   );

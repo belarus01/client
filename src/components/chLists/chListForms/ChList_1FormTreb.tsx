@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { updateEventOrderQueDef } from '@app/api/events.api';
 import { notificationController } from '@app/controllers/notificationController';
 import { Upload } from '@app/components/common/Upload/Upload';
-import { UploadOutlined } from '@ant-design/icons';
+import { InfoOutlined, UploadOutlined } from '@ant-design/icons';
 import CheklistUpload from '../CheklistUpload/CheklistUpload';
 import { Select } from '@app/components/common/selects/Select/Select';
 import { useParams } from 'react-router-dom';
@@ -305,13 +305,38 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                             readOnly
                           />
                         </BaseButtonsForm.Item>
+
+                        <Text style={{ marginTop: '12px' }}>
+                          Предъявляемое требование реализовано в полном объеме :
+                        </Text>
+
+                        <BaseButtonsForm.Item name="chlFlYes" style={{ width: '150px' }}>
+                          <Select
+                            placeholder="Выберете значение"
+                            style={{ textAlign: 'center', width: '150%', marginLeft: '3%' }}
+                            options={[
+                              {
+                                value: '0',
+                                label: 'Да',
+                              },
+                              {
+                                value: '1',
+                                label: 'Нет',
+                              },
+                              {
+                                value: '2',
+                                label: 'Не требуется',
+                              },
+                            ]}
+                          />
+                        </BaseButtonsForm.Item>
                       </Row>
                     </Col>
                   </Row>
 
                   <Text style={{ marginTop: '12px' }}>Требование:</Text>
                   <BaseButtonsForm.Item>
-                    <TextArea value={rulePunct} readOnly />
+                    <TextArea style={{ height: 160 }} value={rulePunct} readOnly />
                   </BaseButtonsForm.Item>
 
                   <Row>
@@ -319,7 +344,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                     <BaseButtonsForm.Item>
                       <Input value={shortTnpa} style={{ width: '100%', marginLeft: '5%' }} readOnly />
                     </BaseButtonsForm.Item>
-                    {/* <BaseButtonsForm.Item>
+                    <BaseButtonsForm.Item>
                       <Col offset={10}>
                         <Button
                           shape="round"
@@ -329,10 +354,57 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                           <InfoOutlined />
                         </Button>
                       </Col>
-                    </BaseButtonsForm.Item> */}
+                    </BaseButtonsForm.Item>
                   </Row>
 
-                  <BaseButtonsForm.Item name="chlComm">
+                  <Row>
+                    <Col span={18}>
+                      <Text style={{ marginTop: '12px' }}>Примечание:</Text>
+                      <BaseButtonsForm.Item>
+                        <Select
+                          placeholder="Выберете значение"
+                          style={{ textAlign: 'center', marginLeft: '3%' }}
+                          // options={[
+                          //   {
+                          //     value: '0',
+                          //     label: 'Да',
+                          //   },
+                          //   {
+                          //     value: '1',
+                          //     label: 'Нет',
+                          //   },
+                          //   {
+                          //     value: '2',
+                          //     label: 'Не требуется rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',
+                          //   },
+                          // ]}
+                        >
+                          <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem omnis dolorum asperiores nemo
+                            laborum dicta corrupti eaque itaque debitis, aspernatur consectetur est odio, quas assumenda
+                            quae libero corporis magni veniam.
+                          </div>
+                          <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem omnis dolorum asperiores nemo
+                            laborum dicta corrupti eaque itaque debitis, aspernatur consectetur est odio, quas assumenda
+                            quae libero corporis magni veniam.
+                          </div>
+                          <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem omnis dolorum asperiores nemo
+                            laborum dicta corrupti eaque itaque debitis, aspernatur consectetur est odio, quas assumenda
+                            quae libero corporis magni veniam.
+                          </div>
+                          <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem omnis dolorum asperiores nemo
+                            laborum dicta corrupti eaque itaque debitis, aspernatur consectetur est odio, quas assumenda
+                            quae libero corporis magni veniam.
+                          </div>
+                        </Select>
+                      </BaseButtonsForm.Item>
+                    </Col>
+                  </Row>
+
+                  {/* <BaseButtonsForm.Item name="chlComm">
                     {shownComm ? <TextArea value={chlComm} onChange={(e) => setChlComm(e.target.value)} /> : null}
                     <Button
                       style={{
@@ -348,16 +420,16 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                     >
                       <Text strong>Примечание</Text>
                     </Button>
-                  </BaseButtonsForm.Item>
-                  <Row
+                  </BaseButtonsForm.Item> */}
+                  {/* <Row
                     style={{
                       display: 'flex',
                       alignItems: 'stretch',
-                      alignContent: 'center',
+                      //alignContent: 'center',
                       flexDirection: 'column',
                     }}
                   >
-                    <Text>Решение по требованию</Text>
+                    <Text>Предъявляемое требование реализовано в полном объеме</Text>
 
                     <BaseButtonsForm.Item name="chlFlYes" style={{ width: '150px' }}>
                       <Select
@@ -379,9 +451,9 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                         ]}
                       />
                     </BaseButtonsForm.Item>
-                  </Row>
+                  </Row> */}
 
-                  <Row style={{ justifyContent: 'space-between', lineHeight: '17px' }}>
+                  {/* <Row style={{ justifyContent: 'space-between', lineHeight: '17px' }}>
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <Text>Дата устранения замечаний:</Text>
                     </Col>
@@ -395,9 +467,9 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                     </Col>
 
                     <Col style={{ textAlign: 'center' }} span={4}></Col>
-                  </Row>
+                  </Row> */}
 
-                  <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                  {/* <Row style={{ justifyContent: 'space-between', alignItems: 'center' }}>
                     <Col style={{ textAlign: 'center' }} span={4}>
                       <BaseButtonsForm.Item name={'dateFix'}>
                         <DatePicker
@@ -455,7 +527,7 @@ const FormTreb: React.FC<FormTreb> = ({ loading, fields, updateFields }) => {
                         />
                       </BaseButtonsForm.Item>
                     </Col>
-                  </Row>
+                  </Row> */}
 
                   <Row style={{ justifyContent: 'space-between' }}>
                     <CheklistUpload idList={currentField.idList as string} idEventOrder={idEventOrder as string} />

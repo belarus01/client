@@ -179,7 +179,7 @@ const ChecklistFormFIO: React.FC = () => {
               </Col>
             </Row>
             <Row>
-              <Text>Дата направления</Text>
+              <Text>Дата направления акта субъекта</Text>
 
               <Col>
                 <BaseButtonsForm.Item name="dateRec">
